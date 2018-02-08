@@ -1,0 +1,17 @@
+{
+	"extends": "airbnb-base",
+	"rules": {
+		"indent": "off",
+		"one-var": "off",
+		"no-tabs": "off",
+		"no-undef": "off",
+		"func-names":"off",
+		"no-console": "off",
+		"padded-blocks": "off",
+		"linebreak-style": "off",
+		"no-param-reassign" : "off",
+		"no-underscore-dangle": "off",
+		"no-restricted-globals": "off",
+		"one-var-declaration-per-line": "off"
+	}
+}

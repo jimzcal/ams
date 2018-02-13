@@ -26,6 +26,12 @@ $this->title = 'DISBURSEMENT VOUCHERS';
             //'id',
             'dv_no',
             'date',
+            // [
+            //     'attribute' => 'date',
+            //     'value' => function($date){
+            //         return date('Y',strtotime($date->date));
+            //     }
+            // ],
             'payee',
             'particulars:ntext',
             // 'mode_of_payment',

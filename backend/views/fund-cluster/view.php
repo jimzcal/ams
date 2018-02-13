@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Nca */
+/* @var $model backend\models\FundCluster */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Ncas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Fund Clusters', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="nca-view">
+<div class="fund-cluster-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,26 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'date_received',
-            'nca_no',
             'fund_cluster',
-            'mds_sub_acc_no',
-            'gsb_branch',
-            'purpose',
-            'fiscal_year',
-            'january',
-            'february',
-            'march',
-            'april',
-            'may',
-            'june',
-            'july',
-            'august',
-            'september',
-            'october',
-            'november',
-            'december',
-            'total_amount',
+            'description',
         ],
     ]) ?>
 

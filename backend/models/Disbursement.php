@@ -43,15 +43,16 @@ class Disbursement extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $date_paid, $check_no, $lddap_check_no;
     public function rules()
     {
         return [
-            [['dv_no', 'cash_advance', 'date', 'payee', 'particulars', 'nca', 'responsibility_center', 'mfo_pap', 'gross_amount', 'fund_source', 'ors_no', 'transaction_id', 'attachments', 'status'], 'required'],
+            [['dv_no', 'ors_class', 'ors_year', 'ors_month', 'fund_cluster', 'ors_serial', 'cash_advance', 'date', 'payee', 'particulars', 'nca', 'responsibility_center', 'mfo_pap', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
             [['particulars', 'attachments', 'remarks'], 'string'],
             [['gross_amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*[.,]?[0-9]+([eE][-+]?[0-9]+)?\s*$/'],
             [['transaction_id'], 'integer'],
             [['dv_no', 'payee', 'nca'], 'string', 'max' => 200],
-            [['date', 'cash_advance', 'mode_of_payment', 'responsibility_center', 'mfo_pap', 'fund_source', 'ors_no', 'status'], 'string', 'max' => 100],
+            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'responsibility_center', 'mfo_pap', 'tin', 'ors_class', 'status', 'ors_year', 'ors_month', 'ors_serial', 'obligated'], 'string', 'max' => 100],
             [['dv_no'], 'unique'],
         ];
     }
@@ -75,6 +76,7 @@ class Disbursement extends \yii\db\ActiveRecord
             'cash_advance' => 'Cash Advance?',
             'less_amount' => 'Less Amount',
             'net_amount' => 'Net Amount',
+            'fund_cluster' => 'Fund Cluster',
             'fund_source' => 'Fund Source',
             'ors_no' => 'ORS No',
             'transaction_id' => 'Transaction Type',
@@ -90,6 +92,11 @@ class Disbursement extends \yii\db\ActiveRecord
     public function getAccountingEntries()
     {
         return $this->hasMany(AccountingEntry::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getFundCluster()
+    {
+        return $this->hasMany(FundCluster::className(), ['fund_cluster' => 'fund_cluster']);
     }
 
     /**

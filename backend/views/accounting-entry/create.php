@@ -23,6 +23,7 @@
 				        'model' => $model,
 				        'dv_no' => $dv_no,
 				        'net' => $net,
+				        'gross' => $gross,
 				    ]) ?>
 		      </div>
 		</div>

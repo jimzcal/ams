@@ -13,6 +13,8 @@ use backend\models\TransactionStatus;
 use backend\models\Transaction;
 use backend\models\AccountingEntry;
 use yii\filters\AccessControl;
+use backend\models\DisbursedDv;
+use backend\models\Nca;
 
 /**
  * DisbursementController implements the CRUD actions for Disbursement model.
@@ -103,17 +105,23 @@ class DisbursementController extends Controller
             if(isset($_POST['requirements']))
             {
                 $model->attachments = implode(',', $_POST['requirements']);
-                $model->net_amount = ($model->gross_amount - $model->less_amount);
-                $model->save(false);
-                Yii::$app->db->createCommand()->update('disbursement', ['attachments' => $model->attachments], ['dv_no' => $dv_no])->execute();
             }
 
-                Yii::$app->getSession()->setFlash('success', 'Successfully Saved');
-                return $this->render('viewPr', [
-                    'model' => $this->findModel($id),
-                    'entries' => $entries,
-                    'model2' => $model2,
-                ]);
+            if(isset($_POST['requirements']) === null )
+            {
+                $model->attachments = '';
+            }
+
+            $model->net_amount = (AccountingEntry::find()->where(['vat' => 1])->andWhere(['dv_no' => $model->dv_no])->one() === null ? ($model->gross_amount - $model->less_amount) : ($model->gross_amount/1.12) - $model->less_amount);
+            $model->save();
+            Yii::$app->db->createCommand()->update('disbursement', ['attachments' => $model->attachments], ['dv_no' => $dv_no])->execute();
+
+            Yii::$app->getSession()->setFlash('success', 'Successfully Saved');
+            return $this->render('viewPr', [
+                'model' => $this->findModel($id),
+                'entries' => $entries,
+                'model2' => $model2,
+            ]);
             
         }
 
@@ -143,9 +151,7 @@ class DisbursementController extends Controller
                 $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                 $model3->receiving = $detail;
                 $model3->save(false);
-                
-                //$requirements = Transaction::find(['requirements'])->where(['id'=>$transaction_id])->one();
-               // $requirements = explode(',', $requirements->requirements);
+
                 return $this->redirect(['view', 'id' => $model->id]);
 
             } 
@@ -173,6 +179,11 @@ class DisbursementController extends Controller
 
             if ($model->load(Yii::$app->request->post())) 
             {   
+                
+                if($model->status === 'Cancelled')
+                {
+                   $model->obligated = 'no';
+                }
                 $model->save(false);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -220,6 +231,83 @@ class DisbursementController extends Controller
     {
         //$results = Disbursement::find()->where(['cash_advance'=>'yes'])->all();
         return $this->render('indexReport');
+    }
+
+    public function actionNca()
+    {
+        $ncas = Nca::find()->all();
+
+        return $this->render('nca_list', ['ncas' => $ncas]);
+
+    }
+
+    public function actionCashstatus($id)
+    {
+        $model = $this->findModel($id);
+        $disbursements = Disbursement::find()->where(['nca'=>$model->nca])->andWhere(['obligated' => 'yes'])->all();
+        $checker = Disbursement::find()->where(['id'=>$id])->andWhere(['obligated' => 'yes'])->one();
+        $model3 = Nca::find()->where(['nca_no'=>$model->nca])->one();
+
+        if ($model->load(Yii::$app->request->post()))
+        {
+           if($model->status === 'Cancelled')
+           {
+                Yii::$app->getSession()->setFlash('warning', 'Oops!, This DV No. '.$model2->dv_no.' has been cancelled. Therefore, it cannot be saved.');
+                return $this->render('cash-status/_form', [
+                    'model' => $model,
+                    'model3' => $model3,
+                    ]);
+           }
+           else
+           {
+                $model->obligated = 'yes';
+                $model->save(false);
+
+                $checker2 = DisbursedDv::find()->where(['dv_no' => $model->dv_no])->one();
+
+                if($checker2 === null)
+                {
+                    $model2 = new DisbursedDv();
+
+                    $model2->dv_no = $model->dv_no;
+                    $model2->date_paid = $model->date_paid;
+                    $model2->lddap_check_no = $model->lddap_check_no;
+                    $model2->save(false);
+                }
+
+                else
+                {
+                    $model2 = DisbursedDv::find()->where(['dv_no' => $model->dv_no])->one();
+                    $model2->dv_no = $model->dv_no;
+                    $model2->date_paid = $model->date_paid;
+                    $model2->lddap_check_no = $model->lddap_check_no;
+                    $model2->save(false);
+                }
+
+                Yii::$app->getSession()->setFlash('success', 'Successfully Saved');
+                // Yii::$app->db->createCommand()->update('disbursement', ['remarks' => $model->remarks, 'status' => $model->status, 'liquidated' => 'yes'], ['dv_no' => $model->dv_no])->execute();
+                return $this->render('cash-status/obligated', [
+                'model' => $model,
+                'model3' => $model3,
+                'disbursements' => $disbursements,
+                ]);
+           }
+        }
+
+        if($checker !== null)
+        {
+            Yii::$app->getSession()->setFlash('warning', 'Reminder, this Disbursement Voucher has already been obligated');
+        }
+        return $this->render('cash-status/_form', [
+        'model' => $model,
+        'model3' => $model3,
+        ]);
+
+    }
+
+    public function actionMdisbursement()
+    {
+        $disbursements = Disbursement::find()->all();
     }
 
     protected function findModel($id)

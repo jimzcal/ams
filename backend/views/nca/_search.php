@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'date') ?>
+    <?= $form->field($model, 'date_received') ?>
 
     <?= $form->field($model, 'nca_no') ?>
 
@@ -32,9 +32,33 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'purpose') ?>
 
-    <?php // echo $form->field($model, 'period') ?>
+    <?php // echo $form->field($model, 'fiscal_year') ?>
 
-    <?php // echo $form->field($model, 'amount') ?>
+    <?php // echo $form->field($model, 'january') ?>
+
+    <?php // echo $form->field($model, 'february') ?>
+
+    <?php // echo $form->field($model, 'march') ?>
+
+    <?php // echo $form->field($model, 'april') ?>
+
+    <?php // echo $form->field($model, 'may') ?>
+
+    <?php // echo $form->field($model, 'june') ?>
+
+    <?php // echo $form->field($model, 'july') ?>
+
+    <?php // echo $form->field($model, 'august') ?>
+
+    <?php // echo $form->field($model, 'september') ?>
+
+    <?php // echo $form->field($model, 'october') ?>
+
+    <?php // echo $form->field($model, 'november') ?>
+
+    <?php // echo $form->field($model, 'december') ?>
+
+    <?php // echo $form->field($model, 'total_amount') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

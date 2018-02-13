@@ -29,13 +29,13 @@ class CashStatus extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public $balance, $beginning_balance, $remarks;
+    public $balance, $beginning_balance, $remarks, $status;
     public function rules()
     {
         return [
-            [['nca_no', 'dv_no', 'current_balance', 'disbursement_amount'], 'required'],
-            [['current_balance', 'balance' ,'disbursement_amount'], 'number'],
-            [['nca_no', 'dv_no', 'remarks'], 'string', 'max' => 200],
+            [['nca_no', 'dv_no', 'disbursement_amount'], 'required'],
+            [['balance', 'disbursement_amount'], 'number'],
+            [['nca_no', 'status', 'dv_no', 'remarks'], 'string', 'max' => 200],
             [['dv_no'], 'exist', 'skipOnError' => true, 'targetClass' => Disbursement::className(), 'targetAttribute' => ['dv_no' => 'dv_no']],
         ];
     }
@@ -57,7 +57,7 @@ class CashStatus extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDvNo()
+    public function getDvno()
     {
         return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
     }

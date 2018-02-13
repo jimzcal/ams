@@ -14,6 +14,7 @@ $this->title = 'Disbursement Voucher';
 ?>
 
 <div class="disbursement-form">
+    <?= Html::a('&times;', ['/site/index'], ['class' => 'close']) ?>
     <?= Yii::$app->session->getFlash('error'); ?>
     <div class="form-wrapper">
         <?php $form = ActiveForm::begin(); ?>
@@ -24,7 +25,7 @@ $this->title = 'Disbursement Voucher';
                 </div>
                 <table class="table table-bordered">
                     <tr>
-                        <td><labe>DV NO.</labe></br></br><strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong></td>
+                        <td><label>DV NO.</label></br></br><strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong></td>
                         <td colspan="1"><?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type']) 
                     ?>
                         </td>
@@ -41,16 +42,30 @@ $this->title = 'Disbursement Voucher';
                             <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'id'=>'four']) ?>
                         </td>
                         <td><?= $form->field($model, 'responsibility_center')->textInput(['maxlength' => true, 'id'=>'five']) ?></td>
-                        <td><?= $form->field($model, 'ors_no')->textInput(['maxlength' => true, 'id'=>'six']) ?></td>
+                        <td>
+                            <table>
+                                <label>ORS No.</label>
+                                <tr>
+                                    <td><?= $form->field($model, 'ors_class')->textInput(['maxlength' => 2, 'style'=>'width:50px'])->label(false) ?></td>
+                                    <td>-</td>
+                                    <td><?= $form->field($model, 'ors_year')->textInput(['maxlength' => 4, 'style'=>'width:60px'])->label(false) ?></td>
+                                    <td>-</td>
+                                    <td><?= $form->field($model, 'ors_month')->textInput(['maxlength' => 2, 'style'=>'width:50px'])->label(false) ?></td>
+                                    <td>-</td>
+                                    <td><?= $form->field($model, 'ors_serial')->textInput(['maxlength' => 4, 'style'=>'width:60px'])->label(false) ?></td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="3"><?= $form->field($model, 'particulars')->textarea(['rows' => 5, 'id'=>'seven']) ?>
                         </td>
                         <td width="120"><?= $form->field($model, 'mfo_pap')->textInput(['maxlength' => true, 'id'=>'eight']) ?>
-                            <?= $form->field($model, 'less_amount')->textInput(['maxlength' => true, 'readonly'=>true, 'value'=> array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->all(), 'credit_amount'))]) ?>
+                            <?= $form->field($model, 'less_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value'=> array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount'))]) ?>
                         </td>
                         <td><?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id'=>'nine']) ?>
-                            <?= $form->field($model, 'net_amount')->textInput(['maxlength' => true, 'readonly'=>true, 'value' => ($net_amount = $model->gross_amount - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->all(), 'credit_amount')))]) ?>
+                            <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
+                            <?= $form->field($model, 'net_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value' => ($net_amount = AccountingEntry::find()->where(['vat' => 1])->andWhere(['dv_no' => $model->dv_no])->one() === null ? $model->gross_amount - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')) : ($model->gross_amount/1.12) - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')))]) ?>
                         </td>
                     </tr>
                     <tr>
@@ -79,7 +94,11 @@ $this->title = 'Disbursement Voucher';
                                 </tr>
                             <?php endforeach ?>
                                 <tr>
-                                    <td colspan="3" style="font-size: 18px;"><strong>TOTAL</strong></td>
+                                    <td colspan="2" style="font-size: 18px;"><strong>TOTAL</strong></td>
+                                    <td>
+                                        <?php $totalDebit = AccountingEntry::find(['debit'])->where(['dv_no'=>$model->dv_no])->all();
+                                               echo number_format(array_sum(ArrayHelper::getColumn($totalDebit, 'debit')), 2); ?>
+                                    </td>
                                     <td>
                                         <strong>
                                             <?php $total = AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->all();
@@ -115,13 +134,15 @@ $this->title = 'Disbursement Voucher';
                             ?>
 
                             <?php foreach ($attachments as $attached) : ?>
-                                <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
-                                <label><?= $attached ?></label></br>
+                                <?php if($attached !== '') : ?>
+                                    <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
+                                    <label><?= $attached ?></label><br>
+                                <?php endif ?>
                             <?php endforeach ?>
 
                             <?php foreach ($lacking as $lack) : ?>
                                 <input type="checkbox" class="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
-                                <label><?= $lack ?></label></br>
+                                <label><?= $lack ?></label><br>
                             <?php endforeach ?>
                         </td>
                     </tr>
@@ -130,7 +151,7 @@ $this->title = 'Disbursement Voucher';
         </div>
         <div class="form-group">
             <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Accountig Entry', ['/accounting-entry/create', 'id'=>$model->id, 'net' => $net_amount], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Accountig Entry', ['/accounting-entry/create', 'id'=>$model->id, 'net' => $model->net_amount, 'gross' => $model->gross_amount], ['class' => 'btn btn-primary']) ?>
         </div>
     <?php ActiveForm::end(); ?>
     </div>
@@ -138,21 +159,21 @@ $this->title = 'Disbursement Voucher';
 
 <script>
 
-var seven = document.getElementById("seven"),
-    nine = document.getElementById("nine");
+// var seven = document.getElementById("seven"),
+//     nine = document.getElementById("nine");
 
-if (sessionStorage.getItem("seven") || sessionStorage.getItem("nine"))
-{
-    seven.value = sessionStorage.getItem("seven");
-    nine.value = sessionStorage.getItem("nine");
-}
+// if (sessionStorage.getItem("seven") || sessionStorage.getItem("nine"))
+// {
+//     seven.value = sessionStorage.getItem("seven");
+//     nine.value = sessionStorage.getItem("nine");
+// }
 
-seven.addEventListener("change", function() {
-    sessionStorage.setItem("seven", seven.value);
-});
+// seven.addEventListener("change", function() {
+//     sessionStorage.setItem("seven", seven.value);
+// });
 
-nine.addEventListener("change", function() {
-    sessionStorage.setItem("nine", nine.value);
-});
+// nine.addEventListener("change", function() {
+//     sessionStorage.setItem("nine", nine.value);
+// });
 
 </script>

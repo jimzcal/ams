@@ -11,13 +11,13 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="nca-index">
-    <?= Yii::$app->session->getFlash('error'); ?>
+
     <div class="title">
         <?= Html::encode($this->title) ?>
-        <?= Html::a('New', ['create'], ['class' => 'btn btn-success btn-right']) ?>
+        <?= Html::a('New NCA', ['create'], ['class' => 'btn btn-success btn-right']) ?>
     </div>
-
     <?php Pjax::begin(); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -26,14 +26,27 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
+            //'date_received',
+            'fund_cluster',
+            'fundCluster.description',
             'nca_no',
-            'date',
-            //'fund_cluster',
             //'mds_sub_acc_no',
             //'gsb_branch',
-            'purpose',
-            'period',
-            'amount',
+            //'purpose',
+            'fiscal_year',
+            //'january',
+            //'february',
+            //'march',
+            //'april',
+            //'may',
+            //'june',
+            //'july',
+            //'august',
+            //'september',
+            //'october',
+            //'november',
+            //'december',
+            'total_amount',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

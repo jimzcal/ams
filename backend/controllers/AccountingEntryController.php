@@ -63,14 +63,52 @@ class AccountingEntryController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id, $net)
+    public function actionCreate($id, $net, $gross)
     {
         $model = new AccountingEntry();
         $dv_no = $dv_id = Disbursement::find(['id'])->where(['id'=>$id])->one();
 
         if ($model->load(Yii::$app->request->post()))
         {
-            $model->credit_amount = (($model->credit_amount/100) * ($model->debit));
+            if($model->vat === '0')
+            {
+                if($model->credit_amount === $net)
+                {
+                    $model->credit_amount = $net;
+                }
+
+                if($model->credit_amount !== $net)
+                {
+                    $model->credit_amount = (($model->credit_amount/100) * ($model->debit));
+                }
+
+                if(AccountingEntry::find(['debit'])->where(['dv_no' => $model->dv_no])->andWhere(['debit' => $model->debit])->one() !== null)
+                {
+                     $model->debit = 0;
+                }
+            }
+            if($model->vat === '1')
+            {
+                if($model->credit_amount === $net)
+                {
+                    $model->credit_amount = $net;
+                }
+
+                if($model->credit_amount !== $net)
+                {
+                    $model->credit_amount = (($model->debit/1.12) * ($model->credit_amount/100));
+                }
+
+                if(AccountingEntry::find(['debit'])->where(['dv_no' => $model->dv_no])->andWhere(['debit' => $model->debit])->one() !== null)
+                {
+                    $model->debit = 0;
+                }
+            }
+            if($model->credit_to === null)
+            {
+                $model->credit_to = '';
+            }
+            
             $model->save();
             return $this->redirect(['/disbursement/processor', 'id' => $id]);
         }
@@ -80,6 +118,7 @@ class AccountingEntryController extends Controller
             'id' => $id,
             'dv_no' => $dv_no->dv_no,
             'net' => $net,
+            'gross' => $gross,
         ]);
     }
 

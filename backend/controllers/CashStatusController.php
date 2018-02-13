@@ -42,11 +42,13 @@ class CashStatusController extends Controller
         $dataProvider = $searchModel->search(empty(Yii::$app->request->queryParams) ? $nca_no : Yii::$app->request->queryParams);
 
         $nca = Nca::find()->where(['nca_no' => $nca_no])->one();
+        $disbursements = CashStatus::find()->where(['nca_no' => $nca_no])->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'nca' => $nca,
+            'disbursements' => $disbursements,
         ]);
     }
 
@@ -88,10 +90,21 @@ class CashStatusController extends Controller
             $model = new CashStatus();
             if ($model->load(Yii::$app->request->post()))
             {
-                $model->current_balance = $model->balance;
-                $model->save();
-                Yii::$app->db->createCommand()->update('disbursement', ['remarks' => $model->remarks], ['dv_no' => $model->dv_no])->execute();
-                return $this->redirect(['index', 'nca_no' => $model->nca_no]);
+               if($model->status === 'Cancelled')
+               {
+                    Yii::$app->getSession()->setFlash('warning', 'Oops!, This DV No. '.$model2->dv_no.' has been cancelled. Therefore, it cannot be saved.');
+                    return $this->render('create', [
+                        'model' => $model,
+                        'model2' => $model2,
+                        'model3' => $model3,
+                        ]);
+               }
+               else
+               {
+                    $model->save();
+                    Yii::$app->db->createCommand()->update('disbursement', ['remarks' => $model->remarks, 'status' => $model->status], ['dv_no' => $model->dv_no])->execute();
+                    return $this->redirect(['index', 'nca_no' => $model->nca_no]);
+               }
             }
 
             return $this->render('create', [
@@ -106,14 +119,23 @@ class CashStatusController extends Controller
             $model = $this->findModel($check_record->id);
             if ($model->load(Yii::$app->request->post()))
             {
-                $model->current_balance = $model->balance;
-                $model->save();
-                Yii::$app->db->createCommand()->update('disbursement', ['remarks' => $model->remarks], ['dv_no' => $model->dv_no])->execute();
-                return $this->redirect(['index' , 'nca_no' => $model->nca_no]);
+                if($model->status === 'Cancelled')
+                {
+                    $this->findModel($model->id)->delete();
+                    Yii::$app->getSession()->setFlash('success', 'Reminder, This DV No. '.$model2->dv_no.' has already been cancelled and thus omitted from this record');
+                    return $this->redirect(['index' , 'nca_no' => $model->nca_no]);
+                }
+                // else
+                {
+                    $model->save();
+                    Yii::$app->db->createCommand()->update('disbursement', ['remarks' => $model->remarks, 'status' => $model->status], ['dv_no' => $model->dv_no])->execute();
+                    return $this->redirect(['index' , 'nca_no' => $model->nca_no]);
+                }
             }
 
-             Yii::$app->getSession()->setFlash('success', 'Reminder, this record has already been saved.');
-            return $this->render('create', [
+             Yii::$app->getSession()->setFlash('success', 'Reminder, This DV No. '.$model2->dv_no.' has already been saved');
+             //return $this->redirect(['index' , 'nca_no' => $model->nca_no]);
+             return $this->render('update', [
             'model' => $model,
             'model2' => $model2,
             'model3' => $model3,

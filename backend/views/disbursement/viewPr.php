@@ -14,6 +14,7 @@ $this->title = 'Disbursement Voucher';
 ?>
 
 <div class="disbursement-form">
+    <?= Html::a('&times;', ['/site/index'], ['class' => 'close']) ?>
     <?= Yii::$app->session->getFlash('error'); ?>
     <div class="form-wrapper">
         <?php $form = ActiveForm::begin(); ?>
@@ -42,7 +43,7 @@ $this->title = 'Disbursement Voucher';
                             <?= $model->payee ?>
                         </td>
                         <td><label>Responsibility Center:</label></br><?= $model->responsibility_center ?></td>
-                        <td><label>ORS No.</label></br><?= $model->ors_no ?></td>
+                        <td><label>ORS No.</label></br><?= $model->ors_class.'-'.$model->ors_year.'-'.$model->ors_month.'-'.$model->ors_serial; ?></td>
                     </tr>
                     <tr>
                         <td colspan="3"><label>Particulars</label></br><?= $model->particulars ?>
@@ -72,7 +73,14 @@ $this->title = 'Disbursement Voucher';
                                 </tr>
                             <?php endforeach ?>
                                 <tr>
-                                    <td colspan="3" style="font-size: 18px;"><strong>TOTAL</strong></td>
+                                    <td colspan="2" style="font-size: 18px;"><strong>TOTAL</strong></td>
+                                    <td>
+                                        <strong>
+                                            <?php $totalDebit = AccountingEntry::find(['debit'])->where(['dv_no'=>$model->dv_no])->all();
+                                               echo number_format(array_sum(ArrayHelper::getColumn($totalDebit, 'debit')), 2);
+                                            ?>
+                                        </strong>
+                                    </td>
                                     <td>
                                         <strong>
                                             <?php $total = AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->all();
@@ -107,13 +115,15 @@ $this->title = 'Disbursement Voucher';
                             ?>
 
                             <?php foreach ($attachments as $attached) : ?>
-                                <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
-                                <label><?= $attached ?></label></br>
+                                <?php if($attached !== '') : ?>
+                                    <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
+                                    <label><?= $attached ?></label><br>
+                                <?php endif ?>
                             <?php endforeach ?>
 
                             <?php foreach ($lacking as $lack) : ?>
                                 <input type="checkbox" class="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
-                                <label><?= $lack ?></label></br>
+                                <label><?= $lack ?></label><br>
                             <?php endforeach ?>
                         </td>
                     </tr>

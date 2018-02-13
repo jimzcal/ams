@@ -163,7 +163,7 @@ body {
 .cash-status{
   padding-top: 20px;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   width: 350px;
 }
 
@@ -297,6 +297,13 @@ body {
   float: right;
   margin-left: 5px;
   margin-left: 5px;
+ }
+
+ .modal-contents{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
  }
 
 

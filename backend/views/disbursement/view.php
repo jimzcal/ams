@@ -57,7 +57,7 @@ $this->title = $model->dv_no;
                 <td align="right">Gross Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->gross_amount, 2); ?></strong></td><td colspan="4" width="200">This transaction should have the following documentary requirements:</td>
             </tr>
             <tr>
-                <td align="right">Fund Source:</td><td colspan="2" width="35"><strong><?= $model->fund_source; ?></strong></td><td colspan="4" width="200" rowspan="6">
+                <td align="right">TIN:</td><td colspan="2" width="35"><strong><?= $model->tin; ?></strong></td><td colspan="4" width="200" rowspan="6">
                     <?php
                         $attachments = Disbursement::find(['attachments'])->where(['id'=>$model->id])->one();
                         $attachments = explode(',', $attachments->attachments);
@@ -67,8 +67,10 @@ $this->title = $model->dv_no;
                         $lacking = array_diff($req, $attachments);
                     ?>
                     <?php foreach ($attachments as $attached) : ?>
-                        <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
-                        <label><?= $attached ?></label>
+                        <?php if($attached !== '') : ?>
+                            <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
+                            <label><?= $attached ?></label></br>
+                        <?php endif ?>
                     <?php endforeach ?>
 
                     <?php foreach ($lacking as $lack) : ?>
@@ -78,7 +80,7 @@ $this->title = $model->dv_no;
                 </td>
             </tr>
             <tr>
-                <td align="right">ORS No.:</td><td colspan="2" width="35"><strong><?= $model->ors_no; ?></strong></td>
+                <td align="right">ORS No.:</td><td colspan="2" width="35"><strong><?= $model->ors_class.'-'.$model->ors_year.'-'.$model->ors_month.'-'.$model->ors_serial; ?></strong></td>
             </tr>
             <tr>
                 <td align="right">Less Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->less_amount, 2); ?></strong></td>

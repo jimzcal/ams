@@ -19,8 +19,8 @@ class NcaSearch extends Nca
     {
         return [
             [['id'], 'integer'],
-            [['date', 'nca_no', 'fund_cluster', 'mds_sub_acc_no', 'gsb_branch', 'purpose', 'period'], 'safe'],
-            [['amount'], 'number'],
+            [['date_received', 'nca_no', 'fund_cluster', 'mds_sub_acc_no', 'gsb_branch', 'purpose', 'fiscal_year'], 'safe'],
+            [['total_amount'], 'number'],
         ];
     }
 
@@ -61,16 +61,15 @@ class NcaSearch extends Nca
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'amount' => $this->amount,
         ]);
 
-        $query->andFilterWhere(['like', 'date', $this->date])
+        $query->andFilterWhere(['like', 'date_received', $this->date_received])
             ->andFilterWhere(['like', 'nca_no', $this->nca_no])
             ->andFilterWhere(['like', 'fund_cluster', $this->fund_cluster])
             ->andFilterWhere(['like', 'mds_sub_acc_no', $this->mds_sub_acc_no])
             ->andFilterWhere(['like', 'gsb_branch', $this->gsb_branch])
             ->andFilterWhere(['like', 'purpose', $this->purpose])
-            ->andFilterWhere(['like', 'period', $this->period]);
+            ->andFilterWhere(['like', 'fiscal_year', $this->fiscal_year]);
 
         return $dataProvider;
     }

@@ -115,11 +115,11 @@ class SiteController extends Controller
                         $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                         Yii::$app->db->createCommand()->update('transaction_status', ['nca_control' => $detail], ['dv_no' => $dv_no])->execute();
 
-                        return $this->redirect(['/cash-status/create', 'id' => $disbursement->id]);
+                        return $this->redirect(['/disbursement/cashstatus', 'id' => $disbursement->id]);
                     }
                     else
                     {
-                         return $this->redirect(['/cash-status/create', 'id' => $id->id]);
+                         return $this->redirect(['/disbursement/cashstatus', 'id' => $id->id]);
                     }   
                 }
 
@@ -149,11 +149,6 @@ class SiteController extends Controller
         }
 
         return $this->render('index');
-    }
-
-    public function actionMessages()
-    {
-        return $this->render('messages');
     }
 
     /**

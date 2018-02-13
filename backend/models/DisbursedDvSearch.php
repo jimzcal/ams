@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\CashStatus;
+use backend\models\DisbursedDv;
 
 /**
- * CashStatusSearch represents the model behind the search form of `backend\models\CashStatus`.
+ * DisbursedDvSearch represents the model behind the search form of `backend\models\DisbursedDv`.
  */
-class CashStatusSearch extends CashStatus
+class DisbursedDvSearch extends DisbursedDv
 {
     /**
      * @inheritdoc
@@ -19,8 +19,7 @@ class CashStatusSearch extends CashStatus
     {
         return [
             [['id'], 'integer'],
-            [['nca_no', 'dv_no'], 'safe'],
-            [['disbursement_amount', 'balance'], 'number'],
+            [['dv_no', 'date_paid', 'lddap_check_no'], 'safe'],
         ];
     }
 
@@ -42,7 +41,7 @@ class CashStatusSearch extends CashStatus
      */
     public function search($params)
     {
-        $query = CashStatus::find()->where(['nca_no' => $params]);
+        $query = DisbursedDv::find();
 
         // add conditions that should always apply here
 
@@ -61,12 +60,11 @@ class CashStatusSearch extends CashStatus
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            //'current_balance' => $this->current_balance,
-            'dv_no' => $this->dv_no,
-            'disbursement_amount' => $this->disbursement_amount,
         ]);
 
-        $query->andFilterWhere(['like', 'nca_no', $this->nca_no]);
+        $query->andFilterWhere(['like', 'dv_no', $this->dv_no])
+            ->andFilterWhere(['like', 'date_paid', $this->date_paid])
+            ->andFilterWhere(['like', 'lddap_check_no', $this->lddap_check_no]);
 
         return $dataProvider;
     }

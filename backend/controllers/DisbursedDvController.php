@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Nca;
-use backend\models\NcaSearch;
+use backend\models\DisbursedDv;
+use backend\models\DisbursedDvSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * NcaController implements the CRUD actions for Nca model.
+ * DisbursedDvController implements the CRUD actions for DisbursedDv model.
  */
-class NcaController extends Controller
+class DisbursedDvController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class NcaController extends Controller
     }
 
     /**
-     * Lists all Nca models.
+     * Lists all DisbursedDv models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new NcaSearch();
+        $searchModel = new DisbursedDvSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class NcaController extends Controller
     }
 
     /**
-     * Displays a single Nca model.
+     * Displays a single DisbursedDv model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,17 +58,15 @@ class NcaController extends Controller
     }
 
     /**
-     * Creates a new Nca model.
+     * Creates a new DisbursedDv model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Nca();
+        $model = new DisbursedDv();
 
-        if ($model->load(Yii::$app->request->post()))
-        {
-            $model->save(false);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -78,7 +76,7 @@ class NcaController extends Controller
     }
 
     /**
-     * Updates an existing Nca model.
+     * Updates an existing DisbursedDv model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -98,7 +96,7 @@ class NcaController extends Controller
     }
 
     /**
-     * Deletes an existing Nca model.
+     * Deletes an existing DisbursedDv model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -112,41 +110,18 @@ class NcaController extends Controller
     }
 
     /**
-     * Finds the Nca model based on its primary key value.
+     * Finds the DisbursedDv model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Nca the loaded model
+     * @return DisbursedDv the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Nca::findOne($id)) !== null) {
+        if (($model = DisbursedDv::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function actionClusters($fund_cluster)
-    {
-        $countClusters = Nca::find()
-            ->where(['fund_cluster'=>$fund_cluster])
-            ->count();
-
-        $clusters = Nca::find()
-            ->where(['fund_cluster'=>$fund_cluster])
-            ->all();
-
-        if($countClusters>0)
-        {
-            foreach($clusters as $cluster)
-            {
-                 echo "<option value='".$cluster->nca_no."'>".$cluster->nca_no."</option>";
-            }
-        }
-        else
-            {
-                echo "<option> - </option>";
-            }
     }
 }

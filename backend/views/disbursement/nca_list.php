@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\CashStatusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'NOTICE OF CASH ALLOCATIONS';
+$this->title = 'SELECT NCA';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cash-status-index">
@@ -33,7 +33,7 @@ $this->registerJs("
     $('tbody td').click(function (e) {
         var nca_no = $(this).closest('tr').data('nca_no');
         if (e.target == this)
-            location.href = '" . Url::to(['cash-status/index']) . "&nca_no=' + nca_no;
+            location.href = '" . Url::to(['disbursement/index']) . "&nca_no=' + nca_no;
     });
 ");
 ?>

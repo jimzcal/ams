@@ -22,7 +22,7 @@ $this->title = 'CASH STATUS';
                 <td width="50" style="font-weight: bold">NCA No.</td><td><?= ': '.$model3->nca_no ?></td>
             </tr>
             <tr>
-                <td style="font-weight: bold">Amount</td><td><?= ': '.number_format($model3->amount, 2) ?></td>
+                <td style="font-weight: bold">Amount</td><td><?= ': '.number_format($model3->total_amount, 2) ?></td>
             </tr>
             <tr>
                 <td style="font-weight: bold">Total Amount Obligated</td>
@@ -30,7 +30,7 @@ $this->title = 'CASH STATUS';
             </tr>
             <tr>
                 <td style="font-weight: bold">Current Balance</td>
-                <td><?= ': '. number_format($model3->amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])->where(['nca'=>$model->nca])->andWhere(['obligated'=>'yes'])->all(), 'net_amount')), 2) ?></td>
+                <td><?= ': '. number_format($model3->total_amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])->where(['nca'=>$model->nca])->andWhere(['obligated'=>'yes'])->all(), 'net_amount')), 2) ?></td>
             </tr>
              <tr>
                 <td style="font-weight: bold">Fund</td><td><?= ': '.$model3->fund_cluster ?></td>
@@ -53,50 +53,50 @@ $this->title = 'CASH STATUS';
                 <td><?= $value->dv_no ?></td>
                 <td><?= number_format($value->gross_amount, 2) ?></td>
                 <td><?php
-                    if(($value->ors_class === '01') && ($value->ors_year === $model3->year))
+                    if(($value->ors_class === '01') && ($value->ors_year === $model3->fiscal_year))
                     {
                         echo number_format($value->net_amount, 2);
                     }
                  ?></td>
                 <td><?php
-                    if(($value->ors_class === '02') && ($value->ors_year === $model3->year))
+                    if(($value->ors_class === '02') && ($value->ors_year === $model3->fiscal_year))
                     {
                         echo number_format($value->net_amount, 2);
                     }
                  ?></td>
                 <td><?php
-                    if(($value->ors_class === '03') && ($value->ors_year === $model3->year))
+                    if(($value->ors_class === '03') && ($value->ors_year === $model3->fiscal_year))
                     {
                         echo number_format($value->net_amount, 2);
                     }
                  ?></td>
                 <td><?php
-                    if(($value->ors_class === '06') && ($value->ors_year === $model3->year))
+                    if(($value->ors_class === '06') && ($value->ors_year === $model3->fiscal_year))
                     {
                         echo number_format($value->net_amount, 2);
                     }
                  ?></td>
 
                 <td><?php
-                    if(($value->ors_class === '01') && ($value->ors_year === strval($model3->year-1)))
+                    if(($value->ors_class === '01') && ($value->ors_year === strval($model3->fiscal_year-1)))
                     {
                         echo number_format($value->net_amount, 2);
                     }
                  ?></td>
                 <td><?php
-                    if(($value->ors_class === '02') && ($value->ors_year === strval($model3->year-1)))
+                    if(($value->ors_class === '02') && ($value->ors_year === strval($model3->fiscal_year-1)))
                     {
                         echo number_format($value->net_amount, 2);
                     }
                  ?></td>
                 <td><?php
-                    if(($value->ors_class === '03') && ($value->ors_year === strval($model3->year-1)))
+                    if(($value->ors_class === '03') && ($value->ors_year === strval($model3->fiscal_year-1)))
                     {
                         echo number_format($value->net_amount, 2);
                     }
                  ?></td>
                 <td><?php
-                    if(($value->ors_class === '06') && ($value->ors_year === strval($model3->year-1)))
+                    if(($value->ors_class === '06') && ($value->ors_year === strval($model3->fiscal_year-1)))
                     {
                         echo number_format($value->net_amount, 2);
                     }

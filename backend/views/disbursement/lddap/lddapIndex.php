@@ -26,7 +26,7 @@ $this->title = 'LDDAP-ADA';
             </tr>
             <?php foreach ($disbursement as $result) : ?>
                 <tr data-id = <?= $result->id; ?> <?php if($result->dv_no === $dv_no) : ?> style="background-color: #d8ffcc" <?php endif ?> >
-                    <td></td>
+                    <td><input type="checkbox" name="dvs[<?= $result->dv_no ?>]" value = "<?= $result->dv_no ?>"></td>
                     <td><?= $result->dv_no ?></td>
                     <td><?= $result->account_title ?></td>
                     <td><?= $result->uacs_code ?></td>
@@ -45,6 +45,7 @@ $this->title = 'LDDAP-ADA';
                     </td>
                 </tr>
             <?php endforeach ?>
+            <?= $form->field($model, 'dvs')->hiddenInput()->label(false) ?>
         </table>
     <?php ActiveForm::end(); ?>
 </div>

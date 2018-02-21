@@ -17,50 +17,236 @@ $this->title = 'CASH STATUS';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<script>
-    // if (document.readyState === 'complete') {
-    //     alert('ccc')
-    //     $(document).on("change", "select[id='type']", function () {     
-    //         alert('xxx');   
-    //         // $modal = $('#myModal');
-    //         // if($(this).val() == 'Paid'){
-    //         //     $modal.modal('show');
-    //         // }
-    //     });
-    // }
-</script>
-
 <div class="cash-status-create">
     <?= Yii::$app->session->getFlash('error'); ?>
     <div class="row">
-        <div class="title" style="margin-left: 10px;">
-            <?= Html::encode($this->title) ?>
-        </div>
     	<div class="col-lg-3">
+            <div class="title" style="margin-left: 10px;">
+                <?= Html::encode($this->title) ?>
+            </div>
     		<div class="form-wrapper">
     		    <?php $form = ActiveForm::begin(); ?>
 
                 <label>NCA No.</label></br>
                 <p><?= $model->nca ?></p>
 
-                <label>Beginning Balance:</label></br>
-                <p><?= number_format($model3->amount,2) ?></p>
+                <label>Allotment:</label></br>
+                <p><?= number_format($model3->total_amount,2) ?></p>
 
-                <label>Current Balance</label></br>
-                <p><?= number_format($model3->amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])->where(['nca'=>$model->nca])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?></p>
+                <label>Monthly Allotment for <?php $val = explode(' ', $model->date); echo $val[0]; ?></label></br>
+                    <p>
+                        <?php 
+                            switch(strtolower($val[0]))
+                            {
+                                case 'january':
+                                echo number_format($model3->january, 2);
+                                break;
+                            
+                                case 'february':
+                                echo number_format($model3->february, 2);
+                                break;
+                           
+                                case 'march':
+                                echo number_format($model3->march, 2);
+                                break;
+                           
+                                case 'april':
+                                echo number_format($model3->april, 2);
+                                break;
+                           
+                                case 'may':
+                                echo number_format($model3->may, 2);
+                                break;
+                           
+                                case 'june':
+                                echo number_format($model3->june, 2);
+                                break;
+                            
+                                case 'july':
+                                echo number_format($model3->july, 2);
+                                break;
+                            
+                                case 'august':
+                                echo number_format($model3->august, 2);
+                                break;
+                            
+                                case 'september':
+                                echo number_format($model3->september, 2);
+                                break;
+                            
+                                case 'october':
+                                echo number_format($model3->october, 2);
+                                break;
+                            
+                                case 'november':
+                                echo number_format($model3->november, 2);
+                                break;
+                            
+                                case 'december':
+                                echo number_format($model3->december, 2);
+                                break;
+                            
+                                default:
+                                echo 0.00;
+                            }
+                        ?>
+                    </p>
+
+                <label>Current Balance for <?= $val[0] ?></label><br>
+                    <p>
+                        <?php 
+                            switch(strtolower($val[0]))
+                            {
+                                case 'january':
+                                $bal = $model3->january - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'January'])
+                                    ->all(), 'net_amount')); 
+
+                                echo number_format($bal, 2);
+                                break;
+                            
+                                case 'february':
+                                $bal = $model3->february - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'February'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                           
+                                case 'march':
+                                $bal = $model3->march - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'March'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                           
+                                case 'april':
+                                $bal = $model3->april - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'April'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                           
+                                case 'may':
+                                $bal = $model3->may - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'May'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                           
+                                case 'june':
+                                $bal = $model3->june - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'June'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                            
+                                case 'july':
+                                $bal = $model3->july - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'July'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                            
+                                case 'august':
+                                $bal = $model3->august - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'August'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                            
+                                case 'september':
+                                $bal = $model3->september - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'September'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                            
+                                case 'october':
+                                $bal = $model3->october - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'October'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                            
+                                case 'november':
+                                $bal = $model3->november - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'November'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                            
+                                case 'december':
+                                $bal = $model3->december - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                    ->where(['nca'=>$model->nca])
+                                    ->andWhere(['obligated' => 'yes'])
+                                    ->andWhere(['like', 'date', 'December'])
+                                    ->all(), 'net_amount'));
+
+                                echo number_format($bal, 2);
+                                break;
+                            
+                                default:
+                                echo "Something's wrong!";
+                            }
+                        ?>
+                    </p>
 
                 <label>Disbursement Amount:</label></br>
-                <p><?= number_format($model->net_amount, 2) ?></p>
+                <p><?= number_format($model->net_amount, 2) ?> <?= $model->obligated === 'yes' ? '(obligated)' : '' ?></p>
 
                 <label>System Finding:</label></br>
-                <p style="font-size: 14px"><?= ( ($model3->amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])->where(['id'=>$model->id])->andWhere(['obligated' => 'yes'])->all(), 'net_amount'))) >= $model->net_amount) ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>' ?></p>
+                <p style="font-size: 14px">
+                    <?php if($model->obligated === 'yes') 
+                    {
+                        echo ($bal + $model->net_amount) >= $model->net_amount ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>';
+                        $x = ($bal + $model->net_amount) >= $model->net_amount ? 'false': 'true';
+                    }
+                    else {
+                       echo $bal >= $model->net_amount ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>';
+                       $x = ($bal + $model->net_amount) >= $model->net_amount ? 'false': 'true';
+                    }
+                    ?></p>
 
     		    <div class="form-group">
-    		        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    		        <?= Html::submitButton('Save', ['class' => 'btn btn-success', 'disabled' => $x === 'false' ? false : true ]) ?>
+                    <?= Html::a('Close', ['/disbursement/disbursements', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     		    </div>
     		</div>
     	</div>
     	<div class="col-lg-9">
+            <!-- <?= $this->render('/transaction-status/transaction_status') ?> -->
     		<table class="table table-bordered">
                 <tr>
                     <td><labe>DV NO.</labe></br><strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong></td>
@@ -133,7 +319,7 @@ $this->title = 'CASH STATUS';
             </table>
           </div>
           <div class="modal-footer">
-            <?= Html::submitButton('Ok', ['class' => 'btn btn-success btn-right']) ?>
+            <?= Html::submitButton('Ok', ['class' => 'btn btn-success']) ?>
           </div>
         </div>
       </div>

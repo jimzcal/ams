@@ -15,6 +15,7 @@ use backend\models\AccountingEntry;
 use yii\filters\AccessControl;
 use backend\models\DisbursedDv;
 use backend\models\Nca;
+use backend\models\LddapAda;
 
 /**
  * DisbursementController implements the CRUD actions for Disbursement model.
@@ -284,9 +285,10 @@ class DisbursementController extends Controller
                     $model2->save(false);
                 }
 
+
                 Yii::$app->getSession()->setFlash('success', 'Successfully Saved');
-                // Yii::$app->db->createCommand()->update('disbursement', ['remarks' => $model->remarks, 'status' => $model->status, 'liquidated' => 'yes'], ['dv_no' => $model->dv_no])->execute();
-                return $this->render('cash-status/obligated', [
+                // Yii::$app->db->createCommand()->update('disbursement', ['remarks' => $model->remarks, 'status' => $model->status, 'obligated' => 'yes'], ['dv_no' => $model->dv_no])->execute();
+                return $this->render('cash-status/_form', [
                 'model' => $model,
                 'model3' => $model3,
                 'disbursements' => $disbursements,
@@ -305,9 +307,64 @@ class DisbursementController extends Controller
 
     }
 
+    public function actionDisbursements($id)
+    {
+        $model = $this->findModel($id);
+        $disbursements = Disbursement::find()->where(['nca'=>$model->nca])->andWhere(['obligated' => 'yes'])->all();
+        $model3 = Nca::find()->where(['nca_no'=>$model->nca])->one();
+
+        return $this->render('cash-status/obligated', [
+                'model' => $model,
+                'model3' => $model3,
+                'disbursements' => $disbursements,
+                ]);
+    }
+
     public function actionMdisbursement()
     {
         $disbursements = Disbursement::find()->all();
+    }
+
+    public function actionAda($dv_no)
+    {
+        $model = new Disbursement();
+        $model2 = new LddapAda();
+        $disbursement = AccountingEntry::find()->where(['credit_to' => 'payee'])
+                        ->joinWith('disbursement')
+                        ->all();
+        if ($model->load(Yii::$app->request->post()))
+        {
+            $dvs = $_POST['dvs'];
+            $num_recs = LddapAda::find()->groupBy(['lddap_no'])->all();
+            $lddap_no = '101'.'-'.date('m').'-0'.(sizeof($num_recs)+1).'-'.date('Y');
+            return $this->render('/disbursement/lddap/lddap_form', ['dvs' => $dvs, 'lddap_no' => $lddap_no,'model2' => $model2]);
+        }
+
+        if ($model2->load(Yii::$app->request->post()))
+        {
+            for($i=0; $i<sizeof($model2->dv_no); $i++)
+            {
+                $model3 = new LddapAda();
+
+                $model3->date = $model2->date;
+                $model3->dv_no = $model2->dv_no[$i];
+                $model3->current_account = $model2->current_account[$i];
+                $model3->uacs_code = $model2->uacs_code[$i];
+                $model3->net_amount = $model2->net_amount[$i];
+                $model3->lddap_no = $model2->lddap_no;
+
+                $model3->save(false);
+            }
+
+            Yii::$app->getSession()->setFlash('success', 'Successfully Saved!');
+            $dvs = LddapAda::find()
+                    ->where(['lddap_no' => $model2->lddap_no])
+                    ->joinWith('dv')
+                    ->all();
+            return $this->render('/disbursement/lddap/lddap_view', ['dvs' => $dvs]);
+        }
+
+        return $this->render('/disbursement/lddap/lddapIndex', ['disbursement' => $disbursement, 'dv_no' => $dv_no, 'model' => $model]);
     }
 
     protected function findModel($id)

@@ -40,10 +40,13 @@ class Disbursement extends \yii\db\ActiveRecord
         return 'disbursement';
     }
 
+
+
     /**
      * @inheritdoc
      */
-    public $date_paid, $check_no, $lddap_check_no;
+    public $date_paid, $check_no, $lddap_check_no, $page_checker;
+    public $dvs;
     public function rules()
     {
         return [
@@ -105,6 +108,11 @@ class Disbursement extends \yii\db\ActiveRecord
     public function getCashAdvances()
     {
         return $this->hasMany(CashAdvance::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getAccountingEntry()
+    {
+        return $this->hasOne(AccountingEntry::className(), ['dv_no' => 'dv_no']);
     }
 
     /**

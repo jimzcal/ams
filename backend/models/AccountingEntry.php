@@ -67,6 +67,11 @@ class AccountingEntry extends \yii\db\ActiveRecord
         return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
     }
 
+    public function getDisbursement()
+    {
+        return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
+    }
+
     /**
      * @inheritdoc
      * @return AccountingEntryQuery the active query used by this AR class.

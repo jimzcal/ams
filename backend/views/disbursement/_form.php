@@ -28,7 +28,7 @@ use backend\models\FundCluster;
 
             </td>
             <td width="200"><?= $form->field($model, 'status')->dropDownList(['Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?></td>
-            <td width="100"><?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('M. d, Y') : $model->date]) ?></td>
+            <td width="100"><?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('F d, Y') : $model->date]) ?></td>
         </tr>
         <tr>
             <td width="150"></td>

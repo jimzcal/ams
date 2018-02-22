@@ -11,21 +11,17 @@ $this->title = $name;
 ?>
 <div class="site-error">
 
-  <div class="card">
-    <div class="card-body">
-      <?= Html::img('@web/images/logo/ppei-logo.png', [
-          'height' => '70',
-          'width' => '110',
-          'alt' => 'PPEI Logo'
-        ]); ?>
-      <h4>Philippine Poverty-Environment Initiative</h4>
-      <p class="card-text lead text-danger"><?= nl2br(Html::encode($message)) ?></p>
-      <a href="/" class="mHover hvr-icon-back">Go back</a>
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <div class="alert alert-danger">
+        <?= nl2br(Html::encode($message)) ?>
     </div>
-    <div class="card-footer text-muted">
-      <h6>The above error occurred while the Web server was processing your request.</h6>
-      <h6>Please contact us if you think this is a server error. Thank you.</h6>
-    </div>
-  </div>
+
+    <p>
+        The above error occurred while the Web server was processing your request.
+    </p>
+    <p>
+        Please contact us if you think this is a server error. Thank you.
+    </p>
 
 </div>

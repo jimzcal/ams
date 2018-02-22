@@ -19,7 +19,7 @@ $this->title = 'LDDAP-ADA FORM';
         <div class="title">
             <!-- <?= Html::encode($this->title) ?> -->
             <?= Yii::$app->session->getFlash('error'); ?>
-            <?= Html::submitButton('Save', ['class' => 'btn btn-primary btn-right']) ?>
+            <?= Html::submitButton('Save', ['class' => 'btn btn-primary btn-right', 'target'=>'_blank']) ?>
         </div>
         <div class="ada_form">
             <table style="border: 0;  margin-right: auto; margin-left: auto; width: 100%;">

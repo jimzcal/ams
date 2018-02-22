@@ -19,24 +19,27 @@ $this->title = 'LDDAP-ADA FORM';
         <div class="title">
             <!-- <?= Html::encode($this->title) ?> -->
             <?= Yii::$app->session->getFlash('error'); ?>
-            <?= Html::submitButton('Print', ['class' => 'btn btn-primary btn-right']) ?>
+            <!-- <?= Html::submitButton('Print', ['class' => 'btn btn-primary btn-right']) ?> -->
         </div>
         <div class="ada_form">
             <table style="border: 0;  margin-right: auto; margin-left: auto; width: 100%;">
                 <tr>
                     <td colspan="2" style="text-align: center; font-weight: bold; padding: 10px;">LIST OF DUE AND DEMANDABLE ACCOUNTS PAYABLE - ADVICE TO DEBIT ACCOUNT</td>
                 </tr>
-                <tr style="font-size: 10px;">
-                    <td width="150" style="padding-left: 5px; padding-right: 5px;">Department</td><td>: DEPARTMENT OF AGRICULTURE</td>
+                <tr>
+                    <td width="150" style="padding-left: 5px; padding-right: 5px; font-size: 11px;">Department</td>
+                    <td style="font-size: 11px;">: DEPARTMENT OF AGRICULTURE</td>
                 </tr>
                 <tr style="font-size: 10px;">
-                    <td style="padding-left: 5px; padding-right: 5px;">Agency</td><td>: OFFICE OF THE SECRETARY</td>
+                    <td style="padding-left: 5px; padding-right: 5px; font-size: 11px;">Agency</td>
+                    <td style="font-size: 11px;">: OFFICE OF THE SECRETARY</td>
                 </tr>
                 <tr style="font-size: 10px;">
-                    <td style="padding-left: 5px; padding-right: 5px;">Fund Code</td><td>: 101</td>
+                    <td style="padding-left: 5px; padding-right: 5px; font-size: 11px;">Fund Code</td>
+                    <td style="font-size: 11px;">: 101</td>
                 </tr>
-                <tr style="font-size: 9px;">
-                    <td colspan="2" style="padding: 3px;">
+                <tr>
+                    <td colspan="2" style="padding: 3px; font-size: 9px;">
                         LANDBANK OF THE PHILIPPINES (LBP) - ELLIPTICAL ROAD BRANCH - MDS SUB-ACCOUNT NO. 2321-9002-60
                     </td>
                 </tr>
@@ -53,18 +56,19 @@ $this->title = 'LDDAP-ADA FORM';
                     <td colspan="3" style="text-align: center"> IN PESOS</td>
                     <td></td>
                 </tr>
-                <tr align="center" style="font-size: 10px; font-weight: bold">
-                    <td width="180">NAME</td>
-                    <td width="100" style="font-size: 9px">PREFERED SERVICING BANK/ SAVINGS/ CURRENT ACC. NO</td>
-                    <td>OBLIGATION SLIP NO.</td>
-                    <td>ALLOT. CLASS (per UACS)</td>
-                    <td>GROSS AMOUNT</td>
-                    <td>WITH HOLDING TAX</td>
-                    <td>NET AMOUNT</td>
-                    <td width="100">REMARKS (For MDS-GSB use Only)</td>
+                <tr>
+                    <td style="font-size: 9px; text-align: center">NAME</td>
+                    <td style="font-size: 9px; text-align: center">
+                        PREFERED SERVICING BANK/ SAVINGS/ CURRENT ACC. NO</td>
+                    <td style="font-size: 9px; text-align: center">OBLIGATION SLIP NO.</td>
+                    <td style="font-size: 9px; text-align: center; width: 140px">ALLOT. CLASS (per UACS)</td>
+                    <td style="font-size: 9px; text-align: center">GROSS AMOUNT</td>
+                    <td style="font-size: 9px; text-align: center">WITH HOLDING TAX</td>
+                    <td style="font-size: 9px; text-align: center">NET AMOUNT</td>
+                    <td style="font-size: 9px; text-align: center">REMARKS (For MDS-GSB use Only)</td>
                 </tr>
-                <tr style="font-size: 10px;">
-                    <td width="290" style="min-height: 200px; height: auto;">
+                <tr>
+                    <td style="width: 200px; font-size: 10px; height: 270px; vertical-align: top; padding: 5px;">
                         <?php
                             foreach ($dvs as $value)
                             {
@@ -72,7 +76,7 @@ $this->title = 'LDDAP-ADA FORM';
                             }
                         ?>
                     </td>
-                    <td>
+                    <td style="font-size: 10px; vertical-align: top; padding: 5px;">
                         <?php
                             foreach ($dvs as $value)
                             {
@@ -80,7 +84,7 @@ $this->title = 'LDDAP-ADA FORM';
                             }
                         ?>
                     </td>
-                    <td width="240">
+                    <td style="width: 120px; font-size: 10px; vertical-align: top; padding: 5px;">
                         <?php
                             foreach ($dvs as $value)
                             {
@@ -88,7 +92,7 @@ $this->title = 'LDDAP-ADA FORM';
                             }
                         ?>
                     </td>
-                    <td>
+                    <td style="font-size: 10px; vertical-align: top; padding: 5px;">
                        <?php
                             foreach ($dvs as $value)
                             {
@@ -96,23 +100,27 @@ $this->title = 'LDDAP-ADA FORM';
                             }
                         ?>
                     </td>
-                    <td>
+                    <td style="font-size: 10px; vertical-align: top; padding: 5px;">
                         <?php
+                            $gross_amount = 0;
                             foreach ($dvs as $value)
                             {
                               echo number_format($value->dv->gross_amount, 2).'<br>';
+                              $gross_amount = $gross_amount + $value->dv->gross_amount;
                             }
                         ?>
                     </td>
-                    <td>
+                    <td style="font-size: 10px; vertical-align: top; padding: 5px;">
                        <?php
+                            $less_amount = 0;
                             foreach ($dvs as $value)
                             {
                               echo number_format($value->dv->less_amount, 2).'<br>';
+                              $less_amount = $less_amount + $value->dv->less_amount;
                             }
                         ?>
                     </td>
-                    <td>
+                    <td style="font-size: 10px; vertical-align: top; padding: 5px;">
                        <?php
                         $net = 0;
                             foreach ($dvs as $value)
@@ -124,54 +132,65 @@ $this->title = 'LDDAP-ADA FORM';
                     </td>
                     <td></td>
                 </tr>
-                <tr style="font-size: 10px;">
-                    <td style="font-weight: bold;">TOTAL:</td>
+                <tr>
+                    <td style="height: 5px;"></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td style="font-weight: bold;"></td>
-                    <td style="font-weight: bold;"></td>
-                    <td style="font-weight: bold;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; font-size: 10px;">TOTAL:</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="font-weight: bold; font-size: 12px;"><?= number_format($gross_amount, 2); ?></td>
+                    <td style="font-weight: bold; font-size: 12px;"><?= number_format($less_amount, 2); ?></td>
+                    <td style="font-weight: bold; font-size: 12px;"><?= number_format($net, 2); ?></td>
                     <td></td>
                 </tr>
             </table>
             <table style="border: 0;  margin-right: auto; margin-left: auto; width: 100%;">
                 <tr>
-                    <td colspan="3" width="900" style="font-size: 11px">
-                        <p style="text-align: justify;">
-                            I hereby warrant that the above list of Due and Demadable A/Ps was prepared in accordance with existing accounting rules and regulations.
-                        </p>
-                        <p style="font-weight: bold;">
-                            Certified Correct:
-                        </p>
-                        <p style="text-align: center">
-                            __________________________________________<br>
-                            <strong>CHARIE SARAH D. SAQUING</strong><br>
-                            Dept. Chief Accountant
-                        </p>
+                    <td colspan="3" style="font-size: 11px; text-align: left; width: 40%x; vertical-align: top;">
+                        I hereby warranr that the above list of due and demandable
+                        A/Ps was prepared in accordance with existing accounting and 
+                        auditing rules and regulations. <br><br><br>
+                        Certified Correct: <br><br>
                     </td>
-                    <td width="50"></td>
-                    <td colspan="4" style="font-size: 11px">
-                        <p style="text-align: justify;">
-                            I hereby assume full responsibility for the veracity and accuracy of the listed claims, and the authencity of the supporting documents as submitted by the claimants. 
-                        </p>
-                        <p style="font-weight: bold;">
-                            Approved:
-                        </p>
-                        <p style="text-align: center">
-                            __________________________________________<br>
-                            <strong>MIRIAM C. CORNELIO</strong><br>
-                            Director, FMS
-                        </p>
+                    <td colspan="2" style="width: 20%;"></td>
+                    <td colspan="3" style="font-size: 11px; text-align: left; width: 40%; vertical-align: top;">
+                        I hereby assume full responsibility for the veracity and accuracy of the lisetd claims, and the authencity of the supporting documents as submitted mby the claimants.<br><br><br>
+                        Approved:<br><br>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="3" style="text-align: center; font-size: 11px;">
+                        ____________________________________<br>
+                        <strong>CHARIE SARAH D. SAQUING</strong><br>
+                        Dept. Chief Accountant
+                    </td>
+                    <td colspan="2"></td>
+                    <td colspan="3" style="text-align: center; font-size: 11px;">
+                        ____________________________________<br>
+                        <strong>MIRIAM C. CORNELIO</strong><br>
+                        Director, FMS
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8" style="text-align: center; font-weight: bold; background-color: #ebebe0; font-size: 9px;">
+                    <td colspan="8" style="height: 20px;"></td>
+                </tr>
+                <tr>
+                    <td colspan="8" style="text-align: center; font-weight: bold; background-color: #ebebe0; font-size: 12px;">
                         II. ADVICE TO DEBIT ACCOUNT
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8" style="font-size: 10px">
+                    <td colspan="8" style="font-size: 11px">
                         To: Landbank of the Philippines (LBP) - Elliptical Road Branch<br>
                         Please debit MDS Sub-account Number 2321-9002-60 (NCA-BMB-E-0000728 dated January 8, 2018)<br>
                         Please credit the account of the above listed creditors to cover the payment of Accounts Payable (A/Ps). 
@@ -181,52 +200,54 @@ $this->title = 'LDDAP-ADA FORM';
                     <td colspan="8" height="20"></td>
                 </tr>
                 <tr style="font-size: 10px;">
-                    <td style="font-weight: bold;"><p>TOTAL AMOUNT :</p></td>
-                    <td></td>
+                    <td colspan="2" style="font-weight: bold;"><p>TOTAL AMOUNT :</p></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td width="140" style="font-weight: bold;">
-                        <p style="font-style: underline;">P 
+                        <p style="text-decoration: underline;">P 
                             <?= number_format($net, 2) ?>
                         </p>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8">
-                        <p style="text-align: center">
+                    <td colspan="8" style="text-align: center">
+                        <p>
                             Agency Authorized Signatories
-                        </p>
-                    </td>
-                </tr>
-                <tr style="font-size: 10px;">
-                    <td colspan="4">
-                        <p style="text-align: center">
-                            1. __________________________________<br>
-                               <strong>SUSAN L. DEL ROSARIO </strong><br>
-                               Chief, Cash and Disbursement Section
-                        </p>
-                    </td>
-                    <td colspan="4">
-                        <p style="text-align: center">
-                            2. __________________________________<br>
-                               <strong>MIRIAM C. CORNELIO </strong><br>
-                               Director, FMS
-                        </p>
+                        </p><br>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8" style="font-size: 9px; text-align: center">
+                    <td style="height: 20px"></td>
+                </tr>
+            </table>
+
+            <table>
+                <tr >
+                    <td colspan="3" style="font-size: 11px; text-align: center;">
+                            1. ______________________________________________<br>
+                               <strong>SUSAN L. DEL ROSARIO </strong><br>
+                               Chief, Cash and Disbursement Section
+                    </td>
+                    <td colspan="2" style="width: 50px;"></td>
+                    <td colspan="3" style="font-size: 11px; text-align: center;">
+                            2. ______________________________________________<br>
+                               <strong>MIRIAM C. CORNELIO </strong><br>
+                               Director, FMS
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8" style="font-size: 10px; text-align: center">
                         (Erasure will invalidate this document)
                     </td>
                 </tr>
             </table>
 
-            <table style="border: solid 1px black; font-size: 9px; width: 100%">
-                <tr style="border: solid 1px black">
-                    <td colspan="8" height="50" valign="top">
+            <table style="border: solid 1px black; font-size: 10px; width: 100%">
+                <tr>
+                    <td colspan="8" height="50" valign="top" style="border-bottom: solid 1px black">
                         FOR MDS-GSB USE ONLY:
                     </td>
                 </tr>
@@ -243,29 +264,29 @@ $this->title = 'LDDAP-ADA FORM';
                 <tr>
                     <td colspan="8" style="font-size: 10px;">NOTES:</td>
                 </tr>
-                <tr style="font-size: 8px;">
-                    <td colspan="3">The LDDAP-ADA is an accountable form.</td>
+                <tr>
+                    <td colspan="3" style="font-size: 9px;">The LDDAP-ADA is an accountable form.</td>
                     <td></td>
-                    <td width="80">LDDAP-ADA No.:</td>
-                    <td colspan="3" width="250" style="text-align: left">
+                    <td style="font-size: 10px">LDDAP-ADA No.</td>
+                    <td colspan="3" style="text-align: left; font-size: 12px; width: 250px; text-decoration: underline; font-weight: bold;">
                         <?php
                             foreach ($dvs as $value)
                             {
-                              echo $value->lddap_no;
+                              echo ': '.$value->lddap_no;
                               break;
                             }
                         ?>
                     </td>
                 </tr>
-                <tr style="font-size: 8px;">
-                    <td colspan="3">* Indicate the description/name and UACS code</td>
+                <tr>
+                    <td colspan="3" style="font-size: 10px;">* Indicate the description/name and UACS code</td>
                     <td></td>
-                    <td>Date of Issue :</td>
-                    <td colspan="3" style="text-align: left">
+                    <td style="font-size: 10px;">Date of Issue</td>
+                    <td colspan="3" style="text-align: left; font-size: 12px; text-decoration: underline; font-weight: bold;">
                         <?php
                             foreach ($dvs as $value)
                             {
-                              echo $value->date;
+                              echo ': '.$value->date;
                               break;
                             }
                         ?>

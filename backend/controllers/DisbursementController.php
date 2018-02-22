@@ -15,6 +15,7 @@ use backend\models\AccountingEntry;
 use yii\filters\AccessControl;
 use backend\models\DisbursedDv;
 use backend\models\Nca;
+use kartik\mpdf\Pdf;
 use backend\models\LddapAda;
 
 /**
@@ -140,7 +141,8 @@ class DisbursementController extends Controller
         {
             $model = new Disbursement();
             $values = Disbursement::find()->all();
-            $dv_no = date('Y').'-'.date('m').'-'.'000'.(sizeof($values)+1);
+            $serial = strlen((string) sizeof($values)) === 1 ? '000' : '00';
+            $dv_no = date('Y').'-'.date('m').'-'.$serial.(sizeof($values)+1);
 
             if ($model->load(Yii::$app->request->post())) {
 
@@ -336,7 +338,8 @@ class DisbursementController extends Controller
         {
             $dvs = $_POST['dvs'];
             $num_recs = LddapAda::find()->groupBy(['lddap_no'])->all();
-            $lddap_no = '101'.'-'.date('m').'-0'.(sizeof($num_recs)+1).'-'.date('Y');
+            $series = strlen((string) sizeof($num_recs)) === 1 ? '00' : '0';
+            $lddap_no = '101'.'-'.date('m').'-'.$series.(sizeof($num_recs)+1).'-'.date('Y');
             return $this->render('/disbursement/lddap/lddap_form', ['dvs' => $dvs, 'lddap_no' => $lddap_no,'model2' => $model2]);
         }
 
@@ -356,12 +359,25 @@ class DisbursementController extends Controller
                 $model3->save(false);
             }
 
-            Yii::$app->getSession()->setFlash('success', 'Successfully Saved!');
+            //Yii::$app->getSession()->setFlash('success', 'Successfully Saved!');
             $dvs = LddapAda::find()
                     ->where(['lddap_no' => $model2->lddap_no])
                     ->joinWith('dv')
                     ->all();
-            return $this->render('/disbursement/lddap/lddap_view', ['dvs' => $dvs]);
+            //return $this->render('/disbursement/lddap/lddap_view', ['dvs' => $dvs]);
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'format' => Pdf::FORMAT_FOLIO,
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('/disbursement/lddap/lddap_view', ['dvs' => $dvs]),
+                'options' => [
+                    'title' => $model2->lddap_no,
+                    'filename' => $model2->lddap_no,
+                    'marginTop' => .25
+                ]
+            ]);
+            return $pdf->render();
         }
 
         return $this->render('/disbursement/lddap/lddapIndex', ['disbursement' => $disbursement, 'dv_no' => $dv_no, 'model' => $model]);

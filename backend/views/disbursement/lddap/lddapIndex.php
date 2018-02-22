@@ -22,12 +22,14 @@ $this->title = 'LDDAP-ADA';
         </div>
         <table class="table table-hover">
             <tr>
-                <th></th><th>DV NO.</th><th>ACCOUNT TITLE</th><th>UACS CODE</th><th>GROSS AMOUNT</th><th>WITH-HOLDING TAX</th><th>NET AMOUNT</th><th>Credited To</th>
+                <th></th><th>DV NO.</th><th>Credited To</th><th>ACCOUNT TITLE</th><th>UACS CODE</th><th>GROSS AMOUNT</th><th>WITH-HOLDING TAX</th><th>NET AMOUNT</th>
             </tr>
             <?php foreach ($disbursement as $result) : ?>
-                <tr data-id = <?= $result->id; ?> <?php if($result->dv_no === $dv_no) : ?> style="background-color: #d8ffcc" <?php endif ?> >
+                <tr <?php if($result->dv_no === $dv_no) : ?> style="background-color: #d8ffcc" <?php endif ?> >
                     <td><input type="checkbox" name="dvs[<?= $result->dv_no ?>]" value = "<?= $result->dv_no ?>"></td>
                     <td><?= $result->dv_no ?></td>
+                    <td><?= $result->credit_to === 'payee' ? $result->disbursement->payee : $result->credit_to;  ?>
+                    </td>
                     <td><?= $result->account_title ?></td>
                     <td><?= $result->uacs_code ?></td>
                     <td><?= number_format($result->disbursement->gross_amount, 2) ?></td>
@@ -41,8 +43,6 @@ $this->title = 'LDDAP-ADA';
                         ?>
                     </td>
                     <td><?= number_format($result->credit_amount, 2) ?></td>
-                    <td><?= $result->credit_to === 'payee' ? $result->disbursement->payee : $result->credit_to;  ?>
-                    </td>
                 </tr>
             <?php endforeach ?>
             <?= $form->field($model, 'dvs')->hiddenInput()->label(false) ?>
@@ -50,13 +50,13 @@ $this->title = 'LDDAP-ADA';
     <?php ActiveForm::end(); ?>
 </div>
 <?php
-$this->registerJs("
-    $('tbody td').css('cursor', 'pointer');
-    $('tbody th').css('background-color', '#f5f5f0');
-    $('tbody td').click(function (e) {
-        var id = $(this).closest('tr').data('id');
-        if (e.target == this)
-            location.href = '" . Url::to(['disbursement/view']) . "&id=' + id;
-    });
-");
+// $this->registerJs("
+//     $('tbody td').css('cursor', 'pointer');
+//     $('tbody th').css('background-color', '#f5f5f0');
+//     $('tbody td').click(function (e) {
+//         var id = $(this).closest('tr').data('id');
+//         if (e.target == this)
+//             location.href = '" . Url::to(['disbursement/view']) . "&id=' + id;
+//     });
+// ");
 ?>

@@ -126,6 +126,7 @@ class SiteController extends Controller
                 if (\Yii::$app->user->can('lddap_ada'))
                 {
                     $status = TransactionStatus::find(['lddap_ada'])->where(['dv_no'=>$dv_no])->one();
+                    $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->all();
                         
                     if(empty($status->lddap_ada))
                     {
@@ -133,7 +134,7 @@ class SiteController extends Controller
                         Yii::$app->db->createCommand()->update('transaction_status', ['lddap_ada' => $detail], ['dv_no' => $dv_no])->execute();
 
                         Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
-                        return $this->render('/disbursement/lddapIndex', ['disbursement' => $disbursement, 'dv_no' => $dv_no]);
+                        return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
                     }
                     else
                     {

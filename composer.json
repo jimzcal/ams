@@ -30,7 +30,9 @@
         "himiklab/yii2-easy-thumbnail-image-helper": "*",
         "rmrevin/yii2-fontawesome": "~2.17",
         "vilochane/yii2-barcode-generator": "*",
-        "picqer/php-barcode-generator": "^0.2.2"
+        "picqer/php-barcode-generator": "^0.2.2",
+        "kartik-v/yii2-mpdf": "*",
+        "sjaakp/yii2-cycle2": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

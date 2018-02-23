@@ -332,6 +332,7 @@ class DisbursementController extends Controller
         $model = new Disbursement();
         $model2 = new LddapAda();
         $disbursement = AccountingEntry::find()->where(['credit_to' => 'payee'])
+                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
                         ->joinWith('disbursement')
                         ->all();
         if ($model->load(Yii::$app->request->post()))

@@ -33,7 +33,7 @@ $this->title = 'DISBURSEMENT VOUCHERS';
             //     }
             // ],
             'payee',
-            'particulars:ntext',
+            //'particulars:ntext',
             // 'mode_of_payment',
             // 'responsibility_center',
             // 'mfo_pap',

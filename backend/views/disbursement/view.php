@@ -29,7 +29,7 @@ $this->title = $model->dv_no;
                 ]) ?> -->
             </p>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-condensed">
             <tr>
                 <td colspan="7" class="tracking">
                     Department of Agriculture </br>
@@ -45,19 +45,22 @@ $this->title = $model->dv_no;
                     ?>
                     <p><?= $model->dv_no ?></p>
                 </td>
-                <td width="100" align="right">Payee:</td><td colspan="3"><strong><?= $model->payee; ?></strong></td>
+                <td width="100" align="right">Payee:</td>
+                <td colspan="3" style="font-size: 14px;">
+                    <strong><?= $model->payee; ?></strong>
+                </td>
             </tr>
             <tr>
-                <td width="100" align="right">Mode of Payment:</td><td><strong><?= $model->mode_of_payment; ?></strong></td><td width="100" align="right">Responsibility Center:</td><td><strong><?= $model->responsibility_center; ?></strong></td>
+                <td width="80" align="right">Mode of Payment:</td><td><strong><?= $model->mode_of_payment; ?></strong></td><td width="100" align="right">TIN:</td><td><strong><?= $model->tin; ?></strong></td>
             </tr>
             <tr>
-                <td align="right">MFO/PAP:</td><td colspan="3"><strong><?= $model->mfo_pap; ?></strong></td>
+                <td align="right">MFO/PAP:</td><td colspan="3"><strong><?= $model->ors->mfo_pap; ?></strong></td>
             </tr>
             <tr>
                 <td align="right">Gross Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->gross_amount, 2); ?></strong></td><td colspan="4" width="200">This transaction should have the following documentary requirements:</td>
             </tr>
             <tr>
-                <td align="right">TIN:</td><td colspan="2" width="35"><strong><?= $model->tin; ?></strong></td><td colspan="4" width="200" rowspan="6">
+                <td align="right">Status:</td><td colspan="2" width="35"><strong><?= $model->status; ?></strong></td><td colspan="4" width="200" rowspan="6">
                     <?php
                         $attachments = Disbursement::find(['attachments'])->where(['id'=>$model->id])->one();
                         $attachments = explode(',', $attachments->attachments);
@@ -68,19 +71,23 @@ $this->title = $model->dv_no;
                     ?>
                     <?php foreach ($attachments as $attached) : ?>
                         <?php if($attached !== '') : ?>
-                            <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
-                            <label><?= $attached ?></label></br>
+                            <div class="cbox" ?>
+                                <input type="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
+                                <label><?= $attached ?></label></br>
+                            </div>
                         <?php endif ?>
                     <?php endforeach ?>
 
                     <?php foreach ($lacking as $lack) : ?>
-                        <input type="checkbox" class="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
-                        <label><?= $lack ?></label>
+                        <div class="cbox" ?>
+                            <input type="checkbox" class="cbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
+                            <label><?= $lack ?></label>
+                        </div>
                     <?php endforeach ?>
                 </td>
             </tr>
             <tr>
-                <td align="right">ORS No.:</td><td colspan="2" width="35"><strong><?= $model->ors_class.'-'.$model->ors_year.'-'.$model->ors_month.'-'.$model->ors_serial; ?></strong></td>
+                <td align="right">ORS No.:</td><td colspan="2" width="35"><strong><?= $model->ors->ors_class.'-'.$model->ors->ors_year.'-'.$model->ors->ors_month.'-'.$model->ors->ors_serial; ?></strong></td>
             </tr>
             <tr>
                 <td align="right">Less Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->less_amount, 2); ?></strong></td>

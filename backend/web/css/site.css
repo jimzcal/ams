@@ -167,20 +167,27 @@ body {
 }
 
 .title{
-  font-size: 26px;
-  color: #e9bb0d;
-  padding: 5px;
-  text-shadow: 2px 2px 3px grey;
-
+  font-size: 20px;
+  color: #000000;
+  padding-bottom: 5px;
 }
 .form-wrapper{
-  background-color: #fbf8ea;
+  background-color: #f2ffcc;
   height: auto;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 15px;
   padding-top: 15px;
   border-radius: 5px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.form-wrapper-left{
+/*  background-color: #333300;*/
+  border-radius: 5px;
+  padding: 5px;
+  border: solid 1px grey;
 }
 
 .small-form-wrapper{
@@ -248,7 +255,7 @@ body {
 }
 
 .tracking-form td{
-  font-size: 11px;
+  font-size: 12px;
   padding: 0;
 }
 .tracking{
@@ -263,11 +270,11 @@ body {
   border-radius: 5px;
 }
 
-.checkbox{
+.cbox{
   display: inline-block;
-  margin: 15px;
+  margin: 5px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .checkbox-wrapper{

@@ -11,7 +11,7 @@ $this->title = 'NEW DISBURSEMENT VOUCHER';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="disbursement-create">
-    <div class="form-wrapper">
+    <div class="form-wrapper" id="form-wrapper">
     	<div class="title">
     		<?= Html::encode($this->title) ?>
     		<?= Html::a('&times;', ['/disbursement/index'], ['class' => 'close']) ?>
@@ -23,3 +23,14 @@ $this->title = 'NEW DISBURSEMENT VOUCHER';
 	    ]) ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+function myFunction() {
+	document.getElementById("#max").style.width = "100%";
+	document.getElementById("max").style.margin-top = "0";
+	document.getElementById("max").style.position = "absolute";
+	document.getElementById("p2").style.fontFamily = "Arial";
+	document.getElementById("p2").style.fontSize = "larger";
+}
+</script>

@@ -16,8 +16,9 @@ $this->title = 'EDIT DV NO.: ' . $model->dv_no;
     		<?= Html::encode($this->title) ?>
     	</div>
 
-	    <?= $this->render('_form', [
+	    <?= $this->render('_updateForm', [
 	        'model' => $model,
+	        'ors_model' => $ors_model,
 	    ]) ?>
 	</div>
 </div>

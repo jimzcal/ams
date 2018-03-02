@@ -17,6 +17,7 @@ use backend\models\DisbursedDv;
 use backend\models\Nca;
 use kartik\mpdf\Pdf;
 use backend\models\LddapAda;
+use backend\models\Ors;
 
 /**
  * DisbursementController implements the CRUD actions for Disbursement model.
@@ -97,6 +98,8 @@ class DisbursementController extends Controller
         $model = $this->findModel($id);
         $model2 = new AccountingEntry();
 
+        $ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
+
         $dv_no = Disbursement::find(['dv_no'])->where(['id'=>$id])->one();
         $transaction = TransactionStatus::find()->where(['dv_no'=>$dv_no->dv_no])->one();
 
@@ -115,14 +118,38 @@ class DisbursementController extends Controller
             }
 
             $model->net_amount = (AccountingEntry::find()->where(['vat' => 1])->andWhere(['dv_no' => $model->dv_no])->one() === null ? ($model->gross_amount - $model->less_amount) : ($model->gross_amount/1.12) - $model->less_amount);
-            $model->save();
-            Yii::$app->db->createCommand()->update('disbursement', ['attachments' => $model->attachments], ['dv_no' => $dv_no])->execute();
+
+            // var_dump($model->ors_no);
+            // exit();
+
+            $model->save(false);
+
+            for($i=0; $i<sizeof($model->particular); $i++)
+            {
+                $ors = explode('-', $model->ors_no[$i]);
+
+                // var_dump($model->ors_id[0]);
+                // exit();
+
+                Yii::$app->db->createCommand()->update('ors', [
+                    'particular' => $model->particular[$i],
+                    'ors_class' => $ors[0],
+                    'ors_year' => $ors[1],
+                    'ors_month' => $ors[2],
+                    'ors_serial' => $ors[3],
+                    'mfo_pap' => $model->mfo_pap[$i],
+                    'responsibility_center' => $model->responsibility_center[$i],
+                    'amount' => $model->amount[$i],
+                    ],
+                    ['id' => $model->ors_id[$i]])->execute();
+            }
 
             Yii::$app->getSession()->setFlash('success', 'Successfully Saved');
             return $this->render('viewPr', [
                 'model' => $this->findModel($id),
                 'entries' => $entries,
                 'model2' => $model2,
+                'ors_model' => $ors_model,
             ]);
             
         }
@@ -131,6 +158,7 @@ class DisbursementController extends Controller
             'model' => $model,
             'entries' => $entries,
             'model2' => $model2,
+            'ors_model' => $ors_model,
         ]);
 
     }
@@ -144,10 +172,43 @@ class DisbursementController extends Controller
             $serial = strlen((string) sizeof($values)) === 1 ? '000' : '00';
             $dv_no = date('Y').'-'.date('m').'-'.$serial.(sizeof($values)+1);
 
-            if ($model->load(Yii::$app->request->post())) {
+            if ($model->load(Yii::$app->request->post()))
+            {
+                $particulars = $_POST['particular'];
+                $ors_no = $_POST['ors_no'];
+                //$ors_no = explode(' ', $ors_no[0]);
+                $mfo_pap = $_POST['mfo_pap'];
+                $responsibility_center = $_POST['responsibility_center'];
+                $amount = $_POST['amount'];
+
+                //var_dump(sizeof($particulars));
 
                 $model->dv_no = $dv_no;
                 $model->save(false);
+
+                for($i=0; $i<sizeof($particulars); $i++)
+                {
+                    if(!empty($particulars[$i]) && !empty($ors_no[$i]) && !empty($mfo_pap[$i]) && 
+                        !empty($responsibility_center[$i]) && !empty($amount[$i]))
+                    {
+
+                        $ors_model = new Ors();
+                        $ors_model->dv_no = $dv_no;
+                        $ors_model->particular = $particulars[$i];
+                        $ors_model->responsibility_center = $responsibility_center[$i];
+                        $ors_model->mfo_pap = $mfo_pap[$i];
+                        $ors_model->amount = $amount[$i];
+                        $ors = explode('-', $ors_no[$i]);
+
+                            $ors_model->ors_class = $ors[0];
+                            $ors_model->ors_year = $ors[1];
+                            $ors_model->ors_month = $ors[2];
+                            $ors_model->ors_serial = $ors[3];
+
+                        $ors_model->save(false);
+                    }
+                    
+                }
 
                 $model3 = new TransactionStatus();
                 $model3->dv_no = $model->dv_no;
@@ -155,6 +216,8 @@ class DisbursementController extends Controller
                 $model3->receiving = $detail;
                 $model3->save(false);
 
+                // print_r('Successfully Saved');
+                // exit();
                 return $this->redirect(['view', 'id' => $model->id]);
 
             } 
@@ -176,6 +239,7 @@ class DisbursementController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $ors_model = Ors::find()->where(['dv_no'=>$model->dv_no])->all();
 
         if(\Yii::$app->user->can('updateDisbursementVoucher'))
         {
@@ -187,15 +251,72 @@ class DisbursementController extends Controller
                 {
                    $model->obligated = 'no';
                 }
+
                 $model->save(false);
-                return $this->redirect(['view', 'id' => $model->id]);
+
+                $ids = $_POST['ids'];
+                $particulars = $_POST['particular'];
+                $ors_no = $_POST['ors_no'];
+                //$ors_no = explode(' ', $ors_no[0]);
+                $mfo_pap = $_POST['mfo_pap'];
+                $responsibility_center = $_POST['responsibility_center'];
+                $amount = $_POST['amount'];
+
+                $ors_id = Ors::find()->where(['dv_no' => $model->dv_no])->all();
+
+                for($i=0; $i<sizeof($particulars); $i++)
+                {
+                    if(isset($ids[$i]))
+                    {
+                        $id = $ids[$i];
+                        $ors = explode('-', $ors_no[$i]);
+
+                        Yii::$app->db->createCommand()->update('ors', [
+                            'particular' => $particulars[$i],
+                            'responsibility_center' => $responsibility_center[$i],
+                            'mfo_pap' => $mfo_pap[$i],
+                            'amount' => $amount[$i],
+                            'ors_class' => $ors[0],
+                            'ors_year' => $ors[1],
+                            'ors_month' => $ors[2],
+                            'ors_serial' => $ors[3]
+                        ], 
+                            ['id' => $id])->execute();
+
+                        //$ors_model->save(false);
+
+                        // var_dump($ors_model->save(false));
+                        // exit();
+                       
+                    }
+
+                    else
+                    { 
+                        $ors_model = new Ors();
+                        $ors_model->dv_no = $model->dv_no;
+                        $ors_model->particular = $particulars[$i];
+                        $ors_model->responsibility_center = $responsibility_center[$i];
+                        $ors_model->mfo_pap = $mfo_pap[$i];
+                        $ors_model->amount = $amount[$i];
+                        $ors = explode('-', $ors_no[$i]);
+
+                            $ors_model->ors_class = $ors[0];
+                            $ors_model->ors_year = $ors[1];
+                            $ors_model->ors_month = $ors[2];
+                            $ors_model->ors_serial = $ors[3];
+
+                        $ors_model->save(false);        
+                    } 
+                }
+
+                return $this->redirect(['view', 'id' => $id]);
             }
-            else
-            {
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
+
+            return $this->render('update', [
+                'model' => $model,
+                'ors_model' => $ors_model,
+            ]);
+            
         }
         else
         {
@@ -250,6 +371,7 @@ class DisbursementController extends Controller
         $disbursements = Disbursement::find()->where(['nca'=>$model->nca])->andWhere(['obligated' => 'yes'])->all();
         $checker = Disbursement::find()->where(['id'=>$id])->andWhere(['obligated' => 'yes'])->one();
         $model3 = Nca::find()->where(['nca_no'=>$model->nca])->one();
+        $ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
 
         if ($model->load(Yii::$app->request->post()))
         {
@@ -294,6 +416,7 @@ class DisbursementController extends Controller
                 'model' => $model,
                 'model3' => $model3,
                 'disbursements' => $disbursements,
+                'ors_model' => $ors_model,
                 ]);
            }
         }
@@ -305,6 +428,7 @@ class DisbursementController extends Controller
         return $this->render('cash-status/_form', [
         'model' => $model,
         'model3' => $model3,
+        'ors_model' => $ors_model,
         ]);
 
     }

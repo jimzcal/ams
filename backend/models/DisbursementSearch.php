@@ -19,7 +19,7 @@ class DisbursementSearch extends Disbursement
     {
         return [
             [['id', 'transaction_id'], 'integer'],
-            [['dv_no', 'date', 'payee', 'particulars', 'mode_of_payment', 'nca', 'responsibility_center', 'mfo_pap', 'fund_cluster', 'ors_class', 'ors_year', 'ors_month', 'serial', 'tin', 'attachments', 'remarks', 'status'], 'safe'],
+            [['dv_no', 'date', 'payee',  'mode_of_payment', 'nca', 'fund_cluster', 'tin', 'attachments', 'remarks', 'status'], 'safe'],
             [['gross_amount', 'less_amount', 'net_amount'], 'number'],
         ];
     }
@@ -70,17 +70,17 @@ class DisbursementSearch extends Disbursement
         $query->andFilterWhere(['like', 'dv_no', $this->dv_no])
             ->andFilterWhere(['like', 'date', $this->date])
             ->andFilterWhere(['like', 'payee', $this->payee])
-            ->andFilterWhere(['like', 'particulars', $this->particulars])
+            //->andFilterWhere(['like', 'particulars', $this->particulars])
             ->andFilterWhere(['like', 'mode_of_payment', $this->mode_of_payment])
             ->andFilterWhere(['like', 'nca', $this->nca])
-            ->andFilterWhere(['like', 'responsibility_center', $this->responsibility_center])
-            ->andFilterWhere(['like', 'mfo_pap', $this->mfo_pap])
+            //->andFilterWhere(['like', 'responsibility_center', $this->responsibility_center])
+            //->andFilterWhere(['like', 'mfo_pap', $this->mfo_pap])
             ->andFilterWhere(['like', 'tin', $this->tin])
             ->andFilterWhere(['like', 'fund_cluster', $this->fund_cluster])
-            ->andFilterWhere(['like', 'ors_class', $this->ors_class])
-            ->andFilterWhere(['like', 'ors_class', $this->ors_year])
-            ->andFilterWhere(['like', 'ors_class', $this->ors_month])
-            ->andFilterWhere(['like', 'ors_class', $this->ors_serial])
+            // ->andFilterWhere(['like', 'ors_class', $this->ors_class])
+            // ->andFilterWhere(['like', 'ors_class', $this->ors_year])
+            // ->andFilterWhere(['like', 'ors_class', $this->ors_month])
+            // ->andFilterWhere(['like', 'ors_class', $this->ors_serial])
             ->andFilterWhere(['like', 'attachments', $this->attachments])
             ->andFilterWhere(['like', 'remarks', $this->remarks])
             ->andFilterWhere(['like', 'status', $this->status]);

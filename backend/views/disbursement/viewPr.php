@@ -25,35 +25,84 @@ $this->title = 'Disbursement Voucher';
                 </div>
                 <table class="table table-bordered">
                     <tr>
-                        <td><labe>DV NO.</labe></br><strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong></td>
+                        <td>
+                            DV NO.<br>
+                            <strong style="font-size: 14px;"><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
+                        </td>
                         <td colspan="1">
-                            <label>Transaction-Type:</label></br>
-                            <?php $trans = transaction::find()->where(['id'=>$model->transaction_id])->one(); echo $trans->name; ?>
+                            
                         </td>
                         <td width="160">
-                            <label>Cash Advance?</label></br>
-                            <?= $model->cash_advance ?>
+                            Transaction:<br>
+                            <strong style="font-size: 14px;"><?= $model->cash_advance ==='yes' ? 'Cash Advance' : 'For Disbursement' ?></strong>
                         </td>
-                        <td><label>NCA No.</label></br><?= $model->nca ?></td>
-                        <td><label>Date:</label></br><?= $model->date ?></td>
+                        <td>
+                            Mode of Payment:<br>
+                            <strong style="font-size: 14px;"><?= $model->mode_of_payment ?></strong>
+                        </td>
+                        <td width="120">
+                            Date:<br>
+                            <strong style="font-size: 14px;"><?= $model->date ?></strong>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <label>Payee:</label></br>
-                            <?= $model->payee ?>
+                            Payee:<br>
+                            <strong style="font-size: 14px;"><?= $model->payee ?></strong>
                         </td>
-                        <td><label>Responsibility Center:</label></br><?= $model->responsibility_center ?></td>
-                        <td><label>ORS No.</label></br><?= $model->ors_class.'-'.$model->ors_year.'-'.$model->ors_month.'-'.$model->ors_serial; ?></td>
+                        <td>
+                            Fund Cluster:<br>
+                            <strong style="font-size: 14px;"><?= $model->fund_cluster ?></strong>
+                        </td>
+                        <td>
+                            NCA No.:<br>
+                            <strong style="font-size: 14px;"><?= $model->nca ?></strong>
+                        </td>
                     </tr>
+                        <tr>
+                            <td colspan="5">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th>ORS No</th>
+                                        <th>MFO/PAP</th>
+                                        <th>Responsibility Center</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    <?php foreach ($ors_model as $value): ?>
+                                        <tr>
+                                            <td style="width: 250px;">
+                                                <?= $value->particular ?>
+                                            </td>
+                                            <td style="width: 130px;">
+                                                <?= $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>
+                                            </td>
+                                            <td>
+                                                <?= $value->mfo_pap ?>
+                                            </td>
+                                            <td>
+                                                <?= $value->responsibility_center ?>
+                                            </td>
+                                            <td style="width: 100px;">
+                                                <?= $value->amount ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                </table>
+                            </td>
+                        </tr>
                     <tr>
-                        <td colspan="3"><label>Particulars</label></br><?= $model->particulars ?>
+                        <td colspan="3">
+                            Gross Amount: <br>
+                            <strong style="font-size: 16px;"><?= number_format($model->gross_amount, 2) ?></strong>
                         </td>
-                        <td width="120"><label>MFO/PAP:</label></br><?= $model->mfo_pap ?></br>
-                            <label>Less Amount:</label></br>
-                            <?= number_format($model->less_amount, 2) ?>
+                        <td width="120">
+                            Less Amount: <br>
+                            <strong style="font-size: 16px;"><?= number_format($model->less_amount, 2) ?>
                         </td>
-                        <td><label>Gross Amount:</label></br><?= number_format($model->gross_amount, 2) ?></br>
-                            <label>Net Amount:</label></br><?= number_format($model->net_amount, 2) ?>
+                        <td>
+                            Net Amount: <br>
+                            <strong style="font-size: 16px;"><?= number_format($model->net_amount, 2) ?>
                         </td>
                     </tr>
                     <tr>
@@ -77,6 +126,7 @@ $this->title = 'Disbursement Voucher';
                                     <td>
                                         <strong>
                                             <?php $totalDebit = AccountingEntry::find(['debit'])->where(['dv_no'=>$model->dv_no])->all();
+
                                                echo number_format(array_sum(ArrayHelper::getColumn($totalDebit, 'debit')), 2);
                                             ?>
                                         </strong>
@@ -84,17 +134,21 @@ $this->title = 'Disbursement Voucher';
                                     <td>
                                         <strong>
                                             <?php $total = AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->all();
+
                                                echo number_format(array_sum(ArrayHelper::getColumn($total, 'credit_amount')), 2);
                                             ?>
                                         </strong>
                                      </td>
                                     <td width="80"></td>
                                 </tr>
-                            </table>
+                            </table>            
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="5"><label>Remarks</label></br><?= $model->remarks ?></td>
+                        <td colspan="5">
+                            <label>Remarks:</label><br>
+                            <?= $model->remarks ?>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -116,13 +170,13 @@ $this->title = 'Disbursement Voucher';
 
                             <?php foreach ($attachments as $attached) : ?>
                                 <?php if($attached !== '') : ?>
-                                    <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
+                                    <input type="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
                                     <label><?= $attached ?></label><br>
                                 <?php endif ?>
                             <?php endforeach ?>
 
                             <?php foreach ($lacking as $lack) : ?>
-                                <input type="checkbox" class="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
+                                <input type="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
                                 <label><?= $lack ?></label><br>
                             <?php endforeach ?>
                         </td>

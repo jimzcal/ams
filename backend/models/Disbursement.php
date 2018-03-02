@@ -45,17 +45,17 @@ class Disbursement extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public $date_paid, $check_no, $lddap_check_no, $page_checker;
-    public $dvs;
+    public $date_paid, $check_no, $lddap_check_no, $page_checker, $particular, $amount, $ors_id;
+    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $ors_no;
     public function rules()
     {
         return [
-            [['dv_no', 'ors_class', 'ors_year', 'ors_month', 'fund_cluster', 'ors_serial', 'cash_advance', 'date', 'payee', 'particulars', 'nca', 'responsibility_center', 'mfo_pap', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
-            [['particulars', 'attachments', 'remarks'], 'string'],
-            [['gross_amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*[.,]?[0-9]+([eE][-+]?[0-9]+)?\s*$/'],
-            [['transaction_id'], 'integer'],
+            [['dv_no', 'fund_cluster', 'cash_advance', 'date', 'payee', 'nca', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
+            [['attachments', 'remarks', 'particular', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
+            [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*[.,]?[0-9]+([eE][-+]?[0-9]+)?\s*$/'],
+            [['transaction_id', 'ors_id'], 'integer'],
             [['dv_no', 'payee', 'nca'], 'string', 'max' => 200],
-            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'responsibility_center', 'mfo_pap', 'tin', 'ors_class', 'status', 'ors_year', 'ors_month', 'ors_serial', 'obligated'], 'string', 'max' => 100],
+            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated'], 'string', 'max' => 100],
             [['dv_no'], 'unique'],
         ];
     }
@@ -70,7 +70,7 @@ class Disbursement extends \yii\db\ActiveRecord
             'dv_no' => 'DV No',
             'date' => 'Date',
             'payee' => 'Payee',
-            'particulars' => 'Particulars',
+            'particular' => 'Particulars',
             'mode_of_payment' => 'Mode Of Payment',
             'nca' => 'NCA',
             'responsibility_center' => 'Responsibility Center',
@@ -86,6 +86,7 @@ class Disbursement extends \yii\db\ActiveRecord
             'attachments' => 'Attachments',
             'remarks' => 'Remarks',
             'status' => 'Status',
+            'tin' => 'TIN',
         ];
     }
 
@@ -113,6 +114,11 @@ class Disbursement extends \yii\db\ActiveRecord
     public function getAccountingEntry()
     {
         return $this->hasOne(AccountingEntry::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getOrs()
+    {
+        return $this->hasOne(Ors::className(), ['dv_no' => 'dv_no']);
     }
 
     /**

@@ -6,11 +6,13 @@ use yii\helpers\ArrayHelper;
 use backend\models\Transaction;
 use backend\models\Disbursement;
 use backend\models\accountingEntry;
+use backend\models\FundCluster;
+use backend\models\Nca;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = 'Disbursement Voucher';
+$this->title = 'DISBURSEMENT VOUCHER';
 ?>
 
 <div class="disbursement-form">
@@ -25,47 +27,89 @@ $this->title = 'Disbursement Voucher';
                 </div>
                 <table class="table table-bordered">
                     <tr>
-                        <td><label>DV NO.</label></br></br><strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong></td>
-                        <td colspan="1"><?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type']) 
-                    ?>
+                        <td>
+                            DV NO.<br>
+                            <strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
+                        </td>
+                        <td colspan="1">
+                            <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type']) ?>
                         </td>
                         <td width="160">
                             <label>Cash Advance?</label></br>
                             <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated', 'id' => 'two'])->label(false)?>
-
                         </td>
-                        <td><?= $form->field($model, 'nca')->textInput(['maxlength' => true, 'readonly'=> true]) ?></td>
-                        <td width="140"><?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('M. d, Y') : $model->date, 'readonly' =>true]) ?></td>
+                        <td>
+                            <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
+                        </td>
+                        <td width="120">
+                            <?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('M. d, Y') : $model->date, 'readonly' =>true]) ?>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="3">
                             <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'id'=>'four']) ?>
                         </td>
-                        <td><?= $form->field($model, 'responsibility_center')->textInput(['maxlength' => true, 'id'=>'five']) ?></td>
                         <td>
-                            <table>
-                                <label>ORS No.</label>
-                                <tr>
-                                    <td><?= $form->field($model, 'ors_class')->textInput(['maxlength' => 2, 'style'=>'width:50px'])->label(false) ?></td>
-                                    <td>-</td>
-                                    <td><?= $form->field($model, 'ors_year')->textInput(['maxlength' => 4, 'style'=>'width:60px'])->label(false) ?></td>
-                                    <td>-</td>
-                                    <td><?= $form->field($model, 'ors_month')->textInput(['maxlength' => 2, 'style'=>'width:50px'])->label(false) ?></td>
-                                    <td>-</td>
-                                    <td><?= $form->field($model, 'ors_serial')->textInput(['maxlength' => 4, 'style'=>'width:60px'])->label(false) ?></td>
-                                </tr>
-                            </table>
+                            <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
+                             [
+                                'onchange'=>'
+                                     $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
+                                        $("select#disbursement-nca").html(data);
+                                    });'
+                            ]); ?>
+                        </td>
+                        <td>
+                            <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no')) ?>
                         </td>
                     </tr>
+                        <tr>
+                            <td colspan="5">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th>ORS No</th>
+                                        <th>MFO/PAP</th>
+                                        <th>Responsibility Center</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    <?php foreach ($ors_model as $value): ?>
+                                        <?php $i=0; ?>
+                                        <tr>
+                                            <td style="width: 250px;">
+                                                <?= $form->field($model, 'particular[]')->textInput(['value' => $value->particular])->label(false) ?>
+                                                <?= $form->field($model, 'ors_id[]')->hiddenInput(['value' => $value->id])->label(false) ?>
+                                            </td>
+                                            <td style="width: 130px;">
+                                                <?= $form->field($model, 'ors_no[]')->textInput([
+                                                    'value' => $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ])->label(false) 
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?= $form->field($model, 'mfo_pap[]')->textInput(['value' => $value->mfo_pap])->label(false) ?>
+                                            </td>
+                                            <td>
+                                                <?= $form->field($model, 'responsibility_center[]')->textInput(['value' => $value->responsibility_center])->label(false) ?>
+                                            </td>
+                                            <td style="width: 100px;">
+                                                <?= $form->field($model, 'amount[]')->textInput(['value' => $value->amount])->label(false) ?>
+                                            </td>
+                                        </tr>
+                                        <?php $i++ ?>
+                                    <?php endforeach ?>
+                                </table>
+                            </td>
+                        </tr>
                     <tr>
-                        <td colspan="3"><?= $form->field($model, 'particulars')->textarea(['rows' => 5, 'id'=>'seven']) ?>
+                        <td colspan="3">
+                            <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id'=>'nine']) ?>
                         </td>
-                        <td width="120"><?= $form->field($model, 'mfo_pap')->textInput(['maxlength' => true, 'id'=>'eight']) ?>
+                        <td width="120">
+                            
                             <?= $form->field($model, 'less_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value'=> array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount'))]) ?>
                         </td>
-                        <td><?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id'=>'nine']) ?>
-                            <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
-                            <?= $form->field($model, 'net_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value' => ($net_amount = AccountingEntry::find()->where(['vat' => 1])->andWhere(['dv_no' => $model->dv_no])->one() === null ? $model->gross_amount - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')) : ($model->gross_amount/1.12) - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')))]) ?>
+                        <td>
+                            
+                            <?= $form->field($model, 'net_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value' => ($net_amount = $model->gross_amount - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')))]) ?>
                         </td>
                     </tr>
                     <tr>
@@ -73,7 +117,12 @@ $this->title = 'Disbursement Voucher';
                             <label>Accounting Entry</label>
                             <table class="table table-bordered">
                                 <tr>
-                                    <td align="center">ACCOUNT TITLE</td><td align="center">UACS CODE</td><td align="center">DEBIT</td><td align="center">CREDIT AMOUNT</td><td align="center">CREDIT TO</td><td>ACTION</td>
+                                    <td align="center">ACCOUNT TITLE</td>
+                                    <td align="center">UACS CODE</td>
+                                    <td align="center">DEBIT</td>
+                                    <td align="center">CREDIT AMOUNT</td>
+                                    <td align="center">CREDIT TO</td>
+                                    <td>ACTION</td>
                                 </tr>
                                 <?php foreach ($entries as $entry) : ?>
                                 <tr>
@@ -135,13 +184,13 @@ $this->title = 'Disbursement Voucher';
 
                             <?php foreach ($attachments as $attached) : ?>
                                 <?php if($attached !== '') : ?>
-                                    <input type="checkbox" class="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
+                                    <input type="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
                                     <label><?= $attached ?></label><br>
                                 <?php endif ?>
                             <?php endforeach ?>
 
                             <?php foreach ($lacking as $lack) : ?>
-                                <input type="checkbox" class="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
+                                <input type="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
                                 <label><?= $lack ?></label><br>
                             <?php endforeach ?>
                         </td>
@@ -151,7 +200,7 @@ $this->title = 'Disbursement Voucher';
         </div>
         <div class="form-group">
             <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Accountig Entry', ['/accounting-entry/create', 'id'=>$model->id, 'net' => $model->net_amount, 'gross' => $model->gross_amount], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Accountig Entry', ['/accounting-entry/create', 'id'=>$model->id, 'net' => $net_amount, 'gross' => $model->gross_amount], ['class' => 'btn btn-primary']) ?>
         </div>
     <?php ActiveForm::end(); ?>
     </div>

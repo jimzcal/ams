@@ -19,95 +19,84 @@ $this->title = 'CASH STATUS';
     <div class="cash-status">
         <table class="table table-condensed">
             <tr>
-                <td width="50" style="font-weight: bold">NCA No.</td><td><?= ': '.$nca->nca_no ?></td>
+                <td width="50" style="font-weight: bold">NCA No.</td>
+                <td><?= ': '.$nca->nca_no ?></td>
             </tr>
             <tr>
-                <td style="font-weight: bold">Amount</td><td><?= ': '.number_format($nca->amount, 2) ?></td>
+                <td style="font-weight: bold">Amount</td>
+                <td><?= ': '.number_format($nca->total_amount, 2) ?></td>
             </tr>
             <tr>
-                <td style="font-weight: bold">Total Amount Obligated</td><td><?= ': '.number_format(array_sum(ArrayHelper::getColumn(CashStatus::find(['disbursement_amount'])->where(['nca_no'=>$nca->nca_no])->all(), 'disbursement_amount')), 2) ?></td>
+                <td style="font-weight: bold">Total Amount Obligated</td>
+                <td><?= ': '.number_format(array_sum(ArrayHelper::getColumn(CashStatus::find(['disbursement_amount'])->where(['nca_no'=>$nca->nca_no])->all(), 'disbursement_amount')), 2) ?></td>
             </tr>
             <tr>
-                <td style="font-weight: bold">Current Balance</td><td><?= ': '.number_format($nca->amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->all(), 'net_amount')), 2) ?></td>
+                <td style="font-weight: bold">Current Balance</td>
+                <td><?= ': '.number_format($nca->total_amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->all(), 'net_amount')), 2) ?></td>
             </tr>
              <tr>
-                <td style="font-weight: bold">Fund</td><td><?= ': '.$nca->fund_cluster ?></td>
+                <td style="font-weight: bold">Fund</td>
+                <td><?= ': '.$nca->fund_cluster ?></td>
             </tr>
         </table>
     </div>
         <table class="table table-condensed table-bordered" style="font-size: 11px;">
             <tr>
-                <th align="center" rowspan="2">DATE</th><th rowspan="2">PAYEE/CREDITOR</th><th rowspan="2">MFO/PAP</th><th rowspan="2">ORS NO.</th><th rowspan="2">DV NO.</th><th rowspan="2">GROSS AMOUNT</th><th colspan="4">CURRENT YEAR ALLOTMENT</th><th colspan="4">PRIOR YEAR'S ALLOTMENT</th><th rowspan="2">STATUS</th>
+                <th align="center" rowspan="2">DATE</th>
+                <th rowspan="2">PAYEE/CREDITOR</th>
+                <th rowspan="2">MFO/PAP</th>
+                <th rowspan="2">ORS NO.</th>
+                <th rowspan="2">DV NO.</th>
+                <th rowspan="2">GROSS AMOUNT</th>
+                <th colspan="4">CURRENT YEAR ALLOTMENT</th>
+                <th colspan="4">PRIOR YEAR'S ALLOTMENT</th>
+                <th rowspan="2">STATUS</th>
             </tr>
             <tr>
                 <th>PS</th><th>MOOE</th><th>FinEx</th><th>CO</th><th>PS</th><th>MOOE</th><th>FinEx</th><th>CO</th>
             </tr>
             <?php foreach ($disbursements as $value) : ?>
             <tr>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one(); echo $data->date ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one(); echo $data->payee ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one(); echo $data->mfo_pap ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one(); echo $data->ors_no ?></td>
+                <td>
+                    <?= $value->date ?>
+                </td>
+                <td>
+                    <?= $value->payee ?>
+                </td>
+                <td>
+                    <?= $value->ors->mfo_pap ?>
+                </td>
+                <td>
+                    <?= $value->ors->ors_class.'-'.$value->ors->ors_year.'-'.$value->ors->ors_month.'-'.$value->ors->ors_serial ?>
+                </td>
                 <td><?= $value->dv_no ?></td>
-                <td><?= number_format($value->disbursement_amount, 2) ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one();
-                    $ors = explode('-',$data->ors_no);
-                    if(($ors[0] === '01') && ($ors[1] === $nca->year))
-                    {
-                        echo number_format($data->net_amount, 2);
-                    }
-                 ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one();
-                    $ors = explode('-',$data->ors_no);
-                    if(($ors[0] === '02') && ($ors[1] === $nca->year))
-                    {
-                        echo number_format($data->net_amount, 2);
-                    }
-                 ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one();
-                    $ors = explode('-',$data->ors_no);
-                    if(($ors[0] === '03') && ($ors[1] === $nca->year))
-                    {
-                        echo number_format($data->net_amount, 2);
-                    }
-                 ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one();
-                    $ors = explode('-',$data->ors_no);
-                    if(($ors[0] === '06') && ($ors[1] === $nca->year))
-                    {
-                        echo number_format($data->net_amount, 2);
-                    }
-                 ?></td>
+                <td><?= number_format($value->gross_amount, 2) ?></td>
+                <td>
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')) ? $value->net_amount : '' ?>
+                </td>
+                <td>
+                    <?= ($value->ors->ors_class === '02' && $value->ors->ors_year === date('Y')) ? $value->net_amount : '' ?>
+                </td>
+                <td>
+                    <?= ($value->ors->ors_class === '03' && $value->ors->ors_year === date('Y')) ? $value->net_amount : '' ?>
+                </td>
+                <td>
+                    <?= ($value->ors->ors_class === '06' && $value->ors->ors_year === date('Y')) ? $value->net_amount : '' ?>
+                </td>
 
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one();
-                    $ors = explode('-',$data->ors_no);
-                    if(($ors[0] === '01') && ($ors[1] === strval($nca->year-1)))
-                    {
-                        echo number_format($data->net_amount, 2);
-                    }
-                 ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one();
-                    $ors = explode('-',$data->ors_no);
-                    if(($ors[0] === '02') && ($ors[1] === strval($nca->year-1)))
-                    {
-                        echo number_format($data->net_amount, 2);
-                    }
-                 ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one();
-                    $ors = explode('-',$data->ors_no);
-                    if(($ors[0] === '03') && ($ors[1] === strval($nca->year-1)))
-                    {
-                        echo number_format($data->net_amount, 2);
-                    }
-                 ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one();
-                    $ors = explode('-',$data->ors_no);
-                    if(($ors[0] === '06') && ($ors[1] === strval($nca->year-1)))
-                    {
-                        echo number_format($data->net_amount, 2);
-                    }
-                 ?></td>
-                <td><?php $data = Disbursement::find()->where(['dv_no' => $value->dv_no])->one(); echo $data->status ?></td>
+                <td>
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1 ) ? $value->net_amount : '' ?>
+                </td>
+                <td>
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? $value->net_amount : '' ?>
+                </td>
+                <td>
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? $value->net_amount : '' ?>
+                </td>
+                <td>
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? $value->net_amount : '' ?>
+                </td>
+                <td><?= $value->status ?></td>
             </tr>
             <?php endforeach ?>
         </table>

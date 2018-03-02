@@ -14,68 +14,90 @@ use backend\models\FundCluster;
 
 <div class="disbursement-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); ?> 
 
     <table class="table table-bordered">
-        <tr>
-            <td><labe>DV NO.</labe></br></br><strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong></td>
-            <td colspan="1" width="280"><?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type']) 
-        ?>
-            </td>
-            <td width="160">
-                <label>Cash Advance?</label></br>
-                <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated'])->label(false)?>
-
-            </td>
-            <td width="200"><?= $form->field($model, 'status')->dropDownList(['Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?></td>
-            <td width="100"><?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('F d, Y') : $model->date]) ?></td>
-        </tr>
-        <tr>
-            <td width="150"></td>
-            <td colspan="1">
-                <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
-            </td>
-            <td><?= $form->field($model, 'responsibility_center')->textInput(['maxlength' => true]) ?></td>
-            <td width="200"> <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
+       <tr>
+           <td colspan="4" style="font-style: italic;">Note: All fields of this form are required. Please, provide appropriate details.</td>
+           <td style="font-size: 18px; width: 220px;">
+                DV No. <strong> <?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
+           </td>
+       </tr>
+       <tr>
+           <td style="width: 380px;">
+               <?= $form->field($model, 'payee')->textInput(['maxlength' => true]) ?>
+           </td>
+           <td>
+               <?= $form->field($model, 'tin')->textInput(['maxlength' => true]) ?>
+           </td>
+           <td style="width: 200px;">
+               <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type']) ?>
+           </td>
+           <td style="width: 200px;">
+            <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated']) ?>
+           </td>
+           <td>
+            <?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('F d, Y') : $model->date]) ?>
+           </td>
+       </tr>
+       <tr>
+           <td>
+               <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
+           </td>
+           <td>
+               <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                     [
-                        'prompt'=>'Select Fund Cluster',
+                        // 'prompt'=>'Select Fund Cluster',
                         'onchange'=>'
                              $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
                                 $("select#disbursement-nca").html(data);
                             });'
-                    ]); ?> 
-            </td>
-            <td><?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no')) ?>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <?= $form->field($model, 'payee')->textInput(['maxlength' => true]) ?>
-            </td>
-            <td width="120">
-                <table>
-                    <label>ORS No.</label>
+                    ]); ?>
+           </td>
+           <td>
+                <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no')) ?>
+           </td>
+           <td>
+               <?= $form->field($model, 'status')->dropDownList(['Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
+           </td>
+           <td>
+               <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true]) ?>
+               <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
+           </td>
+       </tr>
+       <tr>
+           <td colspan="5">
+                <table class="table table-condensed" id="dynamicInput">
                     <tr>
-                        <td><?= $form->field($model, 'ors_class')->textInput(['maxlength' => 2, 'style'=>'width:50px'])->label(false) ?></td>
-                        <td>-</td>
-                        <td><?= $form->field($model, 'ors_year')->textInput(['maxlength' => 4, 'style'=>'width:60px'])->label(false) ?></td>
-                        <td>-</td>
-                        <td><?= $form->field($model, 'ors_month')->textInput(['maxlength' => 2, 'style'=>'width:50px'])->label(false) ?></td>
-                        <td>-</td>
-                        <td><?= $form->field($model, 'ors_serial')->textInput(['maxlength' => 4, 'style'=>'width:60px'])->label(false) ?></td>
+                        <th>Particulars</th>
+                        <th>ORS No.</th>
+                        <th>MFO/PAP</th>
+                        <th>Responsibility Center</th>
+                        <th>Amount</th>
+                        <th></th>
                     </tr>
+    
+                        <tr>
+                            <td style="width: 350px;">
+                                <input type="text" name="particular[0]" class="form-control" required="true">
+                            </td>
+                            <td>
+                                <input type="text" name="ors_no[0]" class="form-control" required="true">
+                            </td>
+                            <td>
+                                <input type="text" name="mfo_pap[0]" class="form-control" required="true">
+                            </td>
+                            <td>
+                                <input type="text" name="responsibility_center[0]" class="form-control" required="true">
+                            </td>
+                            <td style="width: 100px;">
+                                <input type="number" name="amount[0]" class="form-control" required="true">
+                            </td>
+                            <td><button class="btn btn-success" type="button" onClick="addInput('dynamicInput')" ><i class="glyphicon glyphicon-plus"></i></button></td>
+                        </tr>
                 </table>
-            </td>
-            <td><?= $form->field($model, 'tin')->textInput(['maxlength' => true]) ?></td>
-        </tr>
-        <tr>
-            <td colspan="3"><?= $form->field($model, 'particulars')->textarea(['rows' => 4]) ?></td>
-            <td> <?= $form->field($model, 'mfo_pap')->textInput(['maxlength' => true]) ?></td>
-            <td>
-                <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
-            </td>
-        </tr>
+           </td>
+       </tr>
     </table>
 
     <div class="form-group">
@@ -84,4 +106,29 @@ use backend\models\FundCluster;
 
     <?php ActiveForm::end(); ?>
 
+    
+
 </div>
+
+<script>
+
+var counter = 1;
+var limit = 6;
+function addInput(dynamicInput)
+{
+     if (counter == limit)  {
+          alert("You have reached the limit of adding " + counter + " inputs");
+     }
+     else {
+          var newdiv = document.createElement('tr');
+          newdiv.innerHTML = "<tr class='form-group'><td style='width: 350px;'><input type='text' name='particular["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='number' name='amount["+counter+"]' class='form-control' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
+
+          document.getElementById("dynamicInput").appendChild(newdiv);
+          counter++;
+     }
+}
+
+</script>
+
+
+

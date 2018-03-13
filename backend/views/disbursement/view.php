@@ -17,17 +17,19 @@ $this->title = $model->dv_no;
 <div class="disbursement-view">
     <div class="tracking-form">
         <div id="noprint">
-            <p>
-                <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                <a href="javascript:window.print()" class="btn btn-primary">Print</a>
-                <!-- <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
-                        'confirm' => 'Are you sure you want to delete this item?',
-                        'method' => 'post',
-                    ],
-                ]) ?> -->
-            </p>
+            <?php if(\Yii::$app->user->can('updateDisbursementVoucher')) : ?>
+                <p>
+                    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                    <a href="javascript:window.print()" class="btn btn-primary">Print</a>
+                    <!-- <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                        'class' => 'btn btn-danger',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to delete this item?',
+                            'method' => 'post',
+                        ],
+                    ]) ?> -->
+                </p>
+            <?php endif ?>
         </div>
         <table class="table table-bordered table-condensed">
             <tr>

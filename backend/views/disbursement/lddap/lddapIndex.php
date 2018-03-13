@@ -8,6 +8,7 @@ use yii\helpers\Url;
 use backend\models\Disbursement;
 use backend\models\AccountingEntry;
 use yii\widgets\ActiveForm;
+use backend\models\LddapAda;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CashAdvanceSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -22,9 +23,17 @@ $this->title = 'LDDAP-ADA';
         </div>
         <table class="table table-hover">
             <tr>
-                <th></th><th>DV NO.</th><th>Credited To</th><th>ACCOUNT TITLE</th><th>UACS CODE</th><th>GROSS AMOUNT</th><th>WITH-HOLDING TAX</th><th>NET AMOUNT</th>
+                <th></th>
+                <th>DV NO.</th>
+                <th>Credited To</th>
+                <th>ACCOUNT TITLE</th>
+                <th>UACS CODE</th>
+                <th>GROSS AMOUNT</th>
+                <th>WITH-HOLDING TAX</th>
+                <th>NET AMOUNT</th>
             </tr>
             <?php foreach ($disbursement as $result) : ?>
+                <?php if(LddapAda::find()->where(['dv_no' => $result->dv_no])->one() === null) : ?>
                 <tr <?php if($result->dv_no === $dv_no) : ?> style="background-color: #d8ffcc" <?php endif ?> >
                     <td><input type="checkbox" name="dvs[<?= $result->dv_no ?>]" value = "<?= $result->dv_no ?>"></td>
                     <td><?= $result->dv_no ?></td>
@@ -44,6 +53,7 @@ $this->title = 'LDDAP-ADA';
                     </td>
                     <td><?= number_format($result->credit_amount, 2) ?></td>
                 </tr>
+            <?php endif ?>
             <?php endforeach ?>
             <?= $form->field($model, 'dvs')->hiddenInput()->label(false) ?>
         </table>

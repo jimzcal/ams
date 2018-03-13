@@ -66,11 +66,10 @@ return [
         ],
         
         'urlManager' => [
-            'enablePrettyUrl' => false,
+            //'class' => 'yii\web\UrlManager',
             'showScriptName' => false,
-
-            // 'rules' => [
-            // ],
+            'enablePrettyUrl' => false,
+            // 'rules' => [],
         ],
         
     ],

@@ -22,11 +22,12 @@ $this->title = 'CASH STATUS';
 <div class="cash-status-create">
     <?= Yii::$app->session->getFlash('error'); ?>
     <div class="form-wrapper">
+        <div class="form-title">
+            <?= Html::encode($this->title) ?>
+            <?= Html::a('&times;', ['/site/index'], ['class' => 'close-button']) ?>
+        </div>
         <div class="row">
         	<div class="col-lg-3">
-                <div class="title" style="margin-left: 10px;">
-                    <?= Html::encode($this->title) ?>
-                </div>
         		<div class="form-wrapper-left">
         		    <?php $form = ActiveForm::begin(); ?>
 
@@ -249,99 +250,104 @@ $this->title = 'CASH STATUS';
         		</div>
         	</div>
         	<div class="col-lg-9">
-                <!-- <?= $this->render('/transaction-status/transaction_status') ?> -->
-                <div class="title">DISBURSEMENT VOUCHER</div>
-        		<table class="table table-bordered">
-                    <tr>
-                        <td>
-                            <label>DV NO.</label><br>
-                            <strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
-                        </td>
-                        <td>
-                            <label>Transaction-Type:</label></br>
-                            <?php $trans = transaction::find()->where(['id'=>$model->transaction_id])->one(); echo $trans->name; ?>
-                        </td>
-                        
-                        <td colspan="3">
-                            <?= $form->field($model, 'status')->dropDownList([$model->status => $model->status, 'Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled'], ['id' => 'type']) ?>
-                        </td>
-                        <td width="200">
-                            <label>Date:</label><br>
-                            <?= $model->date ?>
-                        </td>
-                    </tr>
+                <div class="form-wrapper-content">
+                    <div class="title">DISBURSEMENT VOUCHER</div>
+            		<table class="table table-bordered table-condensed">
+                        <tr>
+                            <td>
+                                <label>DV NO.</label><br>
+                                <strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
+                            </td>
+                            <td>
+                                <label>Transaction-Type:</label></br>
+                                <?php $trans = transaction::find()->where(['id'=>$model->transaction_id])->one(); echo $trans->name; ?>
+                            </td>
+                            
+                            <td colspan="3">
+                                <?= $form->field($model, 'status')->dropDownList([$model->status => $model->status, 'Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled'], ['id' => 'type']) ?>
+                            </td>
+                            <td width="200">
+                                <label>Date:</label><br>
+                                <?= $model->date ?>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td colspan="4">
-                            <label>Payee:</label><br>
-                            <?= $model->payee ?>
-                        </td>
-                        <td width="200">
-                            <label>Fund Cluster:</label><br>
-                            <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
-                            [
-                                // 'prompt'=>'Select Fund Cluster',
-                                'onchange'=>'
-                                     $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
-                                        $("select#disbursement-nca").html(data);
-                                    });'
-                            ])->label(false) ?>
-                        </td>
-                        <td>
-                            <label>NCA No.:</label></br>
-                            <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'))->label(false) ?>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="4">
+                                <label>Payee:</label><br>
+                                <?= $model->payee ?>
+                            </td>
+                            <td width="200">
+                                <label>Fund Cluster:</label><br>
+                                <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
+                                [
+                                    // 'prompt'=>'Select Fund Cluster',
+                                    'onchange'=>'
+                                         $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
+                                            $("select#disbursement-nca").html(data);
+                                        });'
+                                ])->label(false) ?>
+                            </td>
+                            <td>
+                                <label>NCA No.:</label></br>
+                                <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'))->label(false) ?>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td colspan="6">
-                            <table class="table table-condensed">
-                                    <tr>
-                                        <th>Particulars</th>
-                                        <th>ORS No</th>
-                                        <th>MFO/PAP</th>
-                                        <th>Responsibility Center</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                    <?php foreach ($ors_model as $value): ?>
+                        <tr>
+                            <td colspan="6">
+                                <table class="table table-condensed">
                                         <tr>
-                                            <td style="width: 250px;">
-                                                <?= $value->particular ?>
-                                            </td>
-                                            <td style="width: 130px;">
-                                                <?= $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>
-                                            </td>
-                                            <td>
-                                                <?= $value->mfo_pap ?>
-                                            </td>
-                                            <td>
-                                                <?= $value->responsibility_center ?>
-                                            </td>
-                                            <td style="width: 100px;">
-                                                <?= $value->amount ?>
-                                            </td>
+                                            <th>Particulars</th>
+                                            <th>ORS No</th>
+                                            <th>MFO/PAP</th>
+                                            <th>Responsibility Center</th>
+                                            <th>Amount</th>
                                         </tr>
-                                    <?php endforeach ?>
-                                </table>
-                        </td>
-                    </tr>
+                                        <?php foreach ($ors_model as $value): ?>
+                                            <tr>
+                                                <td style="width: 250px;">
+                                                    <?= $value->particular ?>
+                                                </td>
+                                                <td style="width: 130px;">
+                                                    <?= $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>
+                                                </td>
+                                                <td>
+                                                    <?= $value->mfo_pap ?>
+                                                </td>
+                                                <td>
+                                                    <?= $value->responsibility_center ?>
+                                                </td>
+                                                <td style="width: 100px;">
+                                                    <?= $value->amount ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    </table>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td colspan="4">
-                            <?= $form->field($model, 'remarks')->textarea(['rows' => 3, 'value' => $model->remarks]) ?>
-                        </td>
-                        <td width="120">
-                            <label>Gross Amount:</label><br>
-                            <?= number_format($model->gross_amount, 2) ?><br>
-                        </td>
-                        <td>
-                            <label>Less Amount:</label><br>
-                            <?= number_format($model->less_amount, 2) ?><br>
-                            <label>Net Amount:</label><br>
-                            <span style="font-size: 20px"><?= number_format($model->net_amount, 2) ?></span>
-                        </td>
-                    </tr>
-                </table>
+                        <tr>
+                            <td colspan="4" rowspan="3">
+                                <?= $form->field($model, 'remarks')->textarea(['rows' => 3, 'value' => $model->remarks]) ?>
+                            </td>
+                            <td width="120">
+                                <label>Gross Amount:</label>
+                            </td>
+                            <td>
+                                <?= number_format($model->gross_amount, 2) ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Less Amount:</label></td>
+                            <td><?= number_format($model->less_amount, 2) ?><br></td>
+                        </tr>
+                        <tr>
+                            <td><label>Net Amount:</label></td>
+                            <td><span style="font-size: 20px"><?= number_format($model->net_amount, 2) ?></span></td>
+                        </tr>
+                    </table>
+                </div>
         	</div>
         </div>
     </div>

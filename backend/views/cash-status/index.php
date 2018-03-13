@@ -28,11 +28,11 @@ $this->title = 'CASH STATUS';
             </tr>
             <tr>
                 <td style="font-weight: bold">Total Amount Obligated</td>
-                <td><?= ': '.number_format(array_sum(ArrayHelper::getColumn(CashStatus::find(['disbursement_amount'])->where(['nca_no'=>$nca->nca_no])->all(), 'disbursement_amount')), 2) ?></td>
+                <td><?= ': '.number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?></td>
             </tr>
             <tr>
                 <td style="font-weight: bold">Current Balance</td>
-                <td><?= ': '.number_format($nca->total_amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->all(), 'net_amount')), 2) ?></td>
+                <td><?= ': '.number_format($nca->total_amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?></td>
             </tr>
              <tr>
                 <td style="font-weight: bold">Fund</td>
@@ -70,31 +70,32 @@ $this->title = 'CASH STATUS';
                     <?= $value->ors->ors_class.'-'.$value->ors->ors_year.'-'.$value->ors->ors_month.'-'.$value->ors->ors_serial ?>
                 </td>
                 <td><?= $value->dv_no ?></td>
-                <td><?= number_format($value->gross_amount, 2) ?></td>
-                <td>
-                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')) ? $value->net_amount : '' ?>
+                <td style="text-align: right;"><?= number_format($value->gross_amount, 2) ?></td>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
-                <td>
-                    <?= ($value->ors->ors_class === '02' && $value->ors->ors_year === date('Y')) ? $value->net_amount : '' ?>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '02' && $value->ors->ors_year === date('Y')) ? number_format(
+                        $value->net_amount, 2) : '' ?>
                 </td>
-                <td>
-                    <?= ($value->ors->ors_class === '03' && $value->ors->ors_year === date('Y')) ? $value->net_amount : '' ?>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '03' && $value->ors->ors_year === date('Y')) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
-                <td>
-                    <?= ($value->ors->ors_class === '06' && $value->ors->ors_year === date('Y')) ? $value->net_amount : '' ?>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '06' && $value->ors->ors_year === date('Y')) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
 
-                <td>
-                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1 ) ? $value->net_amount : '' ?>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1 ) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
-                <td>
-                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? $value->net_amount : '' ?>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
-                <td>
-                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? $value->net_amount : '' ?>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
-                <td>
-                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? $value->net_amount : '' ?>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
                 <td><?= $value->status ?></td>
             </tr>

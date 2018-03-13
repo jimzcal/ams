@@ -16,7 +16,7 @@ use backend\models\FundCluster;
 
     <?php $form = ActiveForm::begin(); ?> 
 
-    <table class="table table-bordered">
+    <table class="table">
        <tr>
            <td colspan="4" style="font-style: italic;">Note: All fields of this form are required. Please, provide appropriate details.</td>
            <td style="font-size: 18px; width: 220px;">
@@ -67,7 +67,7 @@ use backend\models\FundCluster;
        </tr>
        <tr>
            <td colspan="5">
-                <table class="table table-condensed" id="dynamicInput">
+                <table class="table table-condensed table-striped" id="dynamicInput">
                     <tr>
                         <th>Particulars</th>
                         <th>ORS No.</th>
@@ -80,7 +80,7 @@ use backend\models\FundCluster;
                       <?php $i=0; ?>
                         <tr>
                             <td style="width: 350px;">
-                              <input type="hidden" name="ids[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->id; ?>" >
+                              <input type="hidden" name="ors_id[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->id; ?>" >
 
                                 <input type="text" name="particular[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->particular; ?>" >
                             </td>
@@ -104,8 +104,7 @@ use backend\models\FundCluster;
            </td>
        </tr>
     </table>
-
-    <div class="form-group">
+    <div class="form-group" style="padding-left: 15px;">
         <?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 

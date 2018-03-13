@@ -72,9 +72,9 @@ class DisbursementController extends Controller
      */
     public function actionView($id)
     {
-        $dv_no = Disbursement::find(['dv_no'])->where(['id'=>$id])->one();
-        $transaction = TransactionStatus::find()->where(['dv_no'=>$dv_no->dv_no])->one();
-        // var_dump($transaction->receiving);
+        $dv_no = Disbursement::find()->where(['id'=>$id])->one();
+        $transaction = TransactionStatus::find()->where(['dv_no' => $dv_no->dv_no])->one();
+        // var_dump($dv_no);
         // exit();
         $transaction1 = explode(',', $transaction->receiving);
         $transaction2 = explode(',', $transaction->processing);
@@ -117,7 +117,7 @@ class DisbursementController extends Controller
                 $model->attachments = '';
             }
 
-            $model->net_amount = (AccountingEntry::find()->where(['vat' => 1])->andWhere(['dv_no' => $model->dv_no])->one() === null ? ($model->gross_amount - $model->less_amount) : ($model->gross_amount/1.12) - $model->less_amount);
+            $model->net_amount = $model->gross_amount - $model->less_amount;
 
             // var_dump($model->ors_no);
             // exit();
@@ -183,6 +183,7 @@ class DisbursementController extends Controller
 
                 //var_dump(sizeof($particulars));
 
+                $model->gross_amount = str_replace(',', '', $model->gross_amount);
                 $model->dv_no = $dv_no;
                 $model->save(false);
 
@@ -197,7 +198,7 @@ class DisbursementController extends Controller
                         $ors_model->particular = $particulars[$i];
                         $ors_model->responsibility_center = $responsibility_center[$i];
                         $ors_model->mfo_pap = $mfo_pap[$i];
-                        $ors_model->amount = $amount[$i];
+                        $ors_model->amount = str_replace(',', '', $amount[$i]);
                         $ors = explode('-', $ors_no[$i]);
 
                             $ors_model->ors_class = $ors[0];
@@ -252,9 +253,10 @@ class DisbursementController extends Controller
                    $model->obligated = 'no';
                 }
 
+                $model->gross_amount = str_replace(',', '', $model->gross_amount);
                 $model->save(false);
 
-                $ids = $_POST['ids'];
+                $ids = $_POST['ors_id'];
                 $particulars = $_POST['particular'];
                 $ors_no = $_POST['ors_no'];
                 //$ors_no = explode(' ', $ors_no[0]);
@@ -275,19 +277,13 @@ class DisbursementController extends Controller
                             'particular' => $particulars[$i],
                             'responsibility_center' => $responsibility_center[$i],
                             'mfo_pap' => $mfo_pap[$i],
-                            'amount' => $amount[$i],
+                            'amount' => str_replace(',', '', $amount[$i]),
                             'ors_class' => $ors[0],
                             'ors_year' => $ors[1],
                             'ors_month' => $ors[2],
                             'ors_serial' => $ors[3]
                         ], 
                             ['id' => $id])->execute();
-
-                        //$ors_model->save(false);
-
-                        // var_dump($ors_model->save(false));
-                        // exit();
-                       
                     }
 
                     else
@@ -297,7 +293,7 @@ class DisbursementController extends Controller
                         $ors_model->particular = $particulars[$i];
                         $ors_model->responsibility_center = $responsibility_center[$i];
                         $ors_model->mfo_pap = $mfo_pap[$i];
-                        $ors_model->amount = $amount[$i];
+                        $ors_model->amount = str_replace(',', '', $amount[$i]);
                         $ors = explode('-', $ors_no[$i]);
 
                             $ors_model->ors_class = $ors[0];
@@ -309,7 +305,7 @@ class DisbursementController extends Controller
                     } 
                 }
 
-                return $this->redirect(['view', 'id' => $id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
 
             return $this->render('update', [
@@ -461,35 +457,47 @@ class DisbursementController extends Controller
                         ->all();
         if ($model->load(Yii::$app->request->post()))
         {
-            $dvs = $_POST['dvs'];
-            $num_recs = LddapAda::find()->groupBy(['lddap_no'])->all();
-            $series = strlen((string) sizeof($num_recs)) === 1 ? '00' : '0';
-            $lddap_no = '101'.'-'.date('m').'-'.$series.(sizeof($num_recs)+1).'-'.date('Y');
-            return $this->render('/disbursement/lddap/lddap_form', ['dvs' => $dvs, 'lddap_no' => $lddap_no,'model2' => $model2]);
+            if(isset($_POST['dvs']) !== null)
+            {
+                $dvs = $_POST['dvs'];
+                $num_recs = LddapAda::find()->groupBy(['lddap_no'])->all();
+                $series = strlen((string) sizeof($num_recs)) === 1 ? '00' : '0';
+                $lddap_no = '101'.'-'.date('m').'-'.$series.(sizeof($num_recs)+1).'-'.date('Y');
+                return $this->render('/disbursement/lddap/lddap_form', ['dvs' => $dvs, 'lddap_no' => $lddap_no, 'model2' => $model2]);
+            }
+
+            else
+            {
+                
+                return $this->render('/disbursement/lddap/lddapIndex', ['disbursement' => $disbursement, 'dv_no' => $dv_no, 'model' => $model]);
+            }
+            
         }
 
         if ($model2->load(Yii::$app->request->post()))
         {
-            for($i=0; $i<sizeof($model2->dv_no); $i++)
+            if(LddapAda::find()->where(['lddap_no' => $model2->lddap_no])->one() === null)
             {
-                $model3 = new LddapAda();
+                for($i=0; $i<sizeof($model2->dv_no); $i++)
+                {
+                    $model3 = new LddapAda();
 
-                $model3->date = $model2->date;
-                $model3->dv_no = $model2->dv_no[$i];
-                $model3->current_account = $model2->current_account[$i];
-                $model3->uacs_code = $model2->uacs_code[$i];
-                $model3->net_amount = $model2->net_amount[$i];
-                $model3->lddap_no = $model2->lddap_no;
+                    $model3->date = $model2->date;
+                    $model3->dv_no = $model2->dv_no[$i];
+                    $model3->current_account = $model2->current_account[$i];
+                    $model3->uacs_code = $model2->uacs_code[$i];
+                    $model3->net_amount = $model2->net_amount[$i];
+                    $model3->lddap_no = $model2->lddap_no;
 
-                $model3->save(false);
+                    $model3->save(false);
+                }
             }
 
-            //Yii::$app->getSession()->setFlash('success', 'Successfully Saved!');
             $dvs = LddapAda::find()
                     ->where(['lddap_no' => $model2->lddap_no])
                     ->joinWith('dv')
                     ->all();
-            //return $this->render('/disbursement/lddap/lddap_view', ['dvs' => $dvs]);
+
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
@@ -503,8 +511,8 @@ class DisbursementController extends Controller
                 ]
             ]);
             return $pdf->render();
+            
         }
-
         return $this->render('/disbursement/lddap/lddapIndex', ['disbursement' => $disbursement, 'dv_no' => $dv_no, 'model' => $model]);
     }
 

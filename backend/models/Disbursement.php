@@ -45,14 +45,14 @@ class Disbursement extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public $date_paid, $check_no, $lddap_check_no, $page_checker, $particular, $amount, $ors_id;
+    public $date_paid, $check_no, $lddap_check_no, $page_checker, $particular, $amount, $ors_id, $lddap_no;
     public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $ors_no;
     public function rules()
     {
         return [
             [['dv_no', 'fund_cluster', 'cash_advance', 'date', 'payee', 'nca', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
-            [['attachments', 'remarks', 'particular', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
-            [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*[.,]?[0-9]+([eE][-+]?[0-9]+)?\s*$/'],
+            [['attachments', 'remarks', 'particular', 'lddap_no', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
+            [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[.00]'],
             [['transaction_id', 'ors_id'], 'integer'],
             [['dv_no', 'payee', 'nca'], 'string', 'max' => 200],
             [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated'], 'string', 'max' => 100],

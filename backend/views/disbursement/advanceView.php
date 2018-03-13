@@ -16,7 +16,7 @@ $this->title = 'CASH ADVANCES';
     <div class="title">
         <?= Html::encode($this->title) ?>
     </div>
-    <table class="table table-hover">
+    <table class="table table-hover table-striped">
         <tr>
             <th >DATE</th><th>DV NO.</th><th>PAYEE</th><th>AMOUNT</th>
         </tr>

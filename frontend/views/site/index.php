@@ -8,20 +8,15 @@ use sjaakp\cycle\Cycle;
 $this->title = 'Home';
 ?>
 <div class="site-index">
-
-    <div class="body-content">
-        
-            <?= Cycle::widget([
-                'dataProvider' => $dataProvider,
-                'imgAttribute' => 'url',
-                'options' => [
-                    'speed' => 2000,
-                    'fx' => 'tileBlind',
-                    'tileCount' => 26,
-                    'tileVertical' => true,
-                    'timeout' => 3000
-                ],
-            ]) ?>
-        
-    </div>
+    <?= Cycle::widget([
+        'dataProvider' => $dataProvider,
+        'imgAttribute' => 'url',
+        'options' => [
+            'speed' => 2000,
+            'fx' => 'tileBlind',
+            'tileCount' => 26,
+            'tileVertical' => true,
+            'timeout' => 3000
+        ],
+    ]) ?>
 </div>

@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
                         <?= $form->field($model, 'credit_amount')->dropDownList(['0'=>'No Deduction','5'=>'5%', '10'=>'10%', '3'=>'3%', $net => $net])->label(false)?>
                     </td>
                     <td width="250">
-                        <?= $form->field($model, 'credit_to')->dropDownList(['BIR' => 'BIR', 'payee' => 'Payee' ])->label(false); ?>
+                        <?= $form->field($model, 'credit_to')->dropDownList([''=>'', 'BIR' => 'BIR', 'payee' => 'Payee' ])->label(false); ?>
                     </td>
                 </tr>
             </table>

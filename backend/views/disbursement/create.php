@@ -12,9 +12,9 @@ $this->title = 'NEW DISBURSEMENT VOUCHER';
 ?>
 <div class="disbursement-create">
     <div class="form-wrapper" id="form-wrapper">
-    	<div class="title">
+    	<div class="form-title">
     		<?= Html::encode($this->title) ?>
-    		<?= Html::a('&times;', ['/disbursement/index'], ['class' => 'close']) ?>
+    		<?= Html::a('&times;', ['/disbursement/index'], ['class' => 'close-button']) ?>
     	</div>
 
 	    <?= $this->render('_form', [

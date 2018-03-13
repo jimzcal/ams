@@ -27,8 +27,15 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
 
             //'id',
             //'date_received',
-            'fund_cluster',
-            'fundCluster.description',
+           // 'fund_cluster',
+            [
+                'attribute' => 'fund_cluster',
+                'value' => function($data){
+                    $val = $data->fund_cluster.' - '.$data->fundCluster->description;
+                    return $val;
+                }
+            ],
+            //'fundCluster.description',
             'nca_no',
             //'mds_sub_acc_no',
             //'gsb_branch',
@@ -46,7 +53,13 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
             //'october',
             //'november',
             //'december',
-            'total_amount',
+            //'total_amount',
+            [
+                'attribute' => 'total_amount',
+                'value' => function($data){
+                    return number_format($data->total_amount, 2);
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

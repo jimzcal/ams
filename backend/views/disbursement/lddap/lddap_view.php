@@ -8,6 +8,7 @@ use yii\helpers\Url;
 use backend\models\Disbursement;
 use backend\models\AccountingEntry;
 use yii\widgets\ActiveForm;
+use backend\models\Ors;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CashAdvanceSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -88,7 +89,13 @@ $this->title = 'LDDAP-ADA FORM';
                         <?php
                             foreach ($dvs as $value)
                             {
-                              echo $value->dv->ors_class.'-'.$value->dv->ors_year.'-'.$value->dv->ors_month.'-'.$value->dv->ors_serial.'<br>';
+                              $dv = Ors::find()
+                              ->where(['dv_no' => $value])
+                              ->all();
+                              foreach ($dv as $ors_value) 
+                              {
+                                 echo $ors_value->ors_class.'-'.$ors_value->ors_year.'-'.$ors_value->ors_month.'-'.$ors_value->ors_serial.'<br>';
+                              }
                             }
                         ?>
                     </td>

@@ -30,12 +30,15 @@ AppAsset::register($this);
         
     </div>
     <div class="icon-wrapper">
+        <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Home">
+            <?= Html::a('<i class="glyphicon glyphicon-home icon-font" aria-hidden="true"></i>', ["/site/index"]) ?>
+        </div>
         <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Search DV">
-            <?= Html::a('<i class="glyphicon glyphicon-search icon-font" aria-hidden="true"></i>', ["/user/admin/index"]) ?>
+            <?= Html::a('<i class="glyphicon glyphicon-search icon-font" aria-hidden="true"></i>', ["/disbursement/search"]) ?>
         </div>
-        <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Organization Structure">
+        <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Organization Structure">
             <?= Html::a('<i class="glyphicon glyphicon-list-alt icon-font" aria-hidden="true"></i>', ["/user/admin/index"]) ?>
-        </div>
+        </div> -->
     </div>
     <div class="content-wrapper">
         <?= Alert::widget() ?>

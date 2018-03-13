@@ -14,7 +14,7 @@ $this->title = 'NOTICE OF CASH ALLOCATIONS';
 <div class="cash-status-index">
 
     <div class="title"><?= Html::encode($this->title) ?></div>
-    <table class="table table-hover">
+    <table class="table table-hover table-striped">
         <tr>
             <th>DATE</th><th>PERIOD</th><th>NCA NO.</th><th>AMOUNT</th>
         </tr>

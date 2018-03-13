@@ -32,7 +32,7 @@ $this->title = 'FINANCIAL REPORTS';
             Taxes', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-money" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Cash Advances', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+            Cash Advances', ["/disbursement/cash"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-file-text" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Monthly Disbursement Program', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>

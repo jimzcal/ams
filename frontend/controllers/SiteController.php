@@ -108,6 +108,13 @@ class SiteController extends Controller
         }
     }
 
+    public function actionSearchIndex()
+    {
+        return $this->render('_search', [
+                'model' => $model,
+            ]);
+    }
+
     /**
      * Logs out the current user.
      *

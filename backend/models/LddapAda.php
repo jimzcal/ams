@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\models;
+use backend\models\Ors;
 
 use Yii;
 
@@ -65,6 +66,11 @@ class LddapAda extends \yii\db\ActiveRecord
     public function getDv()
     {
         return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
+    }
+
+     public function getOrs()
+    {
+        return $this->hasOne(Ors::className(), ['dv_no' => 'dv_no']);
     }
 
     /**

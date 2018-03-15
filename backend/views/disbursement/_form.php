@@ -18,20 +18,20 @@ use backend\models\FundCluster;
 
       <table class="table">
          <tr>
-             <td colspan="4" style="font-style: italic;">Note: All fields of this form are required. Please, provide appropriate details.</td>
+             <td colspan="5" style="font-style: italic;">Note: All fields of this form are required. Please, provide appropriate details.</td>
              <td style="font-size: 18px; width: 220px;">
                   DV No. <strong> <?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
              </td>
          </tr>
          <tr>
-             <td style="width: 380px;">
+             <td style="width: 380px;" colspan="2">
                  <?= $form->field($model, 'payee')->textInput(['maxlength' => true]) ?>
              </td>
              <td>
                  <?= $form->field($model, 'tin')->textInput(['maxlength' => true]) ?>
              </td>
              <td style="width: 200px;">
-                 <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type']) ?>
+                 <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name')) ?>
              </td>
              <td style="width: 200px;">
               <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated']) ?>
@@ -45,23 +45,39 @@ use backend\models\FundCluster;
                  <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
              </td>
              <td>
-                 <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
+               <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                       [
                           // 'prompt'=>'Select Fund Cluster',
                           'onchange'=>'
                                $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
                                   $("select#disbursement-nca").html(data);
                               });'
-                      ]); ?>
+                      ]); 
+                  ?>
              </td>
              <td>
-                  <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no')) ?>
+                 <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'),
+                      [
+                        'prompt'=>'Select NCA No.',
+                        'onchange'=>'
+                               $.post("index.php?r=nca/sources&nca_no='.'"+$(this).val(),function(data){
+                                  $("select#disbursement-funding_source").html(data);
+                              });'
+                      ]);
+                 ?>
+             </td>
+             <td>
+                <?= $form->field($model, 'funding_source')->dropDownList(ArrayHelper::map(Nca::find()->all(),'funding_source', 'funding_source'),
+                    [
+                      'prompt'=>'Select Funding Source',
+                    ]);
+                 ?>
              </td>
              <td>
                  <?= $form->field($model, 'status')->dropDownList(['Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
              </td>
              <td>
-                 <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true]) ?>
+                 <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount']) ?>
                  <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
              </td>
          </tr>
@@ -77,24 +93,24 @@ use backend\models\FundCluster;
                           <th></th>
                       </tr>
       
-                          <tr>
-                              <td style="width: 350px;">
-                                  <input type="text" name="particular[0]" class="form-control" required="true">
-                              </td>
-                              <td>
-                                  <input type="text" name="ors_no[0]" class="form-control" required="true">
-                              </td>
-                              <td>
-                                  <input type="text" name="mfo_pap[0]" class="form-control" required="true">
-                              </td>
-                              <td>
-                                  <input type="text" name="responsibility_center[0]" class="form-control" required="true">
-                              </td>
-                              <td style="width: 100px;">
-                                  <input type="text" name="amount[0]" class="form-control" required="true">
-                              </td>
-                              <td><button class="btn btn-success" type="button" onClick="addInput('dynamicInput')" ><i class="glyphicon glyphicon-plus"></i></button></td>
-                          </tr>
+                      <tr>
+                          <td style="width: 350px;">
+                              <input type="text" name="particular[0]" class="form-control" required="true">
+                          </td>
+                          <td>
+                              <input type="text" name="ors_no[0]" class="form-control" required="true">
+                          </td>
+                          <td>
+                              <input type="text" name="mfo_pap[0]" class="form-control" required="true">
+                          </td>
+                          <td>
+                              <input type="text" name="responsibility_center[0]" class="form-control" required="true">
+                          </td>
+                          <td style="width: 100px;">
+                              <input type="text" name="amount[0]" class="form-control num" required="true">
+                          </td>
+                          <td><button class="btn btn-success" type="button" onClick="addInput('dynamicInput')" ><i class="glyphicon glyphicon-plus"></i></button></td>
+                      </tr>
                   </table>
              </td>
          </tr>
@@ -119,11 +135,48 @@ function addInput(dynamicInput)
      }
      else {
           var newdiv = document.createElement('tr');
-          newdiv.innerHTML = "<tr class='form-group'><td style='width: 350px;'><input type='text' name='particular["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='text' name='amount["+counter+"]' class='form-control' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
+          newdiv.innerHTML = "<tr class='form-group'><td style='width: 350px;'><input type='text' name='particular["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='text' name='amount["+counter+"]' class='form-control num' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
 
           document.getElementById("dynamicInput").appendChild(newdiv);
+
+          // var my_elem = document.getElementById('my_id');
+
+          // var span = document.createElement('span');
+          //     span.innerHTML = '*';
+          //     span.className = 'asterisk';
+
+          // my_elem.parentNode.insertBefore(span, my_elem);
+
           counter++;
      }
+}
+
+window.onload = function()
+{
+
+$(".num").each(function() {
+
+            $(this).change(function(){
+                calculateSum();
+            });
+        });
+
+    function calculateSum() {
+
+        var sum = 0;
+        //iterate through each textboxes and add the values
+        $(".num").each(function() {
+
+            //add only if the value is number
+            if(!isNaN(this.value) && this.value.length!=0) {
+                sum += parseFloat(this.value);
+            }
+
+        });
+        //.toFixed() method will roundoff the final sum to 2 decimal places
+        $("#totalAmount").val(sum.toFixed(2));
+    }
+
 }
 
 </script>

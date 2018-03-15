@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use backend\models\FundCluster;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\NcaSearch */
@@ -18,53 +20,27 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <table class="search-table">
+        <tr>
+            <td valign="top" align="right">
+                <i class="fa fa-search" style="color: green; font-size: 30px;"></i>
+            </td>
+            <td>
+                <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
+                    [
+                        'prompt'=>'Fund Cluster',
 
-    <?= $form->field($model, 'date_received') ?>
-
-    <?= $form->field($model, 'nca_no') ?>
-
-    <?= $form->field($model, 'fund_cluster') ?>
-
-    <?= $form->field($model, 'mds_sub_acc_no') ?>
-
-    <?php // echo $form->field($model, 'gsb_branch') ?>
-
-    <?php // echo $form->field($model, 'purpose') ?>
-
-    <?php // echo $form->field($model, 'fiscal_year') ?>
-
-    <?php // echo $form->field($model, 'january') ?>
-
-    <?php // echo $form->field($model, 'february') ?>
-
-    <?php // echo $form->field($model, 'march') ?>
-
-    <?php // echo $form->field($model, 'april') ?>
-
-    <?php // echo $form->field($model, 'may') ?>
-
-    <?php // echo $form->field($model, 'june') ?>
-
-    <?php // echo $form->field($model, 'july') ?>
-
-    <?php // echo $form->field($model, 'august') ?>
-
-    <?php // echo $form->field($model, 'september') ?>
-
-    <?php // echo $form->field($model, 'october') ?>
-
-    <?php // echo $form->field($model, 'november') ?>
-
-    <?php // echo $form->field($model, 'december') ?>
-
-    <?php // echo $form->field($model, 'total_amount') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
-
+                    ])->label(false); ?>
+            </td>
+            <td>
+                <?php echo $form->field($model, 'fiscal_year')->textInput(['placeholder' => 'Fiscal Year'])->label(false) ?>
+            </td>
+            <td>
+                <div class="form-group">
+                    <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </td>
+        </tr>
+    </table>
     <?php ActiveForm::end(); ?>
-
 </div>

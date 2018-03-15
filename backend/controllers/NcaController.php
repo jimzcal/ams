@@ -52,8 +52,11 @@ class NcaController extends Controller
      */
     public function actionView($id)
     {
+        $nca_no = Nca::find(['nca_no'])->where(['id' => $id])->one();
+        $nca = Nca::find(['nca_no'])->where(['nca_no' => $nca_no->nca_no])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'nca' => $nca,
         ]);
     }
 
@@ -68,8 +71,69 @@ class NcaController extends Controller
 
         if ($model->load(Yii::$app->request->post()))
         {
-            $model->save(false);
-            return $this->redirect(['view', 'id' => $model->id]);
+            if(isset($_POST['funding_source']) && isset($_POST['mds_sub_acc_no']) && isset($_POST['gsb_branch']))
+            {
+                $funding_sources = $_POST['funding_source'];
+                $mds_sub_acc_nos = $_POST['mds_sub_acc_no'];
+                $gsb_branches = $_POST['gsb_branch'];
+                $januarys = $_POST['january'];
+                $februarys = $_POST['february'];
+                $marches = $_POST['march'];
+                $aprils = $_POST['april'];
+                $mays = $_POST['may'];
+                $junes = $_POST['june'];
+                $julys = $_POST['july'];
+                $augusts = $_POST['august'];
+                $septembers = $_POST['september'];
+                $octobers = $_POST['october'];
+                $novembers = $_POST['november'];
+                $decembers = $_POST['december'];
+                $first_quarters = $_POST['first_quarter'];
+                $second_quarters = $_POST['second_quarter'];
+                $third_quarters = $_POST['third_quarter'];
+                $forth_quarters = $_POST['forth_quarter'];
+
+                for($i=0; $i < sizeof($funding_sources); $i++)
+                {
+                    $model2 = new Nca();
+
+                    $model2->fund_cluster = $model->fund_cluster;
+                    $model2->fiscal_year = $model->fiscal_year;
+                    $model2->nca_no = $model->nca_no;
+                    $model2->nca_type = $model->nca_type;
+                    $model2->date_received = $model->date_received;
+                    $model2->purpose = $model->purpose;
+                    $model2->total_amount = $model->total_amount;
+                    $model2->funding_source = $funding_sources[$i];
+                    $model2->mds_sub_acc_no = $mds_sub_acc_nos[$i];
+                    $model2->gsb_branch = $gsb_branches[$i];
+                    $model2->january = $januarys[$i];
+                    $model2->february = $februarys[$i];
+                    $model2->march = $marches[$i];
+                    $model2->april = $aprils[$i];
+                    $model2->may = $mays[$i];
+                    $model2->june = $junes[$i];
+                    $model2->july = $julys[$i];
+                    $model2->august = $augusts[$i];
+                    $model2->september = $septembers[$i];
+                    $model2->october = $octobers[$i];
+                    $model2->november = $novembers[$i];
+                    $model2->december = $decembers[$i];
+                    $model2->first_quarter = $first_quarters[$i];
+                    $model2->second_quarter = $second_quarters[$i];
+                    $model2->third_quarter = $third_quarters[$i];
+                    $model2->forth_quarter = $forth_quarters[$i];
+
+                    $validitys = $_POST['validity_'.$i];
+                    $validitys = implode(',', $validitys);
+
+                    $model2->validity = $validitys;
+
+                    $model2->save(false);
+                }
+            }
+            
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -87,13 +151,84 @@ class NcaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $annexes = Nca::find()->where(['nca_no' => $model->nca_no])->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()))
+        {
+            if(isset($_POST['funding_source']) && isset($_POST['mds_sub_acc_no']) && isset($_POST['gsb_branch']))
+            {
+                $ids = $_POST['id'];
+                $funding_sources = $_POST['funding_source'];
+                $mds_sub_acc_nos = $_POST['mds_sub_acc_no'];
+                $gsb_branches = $_POST['gsb_branch'];
+                $januarys = $_POST['january'];
+                $februarys = $_POST['february'];
+                $marches = $_POST['march'];
+                $aprils = $_POST['april'];
+                $mays = $_POST['may'];
+                $junes = $_POST['june'];
+                $julys = $_POST['july'];
+                $augusts = $_POST['august'];
+                $septembers = $_POST['september'];
+                $octobers = $_POST['october'];
+                $novembers = $_POST['november'];
+                $decembers = $_POST['december'];
+                $first_quarters = $_POST['first_quarter'];
+                $second_quarters = $_POST['second_quarter'];
+                $third_quarters = $_POST['third_quarter'];
+                $forth_quarters = $_POST['forth_quarter'];
+
+
+                for($i=0; $i < sizeof($funding_sources); $i++)
+                {
+                    $model2 = $this->findModel($ids[$i]);
+
+                    $model2->fund_cluster = $model->fund_cluster;
+                    $model2->fiscal_year = $model->fiscal_year;
+                    $model2->nca_no = $model->nca_no;
+                    $model2->nca_type = $model->nca_type;
+                    $model2->date_received = $model->date_received;
+                    $model2->purpose = $model->purpose;
+                    $model2->total_amount = $model->total_amount;
+                    $model2->funding_source = $funding_sources[$i];
+                    $model2->mds_sub_acc_no = $mds_sub_acc_nos[$i];
+                    $model2->gsb_branch = $gsb_branches[$i];
+                    $model2->january = $januarys[$i];
+                    $model2->february = $februarys[$i];
+                    $model2->march = $marches[$i];
+                    $model2->april = $aprils[$i];
+                    $model2->may = $mays[$i];
+                    $model2->june = $junes[$i];
+                    $model2->july = $julys[$i];
+                    $model2->august = $augusts[$i];
+                    $model2->september = $septembers[$i];
+                    $model2->october = $octobers[$i];
+                    $model2->november = $novembers[$i];
+                    $model2->december = $decembers[$i];
+                    $model2->first_quarter = $first_quarters[$i];
+                    $model2->second_quarter = $second_quarters[$i];
+                    $model2->third_quarter = $third_quarters[$i];
+                    $model2->forth_quarter = $forth_quarters[$i];
+
+                    $validitys = $_POST['validity_'.$i];
+                    $validitys = implode(',', $validitys);
+
+                    $model2->validity = $validitys;
+
+                    // var_dump($validitys);
+                    // exit();
+
+                    $model2->save(false);
+                }
+            }
+            
+            Yii::$app->getSession()->setFlash('success', 'Success! Record has been updated.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'annexes' => $annexes,
         ]);
     }
 
@@ -142,6 +277,29 @@ class NcaController extends Controller
             foreach($clusters as $cluster)
             {
                  echo "<option value='".$cluster->nca_no."'>".$cluster->nca_no."</option>";
+            }
+        }
+        else
+            {
+                echo "<option> - </option>";
+            }
+    }
+
+    public function actionSources($nca_no)
+    {
+        $countSources  = Nca::find()
+            ->where(['nca_no'=>$nca_no])
+            ->count();
+
+        $sources = Nca::find()
+            ->where(['nca_no'=>$nca_no])
+            ->all();
+
+        if($countSources >0)
+        {
+            foreach($sources as $source)
+            {
+                 echo "<option value='".$source->funding_source."'>".$source->funding_source."</option>";
             }
         }
         else

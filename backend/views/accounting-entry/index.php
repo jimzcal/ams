@@ -12,32 +12,29 @@ $this->title = 'ACCOUNTING ENTRIES';
 ?>
 <div class="accounting-entry-index">
 
-    <div class="title">
-        <?= Html::encode($this->title) ?>
+    <div class="new-title">
+        <i class="fa fa-calculator" aria-hidden="true"></i> Accounting Entries
     </div>
+
+    
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div style=" padding: 0; width: 88%; margin-left: auto; margin-right: auto; display: block;">
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    </div>
 
-  <!--   <p>
-        <?= Html::a('Create Accounting Entry', ['create'], ['class' => 'btn btn-success']) ?>
-    </p> -->
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-           // ['class' => 'yii\grid\SerialColumn'],
-
-            //'id',
-            'dv_no',
-            'account_title',
-            'uacs_code',
-            'debit',
-            'credit_amount',
-            'credit_to',
-
-           // ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+        <div class="view-index">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                //'filterModel' => $searchModel,
+                'columns' => [
+                    'dv_no',
+                    'account_title',
+                    'uacs_code',
+                    'debit',
+                    'credit_amount',
+                    'credit_to',
+                ],
+            ]); ?>
+         </div>
     <?php Pjax::end(); ?>
 </div>

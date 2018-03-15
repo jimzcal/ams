@@ -11,58 +11,67 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="nca-index">
-
+<?= Yii::$app->session->getFlash('error'); ?>
     <div class="title">
-        <?= Html::encode($this->title) ?>
         <?= Html::a('New NCA', ['create'], ['class' => 'btn btn-success btn-right']) ?>
     </div>
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <div class="new-title">
+        <i class="fa fa-sticky-note" aria-hidden="true"></i> Notice of Cash Allocation (NCA)
+    </div>
 
-            //'id',
-            //'date_received',
-           // 'fund_cluster',
-            [
-                'attribute' => 'fund_cluster',
-                'value' => function($data){
-                    $val = $data->fund_cluster.' - '.$data->fundCluster->description;
-                    return $val;
-                }
+    <div style=" padding: 0; width: 88%; margin-left: auto; margin-right: auto; display: block;">
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    </div>
+
+    <div class="view-index">
+        <?php Pjax::begin(); ?>
+
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            //'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+
+                //'id',
+                //'date_received',
+               // 'fund_cluster',
+                [
+                    'attribute' => 'fund_cluster',
+                    'value' => function($data){
+                        $val = $data->fund_cluster.' - '.$data->fundCluster->description;
+                        return $val;
+                    }
+                ],
+                //'fundCluster.description',
+                'nca_no',
+                //'mds_sub_acc_no',
+                //'gsb_branch',
+                //'purpose',
+                'fiscal_year',
+                //'january',
+                //'february',
+                //'march',
+                //'april',
+                //'may',
+                //'june',
+                //'july',
+                //'august',
+                //'september',
+                //'october',
+                //'november',
+                //'december',
+                //'total_amount',
+                [
+                    'attribute' => 'total_amount',
+                    'value' => function($data){
+                        return number_format($data->total_amount, 2);
+                    }
+                ],
+
+                ['class' => 'yii\grid\ActionColumn'],
             ],
-            //'fundCluster.description',
-            'nca_no',
-            //'mds_sub_acc_no',
-            //'gsb_branch',
-            //'purpose',
-            'fiscal_year',
-            //'january',
-            //'february',
-            //'march',
-            //'april',
-            //'may',
-            //'june',
-            //'july',
-            //'august',
-            //'september',
-            //'october',
-            //'november',
-            //'december',
-            //'total_amount',
-            [
-                'attribute' => 'total_amount',
-                'value' => function($data){
-                    return number_format($data->total_amount, 2);
-                }
-            ],
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-    <?php Pjax::end(); ?>
+        ]); ?>
+        <?php Pjax::end(); ?>
+    </div>
 </div>

@@ -50,12 +50,12 @@ class Disbursement extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dv_no', 'fund_cluster', 'cash_advance', 'date', 'payee', 'nca', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
-            [['attachments', 'remarks', 'particular', 'lddap_no', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
+            [['dv_no', 'fund_cluster', 'cash_advance', 'funding_source', 'date', 'payee', 'nca', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
+            [['attachments', 'funding_source', 'remarks', 'particular', 'lddap_no', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
             [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[.00]'],
             [['transaction_id', 'ors_id'], 'integer'],
             [['dv_no', 'payee', 'nca'], 'string', 'max' => 200],
-            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated'], 'string', 'max' => 100],
+            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated', 'funding_source'], 'string', 'max' => 100],
             [['dv_no'], 'unique'],
         ];
     }
@@ -72,7 +72,7 @@ class Disbursement extends \yii\db\ActiveRecord
             'payee' => 'Payee',
             'particular' => 'Particulars',
             'mode_of_payment' => 'Mode Of Payment',
-            'nca' => 'NCA',
+            'nca' => 'NCA No.',
             'responsibility_center' => 'Responsibility Center',
             'mfo_pap' => 'MFO/PAP',
             'gross_amount' => 'Gross Amount',
@@ -80,7 +80,7 @@ class Disbursement extends \yii\db\ActiveRecord
             'less_amount' => 'Less Amount',
             'net_amount' => 'Net Amount',
             'fund_cluster' => 'Fund Cluster',
-            'fund_source' => 'Fund Source',
+            'funding_source' => 'Funding Source',
             'ors_no' => 'ORS No',
             'transaction_id' => 'Transaction Type',
             'attachments' => 'Attachments',

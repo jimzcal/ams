@@ -18,24 +18,27 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'dv_no') ?>
-
-    <?= $form->field($model, 'account_title') ?>
-
-    <?= $form->field($model, 'uacs_code') ?>
-
-    <?= $form->field($model, 'debit') ?>
-
-    <?php // echo $form->field($model, 'credit_amount') ?>
-
-    <?php // echo $form->field($model, 'credit_to') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
+    <table class="search-table">
+        <tr>
+            <td valign="top" align="right">
+                <i class="fa fa-search" style="color: green; font-size: 30px;"></i>
+            </td>
+            <td>
+                <?= $form->field($model, 'account_title')->textInput(['placeholder' => 'Account Title'])->label(false) ?>
+            </td>
+            <td>
+                <?= $form->field($model, 'uacs_code')->textInput(['placeholder' => 'UACS Code'])->label(false) ?>
+            </td>
+            <td>
+                <?php echo $form->field($model, 'credit_amount')->textInput(['placeholder' => 'Credit Amount'])->label(false) ?>
+            </td>
+            <td>
+                <div class="form-group">
+                    <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </td>
+        </tr>
+    </table>
 
     <?php ActiveForm::end(); ?>
 

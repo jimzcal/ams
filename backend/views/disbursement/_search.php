@@ -15,42 +15,27 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'dv_no') ?>
-
-    <?= $form->field($model, 'date') ?>
-
-    <?= $form->field($model, 'payee') ?>
-
-    <?= $form->field($model, 'particulars') ?>
-
-    <?php // echo $form->field($model, 'mode_of_payment') ?>
-
-    <?php // echo $form->field($model, 'responsibility_center') ?>
-
-    <?php // echo $form->field($model, 'mfo_pap') ?>
-
-    <?php // echo $form->field($model, 'gross_amount') ?>
-
-    <?php // echo $form->field($model, 'less_amount') ?>
-
-    <?php // echo $form->field($model, 'net_amount') ?>
-
-    <?php // echo $form->field($model, 'fund_source') ?>
-
-    <?php // echo $form->field($model, 'ors_no') ?>
-
-    <?php // echo $form->field($model, 'transaction_type') ?>
-
-    <?php // echo $form->field($model, 'attachments') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
+    <table class="search-table">
+        <tr>
+            <td valign="top" align="right">
+                <i class="fa fa-search" style="color: green; font-size: 30px;"></i>
+            </td>
+            <td>
+                <?= $form->field($model, 'dv_no')->textInput(['placeholder' => 'DV No.'])->label(false) ?>
+            </td>
+            <td>
+                <?= $form->field($model, 'payee')->textInput(['placeholder' => 'Name of Payee'])->label(false) ?>
+            </td>
+            <td>
+                <?= $form->field($model, 'date')->textInput(['placeholder' => 'Date of Transaction'])->label(false) ?>
+            </td>
+            <td>
+                <div class="form-group">
+                    <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </td>
+        </tr>
+    </table>
 
     <?php ActiveForm::end(); ?>
 

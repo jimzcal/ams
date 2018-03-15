@@ -89,7 +89,7 @@ $this->title = $model->dv_no;
                 </td>
             </tr>
             <tr>
-                <td align="right">ORS No.:</td><td colspan="2" width="35"><strong><?= $model->ors->ors_class.'-'.$model->ors->ors_year.'-'.$model->ors->ors_month.'-'.$model->ors->ors_serial; ?></strong></td>
+                <td align="right">ORS No.:</td><td colspan="2" width="35"><strong><?= $model->ors->ors_class.'-'.$model->ors->funding_source.'-'.$model->ors->ors_year.'-'.$model->ors->ors_month.'-'.$model->ors->ors_serial; ?></strong></td>
             </tr>
             <tr>
                 <td align="right">Less Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->less_amount, 2); ?></strong></td>

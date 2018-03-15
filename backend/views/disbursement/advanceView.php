@@ -13,19 +13,30 @@ $this->title = 'CASH ADVANCES';
 ?>
 <div class="cash-advance-index">
 
-    <div class="title">
-        <?= Html::encode($this->title) ?>
+    <div class="new-title">
+        <i class="fa fa-money" aria-hidden="true"></i> Cash Advances
     </div>
-    <table class="table table-hover table-striped">
-        <tr>
-            <th >DATE</th><th>DV NO.</th><th>PAYEE</th><th>AMOUNT</th>
-        </tr>
-        <?php foreach ($results as $result) : ?>
-            <tr data-id = <?= $result->id ?>>
-                <td><?= $result->date ?></td><td><?= $result->dv_no ?></td><td><?= $result->payee ?></td><td><?= number_format($result->gross_amount, 2) ?></td>
+
+    <div class="view-index">
+        <table class="table table-hover table-striped table-bordered">
+            <tr>
+                <th >DATE</th><th>DV NO.</th><th>PAYEE</th><th>AMOUNT</th>
             </tr>
-        <?php endforeach ?>
-    </table>
+            <?php foreach ($results as $result) : ?>
+                <tr data-id = <?= $result->id ?>>
+                    <td><?= $result->date ?></td>
+                    <td><?= $result->dv_no ?></td>
+                    <td><?= $result->payee ?></td>
+                    <td><?= number_format($result->gross_amount, 2) ?></td>
+                </tr>
+            <?php endforeach ?>
+            <?php if($results == null) : ?>
+                <tr>
+                    <td style="font-style: italic;" colspan="4">No Records for Cash Advances..</td>
+                </tr>
+            <?php endif ?>
+        </table>
+    </div>
 </div>
 <?php
 $this->registerJs("

@@ -71,6 +71,8 @@ class NcaSearch extends Nca
             ->andFilterWhere(['like', 'purpose', $this->purpose])
             ->andFilterWhere(['like', 'fiscal_year', $this->fiscal_year]);
 
+        $query->groupBy(['nca_no']); 
+
         return $dataProvider;
     }
 }

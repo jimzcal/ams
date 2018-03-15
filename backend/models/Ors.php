@@ -37,9 +37,9 @@ class Ors extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dv_no', 'particular', 'ors_class', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'amount', 'status'], 'required'],
+            [['dv_no', 'particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'amount', 'status'], 'required'],
             [['amount'], 'number'],
-            [['dv_no', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'string', 'max' => 100],
+            [['dv_no', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'string', 'max' => 100],
             [['particular'], 'string', 'max' => 200],
             [['ors_class', 'status'], 'string', 'max' => 50],
             [['dv_no'], 'exist', 'skipOnError' => true, 'targetClass' => Disbursement::className(), 'targetAttribute' => ['dv_no' => 'dv_no']],
@@ -56,6 +56,7 @@ class Ors extends \yii\db\ActiveRecord
             'dv_no' => 'Dv No',
             'particular' => 'Particular',
             'ors_class' => 'Ors Class',
+            'funding_source' => 'Funding Source',
             'ors_year' => 'Ors Year',
             'ors_month' => 'Ors Month',
             'ors_serial' => 'Ors Serial',

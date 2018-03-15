@@ -202,9 +202,10 @@ class DisbursementController extends Controller
                         $ors = explode('-', $ors_no[$i]);
 
                             $ors_model->ors_class = $ors[0];
-                            $ors_model->ors_year = $ors[1];
-                            $ors_model->ors_month = $ors[2];
-                            $ors_model->ors_serial = $ors[3];
+                            $ors_model->funding_source = $ors[1];
+                            $ors_model->ors_year = $ors[2];
+                            $ors_model->ors_month = $ors[3];
+                            $ors_model->ors_serial = $ors[4];
 
                         $ors_model->save(false);
                     }
@@ -279,9 +280,10 @@ class DisbursementController extends Controller
                             'mfo_pap' => $mfo_pap[$i],
                             'amount' => str_replace(',', '', $amount[$i]),
                             'ors_class' => $ors[0],
-                            'ors_year' => $ors[1],
-                            'ors_month' => $ors[2],
-                            'ors_serial' => $ors[3]
+                            'funding_source' => $ors[1],
+                            'ors_year' => $ors[2],
+                            'ors_month' => $ors[3],
+                            'ors_serial' => $ors[4]
                         ], 
                             ['id' => $id])->execute();
                     }
@@ -297,9 +299,10 @@ class DisbursementController extends Controller
                         $ors = explode('-', $ors_no[$i]);
 
                             $ors_model->ors_class = $ors[0];
-                            $ors_model->ors_year = $ors[1];
-                            $ors_model->ors_month = $ors[2];
-                            $ors_model->ors_serial = $ors[3];
+                            $ors_model->funding_source = $ors[1];
+                            $ors_model->ors_year = $ors[2];
+                            $ors_model->ors_month = $ors[3];
+                            $ors_model->ors_serial = $ors[4];
 
                         $ors_model->save(false);        
                     } 
@@ -419,7 +422,7 @@ class DisbursementController extends Controller
 
         if($checker !== null)
         {
-            Yii::$app->getSession()->setFlash('warning', 'Reminder, this Disbursement Voucher has already been obligated');
+            Yii::$app->getSession()->setFlash('warning', 'Reminder, this Disbursement Voucher has already been earmarked');
         }
         return $this->render('cash-status/_form', [
         'model' => $model,
@@ -457,7 +460,7 @@ class DisbursementController extends Controller
                         ->all();
         if ($model->load(Yii::$app->request->post()))
         {
-            if(isset($_POST['dvs']) !== null)
+            if(isset($_POST['dvs']) != null)
             {
                 $dvs = $_POST['dvs'];
                 $num_recs = LddapAda::find()->groupBy(['lddap_no'])->all();
@@ -468,7 +471,7 @@ class DisbursementController extends Controller
 
             else
             {
-                
+                Yii::$app->getSession()->setFlash('warning', 'Please Select Disbursement Voucher (DV)');
                 return $this->render('/disbursement/lddap/lddapIndex', ['disbursement' => $disbursement, 'dv_no' => $dv_no, 'model' => $model]);
             }
             

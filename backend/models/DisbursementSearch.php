@@ -85,6 +85,8 @@ class DisbursementSearch extends Disbursement
             ->andFilterWhere(['like', 'remarks', $this->remarks])
             ->andFilterWhere(['like', 'status', $this->status]);
 
+        $query->groupBy(['nca']);
+
         return $dataProvider;
     }
 }

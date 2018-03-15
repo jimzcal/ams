@@ -85,7 +85,7 @@ use backend\models\FundCluster;
                                 <input type="text" name="particular[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->particular; ?>" >
                             </td>
                             <td>
-                                <input type="text" name="ors_no[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>" >
+                                <input type="text" name="ors_no[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->ors_class.'-'.$value->funding_source.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>" >
                             </td>
                             <td>
                                 <input type="text" name="mfo_pap[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->mfo_pap ?>" >

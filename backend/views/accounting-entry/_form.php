@@ -15,6 +15,28 @@ use yii\widgets\ActiveForm;
                 <tr>
                     <td align="center">VAT</td><td align="center">ACCOUNT TITLE</td><td align="center">UACS CODE</td><td align="center">DEBIT</td><td align="center">CREDIT AMOUNT</td><td align="center">CREDIT TO</td>
                 </tr>
+                <?php foreach ($entry as $value) : ?>
+                <tr>
+                    <td align="center">
+                        <?= $value->vat == '1' ? '12%' : '' ?>
+                    </td>
+                    <td>
+                        <?= $value->account_title ?>
+                    </td>
+                    <td>
+                        <?= $value->uacs_code ?>
+                    </td>
+                    <td width="150">
+                        <?= $value->debit ?>
+                    </td>
+                    <td width="100">
+                        <?= $value->credit_amount ?>
+                    </td>
+                    <td width="250">
+                        <?= $value->credit_to ?>
+                    </td>
+                </tr>
+                <?php endforeach ?>
                 <tr>
                     <?= $form->field($model, 'dv_no')->hiddenInput(['maxlength' => true, 'value' => empty($dv_no) ? $model->dv_no : $dv_no, 'readonly'=>true])->label(false) ?>
                     <td align="center">

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\AccountingEntry;
+use yii\helpers\ArrayHelper;
 use backend\models\AccountingEntrySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -110,8 +111,28 @@ class AccountingEntryController extends Controller
             }
             
             $model->save();
-            return $this->redirect(['/disbursement/processor', 'id' => $id]);
+
+            $entry = AccountingEntry::find()->where(['dv_no' => $model->dv_no])->all();
+            $debit = array_sum(ArrayHelper::getColumn(AccountingEntry::find(['debit'])
+                                        ->where(['dv_no'=>$model->dv_no])
+                                        ->all(), 'debit'));
+            $net = $debit - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])
+                                        ->where(['dv_no'=>$model->dv_no])
+                                        ->andWhere(['credit_to' => 'BIR'])
+                                        ->all(), 'credit_amount'));
+
+            //return $this->redirect(['/disbursement/processor', 'id' => $id]);
+            return $this->render('create', [
+                'model' => $model,
+                'id' => $id,
+                'dv_no' => $dv_no->dv_no,
+                'net' => $net,
+                'gross' => $gross,
+                'entry' => $entry,
+            ]);
         }
+
+        $entry = AccountingEntry::find()->where(['dv_no' => $dv_no->dv_no])->all();
 
         return $this->render('create', [
             'model' => $model,
@@ -119,6 +140,7 @@ class AccountingEntryController extends Controller
             'dv_no' => $dv_no->dv_no,
             'net' => $net,
             'gross' => $gross,
+            'entry' => $entry,
         ]);
     }
 

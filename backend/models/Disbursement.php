@@ -77,6 +77,7 @@ class Disbursement extends \yii\db\ActiveRecord
             'mfo_pap' => 'MFO/PAP',
             'gross_amount' => 'Gross Amount',
             'cash_advance' => 'Cash Advance?',
+            'lddap_check_no' => 'LDDAP-ADA/Check No.',
             'less_amount' => 'Less Amount',
             'net_amount' => 'Net Amount',
             'fund_cluster' => 'Fund Cluster',

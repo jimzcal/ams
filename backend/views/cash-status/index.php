@@ -15,31 +15,33 @@ $this->title = 'CASH STATUS';
 ?>
 
 <div class="cash-status-index">
-    <div class="title"><?= Html::encode($this->title) ?></div>
-    <div class="cash-status">
-        <table class="table table-condensed">
+    
+    <div class="view-index">
+        <div class="mini-header">
+            <i class="fa fa-bar-chart-o" aria-hidden="true"></i> Cash Status
+        </div>
+        <table class="table table-condensed table-bordered">
             <tr>
-                <td width="50" style="font-weight: bold">NCA No.</td>
-                <td><?= ': '.$nca->nca_no ?></td>
+                <th>NCA No.</th>
+                <th>Fund Cluster</th>
+                <th>Total Amount</th>
+                <th>Amount Obligated</th>
+                <th>Current Balance</th>
             </tr>
             <tr>
-                <td style="font-weight: bold">Amount</td>
-                <td><?= ': '.number_format($nca->total_amount, 2) ?></td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold">Total Amount Obligated</td>
-                <td><?= ': '.number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?></td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold">Current Balance</td>
-                <td><?= ': '.number_format($nca->total_amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?></td>
-            </tr>
-             <tr>
-                <td style="font-weight: bold">Fund</td>
-                <td><?= ': '.$nca->fund_cluster ?></td>
+                <td><?= $nca->nca_no ?></td>
+                <td><?= $nca->fund_cluster ?></td>
+                <td><?= number_format($nca->total_amount, 2) ?></td>
+                <td>
+                    <?= number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?>
+                </td>
+                <td style="font-weight: bold; font-size: 18px; text-align: right">
+                    <?= number_format($nca->total_amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?>
+                </td>
             </tr>
         </table>
     </div>
+    <div style="padding: 3px; border-radius: 8px; background-color: #FFFFFF">
         <table class="table table-condensed table-bordered" style="font-size: 11px;">
             <tr>
                 <th align="center" rowspan="2">DATE</th>
@@ -101,10 +103,11 @@ $this->title = 'CASH STATUS';
             </tr>
             <?php endforeach ?>
         </table>
+    </div>
 </div>
 <?php
 $this->registerJs("
-    $('tbody th').css('text-align', 'center');
+    
     $('tbody th').css('background-color', '#f5f5f0'); ");
 
 ?>

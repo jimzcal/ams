@@ -65,12 +65,12 @@ return [
             'errorAction' => 'site/error',
         ],
         
-        'urlManager' => [
-            //'class' => 'yii\web\UrlManager',
-            'showScriptName' => false,
-            'enablePrettyUrl' => false,
-            // 'rules' => [],
-        ],
+        // 'urlManager' => [
+        //     //'class' => 'yii\web\UrlManager',
+        //     'showScriptName' => true,
+        //     'enablePrettyUrl' => false,
+        //     // 'rules' => [],
+        // ],
         
     ],
     'params' => $params,

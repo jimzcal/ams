@@ -371,6 +371,7 @@ class DisbursementController extends Controller
         $checker = Disbursement::find()->where(['id'=>$id])->andWhere(['obligated' => 'yes'])->one();
         $model3 = Nca::find()->where(['nca_no'=>$model->nca])->one();
         $ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
+        $entries = AccountingEntry::find()->where(['dv_no' => $model->dv_no])->all();
 
         if ($model->load(Yii::$app->request->post()))
         {
@@ -380,6 +381,8 @@ class DisbursementController extends Controller
                 return $this->render('cash-status/_form', [
                     'model' => $model,
                     'model3' => $model3,
+                    'ors_model' => $ors_model,
+                    'entries' => $entries,
                     ]);
            }
            else
@@ -414,8 +417,9 @@ class DisbursementController extends Controller
                 return $this->render('cash-status/_form', [
                 'model' => $model,
                 'model3' => $model3,
-                'disbursements' => $disbursements,
                 'ors_model' => $ors_model,
+                'entries' => $entries,
+                //'disbursements' => $disbursements,
                 ]);
            }
         }
@@ -428,6 +432,7 @@ class DisbursementController extends Controller
         'model' => $model,
         'model3' => $model3,
         'ors_model' => $ors_model,
+        'entries' => $entries,
         ]);
 
     }

@@ -23,107 +23,135 @@ $this->title = 'DISBURSEMENT VOUCHER';
             <?= Html::a('&times;', ['/site/index'], ['class' => 'close-button']) ?>
         </div>
         <?php $form = ActiveForm::begin(); ?>
+
         <div class="form-wrapper-content">
             <div class="row">
                 <div class="col-md-9">
-                    <table class="table">
+                    <table class="table table-condensed">
                         <tr>
-                            <td>
-                                DV NO.<br>
-                                <strong><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
-                            </td>
-                            <td colspan="1">
-                                <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type']) ?>
-                            </td>
-                            <td width="160">
-                                <label>Cash Advance?</label></br>
-                                <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated', 'id' => 'two'])->label(false)?>
-                            </td>
-                            <td>
-                                <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
-                            </td>
-                            <td width="120">
-                                <?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('M. d, Y') : $model->date, 'readonly' =>true]) ?>
+                            <td style="font-weight: bold; font-size: 18px;" colspan="3">DV No.
+                                <?= isset($dv_no) ? $dv_no : $model->dv_no ?></td>
+                            <td style="font-size: 18px; text-align: right; font-weight: bold;" colspan="3">
+                                <?= $model->date===null ? date('M. d, Y') : $model->date ?>
+                                <?= $form->field($model, 'date')->hiddenInput(['value' => $model->date===null ? date('M. d, Y') : $model->date, 'readonly' =>true])->label(false) ?>
                             </td>
                         </tr>
                         <tr>
+                            <td style="text-align: right; font-weight: bold;">Payee :</td>
                             <td colspan="3">
-                                <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'id'=>'four']) ?>
+                                <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'id'=>'four'])->label(false) ?>
                             </td>
+                            <td style="text-align: right; font-weight: bold;">cash Advance :</td>
                             <td>
+                                <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated', 'id' => 'two'])->label(false)?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; font-weight: bold;">Transaction Type :</td>
+                            <td colspan="3">
+                                <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type'])->label(false) ?>
+                            </td>
+                            <td style="text-align: right; font-weight: bold;">Mode of payment :</td>
+                            <td>
+                                <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA'])->label(false) ?>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="text-align: right; font-weight: bold;">Fund Cluster :</td>
+                            <td colspan="2">
                                 <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                                  [
                                     'onchange'=>'
                                          $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
                                             $("select#disbursement-nca").html(data);
                                         });'
-                                ]); ?>
+                                ])->label(false); ?>
                             </td>
-                            <td>
-                                <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no')) ?>
+                            <td style="text-align: right; font-weight: bold;">Gross Amount :</td>
+                            <td colspan="2">
+                                <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id'=>'nine'])->label(false) ?>
                             </td>
                         </tr>
-                            <tr>
-                                <td colspan="5">
-                                    <table class="table table-condensed table-striped">
+                        <tr>
+                            <td style="text-align: right; font-weight: bold;">NCA No. :</td>
+                            <td colspan="2">
+                                <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'))->label(false) ?>
+                            </td>
+                            <td style="text-align: right; font-weight: bold;">Less :</td>
+                            <td colspan="2">
+                                <?= $form->field($model, 'less_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value'=> array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount'))])->label(false) ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; font-weight: bold;">Funding Source :</td>
+                            <td colspan="2">
+                                <?= $form->field($model, 'funding_source')->dropDownList(ArrayHelper::map(Nca::find()->all(),'funding_source', 'funding_source'),
+                                    [
+                                      'prompt'=>'Select Funding Source',
+                                    ])->label(false);
+                                 ?>
+                            </td>
+                            <td style="text-align: right; font-weight: bold;">Net Amount :</td>
+                            <td colspan="2">
+                                <?= $form->field($model, 'net_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value' => ($net_amount = $model->gross_amount - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')))])->label(false) ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="background-color: #f5f5f0; font-weight: bold;">Details From Obligartion Request and Status (ORS)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <table class="table table-condensed table-bordered">
                                         <tr>
-                                            <th>Particulars</th>
-                                            <th>ORS No</th>
-                                            <th>MFO/PAP</th>
-                                            <th>Responsibility Center</th>
-                                            <th>Amount</th>
+                                            <th style="text-align: center">Particulars</th>
+                                            <th style="text-align: center">ORS No</th>
+                                            <th style="text-align: center">MFO/PAP</th>
+                                            <th style="text-align: center">Responsibility Center</th>
+                                            <th style="text-align: center">Amount</th>
                                         </tr>
                                         <?php foreach ($ors_model as $value): ?>
                                             <?php $i=0; ?>
                                             <tr>
                                                 <td style="width: 250px;">
-                                                    <?= $form->field($model, 'particular[]')->textInput(['value' => $value->particular])->label(false) ?>
+                                                    <?= $form->field($model, 'particular[]')->textInput(['value' => $value->particular, 'class' => 'myfield'])->label(false) ?>
                                                     <?= $form->field($model, 'ors_id[]')->hiddenInput(['value' => $value->id])->label(false) ?>
                                                 </td>
                                                 <td style="width: 130px;">
                                                     <?= $form->field($model, 'ors_no[]')->textInput([
-                                                        'value' => $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ])->label(false) 
+                                                        'value' => $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial, 'class' => 'myfield'])->label(false) 
                                                     ?>
                                                 </td>
                                                 <td>
-                                                    <?= $form->field($model, 'mfo_pap[]')->textInput(['value' => $value->mfo_pap])->label(false) ?>
+                                                    <?= $form->field($model, 'mfo_pap[]')->textInput(['value' => $value->mfo_pap, 'class' => 'myfield'])->label(false) ?>
                                                 </td>
                                                 <td>
-                                                    <?= $form->field($model, 'responsibility_center[]')->textInput(['value' => $value->responsibility_center])->label(false) ?>
+                                                    <?= $form->field($model, 'responsibility_center[]')->textInput(['value' => $value->responsibility_center, 'class' => 'myfield'])->label(false) ?>
                                                 </td>
                                                 <td style="width: 100px;">
-                                                    <?= $form->field($model, 'amount[]')->textInput(['value' => $value->amount])->label(false) ?>
+                                                    <?= $form->field($model, 'amount[]')->textInput(['value' => $value->amount, 'class' => 'myfield'])->label(false) ?>
                                                 </td>
                                             </tr>
                                             <?php $i++ ?>
                                         <?php endforeach ?>
                                     </table>
-                                </td>
-                            </tr>
-                        <tr>
-                            <td colspan="3">
-                                <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id'=>'nine']) ?>
-                            </td>
-                            <td width="120">
-                                
-                                <?= $form->field($model, 'less_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value'=> array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount'))]) ?>
-                            </td>
-                            <td>
-                                
-                                <?= $form->field($model, 'net_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value' => ($net_amount = $model->gross_amount - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')))]) ?>
                             </td>
                         </tr>
+                
                         <tr>
-                            <td colspan="5">
-                                <label>Accounting Entry</label>
+                            <td colspan="6" style="background-color: #f5f5f0; font-weight: bold;">Accounting Entry</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td align="center">ACCOUNT TITLE</td>
-                                        <td align="center">UACS CODE</td>
-                                        <td align="center">DEBIT</td>
-                                        <td align="center">CREDIT AMOUNT</td>
-                                        <td align="center">CREDIT TO</td>
-                                        <td>ACTION</td>
+                                        <th style="text-align: center">ACCOUNT TITLE</th>
+                                        <th style="text-align: center">UACS CODE</th>
+                                        <th style="text-align: center">DEBIT</th>
+                                        <th style="text-align: center">CREDIT AMOUNT</th>
+                                        <th style="text-align: center">CREDIT TO</th>
+                                        <th>ACTION</th>
                                     </tr>
                                     <?php foreach ($entries as $entry) : ?>
                                     <tr>
@@ -163,7 +191,9 @@ $this->title = 'DISBURSEMENT VOUCHER';
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5"><?= $form->field($model, 'remarks')->textarea(['rows' => 3]) ?></td>
+                            <td colspan="6">
+                                <?= $form->field($model, 'remarks')->textarea(['rows' => 3]) ?>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -203,29 +233,12 @@ $this->title = 'DISBURSEMENT VOUCHER';
         </div>
         <div class="form-group" style="padding-left: 10px;">
             <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Accountig Entry', ['/accounting-entry/create', 'id'=>$model->id, 'net' => $net_amount, 'gross' => $model->gross_amount], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Accountig Entry', ['/accounting-entry/create', 'id'=>$model->id, 'net' => $net_amount, 'gross' => $model->gross_amount], ['class' => 'btn btn-primary'])
+             ?>
         </div>
     <?php ActiveForm::end(); ?>
     </div>
 </div>
 
-<script>
 
-// var seven = document.getElementById("seven"),
-//     nine = document.getElementById("nine");
 
-// if (sessionStorage.getItem("seven") || sessionStorage.getItem("nine"))
-// {
-//     seven.value = sessionStorage.getItem("seven");
-//     nine.value = sessionStorage.getItem("nine");
-// }
-
-// seven.addEventListener("change", function() {
-//     sessionStorage.setItem("seven", seven.value);
-// });
-
-// nine.addEventListener("change", function() {
-//     sessionStorage.setItem("nine", nine.value);
-// });
-
-</script>

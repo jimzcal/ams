@@ -56,6 +56,8 @@ class CashStatusController extends Controller
     {
         $ncas = Nca::find()->all();
 
+        //$ncas->groupBy(['nca_no']);
+
         return $this->render('index2', [
             'ncas' => $ncas,
         ]);

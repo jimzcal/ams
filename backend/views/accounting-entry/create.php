@@ -1,4 +1,4 @@
-<div class="accounting-modal">
+<!-- <div class="accounting-modal"> -->
 	<?php
 	use yii\helpers\Html;
 
@@ -7,8 +7,8 @@
 	/* @var $model backend\models\AccountingEntry */
 
 	$this->title = 'Accounting Entry';
-	$this->params['breadcrumbs'][] = ['label' => 'Accounting Entries', 'url' => ['index']];
-	$this->params['breadcrumbs'][] = $this->title;
+	//$this->params['breadcrumbs'][] = ['label' => 'Accounting Entries', 'url' => ['index']];
+	//$this->params['breadcrumbs'][] = $this->title;
 	?>
 	<div class="accounting-entry-create">
 		<div class="modal-content">
@@ -24,10 +24,11 @@
 				        'dv_no' => $dv_no,
 				        'net' => $net,
 				        'gross' => $gross,
+				        'entry' => $entry,
 				    ]) ?>
 		      </div>
 		</div>
 	</div>
-</div>
+<!-- </div> -->
 
 

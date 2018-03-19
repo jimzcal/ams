@@ -19,12 +19,18 @@ $this->title = 'TRANSACTIONS';
 
     <div class="new-title">
         <i class="fa fa-tasks" aria-hidden="true"></i> List of Transactions
+        <p style="text-indent: 28px; font-size: 14px;">Transactions and its Documentary Requirements</p>
+    </div>
+
+    <div style=" padding: 0; width: 88%; margin-left: auto; margin-right: auto; display: block;">
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
     </div>
 
     <div class="view-index">
-        <?php Pjax::begin(); ?>    <?= GridView::widget([
+        <?php Pjax::begin(); ?>
+        <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
+                //'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 

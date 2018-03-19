@@ -6,13 +6,16 @@ use yii\helpers\Html;
 /* @var $model backend\models\Transaction */
 
 $this->title = 'Update ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Transactions', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+// $this->params['breadcrumbs'][] = ['label' => 'Transactions', 'url' => ['index']];
+// $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+// $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="transaction-update">
 	<div class="form-wrapper">
-	    <div class="title"><?= Html::encode($this->title) ?></div>
+	    <div class="form-title">
+	    	<?= Html::encode($this->title) ?>
+	    	<?= Html::a('&times;', ['/transaction/index'], ['class' => 'close-button']) ?>
+	    </div>
 		    <?= $this->render('_updateForm', [
 		        'model' => $model,
 		        'requirements' => $requirements,

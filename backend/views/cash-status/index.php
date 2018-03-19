@@ -1,5 +1,6 @@
 <?php
 
+//use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -9,6 +10,9 @@ use backend\models\Disbursement;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CashStatusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+
+// creates a URL to a route with parameters: /index.php?r=post%2Fview&id=100
+// echo Url::to(['cash/index', 'nca_no' => $nca->nca_no]);
 
 $this->title = 'CASH STATUS';
 //$this->params['breadcrumbs'][] = $this->title;

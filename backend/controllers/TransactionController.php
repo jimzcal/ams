@@ -66,12 +66,13 @@ class TransactionController extends Controller
     public function actionCreate()
     {
         $model = new Transaction();
-        //$requirements = requirements::find()->all();
-        $requirements=ArrayHelper::map(requirements::find()->all(), 'requirement', 'requirement'); 
+        $requirements = requirements::find()->all();
+        //$requirements=ArrayHelper::map(requirements::find()->all(), 'requirement', 'requirement'); 
 
         if ($model->load(Yii::$app->request->post()))
         {
-            $model->requirements = implode(',', $model->requirements);
+            $Requirements = array_filter($model->requirements, function($value){ return $value != '0'; } );
+            $model->requirements = implode(',', $Requirements);
             $model->save();
 
             Yii::$app->getSession()->setFlash('success', 'Success! New transaction has been added');

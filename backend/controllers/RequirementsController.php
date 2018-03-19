@@ -38,7 +38,7 @@ class RequirementsController extends Controller
         $searchModel = new RequirementsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('create', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -72,14 +72,12 @@ class RequirementsController extends Controller
             Yii::$app->getSession()->setFlash('success', 'Successfully Added');
             return $this->redirect(['create']);
         }
-        else 
-        {
-            return $this->render('create', [
-                'model' => $model,
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-        }
+    
+        return $this->render('create', [
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -92,9 +90,13 @@ class RequirementsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+        {
+            Yii::$app->getSession()->setFlash('success', 'Successfully Updated');
             return $this->redirect(['create', 'id' => $model->id]);
-        } else {
+        }
+        else 
+        {
             return $this->render('update', [
                 'model' => $model,
             ]);

@@ -10,25 +10,28 @@ use yii\helpers\ArrayHelper;
 ?>
 
 <div class="transaction-form">
+  <div class="form-wrapper-content">
+      <?php $form = ActiveForm::begin(); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+      <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <div class="checkbox-wrapper">
-      <label>SELECT REQUIREMENTS</label></br>
-      <div class="checkbox">
-        <?= $form->field($model, 'requirements[]')->checkboxList($requirements, [
-          'separator' => ' ',
-          ])->label(false);
-          ?>
+      <div style="background-color: #f5f5f0; font-weight: bold; padding: 10px;">
+        <label>Select Requirements</label>
       </div>
-    </div>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+      <div style="height: 250px; padding: 10px;">
+        <?php foreach ($requirements as $value) : ?>
+          <div class="cbox">
+            <?= $form->field($model, 'requirements[]')->checkbox(['label'=>$value->requirement, 'value'=>$value->requirement])->label(false); ?>
+          </div>
+        <?php endforeach ?>
+      </div>
 
-    <?php ActiveForm::end(); ?>
+      <div class="form-group">
+          <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+      </div>
+
+      <?php ActiveForm::end(); ?>
+    </div>
 
 </div>

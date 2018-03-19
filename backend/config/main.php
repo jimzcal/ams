@@ -28,8 +28,8 @@ return [
             ],
 
             'thumbnail' => [
-        'class' => 'himiklab\thumbnail\EasyThumbnail',
-        'cacheAlias' => 'assets/gallery_thumbnails',
+                'class' => 'himiklab\thumbnail\EasyThumbnail',
+                'cacheAlias' => 'assets/gallery_thumbnails',
                 ],
     
         // 'user' => [
@@ -37,41 +37,46 @@ return [
         //     'enableAutoLogin' => true,
         //     'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         // ],
-        'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
-        ],
+            'session' => [
+                // this is the name of the session cookie used for login on the backend
+                'name' => 'advanced-backend',
+            ],
 
-        'authManager'  => [
-                'class' => 'dektrium\rbac\components\DbManager',
-                ],
+            'authManager'  => [
+                    'class' => 'dektrium\rbac\components\DbManager',
+                    ],
 
-         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '[DIFFERENT UNIQUE KEY]',
-            'csrfParam' => '_backendCSRF',
-        ],
+             'request' => [
+                // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+                'cookieValidationKey' => 'DA-AMS',
+                'csrfParam' => '_backendCSRF',
+            ],
 
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    [
+                        'class' => 'yii\log\FileTarget',
+                        'levels' => ['error', 'warning'],
+                    ],
                 ],
             ],
-        ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
+                'errorAction' => 'site/error',
+            ],
         
-        // 'urlManager' => [
-        //     //'class' => 'yii\web\UrlManager',
-        //     'showScriptName' => true,
-        //     'enablePrettyUrl' => false,
-        //     // 'rules' => [],
-        // ],
-        
+        'urlManager' => [
+                //'class' => 'yii\web\UrlManager',
+                'showScriptName' => false,
+                'enablePrettyUrl' => true,
+                'rules' => [
+                        '<controller:\w+>/<action:[\w\-]+>' => '<controller>/<action>',
+                        '<controller:\w+>/<action:[\w\-]+>/<id:[\d\-]+>' => '<controller>/<action>',
+                        '<controller:\w+>/<action:[\w\-]+>/<nca_no:[\nca_no\-]+>' => '<controller>/<action>',
+                        '<controller:[\w\-]+>/<id:\d+>' => '<controller>/view',
+                        '<controller:[\w\-]+>/<nca_no:\nca_no+>' => '<controller>/view',
+                    ],
+            ],
     ],
     'params' => $params,
 ];

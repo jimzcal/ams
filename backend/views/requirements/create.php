@@ -8,29 +8,29 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Requirements */
 
-$this->title = 'Add New Requirement';
+$this->title = 'Requirement';
 // $this->params['breadcrumbs'][] = ['label' => 'Requirements', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="requirements-create">
   <?= Yii::$app->session->getFlash('error'); ?>
-	<div class="title">REQUIREMENTS
+	<div class="title">
     <div class="btn btn-success btn-right" data-toggle="modal" data-target="#myModal">New Requirement</div>
   </div>
 
-	<?php Pjax::begin(); ?>    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+  <div class="new-title">
+    <i class="fa fa-tasks" aria-hidden="true"></i> List of Requirements
+    <p style="text-indent: 28px; font-size: 14px;">The below requirements will appear to the transaction once selected during the latter's creation.</p>
+  </div>
 
-            //'id',
-            'requirement',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-	<?php Pjax::end(); ?>
+  <div style=" padding: 0; width: 88%; margin-left: auto; margin-right: auto; display: block;">
+      <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+  </div>
+    
+	<?= $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]); ?>
 </div>
 
 

@@ -52,9 +52,9 @@ class CashStatusController extends Controller
         ]);
     }
 
-    public function actionIndex2()
+    public function actionNca()
     {
-        $ncas = Nca::find()->all();
+        $ncas = Nca::find()->groupBy(['nca_no'])->all();
 
         //$ncas->groupBy(['nca_no']);
 

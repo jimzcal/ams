@@ -267,7 +267,7 @@ $this->title = 'CASH STATUS';
                 <tr>
                     <td style="text-align: right; font-weight: bold;">Payee :</td>
                     <td colspan="3">
-                        <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'id'=>'four'])->label(false) ?>
+                        <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'id'=>'four', 'autofocus' => 'autofocus'])->label(false) ?>
                     </td>
                     <td style="text-align: right; font-weight: bold;">Status :</td>
                     <td>
@@ -379,7 +379,6 @@ $this->title = 'CASH STATUS';
                                 <th style="text-align: center">DEBIT</th>
                                 <th style="text-align: center">CREDIT AMOUNT</th>
                                 <th style="text-align: center">CREDIT TO</th>
-                                <th>ACTION</th>
                             </tr>
                             <?php foreach ($entries as $entry) : ?>
                             <tr>
@@ -388,15 +387,6 @@ $this->title = 'CASH STATUS';
                                 <td width="75"><?= number_format($entry->debit, 2) ?></td>
                                 <td width="100"><?= number_format($entry->credit_amount, 2) ?></td>
                                 <td width="80"><?= $entry->credit_to ?></td>
-                                <td width="75">
-                                    <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', ["/accounting-entry/update", 'id' => $entry->id, 'dv_id' => $model->id]) ?>
-                                    <?= Html::a('<i class="glyphicon glyphicon-trash"></i>', ["/accounting-entry/delete", 'id' => $entry->id], [
-                                        'data' => [
-                                            'confirm' => 'Are you sure you want to delete this item?',
-                                            'method' => 'post',
-                                        ],
-                                    ]) ?>
-                                </td>
                             </tr>
                         <?php endforeach ?>
                             <tr>
@@ -413,7 +403,6 @@ $this->title = 'CASH STATUS';
                                     </strong> 
                                  </td>
                                 <td width="80"></td>
-                                <td width="75"></td>
                             </tr>
                         </table>
                     </td>

@@ -462,6 +462,13 @@ body {
     margin: 0;
  }
 
+ .cbox{
+  width: 320px;
+  display: inline-block;
+  margin: 3px;
+  font-size: 14px;
+ }
+
  .btn-right{
   float: right;
   margin-left: 5px;

@@ -11,7 +11,7 @@ use yii\grid\GridView;
 ?>
 
 <div class="requirements-form">
-	
+	<div class="form-wrapper-content">
 	    <?php $form = ActiveForm::begin(); ?>
 
 	    <?= $form->field($model, 'requirement')->textInput(['inputOptions' => ['maxlength' => true, 'autofocus' => 'autofocus']]) ?>
@@ -21,5 +21,6 @@ use yii\grid\GridView;
 	    </div>
 
 	    <?php ActiveForm::end(); ?>
+	</div>
 </div>
 

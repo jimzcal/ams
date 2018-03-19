@@ -7,41 +7,46 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\Requirements */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Requirements', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = ['label' => 'Requirements', 'url' => ['index']];
+// $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="requirements-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="title">
+        <p>
+            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-right']) ?>
+            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger btn-right',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </p>
+    </div>
+    <div class="new-title">
+        <i class="fa fa-tasks" aria-hidden="true"></i> Requirement
+    </div>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
+    <div class="view-index">
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                // [
+                //     'attribute' => 'requirement',
+                //     'value' => function($data){
+                //         $values = unserialize($data->requirement);
+                //         foreach ($values as $value)
+                //         {
+                //             return $value;
+                //         }
+                        
+                //     }
+                // ],
+                'requirement',
             ],
         ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            [
-                'attribute' => 'requirement',
-                'value' => function($data){
-                    $values = unserialize($data->requirement);
-                    foreach ($values as $value)
-                    {
-                        return $value;
-                    }
-                    
-                }
-            ],
-            //'requirement',
-        ],
-    ]) ?>
+    </div>
 
 </div>

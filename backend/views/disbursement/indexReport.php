@@ -14,7 +14,7 @@ $this->title = 'FINANCIAL REPORTS';
     <div class="financial-reports-panel">
 
         <?= Html::a('<span class="fa fa-line-chart" aria-hidden="true" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Financial Accountability Report', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+            Financial Accountability Report', ["/cash-status/nca"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-paypal" aria-hidden="true" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Index of Payment', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
@@ -23,7 +23,7 @@ $this->title = 'FINANCIAL REPORTS';
             LDDAP-ADA List', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-bar-chart-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Status of Cash Allocation', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+            Status of Cash Allocation', ["/cash-status/nca"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-id-card" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
         Monthly Disbursement Report', ["/disbursement/nca"], ['class' => 'financial-report-icon']) ?>

@@ -15,16 +15,24 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'requirements') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
+    <table class="search-table">
+        <tr>
+            <td valign="top" align="right">
+                <i class="fa fa-search" style="color: green; font-size: 30px;"></i>
+            </td>
+            <td>
+                 <?= $form->field($model, 'name')->textInput(['placeholder'=>'Transaction'])->label(false) ?>
+            </td>
+            <td>
+                <?= $form->field($model, 'requirements')->textInput(['placeholder'=>'Requirements'])->label(false) ?>
+            </td>
+            <td>
+                <div class="form-group">
+                    <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </td>
+        </tr>
+    </table>
 
     <?php ActiveForm::end(); ?>
 

@@ -82,8 +82,8 @@ use backend\models\FundCluster;
              </td>
          </tr>
          <tr>
-             <td colspan="5">
-                  <table class="table table-condensed table-striped" id="dynamicInput">
+             <td colspan="6">
+                  <table class="table table-condensed table-bordered" id="dynamicInput">
                       <tr>
                           <th>Particulars</th>
                           <th>ORS No.</th>

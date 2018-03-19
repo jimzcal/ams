@@ -41,7 +41,7 @@ $this->registerJs("
     $('tbody td').click(function (e) {
         var nca_no = $(this).closest('tr').data('nca_no');
         if (e.target == this)
-            location.href = '" . Url::to(['cash-status/index']) . "&nca_no=' + nca_no;
+            location.href = '" . Url::to(['cash-status/index']) . "?nca_no=' + nca_no;
     });
 ");
 ?>

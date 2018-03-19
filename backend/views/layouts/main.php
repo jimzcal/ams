@@ -39,7 +39,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
         <div class="top-banner">
             <div class="row">
                 <div class="col-lg-5">
-                <?= Html::img('images/banner.png', ['alt'=>'FMIS Banner']);?>
+                <?= Html::img('/web/images/banner.png', ['alt'=>'FMIS Banner']);?>
                 </div>
                 <div class="col-lg-7">
                     <div class="row">

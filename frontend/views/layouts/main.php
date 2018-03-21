@@ -26,23 +26,32 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 <div class="wrap">
-    <div class="top-line">
-        
-    </div>
-    <div class="icon-wrapper">
-        <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Home">
-            <?= Html::a('<i class="glyphicon glyphicon-home icon-font" aria-hidden="true"></i>', ["/site/index"]) ?>
+    <!--top-banner -->
+        <div class= "top-banner" >
+            <div class="row">
+            <?= Html::img('@web/images/new-banner.png', ['alt'=>'FMIS Banner', 'class' => 'top-ban-image']);?>
+              <div class="row" style="padding-right: 25px;">
+                        <div class="hum-wrapper">
+                            <i class="fa fa-bars humburger"></i> 
+                        </div>          
+                        
+                        <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Search DV">
+                            <?= Html::a('<i class="fa fa-search icon-font" aria-hidden="true"></i>', ["/disbursement/search"]) ?>
+                        </div>
+                        <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Requirements">
+                            <?= Html::a('<i class="fa fa-tasks icon-font" aria-hidden="true"></i>', ["/transaction/index"]) ?>
+                        </div>
+
+                        <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Go to home page">
+                            <?= Html::a('<i class="fa fa-home icon-font" aria-hidden="true"></i>', ["/site/index"]) ?>
+                        </div>
+                </div>
+            </div>
         </div>
-        <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Search DV">
-            <?= Html::a('<i class="glyphicon glyphicon-search icon-font" aria-hidden="true"></i>', ["/disbursement/search"]) ?>
-        </div>
-        <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Organization Structure">
-            <?= Html::a('<i class="glyphicon glyphicon-list-alt icon-font" aria-hidden="true"></i>', ["/user/admin/index"]) ?>
-        </div> -->
-    </div>
+<!--body-->
     <div class="content-wrapper">
-        <?= Alert::widget() ?>
-        <?= $content ?>
+            <?= Alert::widget() ?>
+            <?= $content ?>
     </div>
 </div>
 

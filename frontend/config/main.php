@@ -39,10 +39,14 @@ return [
         
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
-            //'baseUrl' => '/yiiadv/frontend/web',
+            //'baseUrl' => 'ams/frontend/web',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            //'enableStrictParsing' => false,
             'rules' => [
+                '/' => 'site/index',
+                'search' => 'disbursement/search',
+                'search/<nca_no:[/nca_no\-]+>' => 'disbursement/search',
             ],
         ],
         

@@ -36,22 +36,27 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 <div class="wrap">
     <div id="noprint">
     <!--top-banner -->
-        <div class="top-banner">
+        <div class= <?= !Yii::$app->user->isGuest ? "top-banner" : "top-ban"?> >
             <div class="row">
-                <div class="col-lg-5">
-                <?= Html::img('/web/images/banner.png', ['alt'=>'FMIS Banner']);?>
-                </div>
-                <div class="col-lg-7">
-                    <div class="row">
-                        <i class="date"><?= date('l').' - '; ?></strong><?= date('M. d, Y').' | '; ?>
-                        <?php if(!Yii::$app->user->isGuest)
-                        { 
-                            echo 'Logged: '.Yii::$app->user->identity->fullname; 
-                        } ?>
+               <!--  <div class="col-lg-5"> -->
+                    <?= Html::img('@web/images/new-banner.png', ['alt'=>'FMIS Banner', 'class' => 'top-ban-image']);?>
+                <!-- </div>
+                <div class="col-lg-7"> -->
+                    <!-- <div class="row">
+                        <i class="date">
+                            <?= date('l').' - '; ?> <?= date('M. d, Y').' | '; ?>
+                            <?php if(!Yii::$app->user->isGuest)
+                                { 
+                                    echo 'Logged: '.Yii::$app->user->identity->fullname; 
+                                } 
+                            ?>
                         </i>
                     </div>
-                    <div class="row" style="padding-right: 25px;">
-                        <?php if (!Yii::$app->user->isGuest) : ?>               
+ -->                    <div class="row" style="padding-right: 25px;">
+                        <?php if (!Yii::$app->user->isGuest) : ?>
+                            <div class="hum-wrapper">
+                                <i class="fa fa-bars humburger"></i> 
+                            </div>          
                             <?= Html::beginForm(['/site/logout'], 'post')
                                   .Html::submitButton('<i class="fa fa-sign-out icon-font"></i>', ['class' => 'icon'])
                                 .Html::endForm()
@@ -72,9 +77,9 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Go to transactions">
                                 <?= Html::a('<i class="fa fa-tasks icon-font" aria-hidden="true"></i>', ["/transaction/index"]) ?>
                             </div>
-                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Status of Cash Allocation">
+                            <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Status of Cash Allocation">
                                 <?= Html::a('<i class="fa fa-bar-chart-o icon-font" aria-hidden="true"></i>', ["/cash-status/index2"]) ?>
-                            </div>
+                            </div> -->
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Accounting Entries">
                                 <?= Html::a('<i class="fa fa-calculator icon-font" aria-hidden="true"></i>', ["/accounting-entry/index"]) ?>
                             </div>
@@ -95,9 +100,15 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                             </div>
                         <?php endif ?>
                     </div>
-                </div>
+               <!--  </div> -->
             </div>
         </div>
+        <!-- <div class="below-banner">
+            <?= Html::img('@web/images/ams.png', ['alt'=>'FMIS Banner']);?>
+        </div> -->
+        <!-- <?= Html::img('@web/images/ams.png', ['alt'=>'FMIS Banner', 'class' => 'top-banner-image']);?> -->
+       <!--  <?= Html::img('@web/images/ams.png', ['alt'=>'FMIS Banner', 'class' => 'top-bann-image']);?> -->
+      
     </div>
 <!--body-->
     <div class="content-wrapper">

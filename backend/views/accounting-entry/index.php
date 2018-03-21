@@ -30,9 +30,27 @@ $this->title = 'ACCOUNTING ENTRIES';
                     'dv_no',
                     'account_title',
                     'uacs_code',
-                    'debit',
-                    'credit_amount',
-                    'credit_to',
+                    [
+                        'attribute' => 'debit',
+                        'value' => function($value){
+
+                            return number_format($value->debit, 2);
+                        }
+                    ],
+                    [
+                        'attribute' => 'credit_amount',
+                        'value' => function($val){
+
+                            return number_format($val->credit_amount, 2);
+                        }
+                    ],
+                    [
+                        'attribute' => 'credit_to',
+                        'value' => function($data){
+
+                            return $data->credit_to == 'payee' ? $data->disbursement->payee : $data->credit_to;
+                        }
+                    ],
                 ],
             ]); ?>
          </div>

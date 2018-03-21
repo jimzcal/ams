@@ -15,7 +15,6 @@ $this->title = $model->dv_no;
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="disbursement-view">
-    <div class="search-bg"></div>
     <div class="tracking-form">
         <div id="noprint">
             <?php if(\Yii::$app->user->can('updateDisbursementVoucher')) : ?>
@@ -54,16 +53,37 @@ $this->title = $model->dv_no;
                 </td>
             </tr>
             <tr>
-                <td width="80" align="right">Mode of Payment:</td><td><strong><?= $model->mode_of_payment; ?></strong></td><td width="100" align="right">TIN:</td><td><strong><?= $model->tin; ?></strong></td>
+                <td width="80" align="right">Mode of Payment:</td>
+                <td>
+                    <strong><?= $model->mode_of_payment; ?></strong>
+                </td>
+                <td width="100" align="right">TIN:</td>
+                <td>
+                    <strong><?= $model->tin; ?></strong>
+                </td>
             </tr>
             <tr>
-                <td align="right">MFO/PAP:</td><td colspan="3"><strong></strong></td>
+                <td align="right">MFO/PAP:</td>
+                <td colspan="3">
+                    <strong><?= $model->ors->mfo_pap; ?></strong>
+                </td>
             </tr>
             <tr>
-                <td align="right">Gross Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->gross_amount, 2); ?></strong></td><td colspan="4" width="200">This transaction should have the following documentary requirements:</td>
+                <td align="right">Gross Amount:</td>
+                <td colspan="2" width="35">
+                    <strong><?= number_format($model->gross_amount, 2); ?></strong>
+                </td>
+                <td colspan="4" width="200">
+                    This transaction should have the following documentary requirements:
+                </td>
             </tr>
             <tr>
-                <td align="right">Status:</td><td colspan="2" width="35"><strong><?= $model->status; ?></strong></td><td colspan="4" width="200" rowspan="6">
+                <td align="right">Status:</td>
+                <td colspan="2" width="35">
+                    <strong><?= $model->status; ?></strong>
+                    <strong><?= $model->obligated == 'yes' ? '(earmarked)' : ' ' ?></strong>
+                </td>
+                <td colspan="4" width="200" rowspan="6">
                     <?php
                         $attachments = Disbursement::find(['attachments'])->where(['id'=>$model->id])->one();
                         $attachments = explode(',', $attachments->attachments);
@@ -73,33 +93,44 @@ $this->title = $model->dv_no;
                         $lacking = array_diff($req, $attachments);
                     ?>
                     <?php foreach ($attachments as $attached) : ?>
-                        <?php if($attached !== '') : ?>
-                            <div class="cbox" ?>
+                        <?php if($attached != '') : ?>
+                            <div class="cboxx">
                                 <input type="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
-                                <label><?= $attached ?></label></br>
+                                <label><?= $attached ?></label>
                             </div>
                         <?php endif ?>
                     <?php endforeach ?>
 
                     <?php foreach ($lacking as $lack) : ?>
-                        <div class="cbox" ?>
-                            <input type="checkbox" class="cbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
+                        <div class="cboxx" ?>
+                            <input type="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
                             <label><?= $lack ?></label>
                         </div>
                     <?php endforeach ?>
                 </td>
             </tr>
             <tr>
-                <td align="right">ORS No.:</td><td colspan="2" width="35"><strong></strong></td>
+                <td align="right">ORS No.:</td>
+                <td colspan="2" width="35">
+                    <strong><?= $model->ors->ors_class.'-'.$model->ors->funding_source.'-'.$model->ors->ors_year.'-'.$model->ors->ors_month.'-'.$model->ors->ors_serial; ?></strong>
+                </td>
             </tr>
             <tr>
-                <td align="right">Less Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->less_amount, 2); ?></strong></td>
+                <td align="right">Less Amount:</td>
+                <td colspan="2" width="35">
+                    <strong><?= number_format($model->less_amount, 2); ?></strong>
+                </td>
             </tr>
             <tr>
-                <td align="right">Net Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->net_amount, 2); ?></strong></td>
+                <td align="right">Net Amount:</td>
+                <td colspan="2" width="35">
+                    <strong><?= number_format($model->net_amount, 2); ?></strong>
+                </td>
             </tr>
             <tr>
-                <td align="center" colspan="3"><strong>TRANSACTION STATUS</strong></td>
+                <td align="center" colspan="3" style="background-color: #46920e; color: #FFFFFF">
+                    <strong>TRANSACTION STATUS</strong>
+                </td>
             </tr>
             <tr>
                 <td align="center"><strong>Transaction</strong></td><td align="center"><strong>Received By</strong></td><td align="center"><strong>Date/Time</strong></td>

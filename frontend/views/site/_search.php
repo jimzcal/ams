@@ -2,8 +2,11 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
+// Yii::setAlias('@path', '/ams/frontend/web');
+//echo Url::to('@path');
 
 $this->title = 'Search DV';
 ?>
@@ -13,8 +16,12 @@ $this->title = 'Search DV';
         <div class="row">
             <?php $form = ActiveForm::begin(); ?>
                 <div class="search">
+                    <?= Html::img('@web/images/search.png', ['alt'=>'Search']);?>
+                    <img src="@web/images/search.png" alt="Search">
+                    <img src="<?php echo Yii::app()->baseUrl; ?>/images/search.png" />
+                    
                     <div class="input-group col-md-12">
-                        <input type="text" id="keyboard" name="dv_no" class="search-query form-control" placeholder="Enter DV No./Barcode/Tracking Form No." autofocus>
+                        <input type="text" id="keyboard" name="dv_no" class="form-control" placeholder="Enter DV No./Barcode/Tracking Form No." autofocus>
                         <span class="input-group-btn">
                         <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Search', ['class' => 'btn btn-primary']) ?>
                         </span>

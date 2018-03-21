@@ -29,36 +29,15 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                 //'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-
-                    //'id',
                     'dv_no',
                     'date',
-                    // [
-                    //     'attribute' => 'date',
-                    //     'value' => function($date){
-                    //         return date('Y',strtotime($date->date));
-                    //     }
-                    // ],
                     'payee',
-                    //'particulars:ntext',
-                    // 'mode_of_payment',
-                    // 'responsibility_center',
-                    // 'mfo_pap',
-                     //'gross_amount',
                      [
                         'attribute' => 'gross_amount',
                         'value' => function($data){
                             return (number_format($data->gross_amount, 2));
                         }
                      ],
-                    // 'less_amount',
-                    // 'net_amount',
-                    // 'fund_source',
-                    // 'ors_no',
-                    // 'transaction_type',
-                    // 'attachments:ntext',
-                    // 'status',
-
                     ['class' => 'yii\grid\ActionColumn'],
                 ],
             ]); ?>

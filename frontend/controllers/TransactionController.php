@@ -3,17 +3,16 @@
 namespace frontend\controllers;
 
 use Yii;
-use frontend\models\Disbursement;
-use frontend\models\DisbursementSearch;
-use frontend\models\TransactionStatus;
+use frontend\models\Transaction;
+use frontend\models\TransactionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DisbursementController implements the CRUD actions for Disbursement model.
+ * TransactionController implements the CRUD actions for Transaction model.
  */
-class DisbursementController extends Controller
+class TransactionController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,79 +30,54 @@ class DisbursementController extends Controller
     }
 
     /**
-     * Lists all Disbursement models.
+     * Lists all Transaction models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new DisbursementSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $searchModel = new TransactionSearch();
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $model = new Transaction();
+        $dataProvider = Transaction::find()->all();
+
+         if ($model->load(Yii::$app->request->post()) && $model->name !== 'all')
+        {
+            $dataProvider = Transaction::find()->where(['name' => $model->name])->all();
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+                'model' => $model,
+            ]);
+        }
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            // 'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
     }
 
-    public function actionSearch()
-    {
-        if(isset($_POST['dv_no']))
-        {
-            $dv_no = $_POST['dv_no'];
-            $result = Disbursement::find()->where(['dv_no' => $dv_no])->one();
-
-            if($result !== null)
-            {
-                return $this->redirect(['disbursement/view', 'id' => $result->id]); 
-            }
-
-            else
-            {
-                Yii::$app->getSession()->setFlash('warning', 'No Results Found');   
-                return $this->render('_search');
-            }
-            
-        }
-        return $this->render('_search');
-    }
-
     /**
-     * Displays a single Disbursement model.
+     * Displays a single Transaction model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $dv_no = Disbursement::find()->where(['id'=>$id])->one();
-        $transaction = TransactionStatus::find()->where(['dv_no' => $dv_no->dv_no])->one();
-        // var_dump($dv_no);
-        // exit();
-        $transaction1 = explode(',', $transaction->receiving);
-        $transaction2 = explode(',', $transaction->processing);
-        $transaction3 = explode(',', $transaction->verification);
-        $transaction4 = explode(',', $transaction->nca_control);
-        $transaction5 = explode(',', $transaction->lddap_ada);
-        $transaction6 = explode(',', $transaction->releasing);
         return $this->render('view', [
-            'model' => $this->findModel($id), 
-            'transaction1'=>$transaction1, 
-            'transaction2'=>$transaction2,
-            'transaction3'=>$transaction3, 
-            'transaction4'=>$transaction4,
-            'transaction5'=>$transaction5, 
-            'transaction6'=>$transaction6,
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Disbursement model.
+     * Creates a new Transaction model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Disbursement();
+        $model = new Transaction();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -115,7 +89,7 @@ class DisbursementController extends Controller
     }
 
     /**
-     * Updates an existing Disbursement model.
+     * Updates an existing Transaction model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -135,7 +109,7 @@ class DisbursementController extends Controller
     }
 
     /**
-     * Deletes an existing Disbursement model.
+     * Deletes an existing Transaction model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -149,15 +123,15 @@ class DisbursementController extends Controller
     }
 
     /**
-     * Finds the Disbursement model based on its primary key value.
+     * Finds the Transaction model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Disbursement the loaded model
+     * @return Transaction the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Disbursement::findOne($id)) !== null) {
+        if (($model = Transaction::findOne($id)) !== null) {
             return $model;
         }
 

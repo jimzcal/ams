@@ -45,7 +45,7 @@ $this->registerJs("
     $('tbody td').click(function (e) {
         var id = $(this).closest('tr').data('id');
         if (e.target == this)
-            location.href = '" . Url::to(['disbursement/view']) . "&id=' + id;
+            location.href = '" . Url::to(['disbursement/view']) . "?id=' + id;
     });
 ");
 ?>

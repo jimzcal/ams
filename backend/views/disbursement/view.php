@@ -15,12 +15,12 @@ $this->title = $model->dv_no;
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="disbursement-view">
-    <div class="tracking-form">
-        <div id="noprint">
+    <div id="noprint">
+        <div class="title">
             <?php if(\Yii::$app->user->can('updateDisbursementVoucher')) : ?>
                 <p>
-                    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                    <a href="javascript:window.print()" class="btn btn-primary">Print</a>
+                    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-right']) ?>
+                    <a href="javascript:window.print()" class="btn btn-primary btn-right">Print</a>
                     <!-- <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                         'class' => 'btn btn-danger',
                         'data' => [
@@ -31,6 +31,8 @@ $this->title = $model->dv_no;
                 </p>
             <?php endif ?>
         </div>
+    </div>
+    <div class="tracking-form">
         <table class="table table-bordered table-condensed">
             <tr>
                 <td colspan="7" class="tracking">
@@ -43,26 +45,47 @@ $this->title = $model->dv_no;
                 <td width="45" rowspan="3" colspan="3" align="center">
                     <?php 
                         $generator = new Picqer\Barcode\BarcodeGeneratorSVG();
-                        echo $generator->getBarcode($model->dv_no, $generator::TYPE_CODE_128, 2, 80);
+                        echo $generator->getBarcode($model->dv_no, $generator::TYPE_CODE_128, 2, 60);
                     ?>
                     <p><?= $model->dv_no ?></p>
                 </td>
-                <td width="100" align="right">Payee:</td>
+                <td width="130" align="right">Name of Payee:</td>
                 <td colspan="3" style="font-size: 14px;">
                     <strong><?= $model->payee; ?></strong>
                 </td>
             </tr>
             <tr>
-                <td width="80" align="right">Mode of Payment:</td><td><strong><?= $model->mode_of_payment; ?></strong></td><td width="100" align="right">TIN:</td><td><strong><?= $model->tin; ?></strong></td>
+                <td width="80" align="right">Mode of Payment:</td>
+                <td>
+                    <strong><?= $model->mode_of_payment; ?></strong>
+                </td>
+                <td width="100" align="right">TIN:</td>
+                <td>
+                    <strong><?= $model->tin; ?></strong>
+                </td>
             </tr>
             <tr>
-                <td align="right">MFO/PAP:</td><td colspan="3"><strong><?= $model->ors->mfo_pap; ?></strong></td>
+                <td align="right">MFO/PAP:</td>
+                <td colspan="3">
+                    <strong><?= $model->ors->mfo_pap; ?></strong>
+                </td>
             </tr>
             <tr>
-                <td align="right">Gross Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->gross_amount, 2); ?></strong></td><td colspan="4" width="200">This transaction should have the following documentary requirements:</td>
+                <td align="right">Gross Amount:</td>
+                <td colspan="2" width="35">
+                    <strong><?= number_format($model->gross_amount, 2); ?></strong>
+                </td>
+                <td colspan="4" width="200">
+                    This transaction should have the following documentary requirements:
+                </td>
             </tr>
             <tr>
-                <td align="right">Status:</td><td colspan="2" width="35"><strong><?= $model->status; ?></strong></td><td colspan="4" width="200" rowspan="6">
+                <td align="right">Status:</td>
+                <td colspan="2" width="35">
+                    <strong><?= $model->status; ?></strong>
+                    <strong><?= $model->obligated == 'yes' ? '(earmarked)' : ' ' ?></strong>
+                </td>
+                <td colspan="4" width="200" rowspan="6">
                     <?php
                         $attachments = Disbursement::find(['attachments'])->where(['id'=>$model->id])->one();
                         $attachments = explode(',', $attachments->attachments);
@@ -72,17 +95,17 @@ $this->title = $model->dv_no;
                         $lacking = array_diff($req, $attachments);
                     ?>
                     <?php foreach ($attachments as $attached) : ?>
-                        <?php if($attached !== '') : ?>
-                            <div class="cbox" ?>
+                        <?php if($attached != '') : ?>
+                            <div class="cboxx">
                                 <input type="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
-                                <label><?= $attached ?></label></br>
+                                <label><?= $attached ?></label>
                             </div>
                         <?php endif ?>
                     <?php endforeach ?>
 
                     <?php foreach ($lacking as $lack) : ?>
-                        <div class="cbox" ?>
-                            <input type="checkbox" class="cbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
+                        <div class="cboxx" ?>
+                            <input type="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
                             <label><?= $lack ?></label>
                         </div>
                     <?php endforeach ?>
@@ -98,7 +121,7 @@ $this->title = $model->dv_no;
                 <td align="right">Net Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->net_amount, 2); ?></strong></td>
             </tr>
             <tr>
-                <td align="center" colspan="3"><strong>TRANSACTION STATUS</strong></td>
+                <td align="center" colspan="3" style="background-color: #46920e; color: #FFFFFF"><strong>TRANSACTION STATUS</strong></td>
             </tr>
             <tr>
                 <td align="center"><strong>Transaction</strong></td><td align="center"><strong>Received By</strong></td><td align="center"><strong>Date/Time</strong></td>

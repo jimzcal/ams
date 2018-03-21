@@ -141,7 +141,7 @@ class Disbursement extends \yii\db\ActiveRecord
      */
     public function getOrs()
     {
-        return $this->hasMany(Ors::className(), ['dv_no' => 'dv_no']);
+        return $this->hasOne(Ors::className(), ['dv_no' => 'dv_no']);
     }
 
     /**

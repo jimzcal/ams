@@ -6,27 +6,50 @@ body {
 }
 
 /* .............Banner Style....................... */
-.top-line{
-  width: 100%;
-  height: 5px;
-  background-color: #006901;
-  position: fixed;
-}
 .top-banner{
   width: 100%;
-  border-top: solid 8px #46920e;
-  border-bottom: solid 10px #eddfa3;
-  box-shadow: 3px 3px 8px green;
+  /*border-top: solid 8px #46920e;*/
+  /*border-bottom: solid 10px #eddfa3;*/
+  box-shadow: 3px 3px 8px #eddfa3;
   height: auto;
   position: fixed;
   top: 0;
   z-index: 1000;
-  background-color: #FFFFFF;
+  background-color: #2a2b43;
+  
 }
-.top-banner image{
-  width: 100%;
-  height: auto;
+
+
+.top-ban-image{
+  height: 80px;
   float: left;
+  margin-left: 15px;
+}
+
+.top-bann-image{
+  margin-top: 20px;
+  margin-left: 40px;
+  position: fixed;
+  width: 160px;
+  z-index: 1500;
+}
+
+.top-ban{
+  display: none;
+}
+
+.below-banner{
+  margin-top: 75px;
+  position: relative;
+  height: 80px;
+  width: 100%;
+  padding: 10px;
+  opacity: .5;
+/*  border: solid 1px black;*/
+}
+
+.below-banner img{
+  height: 100px;
 }
 
 .my-table{
@@ -110,14 +133,32 @@ body {
   height: 55px;
   margin-left: 5px;
   margin-right: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
   border-radius: 60px;
-  box-shadow: 2px 2px 5px grey;
-  background-color: #46920e;
+  /*box-shadow: 2px 2px 5px grey;*/
+  background-color: #FFFFFF;
   padding: 12px;
   text-align: center;
-  display: inline-block;
   float: right;
-  margin-top: 35px;
+  /*display: none;*/
+  /*margin-top: 5px;*/
+}
+
+.hum-wrapper{
+  height: 70%;
+  width: auto;
+  margin-right: 35px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 12px;
+  text-align: center;
+  float: right;
+  display: none;
+}
+.humburger{
+  color: #FFFFFF;
+  font-size: 16px;
 }
 
 .right-icon:hover{
@@ -127,8 +168,8 @@ body {
 }
 .icon-font{
   font-size: 30px;
-  color: #FFFFFF;
-  text-shadow: 3px 3px 8px grey;
+  color: #46920e;;
+  /*text-shadow: 3px 3px 8px grey;*/
 }
 
 .icon:hover{
@@ -163,6 +204,12 @@ body {
   display: inline-block;
 }
 
+.new-title{
+  font-size: 22px;
+  color: #000000;
+  margin: 30px 80px;
+}
+
 .left-icon{
   float: left;
   display: block;
@@ -192,8 +239,9 @@ body {
   height: auto;
   padding-right: 10px;
   padding-left: 10px;
-  padding-top: 10px;
-  margin-top: 140px;
+  padding-top: 100px;
+  margin-top: 3px;
+  z-index: 1000;
   /*background-color: #f5f5f0;*/
   /*background-color: #f9ffe6;*/
 }
@@ -202,12 +250,6 @@ body {
   font-size: 20px;
   color: #000000;
   padding-bottom: 5px;
-}
-
-.new-title{
-  font-size: 22px;
-  color: #000000;
-  margin: 30px 80px;
 }
 
 .view-index{
@@ -220,6 +262,7 @@ body {
   padding-bottom: 5px;
   border-radius: 5px;
   padding: 10px;
+  z-index: 800;
 }
 
 .mini-header{
@@ -346,6 +389,7 @@ body {
  margin-right: auto;
  padding: 15px;
  background-color: #FFFFFF;
+ margin-top: 40px;
 
 }
 
@@ -372,8 +416,15 @@ body {
   font-size: 12px;
 }
 
+.cboxx{
+  display: inline-block;
+  width: 180px;
+  margin-right: 3px;
+  font-weight: bold;
+  font-size: 10px;
+}
+
 .checkbox-wrapper{
-  width: 100%;
   min-width: 300px;
   width: auto;
   border-top: solid 1px grey;
@@ -388,6 +439,14 @@ body {
   display: block;
 }
 
+.top-banner-image{
+  height: 300px;
+  margin-top: 30px;
+  margin-left: 20px;
+  opacity: .2;
+  position: fixed;
+}
+
 @media print
 {
   .breadcrumb, #noprint {display:none;}
@@ -398,11 +457,12 @@ body {
    font-size: 12pt;
   }
 
-  .content-wrapper{
+  /*.content-wrapper{
    margin: 0px;
    width: auto;
    height: auto;
-  }
+   z-index: 1000;
+  }*/
 
   .title{
     display: none;
@@ -440,7 +500,7 @@ body {
   display: block;
   margin-right: auto;
   margin-left: auto;
-  margin-top: 100px;
+  margin-top: 160px;
  }
 
  .accounting-modal{
@@ -521,6 +581,30 @@ body {
   box-shadow: 1px 1px 10px 4px grey;
   background-color: #FFFFFF;
  }
+
+ @media screen and (max-width: 400px) {
+  .icon{
+    display: none;
+  }
+  .top-ban-image{
+    height: 50px;
+    margin-top: 5px;
+  }
+
+  .hum-wrapper{
+    display: block;
+    cursor: pointer;
+  }
+
+  .hum-wrapper:hover{
+    opacity: .6;
+  }
+
+  .new-title{
+    font-size: 14px;
+    margin: 5px 20px;
+  }
+}
 
 /* .............Default CSS....................... */
 

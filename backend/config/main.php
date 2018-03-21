@@ -66,7 +66,7 @@ return [
             ],
         
         'urlManager' => [
-                //'class' => 'yii\web\UrlManager',
+               // 'class' => 'yii\web\UrlManager',
                 'showScriptName' => false,
                 'enablePrettyUrl' => true,
                 'rules' => [

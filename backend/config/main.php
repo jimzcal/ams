@@ -21,6 +21,7 @@ return [
             'admins' => ['admin'],
             'enableFlashMessages' => false,
         ],
+        'gridview' => ['class' => 'kartik\grid\Module'],
     ],
     'components' => [
         'request' => [

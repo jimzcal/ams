@@ -112,8 +112,8 @@ class RequirementsController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        Yii::$app->getSession()->setFlash('success', 'Successfully Updated');
+        return $this->redirect(['create']);
     }
 
     /**

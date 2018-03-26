@@ -43,7 +43,7 @@ $this->title = 'DISBURSEMENT VOUCHER';
                             </td>
                             <td style="text-align: right; font-weight: bold;">cash Advance :</td>
                             <td>
-                                <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated', 'id' => 'two'])->label(false)?>
+                                <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated'])->label(false)?>
                             </td>
                         </tr>
                         <tr>

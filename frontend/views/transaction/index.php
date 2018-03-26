@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="transaction-index">
 
     <div class="new-title">
-        <i class="fa fa-tasks" aria-hidden="true"></i> <?= Html::encode($this->title) ?>
-        <p style="text-indent: 30px; font-size: 14px;">Transactions and its Documentary Requirements</p>
+        <i class="fa fa-tasks" aria-hidden="true"></i> Common Government Transactions
+        <p style="text-indent: 30px; font-size: 14px;">The Documentary Requirements for each Transaction herein are in accordance to COA Circular No. 2012-001 of the Commission On Audit (COA) issued on June 14, 2012.</p>
     </div>
 
     <?php $form = ActiveForm::begin(); ?>

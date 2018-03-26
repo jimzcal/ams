@@ -74,12 +74,12 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Search DV">
                                 <?= Html::a('<i class="fa fa-search icon-font" aria-hidden="true"></i>', ["/site/index"]) ?>
                             </div>
-                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Go to transactions">
+                            <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Go to transactions">
                                 <?= Html::a('<i class="fa fa-tasks icon-font" aria-hidden="true"></i>', ["/transaction/index"]) ?>
-                            </div>
-                            <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Status of Cash Allocation">
-                                <?= Html::a('<i class="fa fa-bar-chart-o icon-font" aria-hidden="true"></i>', ["/cash-status/index2"]) ?>
                             </div> -->
+                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Control Panel">
+                                <?= Html::a('<i class="fa fa-cogs icon-font" aria-hidden="true"></i>', ["/site/control"]) ?>
+                            </div>
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Accounting Entries">
                                 <?= Html::a('<i class="fa fa-calculator icon-font" aria-hidden="true"></i>', ["/accounting-entry/index"]) ?>
                             </div>

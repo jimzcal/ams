@@ -11,6 +11,10 @@ $this->title = 'FINANCIAL REPORTS';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="disbursement-index">
+    <div class="new-title">
+        <i class="fa fa-book" aria-hidden="true"></i> Financial Records
+    </div>
+
     <div class="financial-reports-panel">
 
         <?= Html::a('<span class="fa fa-line-chart" aria-hidden="true" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
@@ -20,7 +24,7 @@ $this->title = 'FINANCIAL REPORTS';
             Index of Payment', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-file-text-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            LDDAP-ADA List', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+            LDDAP-ADA List', ["/lddap-ada/index"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-bar-chart-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Status of Cash Allocation', ["/cash-status/nca"], ['class' => 'financial-report-icon']) ?>

@@ -37,14 +37,25 @@ return [
             'frontend/runtime',
             'frontend/web/assets',
         ],
+
         'setExecutable' => [
             'yii',
             'yii_test',
         ],
+
         'setCookieValidationKey' => [
             'backend/config/main-local.php',
             'frontend/config/main-local.php',
         ],
+
+        // 'setWritable' => [
+        //     'frontend/web/uploads',
+        // ],
+        
+        // 'createSymlink' => [
+        //     'frontend/web/uploads'  => 'backend/web/uploads',
+        // ],
+
     ],
     'Production' => [
         'path' => 'prod',

@@ -33,7 +33,10 @@
         "picqer/php-barcode-generator": "^0.2.2",
         "kartik-v/yii2-mpdf": "*",
         "sjaakp/yii2-cycle2": "*",
-        "nex/yii2-chosen": "*"
+        "nex/yii2-chosen": "*",
+        "kartik-v/yii2-export": "@dev",
+        "2amigos/yii2-chartjs-widget": "~2.0",
+        "miloschuman/yii2-highcharts-widget": "^6.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

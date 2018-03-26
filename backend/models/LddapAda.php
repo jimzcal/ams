@@ -51,10 +51,10 @@ class LddapAda extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'date' => 'Date',
-            'lddap_no' => 'Lddap No',
-            'dv_no' => 'Dv No',
+            'lddap_no' => 'LDDAP NO.',
+            'dv_no' => 'DV No',
             'current_account' => 'Current Account',
-            'uacs_code' => 'Uacs Code',
+            'uacs_code' => 'UACS Code',
             'net_amount' => 'Net Amount',
             'remarks' => 'Remarks',
         ];

@@ -9,6 +9,8 @@ use backend\models\AccountingEntry;
 use kartik\date\DatePicker;
 use backend\models\FundCluster;
 use backend\models\Nca;
+use dosamigos\chartjs\ChartJs;
+use yii\web\JsExpression;
 
 
 /* @var $this yii\web\View */
@@ -21,7 +23,44 @@ $this->title = 'CASH STATUS';
 
 <div class="cash-status-create">
 <?php $form = ActiveForm::begin(); ?>
-    <?= Yii::$app->session->getFlash('error'); ?>
+<?= Yii::$app->session->getFlash('error'); ?>
+
+    <!-- <div class="view-index">
+        <?= ChartJs::widget([
+            'type' => 'line',
+            'options' => [
+                'height' => 300,
+                'width' => 300
+            ],
+            'data' => [
+                'labels' => ["January", "February", "March", "April", "May", "June", "July"],
+                'datasets' => [
+                    [
+                        'label' => "My First dataset",
+                        'backgroundColor' => "rgba(179,181,198,0.2)",
+                        'borderColor' => "rgba(179,181,198,1)",
+                        'pointBackgroundColor' => "rgba(179,181,198,1)",
+                        'pointBorderColor' => "#fff",
+                        'pointHoverBackgroundColor' => "#fff",
+                        'pointHoverBorderColor' => "rgba(179,181,198,1)",
+                        'data' => [65, 59, 90, 81, 56, 55, 40]
+                    ],
+                    [
+                        'label' => "My Second dataset",
+                        'backgroundColor' => "rgba(255,99,132,0.2)",
+                        'borderColor' => "rgba(255,99,132,1)",
+                        'pointBackgroundColor' => "rgba(255,99,132,1)",
+                        'pointBorderColor' => "#fff",
+                        'pointHoverBackgroundColor' => "#fff",
+                        'pointHoverBorderColor' => "rgba(255,99,132,1)",
+                        'data' => [28, 48, 40, 19, 96, 27, 100]
+                    ]
+                ]
+            ]
+        ]);
+        ?>
+    </div> -->
+
     <div class="view-index">
         <div class="mini-header">
             <i class="fa fa-bar-chart-o" aria-hidden="true"></i> Cash Status
@@ -101,324 +140,324 @@ $this->title = 'CASH STATUS';
                 </td>
                 <td>
                     <?php 
-                            switch(strtolower($val[0]))
-                            {
-                                case 'january':
-                                $bal = $model3->january - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'January'])
-                                    ->all(), 'net_amount')); 
+                        switch(strtolower($val[0]))
+                        {
+                            case 'january':
+                            $bal = $model3->january - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'January'])
+                                ->all(), 'net_amount')); 
 
-                                echo number_format($bal, 2);
-                                break;
-                            
-                                case 'february':
-                                $bal = $model3->february - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'February'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                        
+                            case 'february':
+                            $bal = $model3->february - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'February'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                           
-                                case 'march':
-                                $bal = $model3->march - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'March'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                       
+                            case 'march':
+                            $bal = $model3->march - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'March'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                           
-                                case 'april':
-                                $bal = $model3->april - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'April'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                       
+                            case 'april':
+                            $bal = $model3->april - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'April'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                           
-                                case 'may':
-                                $bal = $model3->may - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'May'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                       
+                            case 'may':
+                            $bal = $model3->may - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'May'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                           
-                                case 'june':
-                                $bal = $model3->june - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'June'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                       
+                            case 'june':
+                            $bal = $model3->june - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'June'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                            
-                                case 'july':
-                                $bal = $model3->july - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'July'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                        
+                            case 'july':
+                            $bal = $model3->july - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'July'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                            
-                                case 'august':
-                                $bal = $model3->august - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'August'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                        
+                            case 'august':
+                            $bal = $model3->august - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'August'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                            
-                                case 'september':
-                                $bal = $model3->september - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'September'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                        
+                            case 'september':
+                            $bal = $model3->september - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'September'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                            
-                                case 'october':
-                                $bal = $model3->october - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'October'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                        
+                            case 'october':
+                            $bal = $model3->october - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'October'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                            
-                                case 'november':
-                                $bal = $model3->november - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'November'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                        
+                            case 'november':
+                            $bal = $model3->november - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'November'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                            
-                                case 'december':
-                                $bal = $model3->december - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                    ->where(['nca'=>$model->nca])
-                                    ->andWhere(['obligated' => 'yes'])
-                                    ->andWhere(['like', 'date', 'December'])
-                                    ->all(), 'net_amount'));
+                            echo number_format($bal, 2);
+                            break;
+                        
+                            case 'december':
+                            $bal = $model3->december - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['like', 'date', 'December'])
+                                ->all(), 'net_amount'));
 
-                                echo number_format($bal, 2);
-                                break;
-                            
-                                default:
-                                echo "Something's wrong!";
-                            }
-                        ?>
+                            echo number_format($bal, 2);
+                            break;
+                        
+                            default:
+                            echo "Something's wrong!";
+                        }
+                    ?>
                 </td>
                 <td>
                     <?= number_format($model->net_amount, 2) ?> <?= $model->obligated === 'yes' ? '(earmarked)' : '' ?>
                 </td>
-                <tr>
-                    <td colspan="6">
-                        <label>System Findings:</label><br>
-                        <?php if($model->obligated === 'yes') 
-                            {
-                                echo ($bal + $model->net_amount) >= $model->net_amount ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>';
-                                $x = ($bal + $model->net_amount) >= $model->net_amount ? 'false': 'true';
-                            }
-                            else {
-                               echo $bal >= $model->net_amount ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>';
-                               $x = $bal >= $model->net_amount ? 'false': 'true';
-                            }
-                        ?>
-                    </td>
-                </tr>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <label>System Findings:</label><br>
+                    <?php if($model->obligated === 'yes') 
+                        {
+                            echo ($bal + $model->net_amount) >= $model->net_amount ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>';
+                            $x = ($bal + $model->net_amount) >= $model->net_amount ? 'false': 'true';
+                        }
+                        else {
+                           echo $bal >= $model->net_amount ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>';
+                           $x = $bal >= $model->net_amount ? 'false': 'true';
+                        }
+                    ?>
+                </td>
             </tr>
         </table>
     </div>
 
-        <div class="view-index">
-            <div class="mini-header">
-                <i class="fa fa-id-card" aria-hidden="true"></i> Disbursement Voucher
-            </div>
+    <div class="view-index">
+        <div class="mini-header">
+            <i class="fa fa-id-card" aria-hidden="true"></i> Disbursement Voucher
+        </div>
 
-            <table class="table table-condensed">
-                <tr>
-                    <td style="font-weight: bold; font-size: 18px;" colspan="3">DV No.
-                        <?= isset($dv_no) ? $dv_no : $model->dv_no ?></td>
-                    <td style="font-size: 18px; text-align: right; font-weight: bold;" colspan="3">
-                        <?= $model->date===null ? date('M. d, Y') : $model->date ?>
-                        <?= $form->field($model, 'date')->hiddenInput(['value' => $model->date===null ? date('M. d, Y') : $model->date, 'readonly' =>true])->label(false) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: right; font-weight: bold;">Payee :</td>
-                    <td colspan="3">
-                        <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'id'=>'four', 'autofocus' => 'autofocus'])->label(false) ?>
-                    </td>
-                    <td style="text-align: right; font-weight: bold;">Status :</td>
-                    <td>
-                        <?= $form->field($model, 'status')->dropDownList([$model->status => $model->status, 'Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled'], ['id' => 'type'])->label(false) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: right; font-weight: bold;">Transaction Type :</td>
-                    <td colspan="3">
-                        <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type'])->label(false) ?>
-                    </td>
-                    <td style="text-align: right; font-weight: bold;">Mode of payment :</td>
-                    <td>
-                        <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA'])->label(false) ?>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td style="text-align: right; font-weight: bold;">Fund Cluster :</td>
-                    <td colspan="2">
-                        <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
-                         [
-                            'onchange'=>'
-                                 $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
-                                    $("select#disbursement-nca").html(data);
-                                });'
-                        ])->label(false); ?>
-                    </td>
-                    <td style="text-align: right; font-weight: bold;">Gross Amount :</td>
-                    <td colspan="2">
-                        <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id'=>'nine'])->label(false) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: right; font-weight: bold;">NCA No. :</td>
-                    <td colspan="2">
-                        <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'))->label(false) ?>
-                    </td>
-                    <td style="text-align: right; font-weight: bold;">Less :</td>
-                    <td colspan="2">
-                        <?= $form->field($model, 'less_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value'=> array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount'))])->label(false) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: right; font-weight: bold;">Funding Source :</td>
-                    <td colspan="2">
-                        <?= $form->field($model, 'funding_source')->dropDownList(ArrayHelper::map(Nca::find()->all(),'funding_source', 'funding_source'),
-                            [
-                              'prompt'=>'Select Funding Source',
-                            ])->label(false);
-                         ?>
-                    </td>
-                    <td style="text-align: right; font-weight: bold;">Net Amount :</td>
-                    <td colspan="2">
-                        <?= $form->field($model, 'net_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value' => ($net_amount = $model->gross_amount - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')))])->label(false) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6" style="background-color: #f5f5f0; font-weight: bold;">Details From Obligartion Request and Status (ORS)</td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <table class="table table-condensed table-bordered">
-                                <tr>
-                                    <th style="text-align: center">Particulars</th>
-                                    <th style="text-align: center">ORS No</th>
-                                    <th style="text-align: center">MFO/PAP</th>
-                                    <th style="text-align: center">Responsibility Center</th>
-                                    <th style="text-align: center">Amount</th>
-                                </tr>
-                                <?php foreach ($ors_model as $value): ?>
-                                    <?php $i=0; ?>
-                                    <tr>
-                                        <td style="width: 250px;">
-                                            <?= $form->field($model, 'particular[]')->textInput(['value' => $value->particular, 'class' => 'myfield'])->label(false) ?>
-                                            <?= $form->field($model, 'ors_id[]')->hiddenInput(['value' => $value->id])->label(false) ?>
-                                        </td>
-                                        <td style="width: 130px;">
-                                            <?= $form->field($model, 'ors_no[]')->textInput([
-                                                'value' => $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial, 'class' => 'myfield'])->label(false) 
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <?= $form->field($model, 'mfo_pap[]')->textInput(['value' => $value->mfo_pap, 'class' => 'myfield'])->label(false) ?>
-                                        </td>
-                                        <td>
-                                            <?= $form->field($model, 'responsibility_center[]')->textInput(['value' => $value->responsibility_center, 'class' => 'myfield'])->label(false) ?>
-                                        </td>
-                                        <td style="width: 100px;">
-                                            <?= $form->field($model, 'amount[]')->textInput(['value' => $value->amount, 'class' => 'myfield'])->label(false) ?>
-                                        </td>
-                                    </tr>
-                                    <?php $i++ ?>
-                                <?php endforeach ?>
-                            </table>
-                    </td>
-                </tr>
-        
-                <tr>
-                    <td colspan="6" style="background-color: #f5f5f0; font-weight: bold;">Accounting Entry</td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <table class="table table-bordered">
+        <table class="table table-condensed">
+            <tr>
+                <td style="font-weight: bold; font-size: 18px;" colspan="3">DV No.
+                    <?= isset($dv_no) ? $dv_no : $model->dv_no ?>
+                </td>
+                <td style="font-size: 18px; text-align: right; font-weight: bold;" colspan="3">
+                    <?= $model->date===null ? date('M. d, Y') : $model->date ?>
+                    <?= $form->field($model, 'date')->hiddenInput(['value' => $model->date===null ? date('M. d, Y') : $model->date, 'readonly' =>true])->label(false) ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; font-weight: bold;">Payee :</td>
+                <td colspan="3">
+                    <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'id'=>'four', 'autofocus' => 'autofocus'])->label(false) ?>
+                </td>
+                <td style="text-align: right; font-weight: bold;">Status :</td>
+                <td>
+                    <?= $form->field($model, 'status')->dropDownList([$model->status => $model->status, 'Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled'], ['id' => 'type'])->label(false) ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; font-weight: bold;">Transaction Type :</td>
+                <td colspan="3">
+                    <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type'])->label(false) ?>
+                </td>
+                <td style="text-align: right; font-weight: bold;">Mode of payment :</td>
+                <td>
+                    <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA'])->label(false) ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; font-weight: bold;">Fund Cluster :</td>
+                <td colspan="2">
+                    <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
+                     [
+                        'onchange'=>'
+                             $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
+                                $("select#disbursement-nca").html(data);
+                            });'
+                    ])->label(false); ?>
+                </td>
+                <td style="text-align: right; font-weight: bold;">Gross Amount :</td>
+                <td colspan="2">
+                    <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id'=>'nine'])->label(false) ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; font-weight: bold;">NCA No. :</td>
+                <td colspan="2">
+                    <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'))->label(false) ?>
+                </td>
+                <td style="text-align: right; font-weight: bold;">Less :</td>
+                <td colspan="2">
+                    <?= $form->field($model, 'less_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value'=> array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount'))])->label(false) ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; font-weight: bold;">Funding Source :</td>
+                <td colspan="2">
+                    <?= $form->field($model, 'funding_source')->dropDownList(ArrayHelper::map(Nca::find()->all(),'funding_source', 'funding_source'),
+                        [
+                          'prompt'=>'Select Funding Source',
+                        ])->label(false);
+                     ?>
+                </td>
+                <td style="text-align: right; font-weight: bold;">Net Amount :</td>
+                <td colspan="2">
+                    <?= $form->field($model, 'net_amount')->textInput(['maxlength' => true, 'readonly'=>false, 'value' => ($net_amount = $model->gross_amount - array_sum(ArrayHelper::getColumn(AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->andWhere(['credit_to' => 'BIR'])->all(), 'credit_amount')))])->label(false) ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" style="background-color: #f5f5f0; font-weight: bold;">
+                    Details From Obligartion Request and Status (ORS)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <table class="table table-condensed table-bordered">
                             <tr>
-                                <th style="text-align: center">ACCOUNT TITLE</th>
-                                <th style="text-align: center">UACS CODE</th>
-                                <th style="text-align: center">DEBIT</th>
-                                <th style="text-align: center">CREDIT AMOUNT</th>
-                                <th style="text-align: center">CREDIT TO</th>
+                                <th style="text-align: center">Particulars</th>
+                                <th style="text-align: center">ORS No</th>
+                                <th style="text-align: center">MFO/PAP</th>
+                                <th style="text-align: center">Responsibility Center</th>
+                                <th style="text-align: center">Amount</th>
                             </tr>
-                            <?php foreach ($entries as $entry) : ?>
+                        <?php foreach ($ors_model as $value): ?>
+                            <?php $i=0; ?>
                             <tr>
-                                <td><?= $entry->account_title ?></td>
-                                <td><?= $entry->uacs_code ?></td>
-                                <td width="75"><?= number_format($entry->debit, 2) ?></td>
-                                <td width="100"><?= number_format($entry->credit_amount, 2) ?></td>
-                                <td width="80"><?= $entry->credit_to ?></td>
-                            </tr>
-                        <?php endforeach ?>
-                            <tr>
-                                <td colspan="2" style="font-size: 18px;"><strong>TOTAL</strong></td>
-                                <td>
-                                    <?php $totalDebit = AccountingEntry::find(['debit'])->where(['dv_no'=>$model->dv_no])->all();
-                                           echo number_format(array_sum(ArrayHelper::getColumn($totalDebit, 'debit')), 2); ?>
+                                <td style="width: 250px;">
+                                    <?= $form->field($model, 'particular[]')->textInput(['value' => $value->particular, 'class' => 'myfield'])->label(false) ?>
+                                    <?= $form->field($model, 'ors_id[]')->hiddenInput(['value' => $value->id])->label(false) ?>
+                                </td>
+                                <td style="width: 130px;">
+                                    <?= $form->field($model, 'ors_no[]')->textInput([
+                                        'value' => $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial, 'class' => 'myfield'])->label(false) 
+                                    ?>
                                 </td>
                                 <td>
-                                    <strong>
-                                        <?php $total = AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->all();
-                                           echo number_format(array_sum(ArrayHelper::getColumn($total, 'credit_amount')), 2);
-                                        ?>
-                                    </strong> 
-                                 </td>
-                                <td width="80"></td>
+                                    <?= $form->field($model, 'mfo_pap[]')->textInput(['value' => $value->mfo_pap, 'class' => 'myfield'])->label(false) ?>
+                                </td>
+                                <td>
+                                    <?= $form->field($model, 'responsibility_center[]')->textInput(['value' => $value->responsibility_center, 'class' => 'myfield'])->label(false) ?>
+                                </td>
+                                <td style="width: 100px;">
+                                    <?= $form->field($model, 'amount[]')->textInput(['value' => $value->amount, 'class' => 'myfield'])->label(false) ?>
+                                </td>
                             </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <?= $form->field($model, 'remarks')->textarea(['rows' => 3]) ?>
-                    </td>
-                </tr>
-            </table>
+                            <?php $i++ ?>
+                        <?php endforeach ?>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" style="background-color: #f5f5f0; font-weight: bold;">Accounting Entry</td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th style="text-align: center">ACCOUNT TITLE</th>
+                            <th style="text-align: center">UACS CODE</th>
+                            <th style="text-align: center">DEBIT</th>
+                            <th style="text-align: center">CREDIT AMOUNT</th>
+                            <th style="text-align: center">CREDIT TO</th>
+                        </tr>
+                        <?php foreach ($entries as $entry) : ?>
+                        <tr>
+                            <td><?= $entry->account_title ?></td>
+                            <td><?= $entry->uacs_code ?></td>
+                            <td width="75"><?= number_format($entry->debit, 2) ?></td>
+                            <td width="100"><?= number_format($entry->credit_amount, 2) ?></td>
+                            <td width="80"><?= $entry->credit_to ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                        <tr>
+                            <td colspan="2" style="font-size: 18px;"><strong>TOTAL</strong></td>
+                            <td>
+                                <?php $totalDebit = AccountingEntry::find(['debit'])->where(['dv_no'=>$model->dv_no])->all();
+                                       echo number_format(array_sum(ArrayHelper::getColumn($totalDebit, 'debit')), 2); ?>
+                            </td>
+                            <td>
+                                <strong>
+                                    <?php $total = AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->all();
+                                       echo number_format(array_sum(ArrayHelper::getColumn($total, 'credit_amount')), 2);
+                                    ?>
+                                </strong> 
+                             </td>
+                            <td width="80"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <?= $form->field($model, 'remarks')->textarea(['rows' => 3]) ?>
+                </td>
+            </tr>
+        </table>
 
-            <div class="form-group">
-                <?= Html::submitButton('Save', ['class' => 'btn btn-success', 'disabled' => $x === 'false' ? false : true ]) ?>
-                <?= Html::a('Close', ['/disbursement/disbursements', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            </div>
+        <div class="form-group">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-success', 'disabled' => $x === 'false' ? false : true ]) ?>
+            <?= Html::a('Close', ['/disbursement/disbursements', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         </div>
+    </div>
 </div>
 
 <div id="myModal" class="modal fade" role="dialog">
@@ -452,8 +491,7 @@ $this->title = 'CASH STATUS';
     </div>
   </div>
 </div>
-	<?php ActiveForm::end(); ?>
-</div>
+<?php ActiveForm::end(); ?>
 
 <script>
     window.addEventListener("DOMContentLoaded", function() {
@@ -466,3 +504,4 @@ $this->title = 'CASH STATUS';
         });
     }, false);
 </script>
+

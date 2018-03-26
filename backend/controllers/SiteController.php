@@ -31,7 +31,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'view'],
+                        'actions' => ['logout', 'index', 'view', 'control'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -173,16 +173,13 @@ class SiteController extends Controller
         }
     }
 
-    // public function actionView()
-    // {
-    //     $id = yii::$app->user->identity->id;
-    //     $model = new User();
-    //     return $this->render('view', [
-    //         'id' => $id, 'model' => $model->id,
-    //         //'id' => $id, 'model' => $model->findModel($id),
-    //     ]);
-    //     // var_dump($id);
-    // }
+    public function actionControl()
+    {
+        
+        return $this->render('controlPanel', [
+
+        ]);
+    }
 
     /**
      * Logout action.

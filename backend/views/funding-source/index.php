@@ -5,25 +5,26 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\FundClusterSearch */
+/* @var $searchModel backend\models\FundingSourceSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Fund Clusters';
+$this->title = 'Funding Sources';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="fund-cluster-index">
+<div class="funding-source-index">
 
     <div class="title">
-        <div class="btn btn-success btn-right" data-toggle="modal" data-target="#newModal">New Fund Cluster</div>
+        <div class="btn btn-success btn-right" data-toggle="modal" data-target="#myModal">New Funding Source</div>
     </div>
 
     <div class="new-title">
-        <i class="fa fa-object-group" aria-hidden="true"></i> 
+        <i class="fa fa-database" aria-hidden="true"></i> 
         <?= Html::encode($this->title) ?>
     </div>
+
     <?php Pjax::begin(); ?>
 
-    <div style="padding: 0; width: 88%; margin-left: auto; margin-right: auto; display: block;">
+    <div style=" padding: 0; width: 88%; margin-left: auto; margin-right: auto; display: block;">
         <div class="row">
             <div class="col-md-8">
                 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -34,8 +35,8 @@ $this->title = 'Fund Clusters';
                         'dataProvider' => $dataProvider,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-                            'fund_cluster',
                             'description',
+                            'uacs',
                         ],
                     ]); */
                     ?>
@@ -43,15 +44,15 @@ $this->title = 'Fund Clusters';
             </div>
         </div>
     </div>
-    
+
     <div class="view-index">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             //'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'fund_cluster',
                 'description',
+                'uacs',
 
                 ['class' => 'yii\grid\ActionColumn'],
             ],
@@ -61,12 +62,12 @@ $this->title = 'Fund Clusters';
 
 </div>
 
-<div id="newModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-         <h4 class="modal-title">New Funding Cluster</h4>
+         <h4 class="modal-title">New Funding Source</h4>
       </div>
       <div class="modal-body">
           <?= $this->render('_form', [

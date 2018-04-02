@@ -70,6 +70,7 @@ class RequirementsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save())
         {
             Yii::$app->getSession()->setFlash('success', 'Successfully Added');
+            
             return $this->redirect(['create']);
         }
     

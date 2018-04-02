@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\FundCluster;
-use backend\models\FundClusterSearch;
+use backend\models\ObjectCode;
+use backend\models\ObjectCodeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FundClusterController implements the CRUD actions for FundCluster model.
+ * ObjectCodeController implements the CRUD actions for ObjectCode model.
  */
-class FundClusterController extends Controller
+class ObjectCodeController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,14 +30,14 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Lists all FundCluster models.
+     * Lists all ObjectCode models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new FundClusterSearch();
+        $searchModel = new ObjectCodeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new FundCluster();
+        $model = new ObjectCode();
 
         if ($model->load(Yii::$app->request->post()) && $model->save())
         {
@@ -52,7 +52,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Displays a single FundCluster model.
+     * Displays a single ObjectCode model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -65,13 +65,13 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Creates a new FundCluster model.
+     * Creates a new ObjectCode model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new FundCluster();
+        $model = new ObjectCode();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -83,7 +83,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Updates an existing FundCluster model.
+     * Updates an existing ObjectCode model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -103,7 +103,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Deletes an existing FundCluster model.
+     * Deletes an existing ObjectCode model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -117,15 +117,15 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Finds the FundCluster model based on its primary key value.
+     * Finds the ObjectCode model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return FundCluster the loaded model
+     * @return ObjectCode the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = FundCluster::findOne($id)) !== null) {
+        if (($model = ObjectCode::findOne($id)) !== null) {
             return $model;
         }
 

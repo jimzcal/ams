@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\FundCluster;
-use backend\models\FundClusterSearch;
+use backend\models\FundingSource;
+use backend\models\FundingSourceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FundClusterController implements the CRUD actions for FundCluster model.
+ * FundingSourceController implements the CRUD actions for FundingSource model.
  */
-class FundClusterController extends Controller
+class FundingSourceController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,14 +30,14 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Lists all FundCluster models.
+     * Lists all FundingSource models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new FundClusterSearch();
+        $searchModel = new FundingSourceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new FundCluster();
+        $model = new FundingSource();
 
         if ($model->load(Yii::$app->request->post()) && $model->save())
         {
@@ -52,7 +52,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Displays a single FundCluster model.
+     * Displays a single FundingSource model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -65,13 +65,13 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Creates a new FundCluster model.
+     * Creates a new FundingSource model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new FundCluster();
+        $model = new FundingSource();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -83,7 +83,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Updates an existing FundCluster model.
+     * Updates an existing FundingSource model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -93,7 +93,8 @@ class FundClusterController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+        {
             return $this->redirect(['index']);
         }
 
@@ -103,7 +104,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Deletes an existing FundCluster model.
+     * Deletes an existing FundingSource model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -117,15 +118,15 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Finds the FundCluster model based on its primary key value.
+     * Finds the FundingSource model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return FundCluster the loaded model
+     * @return FundingSource the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = FundCluster::findOne($id)) !== null) {
+        if (($model = FundingSource::findOne($id)) !== null) {
             return $model;
         }
 

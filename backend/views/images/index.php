@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use himiklab\thumbnail\EasyThumbnailImage;
+use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ImagesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,10 +14,17 @@ $this->title = 'Images';
 $count = 1;
 ?>
 <div class="images-index">
-
+  <?php $form = ActiveForm::begin(['action' =>['delete'], 'options'=>['enctype'=>'multipart/form-data']]); ?>
     <div class="title">
-        <!-- <?= Html::a('Add Image', ['create'], ['class' => 'btn btn-success btn-right', 'data-toggle' => 'modal', 'data-target' => '#newModal']) 
-        ?> -->
+        <div class="form-group">
+          <?= Html::submitButton('Delete', [
+            'class' => 'btn btn-danger btn-right',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?>
+        </div>
 
         <div class="btn btn-success btn-right" data-toggle="modal" data-target="#newModal">Add Image</div>
     </div>
@@ -25,13 +33,12 @@ $count = 1;
         <i class="fa fa-file-photo-o"></i> Gallery
         <p style="text-indent: 25px; font-size: 14px;">The images here are displayed also to the Acounting Digital Signage.</p>
     </div>
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <div style="padding: 10px; width: 88%; margin-left: auto; margin-right: auto;">
         <div class="row">
             <?php foreach($model as $image) :?>
                 <div class="album-gallery">
+                    <input type="checkbox" name="ids[]" value="<?= $image->id ?>">
                     <?= EasyThumbnailImage::thumbnailImg(
                         $image->url, 
                         230,
@@ -44,6 +51,8 @@ $count = 1;
             <?php endforeach ?>
         </div>
     </div>
+
+      <?php ActiveForm::end(); ?>
 </div>
 
 <div class="modal-content-gallery" id="myContent">
@@ -79,7 +88,6 @@ $count = 1;
     </div>
   </div>
 </div> 
-
 
 <script>
 
@@ -137,7 +145,4 @@ $count = 1;
       dots[slideIndex-1].className += " active";
       captionText.innerHTML = dots[slideIndex-1].alt;
     }
-
-
-
 </script>

@@ -13,7 +13,7 @@ use yii\helpers\Url;
 <div class="images-form">
 	<div class="form-wrapper-content">
 
-	    <?php $form = ActiveForm::begin(); ?>
+	    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
 	    <?= $form->field($model2, 'images[]')->widget(FileInput::classname(), [
 		    'options' => ['multiple' => true, 'accept' => 'image/*'],

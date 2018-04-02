@@ -130,10 +130,20 @@ class ImagesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
-        $this->findModel($id)->delete();
-
+        $baseUrl = Yii::getAlias('@bkImages');
+        if (isset($_POST['ids']))
+        {
+            $ids = $_POST['ids'];
+            for($i=0; $i<sizeof($ids); $i++)
+            {
+                $id = $ids[$i];
+                $name = Images::find()->where(['id' => $id])->one();
+                $x = array_map('unlink', glob('images/'.$name->name));
+                $this->findModel($id)->delete();
+            }
+        }
         return $this->redirect(['index']);
     }
 

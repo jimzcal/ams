@@ -426,7 +426,7 @@ class DisbursementController extends Controller
 
         if($checker !== null)
         {
-            Yii::$app->getSession()->setFlash('warning', 'Reminder, this Disbursement Voucher has already been earmarked');
+            Yii::$app->getSession()->setFlash('info', 'Reminder, this Disbursement Voucher has already been earmarked');
         }
         return $this->render('cash-status/_form', [
         'model' => $model,

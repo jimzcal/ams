@@ -11,6 +11,7 @@ use backend\models\FundCluster;
 use backend\models\Nca;
 use dosamigos\chartjs\ChartJs;
 use yii\web\JsExpression;
+use miloschuman\highcharts\Highcharts;
 
 
 /* @var $this yii\web\View */
@@ -25,12 +26,12 @@ $this->title = 'CASH STATUS';
 <?php $form = ActiveForm::begin(); ?>
 <?= Yii::$app->session->getFlash('error'); ?>
 
-    <!-- <div class="view-index">
-        <?= ChartJs::widget([
+   <div class="view-index">
+        <!-- <?= ChartJs::widget([
             'type' => 'line',
             'options' => [
-                'height' => 300,
-                'width' => 300
+                'height' => 200,
+                'width' => 200,
             ],
             'data' => [
                 'labels' => ["January", "February", "March", "April", "May", "June", "July"],
@@ -58,12 +59,38 @@ $this->title = 'CASH STATUS';
                 ]
             ]
         ]);
+        ?> -->
+        <?php 
+            $total_earmarked = array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->all(), 'net_amount'));
+
+            $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
+                                ->where(['nca_no'=>$model->nca])
+                                ->all(), 'total_amount'));
         ?>
-    </div> -->
+        <?= Highcharts::widget([
+            'options' => [
+                'chart' => ['type' => 'bar'],
+               'title' => ['text' => 'Cash Status Graph'],
+               'xAxis' => [
+                  'categories' => ['Allotment/Earmarked']
+               ],
+               'yAxis' => [
+                  'title' => ['text' => 'Earmarked']
+               ],
+               'series' => [
+                  ['name' => 'Allotment', 'data' => [(int)$total_nca_amount]],
+                  ['name' => 'Earmarked', 'data' => [(int)$total_earmarked]]
+               ]
+            ]
+    ]); ?> 
+    </div>
 
     <div class="view-index">
         <div class="mini-header">
-            <i class="fa fa-bar-chart-o" aria-hidden="true"></i> Cash Status
+            <i class="fa fa-bar-chart-o" aria-hidden="true"></i> Monthly Cash Status
         </div>
 
         <table class="table table-bordered">

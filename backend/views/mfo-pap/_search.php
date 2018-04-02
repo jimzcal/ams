@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\FundClusterSearch */
+/* @var $model backend\models\MfoPapSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="fund-cluster-search">
+<div class="mfo-pap-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -24,10 +24,10 @@ use yii\widgets\ActiveForm;
                 <i class="fa fa-search" style="color: green; font-size: 30px;"></i>
             </td>
             <td>
-                <?= $form->field($model, 'fund_cluster')->textInput(['placeholder'=>'Fund Cluster'])->label(false) ?>
+                <?= $form->field($model, 'description')->textInput(['placeholder'=>'Description'])->label(false) ?>
             </td>
             <td>
-                <?= $form->field($model, 'description')->textInput(['placeholder'=>'Description'])->label(false) ?>
+                <?= $form->field($model, 'uacs')->textInput(['placeholder'=>'UACS Code'])->label(false) ?>
             </td>
             <td>
                 <div class="form-group">

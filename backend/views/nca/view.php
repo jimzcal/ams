@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\ArrayHelper;
+use backend\models\Nca;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Nca */
@@ -47,7 +49,15 @@ $this->title = 'NCA: '.$model->nca_no;
                 <td><?= $model->nca_no ?></td>
                 <td><?= $model->fiscal_year ?></td>
                 <td><?= $model->nca_type ?></td>
-                <td><?= number_format($model->total_amount, 2) ?></td>
+                <td>
+                    <?php 
+                        $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
+                                ->where(['nca_no'=>$model->nca_no])
+                                ->all(), 'total_amount'));
+
+                        echo number_format($total_nca_amount, 2) 
+                    ?>
+                </td>
             </tr>
             <tr>
                 <td colspan="5">

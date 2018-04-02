@@ -52,7 +52,8 @@ class Disbursement extends \yii\db\ActiveRecord
         return [
             [['dv_no', 'fund_cluster', 'cash_advance', 'funding_source', 'date', 'payee', 'nca', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
             [['attachments', 'funding_source', 'remarks', 'particular', 'lddap_no', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
-            [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
+            [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number'],
+            // [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
             [['transaction_id', 'ors_id'], 'integer'],
             [['dv_no', 'payee', 'nca'], 'string', 'max' => 200],
             [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated', 'funding_source'], 'string', 'max' => 100],

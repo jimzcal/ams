@@ -18,13 +18,13 @@ use backend\models\FundCluster;
 
     <table class="table">
        <tr>
-           <td colspan="4" style="font-style: italic;">Note: All fields of this form are required. Please, provide appropriate details.</td>
+           <td colspan="5" style="font-style: italic;">Note: All fields of this form are required. Please, provide appropriate details.</td>
            <td style="font-size: 18px; width: 220px;">
                 DV No. <strong> <?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
            </td>
        </tr>
        <tr>
-           <td style="width: 380px;">
+           <td style="width: 380px;" colspan="2">
                <?= $form->field($model, 'payee')->textInput(['maxlength' => true]) ?>
            </td>
            <td>
@@ -41,32 +41,48 @@ use backend\models\FundCluster;
            </td>
        </tr>
        <tr>
-           <td>
-               <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
-           </td>
-           <td>
+             <td>
+                 <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
+             </td>
+             <td>
                <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
-                    [
-                        // 'prompt'=>'Select Fund Cluster',
+                      [
+                          // 'prompt'=>'Select Fund Cluster',
+                          'onchange'=>'
+                               $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
+                                  $("select#disbursement-nca").html(data);
+                              });'
+                      ]); 
+                  ?>
+             </td>
+             <td>
+                 <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'),
+                      [
+                        'prompt'=>'Select NCA No.',
                         'onchange'=>'
-                             $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
-                                $("select#disbursement-nca").html(data);
-                            });'
-                    ]); ?>
-           </td>
-           <td>
-                <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no')) ?>
-           </td>
-           <td>
-               <?= $form->field($model, 'status')->dropDownList(['Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
-           </td>
-           <td>
-               <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true]) ?>
-               <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
-           </td>
-       </tr>
+                               $.post("index.php?r=nca/sources&nca_no='.'"+$(this).val(),function(data){
+                                  $("select#disbursement-funding_source").html(data);
+                              });'
+                      ]);
+                 ?>
+             </td>
+             <td>
+                <?= $form->field($model, 'funding_source')->dropDownList(ArrayHelper::map(Nca::find()->all(),'funding_source', 'funding_source'),
+                    [
+                      'prompt'=>'Select Funding Source',
+                    ]);
+                 ?>
+             </td>
+             <td>
+                 <?= $form->field($model, 'status')->dropDownList(['Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
+             </td>
+             <td>
+                 <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount']) ?>
+                 <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
+             </td>
+         </tr>
        <tr>
-           <td colspan="5">
+           <td colspan="6">
                 <table class="table table-condensed table-striped" id="dynamicInput">
                     <tr>
                         <th>Particulars</th>

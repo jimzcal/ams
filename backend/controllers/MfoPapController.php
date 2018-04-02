@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\FundCluster;
-use backend\models\FundClusterSearch;
+use backend\models\MfoPap;
+use backend\models\MfoPapSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FundClusterController implements the CRUD actions for FundCluster model.
+ * MfoPapController implements the CRUD actions for MfoPap model.
  */
-class FundClusterController extends Controller
+class MfoPapController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,19 +30,19 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Lists all FundCluster models.
+     * Lists all MfoPap models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new FundClusterSearch();
+        $searchModel = new MfoPapSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new FundCluster();
+        $model = new MfoPap();
 
         if ($model->load(Yii::$app->request->post()) && $model->save())
         {
             return $this->redirect(['index']);
-        }
+        }        
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -52,7 +52,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Displays a single FundCluster model.
+     * Displays a single MfoPap model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -65,13 +65,13 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Creates a new FundCluster model.
+     * Creates a new MfoPap model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new FundCluster();
+        $model = new MfoPap();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -83,7 +83,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Updates an existing FundCluster model.
+     * Updates an existing MfoPap model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -103,7 +103,7 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Deletes an existing FundCluster model.
+     * Deletes an existing MfoPap model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -117,15 +117,15 @@ class FundClusterController extends Controller
     }
 
     /**
-     * Finds the FundCluster model based on its primary key value.
+     * Finds the MfoPap model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return FundCluster the loaded model
+     * @return MfoPap the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = FundCluster::findOne($id)) !== null) {
+        if (($model = MfoPap::findOne($id)) !== null) {
             return $model;
         }
 

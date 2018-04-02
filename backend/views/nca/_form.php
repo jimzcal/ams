@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\models\FundCluster;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Nca */
@@ -34,7 +35,7 @@ use backend\models\FundCluster;
                     <?= $form->field($model, 'nca_no')->textInput(['maxlength' => true]) ?>
                 </td>
                 <td>
-                    <?= $form->field($model, 'fiscal_year')->dropDownList(['2017' => '2017', '2018' => '2018', '2019' => '2019', '2020' => '2020', '2021' => '2021', '2022' => '2022']) ?>
+                    <?= $form->field($model, 'fiscal_year')->dropDownList([date("Y") => date("Y"), (date("Y")+1) => (date("Y")+1)]) ?>
                 </td>
             </tr>
             <tr>
@@ -53,7 +54,13 @@ use backend\models\FundCluster;
                         <tr>
                             <td colspan="2">
                                 <label>Funding Source Code</label>
-                                <input type="text" name="funding_source[0]" class="form-control" required>
+                                <!-- <input type="text" name="funding_source[0]" class="form-control" required> -->
+                                <input list="funding_source" name="funding_source[0]" class="form-control" required>
+                                <datalist id="funding_source">
+                                    <?php foreach ($data as $value) : ?>
+                                        <option value=<?= $value->uacs ?>>
+                                    <?php endforeach ?>
+                                </datalist>
                             </td>
                             <td>
                                 <label>MDS Sub-account No.</label>

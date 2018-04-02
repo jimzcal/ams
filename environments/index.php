@@ -49,14 +49,15 @@ return [
         ],
 
         // 'setWritable' => [
-        //     'frontend/web/uploads',
+        //     'backend/web/images',
         // ],
-        
+
         // 'createSymlink' => [
-        //     'frontend/web/uploads'  => 'backend/web/uploads',
+        //     'frontend/web/images'  => 'backend/web/images',
         // ],
 
     ],
+
     'Production' => [
         'path' => 'prod',
         'setWritable' => [

@@ -19,6 +19,7 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
 
 	    <?= $this->render('_form', [
 	        'model' => $model,
+	        'data' => $data,
 	    ]) ?>
 	</div>
 </div>

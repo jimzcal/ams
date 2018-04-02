@@ -8,6 +8,7 @@ use backend\models\NcaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\FundingSource;
 
 /**
  * NcaController implements the CRUD actions for Nca model.
@@ -68,6 +69,7 @@ class NcaController extends Controller
     public function actionCreate()
     {
         $model = new Nca();
+        $data = FundingSource::find()->all();
 
         if ($model->load(Yii::$app->request->post()))
         {
@@ -138,6 +140,7 @@ class NcaController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'data' => $data,
         ]);
     }
 

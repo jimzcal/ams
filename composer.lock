@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "08edbc08b8ea69019256081d42a8ee59",
+    "content-hash": "a1c30530d78fc2b54c57157631bd5e5b",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -5544,7 +5544,8 @@
         "kartik-v/yii2-widget-datepicker": 20,
         "kartik-v/yii2-widget-fileinput": 20,
         "dektrium/yii2-rbac": 20,
-        "kartik-v/yii2-export": 20
+        "kartik-v/yii2-export": 20,
+        "kartik-v/yii2-widget-select2": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

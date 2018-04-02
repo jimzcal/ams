@@ -83,7 +83,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Accounting Entries">
                                 <?= Html::a('<i class="fa fa-calculator icon-font" aria-hidden="true"></i>', ["/accounting-entry/index"]) ?>
                             </div>
-                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Financial Reports">
+                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Financial Records">
                                 <?= Html::a('<i class="fa fa-book icon-font" aria-hidden="true"></i>', ["/disbursement/reports"]) ?>
                             </div>
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Cash Advances">

@@ -2,34 +2,109 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use himiklab\thumbnail\EasyThumbnailImage;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\ImagesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Images';
-$this->params['breadcrumbs'][] = $this->title;
+$count = 1;
+$baseUrl = Yii::getAlias('@bkImages');
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="images-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="new-title">
+        <i class="fa fa-file-photo-o"></i> Gallery
+        <p style="text-indent: 25px; font-size: 14px;"></p>
+    </div>
 
-    <p>
-        <?= Html::a('Create Images', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'url:url',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+    <div style="padding: 10px; width: 88%; margin-left: auto; margin-right: auto;">
+        <div class="row">
+            <?php foreach($model as $image) :?>
+                <div class="album-gallery" style="vertical-align: top;">
+                    <?= Html::img('@bkImages/'.$image->name, ['alt' => 'accounting-image', 'onclick'=>'openModal('.$count++.')' ]);?>
+                    <div class="desc">
+                        <?= $image->name; ?>
+                    </div>
+              </div>
+            <?php endforeach ?>
+        </div>
+    </div>
 </div>
+
+<div class="modal-content-gallery" id="myContent">
+    <?php foreach($model as $image) :?>
+        <div class="mySlides">
+            <div class="text">
+                <?= $image->name; ?>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+                <?= Html::img('@bkImages/'.$image->name);?>
+        </div>
+    <?php endforeach ?>    
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>    
+</div>
+
+<div id="myModal" class="modall">
+</div>
+
+<script>
+
+    function openModal(n) {
+      document.getElementById('myContent').style.display = "block";
+      document.getElementById('myModal').style.display = "block";
+      showSlides(slideIndex = n);
+    }
+
+    function closeModal() {
+      document.getElementById('myModal').style.display = "none";
+      document.getElementById('myContent').style.display = "none";
+    }
+
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+
+    }
+
+    function currentSlide(n) {  
+
+    }
+
+    function showSlides(n) {
+      var i;
+      var slides = document.getElementsByClassName("mySlides");
+      var dots = document.getElementsByClassName("demo");
+      var captionText = document.getElementById("caption");
+      if (n > slides.length)
+      {
+          slideIndex = 1
+      }
+
+      if (n < 1)
+      {
+        slideIndex = slides.length
+      }
+
+
+      for (i = 0; i < slides.length; i++)
+      {
+          slides[i].style.display = "none";
+      }
+
+
+      for (i = 0; i < dots.length; i++)
+      {
+          dots[i].className = dots[i].className.replace(" active", "");
+      }
+
+      slides[slideIndex-1].style.display = "block";
+      dots[slideIndex-1].className += " active";
+      captionText.innerHTML = dots[slideIndex-1].alt;
+    }
+</script>

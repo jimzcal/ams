@@ -139,6 +139,9 @@ $this->title = $model->dv_no;
                 <td width="70">NCA Control</td><td width="120"><?= isset($transaction4[0]) ? $transaction4[0] : '' ?></td><td width="120"><?= isset($transaction4[1]) ? $transaction4[1] : '' ?></td>
             </tr>
             <tr>
+                <td width="70">Indexing</td><td width="120"><?= isset($transaction7[0]) ? $transaction7[0] : '' ?></td><td width="120"><?= isset($transaction7[1]) ? $transaction7[1] : '' ?></td>
+            </tr>
+            <tr>
                 <td width="70">LDDAP/ADA</td><td width="120"><?= isset($transaction5[0]) ? $transaction5[0] : '' ?></td><td width="120"><?= isset($transaction5[1]) ? $transaction5[1] : '' ?></td>
             </tr>
             <tr>

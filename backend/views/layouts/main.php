@@ -12,6 +12,7 @@ use yii\widgets\Breadcrumbs;
 use yii\widgets\Menu;
 use backend\models\CashAdvance;
 use common\widgets\Alert;
+use dektrium\rbac\models\Role;
 
 AppAsset::register($this);
 rmrevin\yii\fontawesome\AssetBundle::register($this);
@@ -24,7 +25,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/images/logo.ico']) ?>
+    <?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '@web/ams.png']) ?>
     
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode('FMIS - '.$this->title) ?></title>
@@ -121,6 +122,17 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             ?>
             <?= Alert::widget() ?>
             <?= $content ?>
+    </div>
+    <div class="footer">
+        <p>
+            <?= date('l').' - '; ?> <?= date('M. d, Y').' | '; ?>
+            <?php if(!Yii::$app->user->isGuest)
+                { 
+                    echo 'Logged: '.Yii::$app->user->identity->fullname; 
+                } 
+            ?>
+        </p>
+
     </div>
 </div>
 <?php $this->endBody() ?>

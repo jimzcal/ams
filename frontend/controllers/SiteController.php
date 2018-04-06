@@ -81,9 +81,12 @@ class SiteController extends Controller
         'query' => Images::find(),
         'pagination' => false
         ]);
+
+        $model = Images::find()->all();
         
         return $this->render('index', [
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
+            'model' => $model
         ]);
     }
 

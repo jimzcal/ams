@@ -42,6 +42,10 @@ AppAsset::register($this);
                             <?= Html::a('<i class="fa fa-tasks icon-font" aria-hidden="true"></i>', ["/transaction/index"]) ?>
                         </div>
 
+                        <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Gallery">
+                            <?= Html::a('<i class="fa fa-file-photo-o icon-font" aria-hidden="true"></i>', ["/images/index"]) ?>
+                        </div>
+
                         <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Go to home page">
                             <?= Html::a('<i class="fa fa-home icon-font" aria-hidden="true"></i>', ["/site/index"]) ?>
                         </div>

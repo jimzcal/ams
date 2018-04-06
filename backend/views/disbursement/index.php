@@ -52,15 +52,42 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                 'dataProvider' => $dataProvider,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'dv_no',
-                    'date',
-                    'payee',
+                    //'date',
+                    [
+                        'attribute' => 'date',
+                        'contentOptions' => ['style' => 'width: 100px;'], 
+                        'value' => 'date'
+                    ],
+                    // 'dv_no',
+                    [
+                        'attribute' => 'dv_no',
+                        'contentOptions' => ['style' => 'width: 130px;'], 
+                        'value' => 'dv_no'
+                    ],
+                    [
+                        'attribute' => 'Particular',
+                        'format' =>'html',
+                        'contentOptions' => ['style' => 'width: 300px; white-space: normal;'], 
+                        'value' => function($data){
+
+                            return Html::tag('p', $data->ors->particular);
+                        }
+                    ],
+                    //'payee',
+                    [
+                        'attribute' => 'payee',
+                        'contentOptions' => ['style' => 'width: 170px;'], 
+                        'value' => 'payee'
+                     ],
+
                      [
                         'attribute' => 'gross_amount',
+                        'contentOptions' => ['style' => 'width: 130px;'], 
                         'value' => function($data){
                             return (number_format($data->gross_amount, 2));
                         }
                      ],
+
                     ['class' => 'yii\grid\ActionColumn'],
                 ],
             ]); ?>

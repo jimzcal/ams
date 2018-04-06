@@ -44,6 +44,9 @@ class DisbursementSearch extends Disbursement
     {
         $query = Disbursement::find();
 
+        // var_dump($params);
+        // exit();
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

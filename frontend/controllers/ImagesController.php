@@ -35,12 +35,14 @@ class ImagesController extends Controller
      */
     public function actionIndex()
     {
+        $model = Images::find()->all();
         $searchModel = new ImagesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model
         ]);
     }
 

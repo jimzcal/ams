@@ -18,7 +18,7 @@ $this->title = 'TRANSACTIONS';
     </div>
 
     <div class="new-title">
-        <i class="fa fa-tasks" aria-hidden="true"></i> List of Transactions
+        <i class="fa fa-tasks" aria-hidden="true"></i> Common Government Transactions
         <p style="text-indent: 28px; font-size: 14px;">Transactions and its Documentary Requirements</p>
     </div>
 
@@ -44,12 +44,13 @@ $this->title = 'TRANSACTIONS';
                     [
                         'attribute' => 'requirements',
                         'format' => 'Html',
-                        'contentOptions'=>['style'=>'max-width: 700px;'],
+                        'format' =>'html', 
+                        'contentOptions'=>['style'=>'max-width: 700px; white-space: normal;'],
                         'value' => function($data){
                             $values = explode(', ', $data->requirements);
                             foreach ($values as $value)
                             {
-                                return mb_strimwidth($value, 0, 100, ' ...');
+                                return $value;
                             }
                             
                         }

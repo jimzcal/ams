@@ -82,6 +82,7 @@ class DisbursementController extends Controller
         $transaction4 = explode(',', $transaction->nca_control);
         $transaction5 = explode(',', $transaction->lddap_ada);
         $transaction6 = explode(',', $transaction->releasing);
+        $transaction7 = explode(',', $transaction->indexing);
         return $this->render('view', [
             'model' => $this->findModel($id), 
             'transaction1'=>$transaction1, 
@@ -90,6 +91,7 @@ class DisbursementController extends Controller
             'transaction4'=>$transaction4,
             'transaction5'=>$transaction5, 
             'transaction6'=>$transaction6,
+            'transaction7'=>$transaction7
         ]);
     }
 
@@ -522,6 +524,20 @@ class DisbursementController extends Controller
             
         }
         return $this->render('/disbursement/lddap/lddapIndex', ['disbursement' => $disbursement, 'dv_no' => $dv_no, 'model' => $model]);
+    }
+
+    public function actionIndexpayment($dv_no)
+    {
+        $name = Disbursement::find(['payee'])->where(['dv_no' => $dv_no])->one();
+        $searchModel = new DisbursementSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                        $dataProvider->query->andWhere(['payee'=>$name->payee]);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     protected function findModel($id)

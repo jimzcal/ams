@@ -8,6 +8,8 @@ use backend\models\CashAdvanceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\mpdf\Pdf;
+use backend\models\LddapAda;
 
 /**
  * CashAdvanceController implements the CRUD actions for CashAdvance model.
@@ -38,6 +40,11 @@ class CashAdvanceController extends Controller
         $searchModel = new CashAdvanceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        // if(isset($_GET['status']))
+        // {
+
+        // }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -51,9 +58,22 @@ class CashAdvanceController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('notice', [
             'model' => $this->findModel($id),
         ]);
+
+        // $pdf = new Pdf([
+        //         'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+        //         'format' => Pdf::FORMAT_FOLIO,
+        //         'destination' => Pdf::DEST_BROWSER,
+        //         'content' => $this->renderPartial('/cash-advance/view', ['model' => $this->findModel($id)]),
+        //         'options' => [
+        //             'title' => $id,
+        //             'filename' => $id,
+        //             'marginTop' => .25
+        //         ]
+        //     ]);
+        //     return $pdf->render();
     }
 
     /**
@@ -104,6 +124,28 @@ class CashAdvanceController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionNotice($id)
+    {
+        $model = $this->findModel($id);
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'format' => Pdf::FORMAT_LETTER,
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('/cash-advance/notice', ['model' => $model]),
+                'options' => [
+                    'title' => 'LDDAP-ADA - ',
+                    'filename' => 'LDDAP-ADA - ',
+                    'marginTop' => .25
+                ]
+            ]);
+            return $pdf->render();
+
+        // return $this->render('notice', [
+        //     'model' => $this->findModel($id),
+        // ]);
     }
 
     /**

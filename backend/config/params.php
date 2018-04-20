@@ -1,4 +1,4 @@
 <?php
 return [
-    'adminEmail' => 'admin@ppei.gov.ph',
+    'adminEmail' => 'admin@ams.gov.ph',
 ];

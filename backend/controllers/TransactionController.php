@@ -66,7 +66,8 @@ class TransactionController extends Controller
     public function actionCreate()
     {
         $model = new Transaction();
-        $requirements = requirements::find()->all();
+        $requirements = requirements::find(['attribute' => 'requirement'])->orderBy(['requirement'=>SORT_NATURAL])->all();
+        //$requirements = $requirements->orderBy([$requirements->requirements, SORT_NATURAL])->all();
         //$requirements=ArrayHelper::map(requirements::find()->all(), 'requirement', 'requirement'); 
 
         if ($model->load(Yii::$app->request->post()))
@@ -78,14 +79,16 @@ class TransactionController extends Controller
             Yii::$app->getSession()->setFlash('success', 'Success! New transaction has been added');
             return $this->redirect(['index']);
         }
-        else 
-        {
-            return $this->render('create', [
-                'model' => $model,
-                'requirements' => $requirements,
 
-            ]);
-        }
+        // //$x = array_filter($requirements);
+        // var_dump($requirements);
+        // exit();
+        
+        return $this->render('create', [
+            'model' => $model,
+            'requirements' => $requirements,
+
+        ]);
     }
 
     /**
@@ -97,7 +100,7 @@ class TransactionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $all = ArrayHelper::map(Requirements::find(['requirements'])->all(), 'requirement', 'requirement'); 
+        $all = ArrayHelper::map(Requirements::find(['requirements'])->orderBy(['requirement'=>SORT_NATURAL])->all(), 'requirement', 'requirement'); 
         $requirements = Transaction::find(['requirements'])->where(['id'=>$id])->one();
         $requirements = explode(',', $requirements->requirements);
 

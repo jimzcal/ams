@@ -19,7 +19,7 @@ $this->title = 'TRANSACTIONS';
 
     <div class="new-title">
         <i class="fa fa-tasks" aria-hidden="true"></i> Common Government Transactions
-        <p style="text-indent: 28px; font-size: 14px;">Transactions and its Documentary Requirements</p>
+        <p style="text-indent: 28px; font-size: 14px;">Minimum Documentary Requirements of each transaction</p>
     </div>
 
     <div style=" padding: 0; width: 88%; margin-left: auto; margin-right: auto; display: block;">
@@ -33,18 +33,14 @@ $this->title = 'TRANSACTIONS';
                 //'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-
-                    //'id',
                     [
                         'attribute' => 'name',
                         'format' => 'Html',
-                        'contentOptions'=>['style'=>'max-width: 200px;'],
+                        'contentOptions'=>['style'=>'max-width: 200px; white-space: normal;'],
                     ],
-                    //'name',
                     [
                         'attribute' => 'requirements',
                         'format' => 'Html',
-                        'format' =>'html', 
                         'contentOptions'=>['style'=>'max-width: 700px; white-space: normal;'],
                         'value' => function($data){
                             $values = explode(', ', $data->requirements);

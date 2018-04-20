@@ -33,12 +33,14 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                             'dv_no',
                             'date',
                             'payee',
+                            'particulars',
                              [
                                 'attribute' => 'gross_amount',
                                 'value' => function($data){
                                     return (number_format($data->gross_amount, 2));
                                 }
                              ],
+                             'status',
                         ],
                     ]);
                     ?>
@@ -65,12 +67,12 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                         'value' => 'dv_no'
                     ],
                     [
-                        'attribute' => 'Particular',
+                        'attribute' => 'particulars',
                         'format' =>'html',
                         'contentOptions' => ['style' => 'width: 300px; white-space: normal;'], 
                         'value' => function($data){
 
-                            return Html::tag('p', $data->ors->particular);
+                            return Html::tag('p', $data->particulars);
                         }
                     ],
                     //'payee',
@@ -87,6 +89,7 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                             return (number_format($data->gross_amount, 2));
                         }
                      ],
+                     'status',
 
                     ['class' => 'yii\grid\ActionColumn'],
                 ],

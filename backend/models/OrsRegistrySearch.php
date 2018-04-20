@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\CashAdvance;
+use backend\models\OrsRegistry;
 
 /**
- * CashAdvanceSearch represents the model behind the search form of `backend\models\CashAdvance`.
+ * OrsRegistrySearch represents the model behind the search form of `backend\models\OrsRegistry`.
  */
-class CashAdvanceSearch extends CashAdvance
+class OrsRegistrySearch extends OrsRegistry
 {
     /**
      * @inheritdoc
@@ -19,7 +19,8 @@ class CashAdvanceSearch extends CashAdvance
     {
         return [
             [['id'], 'integer'],
-            [['dv_no', 'date', 'due_date', 'status', 'date_liquidated'], 'safe'],
+            [['date', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'safe'],
+            [['gross_amount', 'less_amount', 'net_amount'], 'number'],
         ];
     }
 
@@ -41,7 +42,7 @@ class CashAdvanceSearch extends CashAdvance
      */
     public function search($params)
     {
-        $query = CashAdvance::find();
+        $query = OrsRegistry::find();
 
         // add conditions that should always apply here
 
@@ -60,13 +61,19 @@ class CashAdvanceSearch extends CashAdvance
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'gross_amount' => $this->gross_amount,
+            'less_amount' => $this->less_amount,
+            'net_amount' => $this->net_amount,
         ]);
 
-        $query->andFilterWhere(['like', 'dv_no', $this->dv_no])
-            ->andFilterWhere(['like', 'date', $this->date])
-            ->andFilterWhere(['like', 'due_date', $this->due_date])
-            ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'date_liquidated', $this->date_liquidated]);
+        $query->andFilterWhere(['like', 'date', $this->date])
+            ->andFilterWhere(['like', 'ors_class', $this->ors_class])
+            ->andFilterWhere(['like', 'funding_source', $this->funding_source])
+            ->andFilterWhere(['like', 'ors_year', $this->ors_year])
+            ->andFilterWhere(['like', 'ors_month', $this->ors_month])
+            ->andFilterWhere(['like', 'ors_serial', $this->ors_serial])
+            ->andFilterWhere(['like', 'mfo_pap', $this->mfo_pap])
+            ->andFilterWhere(['like', 'responsibility_center', $this->responsibility_center]);
 
         return $dataProvider;
     }

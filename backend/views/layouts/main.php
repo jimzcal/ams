@@ -15,7 +15,7 @@ use common\widgets\Alert;
 use dektrium\rbac\models\Role;
 
 AppAsset::register($this);
-rmrevin\yii\fontawesome\AssetBundle::register($this);
+//rmrevin\yii\fontawesome\AssetBundle::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -87,8 +87,8 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Financial Records">
                                 <?= Html::a('<i class="fa fa-book icon-font" aria-hidden="true"></i>', ["/disbursement/reports"]) ?>
                             </div>
-                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Cash Advances">
-                                <?= Html::a('<i class="fa fa-money icon-font" aria-hidden="true"></i>', ["/disbursement/cash"]) ?>
+                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Activity Log">
+                                <?= Html::a('<i class="fa fa-list icon-font" aria-hidden="true"></i>', ["/activity-log/index"]) ?>
                             </div>
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="NCA">
                                 <?= Html::a('<i class="fa fa-sticky-note icon-font" aria-hidden="true"></i>', ["/nca/index"]) ?>
@@ -104,12 +104,6 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                <!--  </div> -->
             </div>
         </div>
-        <!-- <div class="below-banner">
-            <?= Html::img('@web/images/ams.png', ['alt'=>'FMIS Banner']);?>
-        </div> -->
-        <!-- <?= Html::img('@web/images/ams.png', ['alt'=>'FMIS Banner', 'class' => 'top-banner-image']);?> -->
-       <!--  <?= Html::img('@web/images/ams.png', ['alt'=>'FMIS Banner', 'class' => 'top-bann-image']);?> -->
-      
     </div>
 <!--body-->
     <div class="content-wrapper">

@@ -20,7 +20,10 @@ $this->title = 'SELECT NCA';
         </tr>
         <?php foreach ($ncas as $value) : ?>
         <tr data-nca_no = <?= $value->nca_no ?> >
-            <td><?= $value->date_received ?></td><td><?= $value->fiscal_year ?></td><td><?= $value->nca_no ?></td><td><?= number_format($value->total_amount, 2) ?></td>
+            <td><?= $value->date_received ?></td>
+            <td><?= $value->fiscal_year ?></td>
+            <td><?= $value->nca_no ?></td>
+            <td><?= number_format($value->total_amount, 2) ?></td>
         </tr>
     <?php endforeach ?>
     </table>

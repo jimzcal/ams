@@ -74,4 +74,9 @@ class Ors extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
     }
+
+    public function getAda()
+    {
+        return $this->hasMany(LddapAda::className(), ['dv_no' => 'dv_no']);
+    }
 }

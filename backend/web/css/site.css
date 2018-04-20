@@ -61,6 +61,11 @@ body {
   padding: 10px;
 }
 
+.logo {
+  width: 200px;
+  height: auto;
+}
+
 .textfield{
   width: 100%;
   height: 100%;
@@ -279,6 +284,11 @@ body {
 
 .search-table{
   width: 600px;
+  border-collapse: collapse;
+}
+
+.search-table-long{
+  width: 750px;
   border-collapse: collapse;
 }
 
@@ -524,9 +534,10 @@ body {
  }
 
  .cbox{
-  width: 320px;
+  width: 370px;
   display: inline-block;
-  margin: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
   font-size: 14px;
  }
 
@@ -638,6 +649,9 @@ body {
   display: inline-block;
 }
 
+.visbox{
+  display: block;
+}
 
 .album-gallery img{
   border: 5px solid #ffffff;

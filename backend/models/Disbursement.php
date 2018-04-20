@@ -46,13 +46,13 @@ class Disbursement extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $date_paid, $check_no, $lddap_check_no, $page_checker, $particular, $amount, $ors_id, $lddap_no;
-    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $ors_no;
+    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $ors_no, $due, $period;
     public function rules()
     {
         return [
-            [['dv_no', 'fund_cluster', 'cash_advance', 'funding_source', 'date', 'payee', 'nca', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
-            [['attachments', 'funding_source', 'remarks', 'particular', 'lddap_no', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
-            [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number'],
+            [['dv_no', 'fund_cluster', 'cash_advance', 'funding_source', 'particulars', 'date', 'payee', 'nca', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
+            [['attachments', 'funding_source', 'remarks', 'particulars', 'lddap_no', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
+            [['gross_amount', 'amount', 'less_amount', 'net_amount', 'period'], 'number'],
             // [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
             [['transaction_id', 'ors_id'], 'integer'],
             [['dv_no', 'payee', 'nca'], 'string', 'max' => 200],
@@ -71,7 +71,7 @@ class Disbursement extends \yii\db\ActiveRecord
             'dv_no' => 'DV No',
             'date' => 'Date',
             'payee' => 'Payee',
-            'particular' => 'Particulars',
+            'particulars' => 'Particulars',
             'mode_of_payment' => 'Mode Of Payment',
             'nca' => 'NCA No.',
             'responsibility_center' => 'Responsibility Center',
@@ -129,5 +129,10 @@ class Disbursement extends \yii\db\ActiveRecord
     public function getTransactionStatuses()
     {
         return $this->hasMany(TransactionStatus::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getAda()
+    {
+        return $this->hasOne(LddapAda::className(), ['dv_no' => 'dv_no']);
     }
 }

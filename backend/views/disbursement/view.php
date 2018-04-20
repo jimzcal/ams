@@ -83,7 +83,6 @@ $this->title = $model->dv_no;
                 <td align="right">Status:</td>
                 <td colspan="2" width="35">
                     <strong><?= $model->status; ?></strong>
-                    <strong><?= $model->obligated == 'yes' ? '(earmarked)' : ' ' ?></strong>
                 </td>
                 <td colspan="4" width="200" rowspan="6">
                     <?php
@@ -118,7 +117,10 @@ $this->title = $model->dv_no;
                 <td align="right">Less Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->less_amount, 2); ?></strong></td>
             </tr>
             <tr>
-                <td align="right">Net Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->net_amount, 2); ?></strong></td>
+                <td align="right">Net Amount:</td>
+                <td colspan="2" width="35">
+                    <strong><?= $model->net_amount == 0 ?  number_format($model->gross_amount - $model->less_amount, 2) : number_format($model->net_amount, 2); ?></strong>
+                </td>
             </tr>
             <tr>
                 <td align="center" colspan="3" style="background-color: #46920e; color: #FFFFFF"><strong>TRANSACTION STATUS</strong></td>

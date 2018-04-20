@@ -41,51 +41,55 @@ use backend\models\FundCluster;
            </td>
        </tr>
        <tr>
-             <td>
-                 <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
-             </td>
-             <td>
-               <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
-                      [
-                          // 'prompt'=>'Select Fund Cluster',
-                          'onchange'=>'
-                               $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
-                                  $("select#disbursement-nca").html(data);
-                              });'
-                      ]); 
-                  ?>
-             </td>
-             <td>
-                 <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'),
-                      [
-                        'prompt'=>'Select NCA No.',
-                        'onchange'=>'
-                               $.post("index.php?r=nca/sources&nca_no='.'"+$(this).val(),function(data){
-                                  $("select#disbursement-funding_source").html(data);
-                              });'
-                      ]);
-                 ?>
-             </td>
-             <td>
-                <?= $form->field($model, 'funding_source')->dropDownList(ArrayHelper::map(Nca::find()->all(),'funding_source', 'funding_source'),
+           <td rowspan="2" colspan="3">
+               <?= $form->field($model, 'particulars')->textarea(['rows' => 6]) ?>
+           </td>
+           <td>
+            <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                     [
-                      'prompt'=>'Select Funding Source',
+                        // 'prompt'=>'Select Fund Cluster',
+                        'onchange'=>'
+                             $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
+                                $("select#disbursement-nca").html(data);
+                            });'
+                    ]); 
+                ?>
+           </td>
+           <td>
+               <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'),
+                    [
+                      'prompt'=>'Select NCA No.',
+                      'onchange'=>'
+                             $.post("index.php?r=nca/sources&nca_no='.'"+$(this).val(),function(data){
+                                $("select#disbursement-funding_source").html(data);
+                            });'
                     ]);
-                 ?>
-             </td>
-             <td>
-                 <?= $form->field($model, 'status')->dropDownList(['Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
-             </td>
-             <td>
-                 <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount']) ?>
-                 <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
-             </td>
-         </tr>
+               ?>
+           </td>
+           <td>
+              <?= $form->field($model, 'funding_source')->dropDownList(ArrayHelper::map(Nca::find()->all(),'funding_source', 'funding_source'),
+                  [
+                    'prompt'=>'Select Funding Source',
+                  ]);
+               ?>
+           </td>
+       </tr>
+       <tr>
+         <td>
+           <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
+         </td>
+         <td>
+           <?= $form->field($model, 'status')->dropDownList(['Received'=>'Received', 'Earmarked'=>'Earmarked', 'Approved'=>'Approved', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
+         </td>
+         <td>
+           <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount']) ?>
+           <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
+         </td>
+       </tr>
        <tr>
            <td colspan="6">
                 <table class="table table-condensed table-striped" id="dynamicInput">
                     <tr>
-                        <th>Particulars</th>
                         <th>ORS No.</th>
                         <th>MFO/PAP</th>
                         <th>Responsibility Center</th>
@@ -95,12 +99,8 @@ use backend\models\FundCluster;
                     <?php foreach ($ors_model as $value) : ?>
                       <?php $i=0; ?>
                         <tr>
-                            <td style="width: 350px;">
-                              <input type="hidden" name="ors_id[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->id; ?>" >
-
-                                <input type="text" name="particular[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->particular; ?>" >
-                            </td>
                             <td>
+                              <input type="hidden" name="ors_id[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->id; ?>" >
                                 <input type="text" name="ors_no[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->ors_class.'-'.$value->funding_source.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>" >
                             </td>
                             <td>
@@ -138,7 +138,7 @@ function addInput(dynamicInput)
      }
      else {
           var newdiv = document.createElement('tr');
-          newdiv.innerHTML = "<tr class='form-group'><td style='width: 350px;'><input type='text' name='particular["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='number' name='amount["+counter+"]' class='form-control' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
+          newdiv.innerHTML = "<tr class='form-group'><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='number' name='amount["+counter+"]' class='form-control' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
 
           document.getElementById("dynamicInput").appendChild(newdiv);
           counter++;

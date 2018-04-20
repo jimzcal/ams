@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\CashAdvance;
+use backend\models\ActivityLog;
 
 /**
- * CashAdvanceSearch represents the model behind the search form of `backend\models\CashAdvance`.
+ * ActivityLogSearch represents the model behind the search form of `backend\models\ActivityLog`.
  */
-class CashAdvanceSearch extends CashAdvance
+class ActivityLogSearch extends ActivityLog
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class CashAdvanceSearch extends CashAdvance
     {
         return [
             [['id'], 'integer'],
-            [['dv_no', 'date', 'due_date', 'status', 'date_liquidated'], 'safe'],
+            [['particular', 'date_time', 'user'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class CashAdvanceSearch extends CashAdvance
      */
     public function search($params)
     {
-        $query = CashAdvance::find();
+        $query = ActivityLog::find();
 
         // add conditions that should always apply here
 
@@ -62,11 +62,9 @@ class CashAdvanceSearch extends CashAdvance
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'dv_no', $this->dv_no])
-            ->andFilterWhere(['like', 'date', $this->date])
-            ->andFilterWhere(['like', 'due_date', $this->due_date])
-            ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'date_liquidated', $this->date_liquidated]);
+        $query->andFilterWhere(['like', 'particular', $this->particular])
+            ->andFilterWhere(['like', 'date_time', $this->date_time])
+            ->andFilterWhere(['like', 'user', $this->user]);
 
         return $dataProvider;
     }

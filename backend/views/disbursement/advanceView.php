@@ -20,7 +20,7 @@ $this->title = 'CASH ADVANCES';
     <div class="view-index">
         <table class="table table-hover table-striped table-bordered">
             <tr>
-                <th >DATE</th><th>DV NO.</th><th>PAYEE</th><th>AMOUNT</th>
+                <th >DATE</th><th>DV NO.</th><th>PAYEE</th><th>AMOUNT</th><th>Action</th>
             </tr>
             <?php foreach ($results as $result) : ?>
                 <tr data-id = <?= $result->id ?>>
@@ -28,6 +28,7 @@ $this->title = 'CASH ADVANCES';
                     <td><?= $result->dv_no ?></td>
                     <td><?= $result->payee ?></td>
                     <td><?= number_format($result->gross_amount, 2) ?></td>
+                    <td><?= Html::a('Notify', ['/cashAdvance/notice', 'id' => $result->id]) ?></td>
                 </tr>
             <?php endforeach ?>
             <?php if($results == null) : ?>

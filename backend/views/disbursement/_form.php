@@ -34,18 +34,18 @@ use backend\models\FundCluster;
                  <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name')) ?>
              </td>
              <td style="width: 200px;">
-              <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated']) ?>
+              <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated'], ['id' => 'advance']) ?>
              </td>
              <td>
               <?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('F d, Y') : $model->date]) ?>
              </td>
          </tr>
          <tr>
-             <td>
-                 <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
+             <td rowspan="2" colspan="3">
+                 <?= $form->field($model, 'particulars')->textarea(['rows' => 6]) ?>
              </td>
              <td>
-               <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
+              <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                       [
                           // 'prompt'=>'Select Fund Cluster',
                           'onchange'=>'
@@ -73,19 +73,23 @@ use backend\models\FundCluster;
                     ]);
                  ?>
              </td>
-             <td>
-                 <?= $form->field($model, 'status')->dropDownList(['Unpaid'=>'Unpaid', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
-             </td>
-             <td>
-                 <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount']) ?>
-                 <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
-             </td>
+         </tr>
+         <tr>
+           <td>
+             <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
+           </td>
+           <td>
+             <?= $form->field($model, 'status')->dropDownList(['Received'=>'Received', 'Earmarked'=>'Earmarked', 'Approved'=>'Approved', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
+           </td>
+           <td>
+             <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount']) ?>
+             <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
+           </td>
          </tr>
          <tr>
              <td colspan="6">
                   <table class="table table-condensed table-bordered" id="dynamicInput">
                       <tr>
-                          <th>Particulars</th>
                           <th>ORS No.</th>
                           <th>MFO/PAP</th>
                           <th>Responsibility Center</th>
@@ -94,9 +98,9 @@ use backend\models\FundCluster;
                       </tr>
       
                       <tr>
-                          <td style="width: 350px;">
+<!--                           <td style="width: 350px;">
                               <input type="text" name="particular[0]" class="form-control" required="true">
-                          </td>
+                          </td> -->
                           <td>
                               <input type="text" name="ors_no[0]" class="form-control" required="true">
                           </td>
@@ -112,6 +116,8 @@ use backend\models\FundCluster;
                           <td><button class="btn btn-success" type="button" onClick="addInput('dynamicInput')" ><i class="glyphicon glyphicon-plus"></i></button></td>
                       </tr>
                   </table>
+
+                  <?= $form->field($model, 'period')->hiddenInput(['id' => 'fperiod'])->label(false) ?>
              </td>
          </tr>
       </table>
@@ -119,9 +125,32 @@ use backend\models\FundCluster;
       <div class="form-group">
           <?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
       </div>
-
-      <?php ActiveForm::end(); ?>
   </div>
+
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Due Period</h4>
+        </div>
+        <div class="modal-body">
+          <table width="500">       
+              <tr>
+                <td>
+                  <?= $form->field($model, 'due')->dropDownList(['30'=>'30 days', '60'=>'60 days', '20' => '20 days'], ['id' => 'period', 'prompt' => 'Select No. of days'])->label("No of days to Liquidate this Cash Advance: ") ?>
+                </td>
+              </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php ActiveForm::end(); ?>
 </div>
 
 <script>
@@ -135,7 +164,7 @@ function addInput(dynamicInput)
      }
      else {
           var newdiv = document.createElement('tr');
-          newdiv.innerHTML = "<tr class='form-group'><td style='width: 350px;'><input type='text' name='particular["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='text' name='amount["+counter+"]' class='form-control num' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
+          newdiv.innerHTML = "<tr class='form-group'><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='text' name='amount["+counter+"]' class='form-control num' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
 
           document.getElementById("dynamicInput").appendChild(newdiv);
 
@@ -177,8 +206,26 @@ $(".num").each(function() {
         $("#totalAmount").val(sum.toFixed(2));
     }
 
-}
+  $(document).on("change", "select[id='advance']", function () { 
+        // alert($(this).val())
+        $modal = $('#myModal');
+        if($(this).val() == 'yes'){
+            $modal.modal('show');
+        }
+    });
 
+  $(document).on("change", "select[id='period']", function () { 
+        // alert($(this).val())
+        var value = 0;
+        $modal = $('#myModal');
+        if($(this).val() != null && $(this).val() > 0) 
+        {
+            value = this.value;
+            $("#fperiod").val(value);
+        }
+    });
+
+}
 </script>
 
 

@@ -265,9 +265,9 @@ body {
 }
 
 .mini-header{
-  width: 300px;
+  width: 400px;
   background-color: #46920e;
-  height: 35px;
+  min-height: 35px;
   margin: 0 0;
   color: #FFFFFF;
   padding: 7px;

@@ -11,6 +11,8 @@ use backend\models\Disbursement;
 use yii\data\ActiveDataProvider;
 use backend\models\TransactionStatus;
 use backend\models\AccountingEntry;
+use backend\models\Ors;
+use backend\models\OrsRegistry;
 
 /**
  * Site controller
@@ -209,6 +211,23 @@ class SiteController extends Controller
                         Yii::$app->db->createCommand()->update('transaction_status', ['releasing' => $detail], ['dv_no' => $dv_no])->execute();
 
                          return $this->redirect(['/disbursement/view', 'id' => $id->id]);
+                    }
+                }
+
+                if (\Yii::$app->user->can('bookkeeper'))
+                {
+                    $ors = OrsRegistry::find()->where(['dv_no' => $dv_no])->all();
+
+                    if($ors == null)
+                    {
+                        // var_dump($model_registry);
+                        // exit();
+                        return $this->redirect(['/ors-registry/create', 'dv_no' => $dv_no]);
+                    }
+
+                    if($ors !== null)
+                    {
+                        return $this->redirect(['/ors-registry/update', 'dv_no' => $dv_no]);
                     }
                 }
             }

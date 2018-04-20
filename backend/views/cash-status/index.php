@@ -7,6 +7,8 @@ use yii\widgets\Pjax;
 use backend\models\CashStatus;
 use yii\helpers\ArrayHelper;
 use backend\models\Disbursement;
+use backend\models\Nca;
+use miloschuman\highcharts\Highcharts;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CashStatusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -19,6 +21,35 @@ $this->title = 'CASH STATUS';
 ?>
 
 <div class="cash-status-index">
+
+    <div class="view-index">
+        <?php 
+            $total_earmarked = array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$nca->nca_no])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->all(), 'net_amount'));
+
+            $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
+                                ->where(['nca_no'=>$nca->nca_no])
+                                ->all(), 'total_amount'));
+        ?>
+        <?= Highcharts::widget([
+            'options' => [
+                'chart' => ['type' => 'bar'],
+               'title' => ['text' => 'Cash Status Graph'],
+               'xAxis' => [
+                  'categories' => ['Allotment/Earmarked']
+               ],
+               'yAxis' => [
+                  'title' => ['text' => 'Earmarked']
+               ],
+               'series' => [
+                  ['name' => 'Allotment', 'data' => [(int)$total_nca_amount]],
+                  ['name' => 'Earmarked', 'data' => [(int)$total_earmarked]]
+               ]
+            ]
+    ]); ?> 
+    </div>
     
     <div class="view-index">
         <div class="mini-header">
@@ -29,13 +60,13 @@ $this->title = 'CASH STATUS';
                 <th>NCA No.</th>
                 <th>Fund Cluster</th>
                 <th>Total Amount</th>
-                <th>Amount Obligated</th>
+                <th>Amount Earmarked</th>
                 <th>Current Balance</th>
             </tr>
             <tr>
                 <td><?= $nca->nca_no ?></td>
                 <td><?= $nca->fund_cluster ?></td>
-                <td><?= number_format($nca->total_amount, 2) ?></td>
+                <td><?= number_format($total_nca_amount, 2) ?></td>
                 <td>
                     <?= number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['disbursement_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?>
                 </td>

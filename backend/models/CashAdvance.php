@@ -7,9 +7,12 @@ use Yii;
 /**
  * This is the model class for table "cash_advance".
  *
- * @property integer $id
+ * @property int $id
  * @property string $dv_no
  * @property string $date
+ * @property string $due_date
+ * @property string $status
+ * @property string $date_liquidated
  *
  * @property Disbursement $dvNo
  */
@@ -29,8 +32,8 @@ class CashAdvance extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dv_no', 'date'], 'required'],
-            [['dv_no', 'date'], 'string', 'max' => 100],
+            [['dv_no', 'date', 'due_date', 'status', 'date_liquidated'], 'required'],
+            [['dv_no', 'date', 'due_date', 'status', 'date_liquidated'], 'string', 'max' => 100],
             [['dv_no'], 'exist', 'skipOnError' => true, 'targetClass' => Disbursement::className(), 'targetAttribute' => ['dv_no' => 'dv_no']],
         ];
     }
@@ -44,6 +47,9 @@ class CashAdvance extends \yii\db\ActiveRecord
             'id' => 'ID',
             'dv_no' => 'Dv No',
             'date' => 'Date',
+            'due_date' => 'Due Date',
+            'status' => 'Status',
+            'date_liquidated' => 'Date Liquidated',
         ];
     }
 
@@ -53,14 +59,5 @@ class CashAdvance extends \yii\db\ActiveRecord
     public function getDvNo()
     {
         return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
-    }
-
-    /**
-     * @inheritdoc
-     * @return CashAdvanceQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new CashAdvanceQuery(get_called_class());
     }
 }

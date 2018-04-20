@@ -19,7 +19,7 @@ class DisbursementSearch extends Disbursement
     {
         return [
             [['id', 'transaction_id'], 'integer'],
-            [['dv_no', 'date', 'payee',  'mode_of_payment', 'nca', 'fund_cluster', 'tin', 'attachments', 'remarks', 'status'], 'safe'],
+            [['dv_no', 'date', 'payee', 'particulars',  'mode_of_payment', 'nca', 'fund_cluster', 'tin', 'attachments', 'remarks', 'status'], 'safe'],
             [['gross_amount', 'less_amount', 'net_amount'], 'number'],
         ];
     }
@@ -73,7 +73,7 @@ class DisbursementSearch extends Disbursement
         $query->andFilterWhere(['like', 'dv_no', $this->dv_no])
             ->andFilterWhere(['like', 'date', $this->date])
             ->andFilterWhere(['like', 'payee', $this->payee])
-            //->andFilterWhere(['like', 'particulars', $this->particulars])
+            ->andFilterWhere(['like', 'particulars', $this->particulars])
             ->andFilterWhere(['like', 'mode_of_payment', $this->mode_of_payment])
             ->andFilterWhere(['like', 'nca', $this->nca])
             //->andFilterWhere(['like', 'responsibility_center', $this->responsibility_center])

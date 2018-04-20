@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="new-title">
         <i class="fa fa-tasks" aria-hidden="true"></i> Common Government Transactions
-        <p style="text-indent: 30px; font-size: 14px;">The Documentary Requirements for each Transaction herein are in accordance to COA Circular No. 2012-001 of the Commission On Audit (COA) issued on June 14, 2012.</p>
+        <p style="text-indent: 30px; font-size: 14px;">List of Minimum Documentary Requirements for each Transaction in compliance to COA Circular No. 2012-001 of the Commission On Audit (COA) issued on June 14, 2012 as amended.</p>
     </div>
 
     <?php $form = ActiveForm::begin(); ?>
@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
            </div>
            <?php $requirements = explode(',', $value->requirements) ?>
                <?php foreach ($requirements as $id => $req)  : ?>
-                   <div style="width: 220px; display: inline-block; margin: 5px;">
+                   <div style="width: 320px; display: inline-block; margin: 5px; vertical-align: text-top;">
                        <?= ($id+1).'. '.$req ?>
                    </div>
                <?php endforeach ?>

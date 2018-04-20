@@ -69,8 +69,20 @@ $this->title = 'LDDAP-ADA';
                 [
                     'attribute' => 'net_amount',
                     'value' => function($data){
-
                         return number_format($data->net_amount, 2);
+                    }
+                ],
+                [
+                    'label' => 'Action',
+                    'format' => 'Html',
+                    'value' => function($id){
+                        return Html::a('Delete', ['/lddap-ada/delete', 'id' => $id->id],
+                            [
+                                'data' => [
+                                'confirm' => 'Are you sure you want to delete this item?',
+                                ]
+                            ]
+                    );
                     }
                 ],
             ],

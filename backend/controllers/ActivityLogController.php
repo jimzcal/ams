@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Requirements;
-use backend\models\RequirementsSearch;
+use backend\models\ActivityLog;
+use backend\models\ActivityLogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RequirementsController implements the CRUD actions for Requirements model.
+ * ActivityLogController implements the CRUD actions for ActivityLog model.
  */
-class RequirementsController extends Controller
+class ActivityLogController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,26 +30,25 @@ class RequirementsController extends Controller
     }
 
     /**
-     * Lists all Requirements models.
+     * Lists all ActivityLog models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $model = new Requirements();
-        $searchModel = new RequirementsSearch();
+        $searchModel = new ActivityLogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('create', [
+        return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'model' => $model
         ]);
     }
 
     /**
-     * Displays a single Requirements model.
+     * Displays a single ActivityLog model.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
@@ -59,79 +58,70 @@ class RequirementsController extends Controller
     }
 
     /**
-     * Creates a new Requirements model.
+     * Creates a new ActivityLog model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Requirements();
-        $searchModel = new RequirementsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = new ActivityLog();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save())
-        {
-            Yii::$app->getSession()->setFlash('success', 'Successfully Added');
-            
-            return $this->redirect(['create']);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-    
+
         return $this->render('create', [
             'model' => $model,
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Updates an existing Requirements model.
+     * Updates an existing ActivityLog model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save())
-        {
-            Yii::$app->getSession()->setFlash('success', 'Successfully Updated');
-            return $this->redirect(['create', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-        else 
-        {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Deletes an existing Requirements model.
+     * Deletes an existing ActivityLog model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->getSession()->setFlash('success', 'Successfully Updated');
-        return $this->redirect(['create']);
+
+        return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Requirements model based on its primary key value.
+     * Finds the ActivityLog model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Requirements the loaded model
+     * @return ActivityLog the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Requirements::findOne($id)) !== null) {
+        if (($model = ActivityLog::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

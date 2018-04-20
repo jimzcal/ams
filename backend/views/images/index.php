@@ -38,7 +38,7 @@ $count = 1;
         <div class="row">
             <?php foreach($model as $image) :?>
                 <div class="album-gallery">
-                    <input type="checkbox" name="ids[]" value="<?= $image->id ?>">
+                    <input type="checkbox" name="ids[]" value="<?= $image->id ?>" class="visbox">
                     <?= EasyThumbnailImage::thumbnailImg(
                         $image->url, 
                         230,

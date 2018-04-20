@@ -18,6 +18,7 @@ use backend\models\Nca;
 use kartik\mpdf\Pdf;
 use backend\models\LddapAda;
 use backend\models\Ors;
+use backend\models\ActivityLog;
 
 /**
  * DisbursementController implements the CRUD actions for Disbursement model.
@@ -126,6 +127,16 @@ class DisbursementController extends Controller
 
             $model->save(false);
 
+            //Start of Ativity Log --------------------------------
+
+            $log = new ActivityLog();
+            $log->particular = "Made changes on DV No. ".$model->dv_no.' with the following short details: Gross Amount - '.$model->gross_amount.', Net Amount - '.$model->net_amount;
+            $log->date_time = date('m/d/Y h:i');
+            $log->user = Yii::$app->user->identity->fullname;
+            $log->save(false);
+
+            //End of Ativity Log --------------------------------
+
             for($i=0; $i<sizeof($model->particular); $i++)
             {
                 $ors = explode('-', $model->ors_no[$i]);
@@ -176,7 +187,7 @@ class DisbursementController extends Controller
 
             if ($model->load(Yii::$app->request->post()))
             {
-                $particulars = $_POST['particular'];
+                $particulars = $model->particulars;
                 $ors_no = $_POST['ors_no'];
                 //$ors_no = explode(' ', $ors_no[0]);
                 $mfo_pap = $_POST['mfo_pap'];
@@ -189,15 +200,15 @@ class DisbursementController extends Controller
                 $model->dv_no = $dv_no;
                 $model->save(false);
 
-                for($i=0; $i<sizeof($particulars); $i++)
+                for($i=0; $i<sizeof($ors_no); $i++)
                 {
-                    if(!empty($particulars[$i]) && !empty($ors_no[$i]) && !empty($mfo_pap[$i]) && 
+                    if(!empty($ors_no[$i]) && !empty($mfo_pap[$i]) && 
                         !empty($responsibility_center[$i]) && !empty($amount[$i]))
                     {
 
                         $ors_model = new Ors();
                         $ors_model->dv_no = $dv_no;
-                        $ors_model->particular = $particulars[$i];
+                        $ors_model->particular = $model->particulars;
                         $ors_model->responsibility_center = $responsibility_center[$i];
                         $ors_model->mfo_pap = $mfo_pap[$i];
                         $ors_model->amount = str_replace(',', '', $amount[$i]);
@@ -219,6 +230,29 @@ class DisbursementController extends Controller
                 $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                 $model3->receiving = $detail;
                 $model3->save(false);
+
+                //Start of Ativity Log --------------------------------
+
+                $log = new ActivityLog();
+                $log->particular = 'Adding new Disbursement Voucher with the following short details: DV No. - '.$model->dv_no.' Gross Amount - '.$model->gross_amount.', Net Amount - '.$model->net_amount;
+                $log->date_time = date('m/d/Y h:i');
+                $log->user = Yii::$app->user->identity->fullname;
+                $log->save(false);
+
+                //End of Ativity Log --------------------------------
+
+                if(($model->period != null) && ($model->period != 0))
+                {
+                    $advance_model = new CashAdvance();
+
+                    $advance_model->dv_no = $model->dv_no;
+                    $advance_model->date = date('M. d, Y');
+                    $date = $advance_model->date;
+                    $advance_model->status = 'Unliquidated';
+                    $advance_model->due_date = date('M. d, Y', strtotime($date. '+'. $model->period. 'days'));
+
+                    $advance_model->save(false);
+                }
 
                 // print_r('Successfully Saved');
                 // exit();
@@ -260,7 +294,7 @@ class DisbursementController extends Controller
                 $model->save(false);
 
                 $ids = $_POST['ors_id'];
-                $particulars = $_POST['particular'];
+                $particulars = $model->particulars;
                 $ors_no = $_POST['ors_no'];
                 //$ors_no = explode(' ', $ors_no[0]);
                 $mfo_pap = $_POST['mfo_pap'];
@@ -269,7 +303,7 @@ class DisbursementController extends Controller
 
                 $ors_id = Ors::find()->where(['dv_no' => $model->dv_no])->all();
 
-                for($i=0; $i<sizeof($particulars); $i++)
+                for($i=0; $i<sizeof($ors_no); $i++)
                 {
                     if(isset($ids[$i]))
                     {
@@ -277,7 +311,7 @@ class DisbursementController extends Controller
                         $ors = explode('-', $ors_no[$i]);
 
                         Yii::$app->db->createCommand()->update('ors', [
-                            'particular' => $particulars[$i],
+                            'particular' => $model->particulars,
                             'responsibility_center' => $responsibility_center[$i],
                             'mfo_pap' => $mfo_pap[$i],
                             'amount' => str_replace(',', '', $amount[$i]),
@@ -294,7 +328,7 @@ class DisbursementController extends Controller
                     { 
                         $ors_model = new Ors();
                         $ors_model->dv_no = $model->dv_no;
-                        $ors_model->particular = $particulars[$i];
+                        $ors_model->particular = $model->particulars;
                         $ors_model->responsibility_center = $responsibility_center[$i];
                         $ors_model->mfo_pap = $mfo_pap[$i];
                         $ors_model->amount = str_replace(',', '', $amount[$i]);
@@ -309,6 +343,16 @@ class DisbursementController extends Controller
                         $ors_model->save(false);        
                     } 
                 }
+
+                //Start of Ativity Log --------------------------------
+
+                $log = new ActivityLog();
+                $log->particular = "Made changes on DV No. ".$model->dv_no.' with the following short details: Gross Amount - '.$model->gross_amount.', Net Amount - '.$model->net_amount;
+                $log->date_time = date('m/d/Y h:i');
+                $log->user = Yii::$app->user->identity->fullname;
+                $log->save(false);
+
+                //End of Ativity Log --------------------------------
 
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -390,6 +434,7 @@ class DisbursementController extends Controller
            else
            {
                 $model->obligated = 'yes';
+                $model->status = 'earmarked';
                 $model->save(false);
 
                 $checker2 = DisbursedDv::find()->where(['dv_no' => $model->dv_no])->one();
@@ -547,5 +592,51 @@ class DisbursementController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionClusters($fund_cluster)
+    {
+        $countClusters = Nca::find()
+            ->where(['fund_cluster'=>$fund_cluster])
+            ->count();
+
+        $clusters = Nca::find()
+            ->where(['fund_cluster'=>$fund_cluster])
+            ->all();
+
+        if($countClusters>0)
+        {
+            foreach($clusters as $cluster)
+            {
+                 echo "<option value='".$cluster->nca_no."'>".$cluster->nca_no."</option>";
+            }
+        }
+        else
+            {
+                echo "<option> - </option>";
+            }
+    }
+
+    public function actionSources($nca_no)
+    {
+        $countSources  = Nca::find()
+            ->where(['nca_no'=>$nca_no])
+            ->count();
+
+        $sources = Nca::find()
+            ->where(['nca_no'=>$nca_no])
+            ->all();
+
+        if($countSources >0)
+        {
+            foreach($sources as $source)
+            {
+                 echo "<option value='".$source->funding_source."'>".$source->funding_source."</option>";
+            }
+        }
+        else
+            {
+                echo "<option> - </option>";
+            }
     }
 }

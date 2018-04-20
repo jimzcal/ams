@@ -21,7 +21,7 @@ $this->title = 'FINANCIAL REPORTS';
             Financial Accountability Report', ["/cash-status/nca"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-paypal" aria-hidden="true" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Index of Payment', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+            Index of Payment', ["/disbursement/index"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-file-text-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             LDDAP-ADA List', ["/lddap-ada/index"], ['class' => 'financial-report-icon']) ?>
@@ -43,6 +43,9 @@ $this->title = 'FINANCIAL REPORTS';
 
         <?= Html::a('<span class="fa fa-file-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Daily Cash Report', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+
+        <?= Html::a('<span class="fa fa-clipboard" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
+            Obligation Registry', ["/ors-registry/index"], ['class' => 'financial-report-icon']) ?>
 
     </div>
 </div>

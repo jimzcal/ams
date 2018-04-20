@@ -75,15 +75,15 @@ $this->title = 'LDDAP-ADA';
                 [
                     'label' => 'Action',
                     'format' => 'Html',
-                    'value' => function($id){
-                        return Html::a('Delete', ['/lddap-ada/delete', 'id' => $id->id],
-                            [
+                    'value' => function($data)
+                    {
+                        return Html::a('<i class="glyphicon glyphicon-trash"></i>', ["/lddap-ada/delete", 'id' => $data->id], [
                                 'data' => [
-                                'confirm' => 'Are you sure you want to delete this item?',
-                                ]
-                            ]
-                    );
-                    }
+                                    'confirm' => 'Are you sure you want to delete this item?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                    },
                 ],
             ],
         ]); ?>

@@ -79,19 +79,19 @@ $this->title = 'CASH STATUS';
     <div style="padding: 3px; border-radius: 8px; background-color: #FFFFFF">
         <table class="table table-condensed table-bordered" style="font-size: 11px;">
             <tr>
-                <th align="center">DATE</th>
-                <th>PAYEE/CREDITOR</th>
-                <th>MFO/PAP</th>
-                <th>ORS NO.</th>
-                <th>DV NO.</th>
-                <th>GROSS AMOUNT</th>
-                <th>LESS AMOUNT</th>
-                <th>NET AMOUNT</th>
-                <th>STATUS</th>
+                <th align="center" rowspan="2">DATE</th>
+                <th rowspan="2">PAYEE/CREDITOR</th>
+                <th rowspan="2">MFO/PAP</th>
+                <th rowspan="2">ORS NO.</th>
+                <th rowspan="2">DV NO.</th>
+                <th rowspan="2">GROSS AMOUNT</th>
+                <th colspan="4">CURRENT YEAR ALLOTMENT</th>
+                <th colspan="4">PRIOR YEAR'S ALLOTMENT</th>
+                <th rowspan="2">STATUS</th>
             </tr>
-           <!--  <tr>
+            <tr>
                 <th>PS</th><th>MOOE</th><th>FinEx</th><th>CO</th><th>PS</th><th>MOOE</th><th>FinEx</th><th>CO</th>
-            </tr> -->
+            </tr>
             <?php foreach ($disbursements as $value) : ?>
             <tr>
                 <td>
@@ -106,21 +106,35 @@ $this->title = 'CASH STATUS';
                 <td>
                     <?= $value->ors->ors_class.'-'.$value->ors->ors_year.'-'.$value->ors->ors_month.'-'.$value->ors->ors_serial ?>
                 </td>
-                <td>
-                    <?= $value->dv_no ?>
+                <td><?= $value->dv_no ?></td>
+                <td style="text-align: right;"><?= number_format($value->gross_amount, 2) ?></td>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
                 <td style="text-align: right;">
-                    <?= number_format($value->gross_amount, 2) ?>
+                    <?= ($value->ors->ors_class === '02' && $value->ors->ors_year === date('Y')) ? number_format(
+                        $value->net_amount, 2) : '' ?>
                 </td>
                 <td style="text-align: right;">
-                    <?= number_format($value->less_amount, 2) ?>
+                    <?= ($value->ors->ors_class === '03' && $value->ors->ors_year === date('Y')) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
                 <td style="text-align: right;">
-                    <?= number_format($value->net_amount, 2) ?>
+                    <?= ($value->ors->ors_class === '06' && $value->ors->ors_year === date('Y')) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
-                <td>
-                    <?= $value->status ?>
+
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1 ) ? number_format($value->net_amount, 2) : '' ?>
                 </td>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? number_format($value->net_amount, 2) : '' ?>
+                </td>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? number_format($value->net_amount, 2) : '' ?>
+                </td>
+                <td style="text-align: right;">
+                    <?= ($value->ors->ors_class === '01' && $value->ors->ors_year === date('Y')+1) ? number_format($value->net_amount, 2) : '' ?>
+                </td>
+                <td><?= $value->status ?></td>
             </tr>
             <?php endforeach ?>
         </table>

@@ -37,7 +37,7 @@ use kartik\date\DatePicker;
                 <?= $form->field($model, 'gross_amount[]')->textInput(['maxlength' => true, 'value' => $value->amount])->label(false) ?>
             </td>
             <td>
-                <?= $form->field($model, 'less_amount[]')->textInput(['maxlength' => true, 'value' => $less = $dv->less_amount != 0 ? $value->amount-($dv->less_amount/sizeof($model_registry)) : 0.00 ])->label(false) ?>
+                <?= $form->field($model, 'less_amount[]')->textInput(['maxlength' => true, 'value' => $less = $dv->less_amount != 0 ? $dv->less_amount/sizeof($model_registry) : 0.00 ])->label(false) ?>
             </td>
             <td>
                 <?= $form->field($model, 'net_amount[]')->textInput(['maxlength' => true, 'value' => ($value->amount - $less)])->label(false) ?>

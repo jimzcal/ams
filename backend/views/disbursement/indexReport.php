@@ -18,7 +18,7 @@ $this->title = 'FINANCIAL REPORTS';
     <div class="financial-reports-panel">
 
         <?= Html::a('<span class="fa fa-line-chart" aria-hidden="true" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Financial Accountability Report', ["/cash-status/nca"], ['class' => 'financial-report-icon']) ?>
+            Financial Accountability Report', ["/far101/index"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-paypal" aria-hidden="true" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Index of Payment', ["/disbursement/index"], ['class' => 'financial-report-icon']) ?>

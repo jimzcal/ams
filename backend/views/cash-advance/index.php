@@ -118,7 +118,7 @@ $this->title = 'CASH ADVANCES';
                         'value' => function($data){
                                 if(($data->status == 'Unliquidated') || ($data->status == 'unliquidated'))
                                 {
-                                    $val = Html::a('Notify ', ['/cash-advance/notice', 'id' => $data->id]);
+                                    $val = Html::a('<i class="glyphicon glyphicon-print"></i> Notify', ['/cash-advance/notice', 'id' => $data->id]);
                                     //.' | '.Html::submitButton('Update', ['id' => 'update', 'data-toggle' => 'modal', 'data-target' => '#myModal']); 
                                 }
 

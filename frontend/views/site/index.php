@@ -24,7 +24,7 @@ $baseUrl = Yii::getAlias('@bkImages');
                     'fx' => 'tileBlind',
                     'tileCount' => 26,
                     'tileVertical' => true,
-                    'timeout' => 3000
+                    'timeout' => 3000,
                 ],
             ]) ?>
         </div>

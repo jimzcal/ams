@@ -28,7 +28,8 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
     <table style="width: 100%;">
             <tr style="height: 60px;">
                 <th colspan="4" style="text-align: center; font-size: 18px;">
-                    STATEMENT OF OBLIGATIONS AND DISBURSEMENTS
+                    STATEMENT OF CURRENT YEAR DISBURSEMENTS
+                    <p style="font-size: 16px;">As of <?= $model->date_updated; ?></p>
                 </th>
             </tr>
             <tr>
@@ -77,15 +78,15 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
             <tr>
                 <th rowspan="2" style="width: 330px; text-align: center;">PARTICULARS</th>
                 <th rowspan="2" style="width: 160px; text-align: center;">UACS CODE</th>
-                <th colspan="5" style="text-align: center">CURRENT YEAR OBLIGATIONS</th>
+                <!-- <th colspan="5" style="text-align: center">CURRENT YEAR OBLIGATIONS</th> -->
                 <th colspan="5" style="text-align: center">CURRENT YEAR DISBURSEMENTS</th>
             </tr>
             <tr>
-                <td style="font-size: 11px; text-align: center">1st Quarter</td>
+                <!-- <td style="font-size: 11px; text-align: center">1st Quarter</td>
                 <td style="font-size: 11px; text-align: center">2nd Quarter</td>
                 <td style="font-size: 11px; text-align: center">3rd Quarter</td>
                 <td style="font-size: 11px; text-align: center">4th Quarter</td>
-                <td style="font-size: 11px; text-align: center">Total Obligations</td>
+                <td style="font-size: 11px; text-align: center">Total Obligations</td> -->
                 <td style="font-size: 11px; text-align: center">1st Quarter</td>
                 <td style="font-size: 11px; text-align: center">2nd Quarter</td>
                 <td style="font-size: 11px; text-align: center">3rd Quarter</td>
@@ -96,80 +97,80 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
             <tr>
                 <td><?= $value->particulars ?></td>
                 <td><?= $value->uacs_code ?></td>
-                <td><?= $value->obligation_q_1 ?></td>
+                <!-- <td><?= $value->obligation_q_1 ?></td>
                 <td><?= $value->obligation_q_2 ?></td>
                 <td><?= $value->obligation_q_3 ?></td>
                 <td><?= $value->obligation_q_4 ?></td>
-                <td><?= $value->total_obligation ?></td>
-                <td><?= $value->disbursement_q_1 ?></td>
-                <td><?= $value->disbursement_q_2 ?></td>
-                <td><?= $value->disbursement_q_3 ?></td>
-                <td><?= $value->disbursement_q_4 ?></td>
-                <td><?= $value->total_disbursement ?></td>
+                <td><?= $value->total_obligation ?></td> -->
+                <td><?= number_format($value->disbursement_q_1, 2) ?></td>
+                <td><?= number_format($value->disbursement_q_2, 2) ?></td>
+                <td><?= number_format($value->disbursement_q_3, 2) ?></td>
+                <td><?= number_format($value->disbursement_q_4, 2) ?></td>
+                <td><?= number_format($value->total_disbursement, 2) ?></td>
             </tr>
                 <?php $sub_far = Far101::find()->where(['parent_id' => $value->id])->all(); ?>
                 <?php foreach ($sub_far as $val) : ?>
                     <tr>
                         <td style="text-indent: 10px;"><?= $val->particulars ?></td>
                         <td><?= $val->uacs_code ?></td>
-                        <td><?= $val->obligation_q_1 ?></td>
+                        <!-- <td><?= $val->obligation_q_1 ?></td>
                         <td><?= $val->obligation_q_2 ?></td>
                         <td><?= $val->obligation_q_3 ?></td>
                         <td><?= $val->obligation_q_4 ?></td>
-                        <td><?= $val->total_obligation ?></td>
-                        <td><?= $val->disbursement_q_1 ?></td>
-                        <td><?= $val->disbursement_q_2 ?></td>
-                        <td><?= $val->disbursement_q_3 ?></td>
-                        <td><?= $val->disbursement_q_4 ?></td>
-                        <td><?= $val->total_disbursement ?></td>
+                        <td><?= $val->total_obligation ?></td> -->
+                        <td><?= number_format($val->disbursement_q_1, 2) ?></td>
+                        <td><?= number_format($val->disbursement_q_2, 2) ?></td>
+                        <td><?= number_format($val->disbursement_q_3, 2) ?></td>
+                        <td><?= number_format($val->disbursement_q_4, 2) ?></td>
+                        <td><?= number_format($val->total_disbursement, 2) ?></td>
                     </tr>
                         <?php $sub_far2 = Far101::find()->where(['parent_id' => $val->id])->all(); ?>
                         <?php foreach ($sub_far2 as $data) : ?>
                             <tr>
                                 <td style="text-indent: 20px;"><?= $data->particulars ?></td>
                                 <td><?= $data->uacs_code ?></td>
-                                <td><?= $data->obligation_q_1 ?></td>
+                                <!-- <td><?= $data->obligation_q_1 ?></td>
                                 <td><?= $data->obligation_q_2 ?></td>
                                 <td><?= $data->obligation_q_3 ?></td>
                                 <td><?= $data->obligation_q_4 ?></td>
-                                <td><?= $data->total_obligation ?></td>
-                                <td><?= $data->disbursement_q_1 ?></td>
-                                <td><?= $data->disbursement_q_2 ?></td>
-                                <td><?= $data->disbursement_q_3 ?></td>
-                                <td><?= $data->disbursement_q_4 ?></td>
-                                <td><?= $data->total_disbursement ?></td>
+                                <td><?= $data->total_obligation ?></td> -->
+                                <td><?= number_format($data->disbursement_q_1, 2) ?></td>
+                                <td><?= number_format($data->disbursement_q_2, 2) ?></td>
+                                <td><?= number_format($data->disbursement_q_3, 2) ?></td>
+                                <td><?= number_format($data->disbursement_q_4, 2) ?></td>
+                                <td><?= number_format($data->total_disbursement, 2) ?></td>
                             </tr>
                                 <?php $sub_far3 = Far101::find()->where(['parent_id' => $data->id])->all(); ?>
                                 <?php foreach ($sub_far3 as $data4) : ?>
                                     <tr>
                                         <td style="text-indent: 30px;"><?= $data4->particulars ?></td>
                                         <td><?= $data4->uacs_code ?></td>
-                                        <td><?= $data4->obligation_q_1 ?></td>
+                                        <!-- <td><?= $data4->obligation_q_1 ?></td>
                                         <td><?= $data4->obligation_q_2 ?></td>
                                         <td><?= $data4->obligation_q_3 ?></td>
                                         <td><?= $data4->obligation_q_4 ?></td>
-                                        <td><?= $data4->total_obligation ?></td>
-                                        <td><?= $data4->disbursement_q_1 ?></td>
-                                        <td><?= $data4->disbursement_q_2 ?></td>
-                                        <td><?= $data4->disbursement_q_3 ?></td>
-                                        <td><?= $data4->disbursement_q_4 ?></td>
-                                        <td><?= $data4->total_disbursement ?></td>
+                                        <td><?= $data4->total_obligation ?></td> -->
+                                        <td><?= number_format($data4->disbursement_q_1, 2) ?></td>
+                                        <td><?= number_format($data4->disbursement_q_2, 2) ?></td>
+                                        <td><?= number_format($data4->disbursement_q_3, 2) ?></td>
+                                        <td><?= number_format($data4->disbursement_q_4, 2) ?></td>
+                                        <td><?= number_format($data4->total_disbursement, 2) ?></td>
                                     </tr>
                                         <?php $sub_far4 = Far101::find()->where(['parent_id' => $data4->id])->all(); ?>
                                         <?php foreach ($sub_far4 as $data5) : ?>
                                             <tr>
                                                 <td style="text-indent: 40px;"><?= $data5->particulars ?></td>
                                                 <td><?= $data5->uacs_code ?></td>
-                                                <td><?= $data5->obligation_q_1 ?></td>
+                                                <!-- <td><?= $data5->obligation_q_1 ?></td>
                                                 <td><?= $data5->obligation_q_2 ?></td>
                                                 <td><?= $data5->obligation_q_3 ?></td>
                                                 <td><?= $data5->obligation_q_4 ?></td>
-                                                <td><?= $data5->total_obligation ?></td>
-                                                <td><?= $data5->disbursement_q_1 ?></td>
-                                                <td><?= $data5->disbursement_q_2 ?></td>
-                                                <td><?= $data5->disbursement_q_3 ?></td>
-                                                <td><?= $data5->disbursement_q_4 ?></td>
-                                                <td><?= $data5->total_disbursement ?></td>
+                                                <td><?= $data5->total_obligation ?></td> -->
+                                                <td><?= number_format($data5->disbursement_q_1, 2) ?></td>
+                                                <td><?= number_format($data5->disbursement_q_2, 2) ?></td>
+                                                <td><?= number_format($data5->disbursement_q_3, 2) ?></td>
+                                                <td><?= number_format($data5->disbursement_q_4, 2) ?></td>
+                                                <td><?= number_format($data5->total_disbursement, 2) ?></td>
                                             </tr>
                                         <?php endforeach ?>
                                 <?php endforeach ?>

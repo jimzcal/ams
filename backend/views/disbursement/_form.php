@@ -49,7 +49,7 @@ use backend\models\FundCluster;
                       [
                           // 'prompt'=>'Select Fund Cluster',
                           'onchange'=>'
-                               $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
+                               $.post("'.Yii::$app->urlManager->createUrl('nca/clusters?fund_cluster=') . '"+$(this).val(),function(data){
                                   $("select#disbursement-nca").html(data);
                               });'
                       ]); 
@@ -180,52 +180,52 @@ function addInput(dynamicInput)
      }
 }
 
-window.onload = function()
-{
+// window.onload = function()
+// {
 
-$(".num").each(function() {
+// $(".num").each(function() {
 
-            $(this).change(function(){
-                calculateSum();
-            });
-        });
+//             $(this).change(function(){
+//                 calculateSum();
+//             });
+//         });
 
-    function calculateSum() {
+//     function calculateSum() {
 
-        var sum = 0;
-        //iterate through each textboxes and add the values
-        $(".num").each(function() {
+//         var sum = 0;
+//         //iterate through each textboxes and add the values
+//         $(".num").each(function() {
 
-            //add only if the value is number
-            if(!isNaN(this.value) && this.value.length!=0) {
-                sum += parseFloat(this.value);
-            }
+//             //add only if the value is number
+//             if(!isNaN(this.value) && this.value.length!=0) {
+//                 sum += parseFloat(this.value);
+//             }
 
-        });
-        //.toFixed() method will roundoff the final sum to 2 decimal places
-        $("#totalAmount").val(sum.toFixed(2));
-    }
+//         });
+//         //.toFixed() method will roundoff the final sum to 2 decimal places
+//         $("#totalAmount").val(sum.toFixed(2));
+//     }
 
-  $(document).on("change", "select[id='advance']", function () { 
-        // alert($(this).val())
-        $modal = $('#myModal');
-        if($(this).val() == 'yes'){
-            $modal.modal('show');
-        }
-    });
+//   $(document).on("change", "select[id='advance']", function () { 
+//         // alert($(this).val())
+//         $modal = $('#myModal');
+//         if($(this).val() == 'yes'){
+//             $modal.modal('show');
+//         }
+//     });
 
-  $(document).on("change", "select[id='period']", function () { 
-        // alert($(this).val())
-        var value = 0;
-        $modal = $('#myModal');
-        if($(this).val() != null && $(this).val() > 0) 
-        {
-            value = this.value;
-            $("#fperiod").val(value);
-        }
-    });
+//   $(document).on("change", "select[id='period']", function () { 
+//         // alert($(this).val())
+//         var value = 0;
+//         $modal = $('#myModal');
+//         if($(this).val() != null && $(this).val() > 0) 
+//         {
+//             value = this.value;
+//             $("#fperiod").val(value);
+//         }
+//     });
 
-}
+// }
 </script>
 
 

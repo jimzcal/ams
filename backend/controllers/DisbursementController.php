@@ -378,6 +378,17 @@ class DisbursementController extends Controller
             $this->findModel($id)->delete();
             $dv_no = Disbursement::find(['dv_no'])->where(['id'=>$id])->one();
             CashAdvance::delete(['dv_no' => $dv_no->dv_no]);
+
+            //Start of Ativity Log --------------------------------
+
+            $log = new ActivityLog();
+            $log->particular = "Delete DV No. ".$dv_no->dv_no.' with the following short details: Gross Amount - '.$dv_no->gross_amount.', Net Amount - '.$dv_no->net_amount;
+            $log->date_time = date('m/d/Y h:i');
+            $log->user = Yii::$app->user->identity->fullname;
+            $log->save(false);
+
+            //End of Ativity Log --------------------------------
+
             return $this->redirect(['index']);
         }
         else
@@ -447,6 +458,16 @@ class DisbursementController extends Controller
                     $model2->date_paid = $model->date_paid;
                     $model2->lddap_check_no = $model->lddap_check_no;
                     $model2->save(false);
+
+                    //Start of Ativity Log --------------------------------
+
+                    $log = new ActivityLog();
+                    $log->particular = "Made changes on DV No. ".$model2->dv_no.' with the following short details: Gross Amount - '.$model2->gross_amount.', Net Amount - '.$model2->net_amount.', Status: earmarked';
+                    $log->date_time = date('m/d/Y h:i');
+                    $log->user = Yii::$app->user->identity->fullname;
+                    $log->save(false);
+
+                    //End of Ativity Log --------------------------------
                 }
 
                 else
@@ -545,6 +566,16 @@ class DisbursementController extends Controller
                     $model3->lddap_no = $model2->lddap_no;
 
                     $model3->save(false);
+
+                    //Start of Ativity Log --------------------------------
+
+                    $log = new ActivityLog();
+                    $log->particular = "Generated a LDDAP/ADA Form for DV No. ".$model3->dv_no.', LDDAP/ADA No. '.$model3->lddap_no.', with net amount of '.$model3->net_amount;
+                    $log->date_time = date('m/d/Y h:i');
+                    $log->user = Yii::$app->user->identity->fullname;
+                    $log->save(false);
+
+                    //End of Ativity Log --------------------------------
                 }
             }
 

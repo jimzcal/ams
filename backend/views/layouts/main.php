@@ -81,11 +81,11 @@ AppAsset::register($this);
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Control Panel">
                                 <?= Html::a('<i class="fa fa-cogs icon-font" aria-hidden="true"></i>', ["/site/control"]) ?>
                             </div>
-                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Accounting Entries">
-                                <?= Html::a('<i class="fa fa-calculator icon-font" aria-hidden="true"></i>', ["/accounting-entry/index"]) ?>
-                            </div>
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Financial Records">
                                 <?= Html::a('<i class="fa fa-book icon-font" aria-hidden="true"></i>', ["/disbursement/reports"]) ?>
+                            </div>
+                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Accounting Entries">
+                                <?= Html::a('<i class="fa fa-calculator icon-font" aria-hidden="true"></i>', ["/accounting-entry/index"]) ?>
                             </div>
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Activity Log">
                                 <?= Html::a('<i class="fa fa-list icon-font" aria-hidden="true"></i>', ["/activity-log/index"]) ?>

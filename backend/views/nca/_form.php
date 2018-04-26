@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\models\FundCluster;
 use kartik\select2\Select2;
+use backend\models\FundingSource;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Nca */
@@ -55,7 +56,12 @@ use kartik\select2\Select2;
                             <td colspan="2">
                                 <label>Funding Source Code</label>
                                 <!-- <input type="text" name="funding_source[0]" class="form-control" required> -->
-                                <input list="funding_source" name="funding_source[0]" class="form-control" required>
+                                <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundingSource::find()->all(),'uacs','uacs'),
+                                    [
+                                        'prompt'=>'Select Funding Source',
+                                    ])->label(false); 
+                                ?>
+                                <!-- <input list="funding_source" name="funding_source[0]" class="form-control" required> -->
                                 <datalist id="funding_source">
                                     <?php foreach ($data as $value) : ?>
                                         <option value=<?= $value->uacs ?>>

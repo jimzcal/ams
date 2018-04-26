@@ -85,6 +85,7 @@ class OrsRegistryController extends Controller
 
                 $new_model_entry->date = date('M. d, Y'); 
                 $new_model_entry->dv_no = $dv_no;
+                $new_model_entry->fund_cluster = $dv->fund_cluster;
                 $new_model_entry->ors_class = $ors_no[0];
                 $new_model_entry->funding_source = $ors_no[1];
                 $new_model_entry->ors_year = $ors_no[2];
@@ -152,6 +153,7 @@ class OrsRegistryController extends Controller
 
                 $new_model_entry->date = date('M. d, Y');
                 $new_model_entry->dv_no = $dv_no;
+                $new_model_entry->fund_cluster = $dv->fund_cluster;
                 $new_model_entry->ors_class = $ors_no[0];
                 $new_model_entry->funding_source = $ors_no[1];
                 $new_model_entry->ors_year = $ors_no[2];

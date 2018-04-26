@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\Far101;
+use backend\models\MfoPap;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -189,14 +190,25 @@ use yii\helpers\ArrayHelper;
                     <td><?= $form->field($model, 'fund_cluster')->textInput(['maxlength' => true, 'style' => 'width: 95%', 'value' => $fund_cluster, 'readonly' => true]) ?></td>
                 </tr>
                 <tr>
-                    <td><?= $form->field($model, 'parent_id')->dropDownList(['0'=>'none', ArrayHelper::map(Far101::find()->all(),'id', 'uacs_code')]) ?></td>
+                    <td><?= $form->field($model, 'parent_id')->dropDownList(['0'=>'none', ArrayHelper::map(Far101::find()
+                            ->where(['fiscal_year' => $fiscal_year])
+                            ->andWhere(['fund_cluster' => $fund_cluster])
+                            ->all(),'id', 'uacs_code')], ['style' => 'width: 95%']) ?>
+                    </td>
                 </tr>
                 <tr>
                     <td><?= $form->field($model, 'particulars')->textInput(['maxlength' => true, 'style' => 'width: 95%']) ?></td>
                 </tr>
                 <tr>
-                    <td><?= $form->field($model, 'uacs_code')->textInput(['maxlength' => true, 'style' => 'width: 95%']) ?></td>
+                    <td>
+                        <?= $form->field($model, 'uacs_code')->dropDownList([ArrayHelper::map(MfoPap::find()->all(),'uacs', 'uacs')], ['style' => 'width: 95%']) ?>
+                    </td>
                 </tr>
+                <tr>
+                    <td>
+                        <?= $form->field($model, 'date_updated')->hiddenInput(['maxlength' => true, 'style' => 'width: 95%', 'value' => date('M. d, Y'), 'readonly' => true])->label(false) ?>
+                    </td>
+                </tr> 
             </table>
           </div>
           <div class="modal-footer">

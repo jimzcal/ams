@@ -324,7 +324,7 @@ $this->title = 'CASH STATUS';
                     <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                      [
                         'onchange'=>'
-                             $.post("index.php?r=nca/clusters&fund_cluster='.'"+$(this).val(),function(data){
+                             $.post("'.Yii::$app->urlManager->createUrl('nca/clusters?fund_cluster=') . '"+$(this).val(),function(data){
                                 $("select#disbursement-nca").html(data);
                             });'
                     ])->label(false); ?>
@@ -337,7 +337,14 @@ $this->title = 'CASH STATUS';
             <tr>
                 <td style="text-align: right; font-weight: bold;">NCA No. :</td>
                 <td colspan="2">
-                    <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'))->label(false) ?>
+                    <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'),
+                        [
+                            'prompt'=>'Select NCA No.',
+                            'onchange'=>'
+                                   $.post("'.Yii::$app->urlManager->createUrl('nca/sources?nca_no=') . '"+$(this).val(),function(data){
+                                      $("select#disbursement-funding_source").html(data);
+                                  });'
+                    ])->label(false) ?>
                 </td>
                 <td style="text-align: right; font-weight: bold;">Less :</td>
                 <td colspan="2">

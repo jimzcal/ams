@@ -43,7 +43,7 @@ class Far101 extends \yii\db\ActiveRecord
             [['fiscal_year', 'fund_cluster', 'parent_id', 'particulars', 'uacs_code', 'obligation_q_1', 'obligation_q_2', 'obligation_q_3', 'obligation_q_4', 'total_obligation', 'disbursement_q_1', 'disbursement_q_2', 'disbursement_q_3', 'disbursement_q_4', 'total_disbursement'], 'required'],
             [['parent_id'], 'integer'],
             [['obligation_q_1', 'obligation_q_2', 'obligation_q_3', 'obligation_q_4', 'total_obligation', 'disbursement_q_1', 'disbursement_q_2', 'disbursement_q_3', 'disbursement_q_4', 'total_disbursement'], 'number'],
-            [['fiscal_year', 'fund_cluster', 'particulars', 'uacs_code'], 'string', 'max' => 100],
+            [['fiscal_year', 'fund_cluster', 'particulars', 'uacs_code', 'date_updated'], 'string', 'max' => 100],
         ];
     }
 

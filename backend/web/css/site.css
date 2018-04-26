@@ -540,8 +540,9 @@ body {
  .myfield{
     border: 0;
     width: 95%;
-   background-color: #f2ffcc;*/
+    background-color: #f2ffcc;*/
     margin: 0;
+    text-align: left;
  }
 
  .cbox{

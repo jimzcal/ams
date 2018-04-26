@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
+use backend\models\OrsRegistry;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\Far101Search */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -32,6 +34,7 @@ $this->title = 'FAR 1 - 01';
                         'dataProvider' => $dataProvider,
                         'columns' => [
                             //'id',
+                            'date_updated',
                             'fiscal_year',
                             'fund_cluster',
                             'parent_id',
@@ -64,6 +67,7 @@ $this->title = 'FAR 1 - 01';
                     ['class' => 'yii\grid\SerialColumn'],
 
                     //'id',
+                    'date_updated',
                     'fiscal_year',
                     'fund_cluster',
                     //'parent_id',
@@ -73,12 +77,23 @@ $this->title = 'FAR 1 - 01';
                     //'obligation_q_2',
                     //'obligation_q_3',
                     //'obligation_q_4',
-                    'total_obligation',
+                    //'total_obligation',
                     //'disbursement_q_1',
                     //'disbursement_q_2',
                     //'disbursement_q_3',
                     //'disbursement_q_4',
-                    'total_disbursement',
+                    [
+                        'attribute' => 'total_disbursement',
+                        'value' => function($data){
+
+                            $sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        ->where(['ors_year'=>$data->fiscal_year])
+                                        ->andWhere(['fund_cluster' => $data->fund_cluster])
+                                        ->all(), 'net_amount'));
+
+                            return number_format($sum, 2);
+                        }
+                    ],
 
                     ['class' => 'yii\grid\ActionColumn'],
                 ],

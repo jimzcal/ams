@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="new-title">
         <i class="fa fa-tasks" aria-hidden="true"></i> <?= Html::encode($this->title) ?>
-        <p style="text-indent: 28px; font-size: 14px;">Documentary Requirements</p>
+        <p style="text-indent: 30px; font-size: 14px;">List of Minimum Documentary Requirements for this Transaction in compliance to COA Circular No. 2012-001 of the Commission On Audit (COA) issued on June 14, 2012 as amended.</p>
     </div>
 
     <div class="view-index">

@@ -34,7 +34,7 @@ $count = 1;
         <p style="text-indent: 25px; font-size: 14px;">The images here are displayed also to the Acounting Digital Signage.</p>
     </div>
 
-    <div style="padding: 10px; width: 88%; margin-left: auto; margin-right: auto;">
+    <div class="album-form">
         <div class="row">
             <?php foreach($model as $image) :?>
                 <div class="album-gallery">
@@ -44,7 +44,7 @@ $count = 1;
                         230,
                         200,
                         EasyThumbnailImage::THUMBNAIL_OUTBOUND,
-                        ['alt' => 'accounting-image', 'onclick'=>'openModal('.$count++.')' ]
+                        ['alt' => 'accounting-image', 'onclick'=>'openModal('.$count++.')']
                         );
                     ?>
               </div>
@@ -91,58 +91,72 @@ $count = 1;
 
 <script>
 
-    function openModal(n) {
-      document.getElementById('myContent').style.display = "block";
-      document.getElementById('myModal').style.display = "block";
-      showSlides(slideIndex = n);
+function openModal(n)
+{
+  document.getElementById('myContent').style.display = "block";
+  document.getElementById('myModal').style.display = "block";
+  showSlides(slideIndex = n);
+}
+
+function closeModal() 
+{
+  document.getElementById('myModal').style.display = "none";
+  document.getElementById('myContent').style.display = "none";
+}
+
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) 
+{
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) 
+{  
+
+}
+
+function showSlides(n) 
+{
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("demo");
+    var captionText = document.getElementById("caption");
+    if (n > slides.length)
+    {
+        slideIndex = 1
     }
 
-    function closeModal() {
-      document.getElementById('myModal').style.display = "none";
-      document.getElementById('myContent').style.display = "none";
+    if (n < 1)
+    {
+      slideIndex = slides.length
     }
 
-    var slideIndex = 1;
-    showSlides(slideIndex);
 
-    function plusSlides(n) {
-      showSlides(slideIndex += n);
-
+    for (i = 0; i < slides.length; i++)
+    {
+        slides[i].style.display = "none";
     }
 
-    function currentSlide(n) {  
 
+    for (i = 0; i < dots.length; i++)
+    {
+        dots[i].className = dots[i].className.replace(" active", "");
     }
 
-    function showSlides(n) {
-      var i;
-      var slides = document.getElementsByClassName("mySlides");
-      var dots = document.getElementsByClassName("demo");
-      var captionText = document.getElementById("caption");
-      if (n > slides.length)
-      {
-          slideIndex = 1
-      }
+    slides[slideIndex-1].style.display = "block";
+    dots[slideIndex-1].className += " active";
+    captionText.innerHTML = dots[slideIndex-1].alt;
+}
 
-      if (n < 1)
-      {
-        slideIndex = slides.length
-      }
+// $(document).on("mouseover", "select[id='albumForm']", function () 
+// { 
+//   // $('#visbox').show();
+//   document.getElementById('visbox').style.display = "block";
+// }
 
 
-      for (i = 0; i < slides.length; i++)
-      {
-          slides[i].style.display = "none";
-      }
 
 
-      for (i = 0; i < dots.length; i++)
-      {
-          dots[i].className = dots[i].className.replace(" active", "");
-      }
-
-      slides[slideIndex-1].style.display = "block";
-      dots[slideIndex-1].className += " active";
-      captionText.innerHTML = dots[slideIndex-1].alt;
-    }
 </script>

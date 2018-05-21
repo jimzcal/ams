@@ -28,7 +28,7 @@ AppAsset::register($this);
     <?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '@web/ams.png']) ?>
     
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode('FMIS - '.$this->title) ?></title>
+    <title><?= Html::encode('AMS - '.$this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -81,6 +81,10 @@ AppAsset::register($this);
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Control Panel">
                                 <?= Html::a('<i class="fa fa-cogs icon-font" aria-hidden="true"></i>', ["/site/control"]) ?>
                             </div>
+                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Cash Advances">
+                                 <i class="notification"><?= sizeof($notifications) == '0' ? '' :  sizeof($notifications) ?></i>
+                                <?= Html::a('<i class="fa fa-money icon-font" aria-hidden="true"></i>', ["/cash-advance/index"]) ?>
+                            </div>
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Financial Records">
                                 <?= Html::a('<i class="fa fa-book icon-font" aria-hidden="true"></i>', ["/disbursement/reports"]) ?>
                             </div>
@@ -115,6 +119,9 @@ AppAsset::register($this);
                         }
             ?>
             <?= Alert::widget() ?>
+            <?php // date("Y-M-d") ?>
+            <?php //$diff = date_diff(date_create(date("Y-M-d", $notifications->due_date)), date_create(date("Y-M-d"))); ?>
+            <?php //$diff->format('%d') ?>
             <?= $content ?>
     </div>
     <div class="footer">

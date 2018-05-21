@@ -29,11 +29,13 @@ class CashAdvance extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $payee, $amount;
     public function rules()
     {
         return [
             [['dv_no', 'date', 'due_date', 'status', 'date_liquidated'], 'required'],
-            [['dv_no', 'date', 'due_date', 'status', 'date_liquidated'], 'string', 'max' => 100],
+            [['dv_no', 'date', 'due_date', 'status', 'date_liquidated', 'payment_method'], 'string', 'max' => 100],
+            [['amount_paid'], 'number'],
             [['dv_no'], 'exist', 'skipOnError' => true, 'targetClass' => Disbursement::className(), 'targetAttribute' => ['dv_no' => 'dv_no']],
         ];
     }
@@ -59,5 +61,10 @@ class CashAdvance extends \yii\db\ActiveRecord
     public function getDvNo()
     {
         return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getDisbursed()
+    {
+        return $this->hasOne(DisbursedDv::className(), ['dv_no' => 'dv_no']);
     }
 }

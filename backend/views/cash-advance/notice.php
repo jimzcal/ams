@@ -99,20 +99,47 @@ $this->title = 'Notice';
 
                         <table style="width: 100%; padding: 10px; font-weight: bold;">
                             <tr>
-                                <td>DV No.</td><td>:</td><td><?= $model->dv_no; ?></td>
+                                <td>Date</td>
+                                <td>:</td>
+                                <td><?= $model->dvNo->date ?></td>
                             </tr>
                             <tr>
-                                <td>Particulars</td><td>:</td><td><?= $model->dvNo->particulars ?></td>
+                                <td>DV No.</td>
+                                <td>:</td>
+                                <td><?= $model->dv_no; ?></td>
                             </tr>
                             <tr>
-                                <td>Amount</td><td>:</td><td><?= number_format($model->dvNo->net_amount, 2) ?></td>
+                                <td>Particulars</td>
+                                <td>:</td>
+                                <td><?= $model->dvNo->particulars ?></td>
                             </tr>
                             <tr>
-                                <td>LDDAP-ADA</td><td>:</td><td><?= isset($model->ada->lddap_no) ? $model->ada->lddap_no : '' ;  ?></td>
+                                <td>Amount</td>
+                                <td>:</td><td>
+                                    <?= number_format($model->dvNo->gross_amount - $model->dvNo->less_amount, 2) ?></td>
                             </tr>
                             <tr>
-                                <td>Date</td><td>:</td><td><?= isset($model->ada->date) ? $model->ada->date : '' ?></td>
+                                <td><?= $model->dvNo->mode_of_payment == 'lldap_ada' ? 'LDDAP-ADA No.' : 'Check No.' ?></td>
+                                <td>:</td>
+                                <td><?= isset($model->disbursed->lddap_check_no) == null ? 'N/A' : $model->disbursed->lddap_check_no ?></td>
                             </tr>
+                            <?php if($model->payment_method != null) : ?>
+                                <tr>
+                                    <td>Partial Payment</td>
+                                    <td>:</td>
+                                    <td><?= number_format($model->amount_paid, 2) ?></td>
+                                </tr>
+                                 <tr>
+                                    <td>Date of Partial Payment</td>
+                                    <td>:</td>
+                                    <td><?= $model->date_liquidated ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Balance</td>
+                                    <td>:</td>
+                                    <td><?= number_format($model->dvNo->net_amount - $model->amount_paid, 2) ?></td>
+                                </tr>
+                            <?php endif ?>
                         </table>
 
                         <br><br>

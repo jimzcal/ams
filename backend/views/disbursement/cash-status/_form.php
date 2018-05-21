@@ -262,7 +262,7 @@ $this->title = 'CASH STATUS';
                     ?>
                 </td>
                 <td>
-                    <?= number_format($model->net_amount, 2) ?> <?= $model->obligated === 'yes' ? '(earmarked)' : '' ?>
+                    <?= number_format($total_earmarked, 2) ?> <?= $model->obligated === 'yes' ? '(earmarked)' : '' ?>
                 </td>
             </tr>
             <tr>

@@ -70,7 +70,17 @@ $this->title = 'CASH ADVANCES';
                 'dataProvider' => $dataProvider,
                 //'filterModel' => $searchModel,
                 'rowOptions'   => function ($model, $key, $index, $grid) {
-                    return ['data-id' => $model->dvNo->id];
+
+                    if(($model->status == 'Unliquidated') && ($model->due_date == date('Y-m-d') || $model->due_date < date('Y-m-d')))
+                    {
+                       return ['data-id' => $model->dvNo->id, 'style' => 'background-color: #b3e6b3;']; 
+                    }
+
+                    else
+                    {
+                        return ['data-id' => $model->dvNo->id];
+                    }
+                    
                 },
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
@@ -118,16 +128,17 @@ $this->title = 'CASH ADVANCES';
                         'value' => function($data){
                                 if(($data->status == 'Unliquidated') || ($data->status == 'unliquidated'))
                                 {
-                                    $val = Html::a('<i class="glyphicon glyphicon-print"></i> Notify', ['/cash-advance/notice', 'id' => $data->id]);
-                                    //.' | '.Html::submitButton('Update', ['id' => 'update', 'data-toggle' => 'modal', 'data-target' => '#myModal']); 
+                                    $val = Html::a('<i class="glyphicon glyphicon-print"></i>', ['/cash-advance/notice', 'id' => $data->id]);
+                                    $val2 = Html::a('<i class="glyphicon glyphicon-pencil"></i>', ['/cash-advance/update', 'id' => $data->id]);
                                 }
 
                                 else 
                                 {
                                     $val = '';
+                                    $val2 = '';
                                 }
 
-                                return $val;
+                                return $val.' | '.$val2;
                         }
                     ],
                     //['class' => 'yii\grid\ActionColumn'],
@@ -156,6 +167,7 @@ $this->title = 'CASH ADVANCES';
 <?php
 $this->registerJs("
     $('tbody td').css('cursor', 'pointer');
+    $('tbody tr').addClass('rows');
     $('tbody td').click(function (e) {
         var id = $(this).closest('tr').data('id');
         if (e.target == this)

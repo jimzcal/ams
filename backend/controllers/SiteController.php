@@ -76,6 +76,12 @@ class SiteController extends Controller
             {
                 if (\Yii::$app->user->can('receiver'))
                 {
+                    $status = TransactionStatus::find()->where(['dv_no'=>$dv_no])->one();
+                    $stat = explode(',', $status->receiving);
+                    $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                    Yii::$app->db->createCommand()->update('transaction_status', ['receiving' => $detail], ['dv_no' => $dv_no])->execute();
+
                     return $this->redirect(['/disbursement/view', 'id' => $id->id]);
                 }
 
@@ -92,7 +98,7 @@ class SiteController extends Controller
                     else
                     {
                         $stat = explode(',', $status->processing);
-                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date(date('m/d/Y h:i'));
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['processing' => $detail], ['dv_no' => $dv_no])->execute();
                          return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
@@ -112,7 +118,7 @@ class SiteController extends Controller
                     else
                     {
                         $stat = explode(',', $status->verification);
-                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date(date('m/d/Y h:i'));
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['verification' => $detail], ['dv_no' => $dv_no])->execute();
 
@@ -134,7 +140,7 @@ class SiteController extends Controller
                     else
                     {
                         $stat = explode(',', $status->nca_control);
-                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date(date('m/d/Y h:i'));
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['nca_control' => $detail], ['dv_no' => $dv_no])->execute();
 
@@ -158,7 +164,7 @@ class SiteController extends Controller
                     else
                     {
                         $stat = explode(',', $status->indexing);
-                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date(date('m/d/Y h:i'));
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['indexing' => $detail], ['dv_no' => $dv_no])->execute();
 
@@ -182,7 +188,7 @@ class SiteController extends Controller
                     else
                     {
                         $stat = explode(',', $status->lddap_ada);
-                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date(date('m/d/Y h:i'));
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['lddap_ada' => $detail], ['dv_no' => $dv_no])->execute();
 
@@ -192,26 +198,23 @@ class SiteController extends Controller
 
                 if (\Yii::$app->user->can('releaser'))
                 {
-                    $status = TransactionStatus::find(['releasing'])->where(['dv_no'=>$dv_no])->one();
+                    $status = TransactionStatus::find()->where(['dv_no'=>$dv_no])->one();
                     $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->all();
-                        
+
                     if(empty($status->releasing))
                     {
                         $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
-                        Yii::$app->db->createCommand()->update('transaction_status', ['releasing' => $detail], ['dv_no' => $dv_no])->execute();
-
-                        Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
-                        return $this->redirect(['/disbursement/view', 'id' => $id->id]);
                     }
-                    else
+
+                    if(!empty($status->releasing))
                     {
                         $stat = explode(',', $status->releasing);
-                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date(date('m/d/Y h:i'));
-
-                        Yii::$app->db->createCommand()->update('transaction_status', ['releasing' => $detail], ['dv_no' => $dv_no])->execute();
-
-                         return $this->redirect(['/disbursement/view', 'id' => $id->id]);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
                     }
+
+                    Yii::$app->db->createCommand()->update('transaction_status', ['releasing' => $detail], ['dv_no' => $dv_no])->execute();
+                    Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
+                    return $this->redirect(['/disbursement/view', 'id' => $id->id]);
                 }
 
                 if (\Yii::$app->user->can('bookkeeper'))

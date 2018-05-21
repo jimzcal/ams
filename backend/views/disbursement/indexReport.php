@@ -30,7 +30,7 @@ $this->title = 'FINANCIAL REPORTS';
             Status of Cash Allocation', ["/cash-status/nca"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-id-card" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-        Monthly Disbursement Report', ["/disbursement/nca"], ['class' => 'financial-report-icon']) ?>
+        Monthly Disbursement Report', ["/ors-registry/disbursementyear"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-calculator" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Taxes', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
@@ -39,10 +39,10 @@ $this->title = 'FINANCIAL REPORTS';
             Cash Advances', ["/cash-advance/index"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-file-text" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Monthly Disbursement Program', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+            Monthly Disbursement Program', ["/orsRegistry/mDisbursement"], ['class' => 'financial-report-icon']) ?>
 
-        <?= Html::a('<span class="fa fa-file-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Daily Cash Report', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+        <!-- <?= Html::a('<span class="fa fa-file-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
+            Daily Cash Report', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?> -->
 
         <?= Html::a('<span class="fa fa-clipboard" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Obligation Registry', ["/ors-registry/index"], ['class' => 'financial-report-icon']) ?>

@@ -14,19 +14,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="far101-view">
-
     <div class="view-form">
-        <div id="noprint">
-            <?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i>', ["/far101/index"], ['style' => 'float: left']) ?>
-            <?= Html::a(' [ <i class="glyphicon glyphicon-trash"></i> Delete ] ', ['delete', 'id' => $model->id], ['style' => 'float: right',
-                'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
-                    'method' => 'post',
-                ],
-            ]) ?> 
-            <?= Html::a(' [ <i class="glyphicon glyphicon-pencil"></i> Update ] ', ['update', 'id' => $model->id], ['style' => 'float: right']) ?>
-            <?= Html::a(' [ <i class="glyphicon glyphicon-print"></i> Print ] ', ['print', 'id' => $model->id], ['style' => 'float: right']) ?>
-        </div>
         <table style="width: 100%;">
                 <tr style="height: 60px;">
                     <th colspan="4" style="text-align: center; font-size: 18px;">

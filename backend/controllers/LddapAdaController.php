@@ -6,6 +6,7 @@ use Yii;
 use backend\models\LddapAda;
 use backend\models\LddapAdaSearch;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use kartik\mpdf\Pdf;
@@ -21,6 +22,17 @@ class LddapAdaController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                  [
+                    'allow' => true,
+                    'roles' => ['@']
+                  ]
+                            
+              ],
+          ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -88,7 +100,8 @@ class LddapAdaController extends Controller
     {
         $model = new LddapAda();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

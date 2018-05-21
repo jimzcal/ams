@@ -176,13 +176,13 @@ $this->title = 'Disbursement Voucher';
                                 <?php foreach ($attachments as $attached) : ?>
                                     <?php if($attached !== '') : ?>
                                         <input type="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
-                                        <label><?= $attached ?></label><br>
+                                        <label style="font-size: 10px;"><?= $attached ?></label><br>
                                     <?php endif ?>
                                 <?php endforeach ?>
 
                                 <?php foreach ($lacking as $lack) : ?>
                                     <input type="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
-                                    <label><?= $lack ?></label><br>
+                                    <label style="font-size: 10px;"><?= $lack ?></label><br>
                                 <?php endforeach ?>
                             </td>
                         </tr>

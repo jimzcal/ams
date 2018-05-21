@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\FundingSource;
+use yii\filters\AccessControl;
 
 /**
  * NcaController implements the CRUD actions for Nca model.
@@ -21,6 +22,17 @@ class NcaController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                  [
+                    'allow' => true,
+                    'roles' => ['@']
+                  ]
+                            
+              ],
+          ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -73,8 +85,8 @@ class NcaController extends Controller
 
         if ($model->load(Yii::$app->request->post()))
         {
-            if(isset($_POST['funding_source']) && isset($_POST['mds_sub_acc_no']) && isset($_POST['gsb_branch']))
-            {
+            // if(isset($_POST['mds_sub_acc_no']) && isset($_POST['gsb_branch']))
+            // {
                 $funding_sources = $_POST['funding_source'];
                 $mds_sub_acc_nos = $_POST['mds_sub_acc_no'];
                 $gsb_branches = $_POST['gsb_branch'];
@@ -97,43 +109,46 @@ class NcaController extends Controller
 
                 for($i=0; $i < sizeof($funding_sources); $i++)
                 {
-                    $model2 = new Nca();
+                    if(!empty($funding_sources[$i]) && !empty($mds_sub_acc_nos[$i]) && !empty($gsb_branches[$i]))
+                    {
+                        $model2 = new Nca();
 
-                    $model2->fund_cluster = $model->fund_cluster;
-                    $model2->fiscal_year = $model->fiscal_year;
-                    $model2->nca_no = $model->nca_no;
-                    $model2->nca_type = $model->nca_type;
-                    $model2->date_received = $model->date_received;
-                    $model2->purpose = $model->purpose;
-                    $model2->total_amount = $model->total_amount;
-                    $model2->funding_source = $funding_sources[$i];
-                    $model2->mds_sub_acc_no = $mds_sub_acc_nos[$i];
-                    $model2->gsb_branch = $gsb_branches[$i];
-                    $model2->january = $januarys[$i];
-                    $model2->february = $februarys[$i];
-                    $model2->march = $marches[$i];
-                    $model2->april = $aprils[$i];
-                    $model2->may = $mays[$i];
-                    $model2->june = $junes[$i];
-                    $model2->july = $julys[$i];
-                    $model2->august = $augusts[$i];
-                    $model2->september = $septembers[$i];
-                    $model2->october = $octobers[$i];
-                    $model2->november = $novembers[$i];
-                    $model2->december = $decembers[$i];
-                    $model2->first_quarter = $first_quarters[$i];
-                    $model2->second_quarter = $second_quarters[$i];
-                    $model2->third_quarter = $third_quarters[$i];
-                    $model2->forth_quarter = $forth_quarters[$i];
+                        $model2->fund_cluster = $model->fund_cluster;
+                        $model2->fiscal_year = $model->fiscal_year;
+                        $model2->nca_no = $model->nca_no;
+                        $model2->nca_type = $model->nca_type;
+                        $model2->date_received = $model->date_received;
+                        $model2->purpose = $model->purpose;
+                        $model2->total_amount = $model->total_amount;
+                        $model2->funding_source = $funding_sources[$i];
+                        $model2->mds_sub_acc_no = $mds_sub_acc_nos[$i];
+                        $model2->gsb_branch = $gsb_branches[$i];
+                        $model2->january = $januarys[$i];
+                        $model2->february = $februarys[$i];
+                        $model2->march = $marches[$i];
+                        $model2->april = $aprils[$i];
+                        $model2->may = $mays[$i];
+                        $model2->june = $junes[$i];
+                        $model2->july = $julys[$i];
+                        $model2->august = $augusts[$i];
+                        $model2->september = $septembers[$i];
+                        $model2->october = $octobers[$i];
+                        $model2->november = $novembers[$i];
+                        $model2->december = $decembers[$i];
+                        $model2->first_quarter = $first_quarters[$i];
+                        $model2->second_quarter = $second_quarters[$i];
+                        $model2->third_quarter = $third_quarters[$i];
+                        $model2->forth_quarter = $forth_quarters[$i];
 
-                    $validitys = $_POST['validity_'.$i];
-                    $validitys = implode(',', $validitys);
+                        $validitys = $_POST['validity_'.$i];
+                        $validitys = implode(',', $validitys);
 
-                    $model2->validity = $validitys;
+                        $model2->validity = $validitys;
 
-                    $model2->save(false);
+                        $model2->save(false);
+                    }
                 }
-            }
+            //}
             
             return $this->redirect(['index']);
         }

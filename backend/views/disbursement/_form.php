@@ -6,6 +6,8 @@ use yii\helpers\ArrayHelper;
 use backend\models\Transaction;
 use backend\models\Nca;
 use backend\models\FundCluster;
+use backend\models\MfoPap;
+use backend\models\ResponsibilityCenter;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
@@ -34,7 +36,7 @@ use backend\models\FundCluster;
                  <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name')) ?>
              </td>
              <td style="width: 200px;">
-              <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated'], ['id' => 'advance']) ?>
+              <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes'], ['id' => 'advance']) ?>
              </td>
              <td>
               <?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('F d, Y') : $model->date]) ?>
@@ -47,7 +49,7 @@ use backend\models\FundCluster;
              <td>
               <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                       [
-                          // 'prompt'=>'Select Fund Cluster',
+                          'prompt'=>'Select Fund Cluster',
                           'onchange'=>'
                                $.post("'.Yii::$app->urlManager->createUrl('nca/clusters?fund_cluster=') . '"+$(this).val(),function(data){
                                   $("select#disbursement-nca").html(data);
@@ -105,10 +107,22 @@ use backend\models\FundCluster;
                               <input type="text" name="ors_no[0]" class="form-control" required="true">
                           </td>
                           <td>
-                              <input type="text" name="mfo_pap[0]" class="form-control" required="true">
+                              <!-- <input type="text" name="mfo_pap[0]" class="form-control" required="true"> -->
+                              <?php $mfo = Mfopap::find()->all(); ?>
+                              <select name="mfo_pap[0]" class="form-control" required="true">
+                                <?php foreach ($mfo as $value) : ?>
+                                        <option value=<?= $value->uacs ?> > <?= $value->uacs ?></option>
+                                <?php endforeach ?>
+                            </select>
                           </td>
                           <td>
-                              <input type="text" name="responsibility_center[0]" class="form-control" required="true">
+                              <!-- <input type="text" name="responsibility_center[0]" class="form-control" required="true"> -->
+                              <?php $responsibility_center = ResponsibilityCenter::find()->all(); ?>
+                              <select name="responsibility_center[0]" class="form-control" required="true">
+                                <?php foreach ($responsibility_center as $value) : ?>
+                                        <option value=<?= $value->code ?> > <?= $value->acronym.' - '.$value->code ?></option>
+                                <?php endforeach ?>
+                            </select>
                           </td>
                           <td style="width: 100px;">
                               <input type="text" name="amount[0]" class="form-control num" required="true">
@@ -180,52 +194,52 @@ function addInput(dynamicInput)
      }
 }
 
-// window.onload = function()
-// {
+window.onload = function()
+{
 
-// $(".num").each(function() {
+$(".num").each(function() {
 
-//             $(this).change(function(){
-//                 calculateSum();
-//             });
-//         });
+            $(this).change(function(){
+                calculateSum();
+            });
+        });
 
-//     function calculateSum() {
+    function calculateSum() {
 
-//         var sum = 0;
-//         //iterate through each textboxes and add the values
-//         $(".num").each(function() {
+        var sum = 0;
+        //iterate through each textboxes and add the values
+        $(".num").each(function() {
 
-//             //add only if the value is number
-//             if(!isNaN(this.value) && this.value.length!=0) {
-//                 sum += parseFloat(this.value);
-//             }
+            //add only if the value is number
+            if(!isNaN(this.value) && this.value.length!=0) {
+                sum += parseFloat(this.value);
+            }
 
-//         });
-//         //.toFixed() method will roundoff the final sum to 2 decimal places
-//         $("#totalAmount").val(sum.toFixed(2));
-//     }
+        });
+        //.toFixed() method will roundoff the final sum to 2 decimal places
+        $("#totalAmount").val(sum.toFixed(2));
+    }
 
-//   $(document).on("change", "select[id='advance']", function () { 
-//         // alert($(this).val())
-//         $modal = $('#myModal');
-//         if($(this).val() == 'yes'){
-//             $modal.modal('show');
-//         }
-//     });
+  $(document).on("change", "select[id='advance']", function () { 
+        // alert($(this).val())
+        $modal = $('#myModal');
+        if($(this).val() == 'yes'){
+            $modal.modal('show');
+        }
+    });
 
-//   $(document).on("change", "select[id='period']", function () { 
-//         // alert($(this).val())
-//         var value = 0;
-//         $modal = $('#myModal');
-//         if($(this).val() != null && $(this).val() > 0) 
-//         {
-//             value = this.value;
-//             $("#fperiod").val(value);
-//         }
-//     });
+  $(document).on("change", "select[id='period']", function () { 
+        // alert($(this).val())
+        var value = 0;
+        $modal = $('#myModal');
+        if($(this).val() != null && $(this).val() > 0) 
+        {
+            value = this.value;
+            $("#fperiod").val(value);
+        }
+    });
 
-// }
+}
 </script>
 
 

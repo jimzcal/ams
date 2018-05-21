@@ -8,6 +8,7 @@ use backend\models\MfoPapSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * MfoPapController implements the CRUD actions for MfoPap model.
@@ -20,6 +21,17 @@ class MfoPapController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                  [
+                    'allow' => true,
+                    'roles' => ['@']
+                  ]
+                            
+              ],
+          ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

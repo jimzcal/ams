@@ -40,7 +40,7 @@ class OrsRegistry extends \yii\db\ActiveRecord
         return [
             [['mfo_pap', 'responsibility_center', 'gross_amount', 'less_amount', 'net_amount'], 'required'],
             [['id','gross_amount', 'less_amount', 'net_amount'], 'number'],
-            [['date', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'dv_no', 'ors_no', 'date_paid', 'lddap_check_no', 'fund_cluster'], 'string', 'max' => 100],
+            [['date', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'dv_no', 'ors_no', 'date_paid', 'lddap_check_no', 'fund_cluster', 'disbursement_date'], 'string', 'max' => 100],
         ];
     }
 

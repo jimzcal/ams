@@ -33,7 +33,7 @@ class DisbursementController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'view', 'create', 'update', 'delete', 'processor'],
+                'only' => ['index', 'view', 'create', 'update', 'delete', 'processor', 'cash', 'reports', 'nca', 'ada', 'disbursement', 'mDisbursement', 'cashStatus'],
                 'rules' => [
                   [
                     'allow' => true,
@@ -246,10 +246,10 @@ class DisbursementController extends Controller
                     $advance_model = new CashAdvance();
 
                     $advance_model->dv_no = $model->dv_no;
-                    $advance_model->date = date('M. d, Y');
+                    $advance_model->date = date('Y-m-d');
                     $date = $advance_model->date;
                     $advance_model->status = 'Unliquidated';
-                    $advance_model->due_date = date('M. d, Y', strtotime($date. '+'. $model->period. 'days'));
+                    $advance_model->due_date = date('Y-m-d', strtotime($date. '+'. $model->period. 'days'));
 
                     $advance_model->save(false);
                 }
@@ -285,9 +285,19 @@ class DisbursementController extends Controller
             if ($model->load(Yii::$app->request->post())) 
             {   
                 
-                if($model->status === 'Cancelled')
+                if($model->status == 'Cancelled')
                 {
                    $model->obligated = 'no';
+                }
+
+                if($model->cash_advance == 'no')
+                {
+                   //CashAdvance::delete(['dv_no' => $model->dv_no]);
+                    \Yii::$app
+                    ->db
+                    ->createCommand()
+                    ->delete('cash_advance', ['dv_no' => $model->dv_no])
+                    ->execute();
                 }
 
                 $model->gross_amount = str_replace(',', '', $model->gross_amount);
@@ -342,6 +352,19 @@ class DisbursementController extends Controller
 
                         $ors_model->save(false);        
                     } 
+                }
+
+                if(($model->period != null) && ($model->period != 0))
+                {
+                    $advance_model = new CashAdvance();
+
+                    $advance_model->dv_no = $model->dv_no;
+                    $advance_model->date = date('Y-m-d');
+                    $date = $advance_model->date;
+                    $advance_model->status = 'Unliquidated';
+                    $advance_model->due_date = date('Y-m-d', strtotime($date. '+'. $model->period. 'days'));
+
+                    $advance_model->save(false);
                 }
 
                 //Start of Ativity Log --------------------------------
@@ -462,7 +485,7 @@ class DisbursementController extends Controller
                     //Start of Ativity Log --------------------------------
 
                     $log = new ActivityLog();
-                    $log->particular = "Made changes on DV No. ".$model2->dv_no.' with the following short details: Gross Amount - '.$model2->gross_amount.', Net Amount - '.$model2->net_amount.', Status: earmarked';
+                    $log->particular = "Made changes on DV No. ".$model2->dv_no.' with the following short details: Gross Amount - '.$model->gross_amount.', Net Amount - '.$model->net_amount.', Status: earmarked';
                     $log->date_time = date('m/d/Y h:i');
                     $log->user = Yii::$app->user->identity->fullname;
                     $log->save(false);

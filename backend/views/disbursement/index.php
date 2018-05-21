@@ -40,6 +40,18 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                                     return (number_format($data->gross_amount, 2));
                                 }
                              ],
+                             [
+                                'attribute' => 'less_amount',
+                                'value' => function($data){
+                                    return (number_format($data->less_amount, 2));
+                                }
+                             ],
+                             [
+                                'attribute' => 'net_amount',
+                                'value' => function($data){
+                                    return (number_format($data->net_amount, 2));
+                                }
+                             ],
                              'status',
                         ],
                     ]);
@@ -89,6 +101,15 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                             return (number_format($data->gross_amount, 2));
                         }
                      ],
+
+                     [
+                        'attribute' => 'net_amount',
+                        'contentOptions' => ['style' => 'width: 130px;'], 
+                        'value' => function($data){
+                            return (number_format($data->net_amount, 2));
+                        }
+                     ],
+
                      'status',
 
                     ['class' => 'yii\grid\ActionColumn'],

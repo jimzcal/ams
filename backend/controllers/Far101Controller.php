@@ -8,6 +8,8 @@ use backend\models\Far101Search;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use kartik\mpdf\Pdf;
 
 /**
  * Far101Controller implements the CRUD actions for Far101 model.
@@ -20,6 +22,17 @@ class Far101Controller extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete', 'new'],
+                'rules' => [
+                  [
+                    'allow' => true,
+                    'roles' => ['@']
+                  ]
+                            
+              ],
+          ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -112,6 +125,31 @@ class Far101Controller extends Controller
         return $this->render('new-far', [
             'model' => $model,
         ]);
+    }
+
+    public function actionPrint($id)
+    {
+        $model = $this->findModel($id);
+
+        $far = Far101::find()->where(['fund_cluster' => $model->fund_cluster])
+            ->andWhere(['fiscal_year' => $model->fiscal_year])
+            ->andWhere(['parent_id' => 0])
+            ->all();        
+
+         $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'format' => Pdf::FORMAT_FOLIO,
+                'orientation' => Pdf::ORIENT_LANDSCAPE,
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('pdf', ['model' => $model, 'far' => $far]),
+                'options' => [
+                    'title' => 'Far-101',
+                    'filename' => 'Far-101 ',
+                    'marginTop' => .25
+                ]
+            ]);
+
+            return $pdf->render();
     }
 
     /**

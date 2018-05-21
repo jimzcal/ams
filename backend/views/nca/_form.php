@@ -56,17 +56,24 @@ use backend\models\FundingSource;
                             <td colspan="2">
                                 <label>Funding Source Code</label>
                                 <!-- <input type="text" name="funding_source[0]" class="form-control" required> -->
-                                <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundingSource::find()->all(),'uacs','uacs'),
+                               <!--  <?= $form->field($model, 'funding_source[0]')->dropDownList(ArrayHelper::map(FundingSource::find()->all(),'uacs','uacs'),
                                     [
                                         'prompt'=>'Select Funding Source',
                                     ])->label(false); 
-                                ?>
-                                <!-- <input list="funding_source" name="funding_source[0]" class="form-control" required> -->
+                                ?> -->
+                                <!-- <input list="funding_source" name="funding_source[0]" class="form-control" required>
                                 <datalist id="funding_source">
                                     <?php foreach ($data as $value) : ?>
                                         <option value=<?= $value->uacs ?>>
                                     <?php endforeach ?>
-                                </datalist>
+                                </datalist> -->
+
+                            <select name="funding_source[0]" class="form-control">
+                                <?php foreach ($data as $value) : ?>
+                                        <option value=<?= $value->uacs ?> > <?= $value->uacs ?></option>
+                                <?php endforeach ?>
+                            </select>
+
                             </td>
                             <td>
                                 <label>MDS Sub-account No.</label>
@@ -94,7 +101,7 @@ use backend\models\FundingSource;
                                 <label>July</label>
                             </td>
                             <td>
-                                <input type="number" name="july[0]" class="form-control thirdInput v" value = "<?= $model->july === null ? 0 : $model->july ?>" required>
+                                <input type="number" name="july[0]" class="form-control thirdInput v" value = "<?= $model->july == null ? 0 : $model->july ?>" required>
                             </td>
                         </tr>
                         <tr>

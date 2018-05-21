@@ -8,6 +8,7 @@ use backend\models\ActivityLogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ActivityLogController implements the CRUD actions for ActivityLog model.
@@ -20,6 +21,17 @@ class ActivityLogController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                  [
+                    'allow' => true,
+                    'roles' => ['@']
+                  ]
+                            
+              ],
+          ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

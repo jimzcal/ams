@@ -29,9 +29,10 @@ $this->title = 'CASH STATUS';
                                 ->andWhere(['obligated' => 'yes'])
                                 ->all(), 'net_amount'));
 
-            $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
-                                ->where(['nca_no'=>$nca->nca_no])
-                                ->all(), 'total_amount'));
+            // $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
+            //                     ->where(['nca_no'=>$nca->nca_no])
+            //                     ->all(), 'total_amount'));
+            $total_nca_amount = $nca->total_amount;
         ?>
         <?= Highcharts::widget([
             'options' => [

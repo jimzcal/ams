@@ -34,7 +34,7 @@ use backend\models\FundCluster;
                <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'), ['prompt' => 'Select Transaction Type']) ?>
            </td>
            <td style="width: 200px;">
-            <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes', 'liquidated'=>'Liquidated']) ?>
+            <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes'], ['id' => 'advance']) ?>
            </td>
            <td>
             <?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('F d, Y') : $model->date]) ?>
@@ -110,18 +110,42 @@ use backend\models\FundCluster;
                                 <input type="text" name="responsibility_center[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->responsibility_center ?>" >
                             </td>
                             <td style="width: 100px;">
-                                <input type="number" name="amount[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->amount ?>" >
+                                <input type="number" name="amount[<?= $i ?>]" class="form-control num" required="true" value= "<?= $value->amount ?>" >
                             </td>
                             <td></td>
                         </tr>
                       <?php $i++; ?>
                     <?php endforeach ?>
                 </table>
+                <?= $form->field($model, 'period')->hiddenInput(['id' => 'fperiod'])->label(false) ?>
            </td>
        </tr>
     </table>
     <div class="form-group" style="padding-left: 15px;">
         <?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+             <h4 class="modal-title">Due Period</h4>
+          </div>
+          <div class="modal-body">
+            <table width="500">       
+                <tr>
+                  <td>
+                    <?= $form->field($model, 'due')->dropDownList(['30'=>'30 days', '60'=>'60 days', '20' => '20 days'], ['id' => 'period', 'prompt' => 'Select No. of days'])->label("No of days to Liquidate this Cash Advance: ") ?>
+                  </td>
+                </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -138,13 +162,59 @@ function addInput(dynamicInput)
      }
      else {
           var newdiv = document.createElement('tr');
-          newdiv.innerHTML = "<tr class='form-group'><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='number' name='amount["+counter+"]' class='form-control' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
+          newdiv.innerHTML = "<tr class='form-group'><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='number' name='amount["+counter+"]' class='form-control num' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
 
           document.getElementById("dynamicInput").appendChild(newdiv);
           counter++;
      }
 }
 
+window.onload = function()
+{
+
+$(".num").each(function() {
+
+            $(this).change(function(){
+                calculateSum();
+            });
+        });
+
+    function calculateSum() {
+
+        var sum = 0;
+        //iterate through each textboxes and add the values
+        $(".num").each(function() {
+
+            //add only if the value is number
+            if(!isNaN(this.value) && this.value.length!=0) {
+                sum += parseFloat(this.value);
+            }
+
+        });
+        //.toFixed() method will roundoff the final sum to 2 decimal places
+        $("#totalAmount").val(sum.toFixed(2));
+    }
+
+  $(document).on("change", "select[id='advance']", function () { 
+        // alert($(this).val())
+        $modal = $('#myModal');
+        if($(this).val() == 'yes'){
+            $modal.modal('show');
+        }
+    });
+
+  $(document).on("change", "select[id='period']", function () { 
+        // alert($(this).val())
+        var value = 0;
+        $modal = $('#myModal');
+        if($(this).val() != null && $(this).val() > 0) 
+        {
+            value = this.value;
+            $("#fperiod").val(value);
+        }
+    });
+
+}
 </script>
 
 

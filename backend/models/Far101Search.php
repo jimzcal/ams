@@ -79,7 +79,7 @@ class Far101Search extends Far101
             ->andFilterWhere(['like', 'particulars', $this->particulars])
             ->andFilterWhere(['like', 'uacs_code', $this->uacs_code]);
 
-        $query->groupBy(['fiscal_year']);
+        $query->groupBy(['fiscal_year', 'fund_cluster']);
 
         return $dataProvider;
     }

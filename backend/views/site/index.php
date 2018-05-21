@@ -13,8 +13,9 @@ $this->title = 'HOME';
     <div class="row">
     	<?php $form = ActiveForm::begin(); ?>
     		<div class="search">
+    			<?= Html::img('@web/images/search_dv.png', ['alt'=>'Search', 'class' => 'search-logo']);?>
 		        <div class="input-group col-md-12">
-		            <input type="text" name="dv_no" class="search-query form-control" placeholder="Enter DV No./Barcode/Tracking Form No." autofocus>
+		            <input type="text" name="dv_no" class="search-query form-control" placeholder="Enter DV No./Barcode/Tracking Form No." autocomplete="off" autofocus>
 		            <span class="input-group-btn">
 		            <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Search', ['class' => 'btn btn-primary']) ?>
 		            </span>

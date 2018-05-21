@@ -76,7 +76,7 @@ $this->title = $model->dv_no;
                     <strong><?= number_format($model->gross_amount, 2); ?></strong>
                 </td>
                 <td colspan="4" width="200">
-                    This transaction should have the following documentary requirements:
+                    This transaction should have the following documentary requirements. (Checked - <i>complied</i>, Unchecked - <i>lacking</i>)
                 </td>
             </tr>
             <tr>

@@ -8,6 +8,7 @@ use backend\models\ObjectCodeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ObjectCodeController implements the CRUD actions for ObjectCode model.
@@ -20,6 +21,16 @@ class ObjectCodeController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['index', 'view', 'create', 'update', 'delete'],
+                    'rules' => [
+                          [
+                            'allow' => true,
+                            'roles' => ['@']
+                          ]             
+                      ],
+                  ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

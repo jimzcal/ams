@@ -8,6 +8,7 @@ use backend\models\RequirementsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * RequirementsController implements the CRUD actions for Requirements model.
@@ -20,6 +21,16 @@ class RequirementsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['index', 'view', 'create', 'update', 'delete'],
+                    'rules' => [
+                          [
+                            'allow' => true,
+                            'roles' => ['@']
+                          ]             
+                      ],
+                  ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

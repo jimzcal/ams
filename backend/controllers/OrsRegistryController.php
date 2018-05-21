@@ -12,6 +12,8 @@ use backend\models\Ors;
 use backend\models\Disbursement;
 use backend\models\LddapAda;
 use backend\models\DisbursedDv;
+use yii\filters\AccessControl;
+use kartik\mpdf\Pdf;
 
 /**
  * OrsRegistryController implements the CRUD actions for OrsRegistry model.
@@ -24,6 +26,16 @@ class OrsRegistryController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['index', 'view', 'create', 'update', 'delete'],
+                    'rules' => [
+                          [
+                            'allow' => true,
+                            'roles' => ['@']
+                          ]             
+                      ],
+                  ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -85,6 +97,7 @@ class OrsRegistryController extends Controller
 
                 $new_model_entry->date = date('M. d, Y'); 
                 $new_model_entry->dv_no = $dv_no;
+                $new_model_entry->disbursement_date = $dv->date;
                 $new_model_entry->fund_cluster = $dv->fund_cluster;
                 $new_model_entry->ors_class = $ors_no[0];
                 $new_model_entry->funding_source = $ors_no[1];
@@ -153,6 +166,7 @@ class OrsRegistryController extends Controller
 
                 $new_model_entry->date = date('M. d, Y');
                 $new_model_entry->dv_no = $dv_no;
+                $new_model_entry->disbursement_date = $dv->date;
                 $new_model_entry->fund_cluster = $dv->fund_cluster;
                 $new_model_entry->ors_class = $ors_no[0];
                 $new_model_entry->funding_source = $ors_no[1];
@@ -190,6 +204,47 @@ class OrsRegistryController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDisbursementyear()
+    {
+        //$data = Disbursement::find()->all();
+
+        return $this->render('disbursement-year');
+    }
+
+    public function actionMdisbursement($year)
+    {
+        $data = OrsRegistry::find()->where(['like', 'date', $year])->all();
+
+        return $this->render('monthly-disbursement-01', [
+            'data' => $data,
+            'year' => $year,
+        ]);
+    }
+
+    public function actionPrint($year)
+    {
+        //$data = OrsRegistry::find()->where(['like', 'date', $year])->all();
+
+        // return $this->render('monthly-disbursement', [
+        //     //'data' => $data,
+        //     'year' => $year,
+        // ]);
+        $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'format' => Pdf::FORMAT_LETTER,
+                'orientation' => Pdf::ORIENT_LANDSCAPE,
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('/ors-registry/monthly-disbursement-01', ['year' => $year]),
+                'options' => [
+                    'title' => 'Month Disbursement - ',
+                    'filename' => 'Monthly Disbursement - ',
+                    'marginTop' => .25
+                ]
+            ]);
+        
+        return $pdf->render();
     }
 
     /**

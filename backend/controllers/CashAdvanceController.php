@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use kartik\mpdf\Pdf;
 use backend\models\LddapAda;
+use yii\filters\AccessControl;
+use backend\models\Disbursement;
 
 /**
  * CashAdvanceController implements the CRUD actions for CashAdvance model.
@@ -22,6 +24,17 @@ class CashAdvanceController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete', 'notice'],
+                'rules' => [
+                  [
+                    'allow' => true,
+                    'roles' => ['@']
+                  ]
+                            
+              ],
+          ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -104,9 +117,33 @@ class CashAdvanceController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            if($model->amount_paid == $model->dvNo->net_amount)
+            {
+                $model->payment_method = $_POST['payment_method'];
+                $model->date_liquidated = date('M. d, Y');
+                $model->save(false);
+
+                $model_dv = Disbursement::find()->where(['dv_no' => $model->dv_no])->one();
+
+                $model_dv->cash_advance = 'Liquidated';
+                $model_dv->save(false);
+            }
+            else
+            {
+                $model->payment_method = $_POST['payment_method'];
+                $model->status = 'Unliquidated';
+                $model->date_liquidated = date('M. d, Y');
+                $model->save(false);
+
+            }
+
+            return $this->redirect(['index']);
+        } 
+
+        else 
+        {
             return $this->render('update', [
                 'model' => $model,
             ]);

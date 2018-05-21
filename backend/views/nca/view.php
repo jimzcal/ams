@@ -51,11 +51,10 @@ $this->title = 'NCA: '.$model->nca_no;
                 <td><?= $model->nca_type ?></td>
                 <td>
                     <?php 
-                        $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
-                                ->where(['nca_no'=>$model->nca_no])
-                                ->all(), 'total_amount'));
-
-                        echo number_format($total_nca_amount, 2) 
+                        // $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
+                        //         ->where(['nca_no'=>$model->nca_no])
+                        //         ->all(), 'total_amount'));
+                        echo number_format($model->total_amount, 2) 
                     ?>
                 </td>
             </tr>

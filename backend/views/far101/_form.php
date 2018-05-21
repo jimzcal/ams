@@ -201,7 +201,7 @@ use yii\helpers\ArrayHelper;
                 </tr>
                 <tr>
                     <td>
-                        <?= $form->field($model, 'uacs_code')->dropDownList([ArrayHelper::map(MfoPap::find()->all(),'uacs', 'uacs')], ['style' => 'width: 95%']) ?>
+                        <?= $form->field($model, 'uacs_code')->dropDownList(['0' => '0', ArrayHelper::map(MfoPap::find()->all(),'uacs', 'uacs')], ['style' => 'width: 95%']) ?>
                     </td>
                 </tr>
                 <tr>

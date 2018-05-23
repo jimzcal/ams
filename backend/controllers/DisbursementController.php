@@ -449,7 +449,7 @@ class DisbursementController extends Controller
         $model = $this->findModel($id);
         $disbursements = Disbursement::find()->where(['nca'=>$model->nca])->andWhere(['obligated' => 'yes'])->all();
         $checker = Disbursement::find()->where(['id'=>$id])->andWhere(['obligated' => 'yes'])->one();
-        $model3 = Nca::find()->where(['nca_no'=>$model->nca])->one();
+        $model3 = Nca::find()->where(['nca_no'=>$model->nca])->andWhere(['funding_source' => $model->funding_source])->one();
         $ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
         $entries = AccountingEntry::find()->where(['dv_no' => $model->dv_no])->all();
 

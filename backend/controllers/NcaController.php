@@ -139,6 +139,7 @@ class NcaController extends Controller
                         $model2->second_quarter = $second_quarters[$i];
                         $model2->third_quarter = $third_quarters[$i];
                         $model2->forth_quarter = $forth_quarters[$i];
+                        $model2->sub_total = ($first_quarters[$i] + $second_quarters[$i] + $third_quarters[$i] + $forth_quarters[$i]);
 
                         $validitys = $_POST['validity_'.$i];
                         $validitys = implode(',', $validitys);
@@ -227,6 +228,7 @@ class NcaController extends Controller
                     $model2->second_quarter = $second_quarters[$i];
                     $model2->third_quarter = $third_quarters[$i];
                     $model2->forth_quarter = $forth_quarters[$i];
+                    $model2->sub_total = ($first_quarters[$i] + $second_quarters[$i] + $third_quarters[$i] + $forth_quarters[$i]);
 
                     $validitys = $_POST['validity_'.$i];
                     $validitys = implode(',', $validitys);

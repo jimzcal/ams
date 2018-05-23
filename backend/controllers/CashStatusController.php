@@ -42,12 +42,14 @@ class CashStatusController extends Controller
         $dataProvider = $searchModel->search(empty(Yii::$app->request->queryParams) ? $nca_no : Yii::$app->request->queryParams);
 
         $nca = Nca::find()->where(['nca_no' => $nca_no])->one();
+        $ncas = Nca::find()->where(['nca_no' => $nca_no])->all();
         $disbursements = Disbursement::find()->where(['nca' => $nca_no])->andWhere(['obligated' => 'yes'])->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'nca' => $nca,
+            'ncas' => $ncas,
             'disbursements' => $disbursements,
         ]);
     }

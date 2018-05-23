@@ -55,7 +55,7 @@ class Nca extends \yii\db\ActiveRecord
     {
         return [
             [['date_received', 'nca_no', 'nca_type', 'fund_cluster', 'funding_source', 'purpose', 'fiscal_year', 'mds_sub_acc_no', 'gsb_branch', 'january', 'february', 'march', 'first_quarter', 'april', 'may', 'june', 'second_quarter', 'july', 'august', 'september', 'third_quarter', 'october', 'november', 'december', 'forth_quarter', 'validity', 'total_amount'], 'required'],
-            [['january', 'february', 'march', 'first_quarter', 'april', 'may', 'june', 'second_quarter', 'july', 'august', 'september', 'third_quarter', 'october', 'november', 'december', 'forth_quarter', 'total_amount'], 'number'],
+            [['january', 'february', 'march', 'first_quarter', 'april', 'may', 'june', 'second_quarter', 'july', 'august', 'september', 'third_quarter', 'october', 'november', 'december', 'forth_quarter', 'total_amount', 'sub_total'], 'number'],
             [['date_received', 'nca_type', 'funding_source', 'fund_cluster', 'fiscal_year', 'mds_sub_acc_no'], 'string', 'max' => 100],
             [['nca_no', 'purpose', 'gsb_branch', 'validity'], 'string', 'max' => 200],
             [['fund_cluster'], 'exist', 'skipOnError' => true, 'targetClass' => FundCluster::className(), 'targetAttribute' => ['fund_cluster' => 'fund_cluster']],

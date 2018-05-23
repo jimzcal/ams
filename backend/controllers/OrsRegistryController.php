@@ -182,6 +182,10 @@ class OrsRegistryController extends Controller
                 $new_model_entry->save(false);
             }
 
+            $model_dv = Disbursement::find()->where(['id' => $dv->id])->one();
+            $model_dv->status = 'Paid';
+            $model_dv->save(false);
+
             return $this->redirect(['index']);
         }
 

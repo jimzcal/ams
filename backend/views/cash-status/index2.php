@@ -20,13 +20,14 @@ $this->title = 'NOTICE OF CASH ALLOCATIONS';
     <div class="view-index">
         <table class="table table-hover table-striped">
             <tr>
-                <th>Fund Cluster</th><th>PERIOD</th><th>NCA NO.</th><th>AMOUNT</th>
+                <th>Fund Cluster</th><th>Period</th><th>NCA NO.</th><th>Funding Source</th><th>Amount</th>
             </tr>
             <?php foreach ($ncas as $value) : ?>
             <tr data-nca_no = <?= $value->nca_no ?> >
                 <td><?= $value->fund_cluster ?></td>
                 <td><?= $value->fiscal_year ?></td>
                 <td><?= $value->nca_no ?></td>
+                <td><?= $value->funding_source ?></td>
                 <td><?= number_format($value->total_amount, 2) ?></td>
             </tr>
         <?php endforeach ?>

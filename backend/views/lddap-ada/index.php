@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use backend\models\LddapAda;
 use kartik\export\ExportMenu;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\LddapAdaSearch */
@@ -60,9 +61,43 @@ $this->title = 'LDDAP-ADA';
                                     return ['data-id' => $model->lddap_no];
                                 },
             'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                'date',
-                'lddap_no',
+                //['class' => 'yii\grid\SerialColumn'],
+                //'date',
+                [
+                    'attribute' => 'date',
+                    'value' => function($data,$row){
+
+                        if($row != 1)
+                        {
+                           $prev_data = LddapAda::find()->where(['id' => $row-1])->one(); 
+                           if($data->date = $prev_data->date)
+                           {
+                                return '';
+                           }
+                        }
+                           
+                       else
+                       return $data->date;                 
+                    }
+                ],
+                //'lddap_no',
+                [
+                    'attribute'=>'lddap_no',
+                    'value' => function($data, $row){
+
+                        if($row != 1)
+                        {
+                           $prev_data = LddapAda::find()->where(['id' => $row-1])->one(); 
+                           if($data->lddap_no = $prev_data->lddap_no)
+                           {
+                                return '';
+                           }
+                        }
+                           
+                       else
+                       return $data->lddap_no;                 
+                    }
+                ],
                 'dv_no',
                 //'current_account',
                 'uacs_code',

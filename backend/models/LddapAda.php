@@ -68,6 +68,20 @@ class LddapAda extends \yii\db\ActiveRecord
         return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
     }
 
+    public function getMergedRows()
+    {
+       $val = $this->lddap_no;
+       if($val == $val1)
+       {
+            return '\n';
+       }
+       else
+       {
+            return $this->lddap_no;
+            $val1 = $this->lddap_no;
+       }
+    }
+
      public function getOrs()
     {
         return $this->hasOne(Ors::className(), ['dv_no' => 'dv_no']);

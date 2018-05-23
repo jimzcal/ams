@@ -37,7 +37,7 @@ $this->title = 'CASH STATUS';
         <?= Highcharts::widget([
             'options' => [
                 'chart' => ['type' => 'bar'],
-               'title' => ['text' => 'Cash Status Graph'],
+               'title' => ['text' => 'Cash Status Graph per NCA '.'<br>'.'as of '.date('M. d, Y')],
                'xAxis' => [
                   'categories' => ['Allotment/Earmarked']
                ],
@@ -60,24 +60,37 @@ $this->title = 'CASH STATUS';
             <tr>
                 <th>NCA No.</th>
                 <th>Fund Cluster</th>
-                <th>Total Amount</th>
+                <th>Funding Sorce</th>
+                <th>Sub-total Amount</th>
                 <th>Amount Earmarked</th>
                 <th>Current Balance</th>
             </tr>
+        <?php $prev_nca = ''; $prev_fund = ''; ?>
+        <?php foreach ($ncas as $key => $value): ?>
             <tr>
-                <td><?= $nca->nca_no ?></td>
-                <td><?= $nca->fund_cluster ?></td>
-                <td><?= number_format($total_nca_amount, 2) ?></td>
-                <td>
-                    <?= number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?>
-                </td>
-                <td style="font-weight: bold; font-size: 18px; text-align: right">
-                    <?= number_format($total_nca_amount - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?>
-                </td>
+                <?php if($key != 0) : ?>
+                    <td><?= $value->nca_no == $prev_nca ? '' : $value->nca_no ?></td>
+                    <td><?= $value->fund_cluster == $prev_fund ? '' : $value->fund_cluster ?></td>
+                <?php else : ?>
+                    <td><?= $prev_nca = $value->nca_no ?></td>
+                    <td><?= $prev_fund = $value->fund_cluster ?></td>
+                <?php endif ?>
+                    <td><?= $value->funding_source ?></td>
+                    <td><?= number_format($value->sub_total, 2) ?></td>
+                    <td>
+                        <?= number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])->where(['nca'=>$nca->nca_no])->andWhere(['obligated' => 'yes'])->andWhere(['funding_source' => $value->funding_source])->all(), 'net_amount')), 2) ?>
+                    </td>
+                    <td style="font-weight: bold; font-size: 18px; text-align: right">
+                        <?= number_format($value->sub_total - array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])->where(['nca'=>$value->nca_no])->andWhere(['funding_source' => $value->funding_source])->andWhere(['obligated' => 'yes'])->all(), 'net_amount')), 2) ?>
+                    </td>
             </tr>
+        <?php endforeach ?>
         </table>
     </div>
-    <div style="padding: 3px; border-radius: 8px; background-color: #FFFFFF">
+    <div class="view-index">
+        <div class="mini-header">
+            <i class="fa fa-id-card" aria-hidden="true"></i> Disbursements
+        </div>
         <table class="table table-condensed table-bordered" style="font-size: 11px;">
             <tr>
                 <th align="center">DATE</th>

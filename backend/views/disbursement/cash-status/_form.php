@@ -28,6 +28,7 @@ $this->title = 'CASH STATUS';
 
    <div class="view-index">
         <?php 
+
             $total_earmarked = array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
                                 ->where(['nca'=>$model->nca])
                                 ->andWhere(['obligated' => 'yes'])
@@ -35,12 +36,18 @@ $this->title = 'CASH STATUS';
 
             $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
                                 ->where(['nca_no'=>$model->nca])
-                                ->all(), 'total_amount'));
+                                ->all(), 'sub_total'));
+
+            $total_earmarked_funding = array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
+                                ->where(['nca'=>$model->nca])
+                                ->andWhere(['obligated' => 'yes'])
+                                ->andWhere(['funding_source' => $model3->funding_source])
+                                ->all(), 'net_amount'));
         ?>
         <?= Highcharts::widget([
             'options' => [
                 'chart' => ['type' => 'bar'],
-               'title' => ['text' => 'Cash Status Graph'],
+               'title' => ['text' => 'Cash Status Graph per NCA '.'<br>'.'as of '.date('M. d, Y')],
                'xAxis' => [
                   'categories' => ['Allotment/Earmarked']
                ],
@@ -57,11 +64,11 @@ $this->title = 'CASH STATUS';
 
     <div class="view-index">
         <div class="mini-header">
-            <i class="fa fa-bar-chart-o" aria-hidden="true"></i> Monthly Cash Status
+            <i class="fa fa-bar-chart-o" aria-hidden="true"></i> Monthly Cash Status per Funding Source
         </div>
 
         <table class="table table-bordered">
-            <tr>
+            <!-- <tr>
                 <th>NCA No.</th>
                 <th>Total Allotment</th>
                 <th>Allotment for <?php $val = explode(' ', $model->date); echo $val[0]; ?></th>
@@ -264,18 +271,53 @@ $this->title = 'CASH STATUS';
                 <td>
                     <?= number_format($total_earmarked, 2) ?> <?= $model->obligated === 'yes' ? '(earmarked)' : '' ?>
                 </td>
+            </tr> -->
+            <tr>
+                <th>NCA No</th>
+                <th>Funding Source</th>
+                <th>Validity</th>
+                <th>Sub-total Allocation</th>
+                <th>Total Earmarked</th>
+                <th>Current Balance</th>
+            </tr>
+            <tr>
+                <td><?= $model3->nca_no ?></td>
+                <td><?= $model3->funding_source ?></td>
+                <td><?= $model3->validity ?></td>
+                <td><?= number_format($model3->sub_total, 2) ?></td>
+                <td><?= number_format($total_earmarked_funding, 2) ?></td>
+                <td><?= number_format($model3->sub_total-$total_earmarked_funding, 2) ?></td>
             </tr>
             <tr>
                 <td colspan="6">
                     <label>System Findings:</label><br>
-                    <?php if($model->obligated === 'yes') 
+                    <?php 
+                        $first_finding = '';
+                        $second_finding = '';
+                        $date = strtotime($model->date);
+                        $date = date('F', $date);
+                        $x = 0;
+                        if(strstr($model3->validity, strtolower($date)) != null)
                         {
-                            echo ($bal + $model->net_amount) >= $model->net_amount ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>';
-                            $x = ($bal + $model->net_amount) >= $model->net_amount ? 'false': 'true';
+                            echo $first_finding = "<div style= 'color: green'><i class = 'glyphicon glyphicon-ok'></i> Within the validity Period of the NCA</div>";
                         }
-                        else {
-                           echo $bal >= $model->net_amount ? '<span style="color: green">WITH SUFFICIENT BALANCE</span>' : '<span style="color: red">WITHOUT SUFFICIENT BALANCE</span>';
-                           $x = $bal >= $model->net_amount ? 'false': 'true';
+                        if($model->net_amount <= $model3->sub_total-$total_earmarked_funding)
+                        {
+                            echo $second_finding = "<div style= 'color: green'>
+                            <i class = 'glyphicon glyphicon-ok'></i> With Sufficient Fund</div>";
+                        }
+                        if($first_finding == '')
+                        {
+                            echo "<div style= 'color: red'><i class = 'glyphicon glyphicon-remove'></i> Not Within the validity Period of the NCA</div>";
+                        }
+                        if($second_finding == '')
+                        {
+                            echo "<div style= 'color: red'>
+                            <i class = 'glyphicon glyphicon-remove'></i> Without Sufficient Fund</div>";
+                        }
+                        if(($first_finding == '') || ($second_finding == ''))
+                        {
+                            $x = 1;
                         }
                     ?>
                 </td>
@@ -367,7 +409,7 @@ $this->title = 'CASH STATUS';
             </tr>
             <tr>
                 <td colspan="6" style="background-color: #f5f5f0; font-weight: bold;">
-                    Details From Obligartion Request and Status (ORS)
+                    Details From Obligation Request and Status (ORS)
                 </td>
             </tr>
             <tr>
@@ -455,7 +497,7 @@ $this->title = 'CASH STATUS';
         </table>
 
         <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success', 'disabled' => $x === 'false' ? false : true ]) ?>
+            <?= Html::submitButton('Save', ['class' => 'btn btn-success', 'disabled' => $x == 1 ? true : false ]) ?>
             <?= Html::a('Close', ['/disbursement/disbursements', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         </div>
     </div>

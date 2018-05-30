@@ -19,7 +19,6 @@ $this->title = 'UPDATE DV NO.: ' . $model->dv_no;
 
 	    <?= $this->render('_updateForm', [
 	        'model' => $model,
-	        'ors_model' => $ors_model,
 	    ]) ?>
 	</div>
 </div>

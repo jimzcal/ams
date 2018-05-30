@@ -8,18 +8,15 @@ use Yii;
  * This is the model class for table "ors".
  *
  * @property int $id
- * @property string $dv_no
  * @property string $particular
  * @property string $ors_class
+ * @property string $funding_source
  * @property string $ors_year
  * @property string $ors_month
  * @property string $ors_serial
  * @property string $mfo_pap
  * @property string $responsibility_center
  * @property string $amount
- * @property string $status
- *
- * @property Disbursement $dvNo
  */
 class Ors extends \yii\db\ActiveRecord
 {
@@ -37,13 +34,27 @@ class Ors extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dv_no', 'particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'amount', 'status'], 'required'],
+            [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'amount'], 'required'],
             [['amount'], 'number'],
-            [['dv_no', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'string', 'max' => 100],
             [['particular'], 'string', 'max' => 200],
-            [['ors_class', 'status'], 'string', 'max' => 50],
-            [['dv_no'], 'exist', 'skipOnError' => true, 'targetClass' => Disbursement::className(), 'targetAttribute' => ['dv_no' => 'dv_no']],
+            [['ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'string', 'max' => 100],
         ];
+    }
+
+    public function getDatedv()
+    {
+        $dv_date = Disbursement::find()->where(['like', 'ors', $this->id])->one();
+
+        return $dv_date;
+        //return $this->hasOne(Disbursement::className(), ['like', ['ors', $this->id]]);
+    }
+
+    public function getObligationstatus()
+    {
+        $obligations = OrsRegistry::find()->where(['ors_id' => $this->id])->all();
+
+        return $obligations;
+        //return $this->hasOne(Disbursement::className(), ['like', ['ors', $this->id]]);
     }
 
     /**
@@ -53,30 +64,15 @@ class Ors extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'dv_no' => 'Dv No',
             'particular' => 'Particular',
             'ors_class' => 'Ors Class',
             'funding_source' => 'Funding Source',
             'ors_year' => 'Ors Year',
             'ors_month' => 'Ors Month',
             'ors_serial' => 'Ors Serial',
-            'mfo_pap' => 'Mfo Pap',
+            'mfo_pap' => 'MFO-PAP',
             'responsibility_center' => 'Responsibility Center',
             'amount' => 'Amount',
-            'status' => 'Status',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDvNo()
-    {
-        return $this->hasOne(Disbursement::className(), ['dv_no' => 'dv_no']);
-    }
-
-    public function getAda()
-    {
-        return $this->hasMany(LddapAda::className(), ['dv_no' => 'dv_no']);
     }
 }

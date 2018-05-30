@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\OrsRegistry;
+use backend\models\Ors;
 
 /**
- * OrsRegistrySearch represents the model behind the search form of `backend\models\OrsRegistry`.
+ * OrsSearch represents the model behind the search form of `backend\models\Ors`.
  */
-class OrsRegistrySearch extends OrsRegistry
+class OrsSearch extends Ors
 {
     /**
      * @inheritdoc
@@ -19,8 +19,8 @@ class OrsRegistrySearch extends OrsRegistry
     {
         return [
             [['id'], 'integer'],
-            [['date', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'safe'],
-            [['obligation', 'payable', 'payment'], 'number'],
+            [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'safe'],
+            [['amount'], 'number'],
         ];
     }
 
@@ -42,7 +42,7 @@ class OrsRegistrySearch extends OrsRegistry
      */
     public function search($params)
     {
-        $query = OrsRegistry::find();
+        $query = Ors::find();
 
         // add conditions that should always apply here
 
@@ -61,12 +61,10 @@ class OrsRegistrySearch extends OrsRegistry
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'obligation' => $this->obligation,
-            'payable' => $this->payable,
-            'payment' => $this->payment,
+            'amount' => $this->amount,
         ]);
 
-        $query->andFilterWhere(['like', 'date', $this->date])
+        $query->andFilterWhere(['like', 'particular', $this->particular])
             ->andFilterWhere(['like', 'ors_class', $this->ors_class])
             ->andFilterWhere(['like', 'funding_source', $this->funding_source])
             ->andFilterWhere(['like', 'ors_year', $this->ors_year])

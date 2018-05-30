@@ -44,9 +44,9 @@ $this->title = 'Registry of Obligation';
                 //'ors_serial',
                 'mfo_pap',
                 'responsibility_center',
-                'gross_amount',
-                'less_amount',
-                'net_amount',
+                'obligation',
+                'payable',
+                'payment',
 
                 //['class' => 'yii\grid\ActionColumn'],
             ],

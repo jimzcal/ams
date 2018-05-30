@@ -72,7 +72,7 @@ $this->title = 'FAR 1 - 01';
                     'fund_cluster',
                     //'parent_id',
                     'particulars',
-                    'uacs_code',
+                    //'uacs_code',
                     //'obligation_q_1',
                     //'obligation_q_2',
                     //'obligation_q_3',
@@ -86,10 +86,10 @@ $this->title = 'FAR 1 - 01';
                         'attribute' => 'total_disbursement',
                         'value' => function($data){
 
-                            $sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                            $sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['ors_year'=>$data->fiscal_year])
                                         ->andWhere(['fund_cluster' => $data->fund_cluster])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
 
                             return number_format($sum, 2);
                         }

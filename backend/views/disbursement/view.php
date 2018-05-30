@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\Transaction;
 use backend\models\Disbursement;
 use barcode\barcode\BarcodeGenerator;
+use backend\models\Ors;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
@@ -67,7 +68,19 @@ $this->title = $model->dv_no;
             <tr>
                 <td align="right">MFO/PAP:</td>
                 <td colspan="3">
-                    <strong><?= $model->ors->mfo_pap; ?></strong>
+                    <strong><?php
+                                $mfo = explode(',', $model->ors);
+                                for($i=0; $i<sizeof($mfo); $i++)
+                                {
+                                    $mfo_pap = Ors::find()->where(['id' => $mfo[$i]])->all();
+                                    foreach ($mfo_pap as $data) 
+                                    {
+                                       echo $data->mfo_pap.' / ';
+                                    }
+                                    
+                                }
+                            ?>
+                    </strong>
                 </td>
             </tr>
             <tr>
@@ -111,7 +124,22 @@ $this->title = $model->dv_no;
                 </td>
             </tr>
             <tr>
-                <td align="right">ORS No.:</td><td colspan="2" width="35"><strong><?= $model->ors->ors_class.'-'.$model->ors->funding_source.'-'.$model->ors->ors_year.'-'.$model->ors->ors_month.'-'.$model->ors->ors_serial; ?></strong></td>
+                <td align="right">ORS No.:</td><td colspan="2" width="35">
+                    <strong>
+                        <?php
+                            $ors = explode(',', $model->ors);
+                                for($i=0; $i<sizeof($ors); $i++)
+                                {
+                                    $ors_no = Ors::find()->where(['id' => $ors[$i]])->all();
+                                    foreach ($ors_no as $data) 
+                                    {
+                                       echo $data->ors_class.'-'.$data->funding_source.'-'.$data->ors_year.'-'.$data->ors_month.'-'.$data->ors_serial. '<br>';
+                                    }
+                                    
+                                }
+                        ?>
+                    </strong>
+                </td>
             </tr>
             <tr>
                 <td align="right">Less Amount:</td><td colspan="2" width="35"><strong><?= number_format($model->less_amount, 2); ?></strong></td>

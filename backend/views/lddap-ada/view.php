@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use backend\models\Ors;
+use backend\models\Disbursement;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\LddapAda */
@@ -81,15 +82,19 @@ use backend\models\Ors;
                 <td style="width: 120px; font-size: 10px; vertical-align: top; padding: 5px;">
                     <?php
                         foreach ($dvs as $value)
-                        {
-                          $dv = Ors::find()
-                          ->where(['dv_no' => $value])
-                          ->all();
-                          foreach ($dv as $ors_value) 
-                          {
-                             echo $ors_value->ors_class.'-'.$ors_value->funding_source.'-'.$ors_value->ors_year.'-'.$ors_value->ors_month.'-'.$ors_value->ors_serial.'<br>';
-                          }
-                        }
+                            {
+                                $dv = Disbursement::find()
+                                  ->where(['dv_no' => $value])
+                                  ->one();
+
+                                $ors = Ors::find()
+                                ->where(['id' => $dv->id])
+                                  ->all();
+                                  foreach ($ors as $ors_value) 
+                                  {
+                                     echo $ors_value->ors_class.'-'.$ors_value->ors_year.'-'.$ors_value->ors_month.'-'.$ors_value->ors_serial.'<br>';
+                                  }
+                            }
                     ?>
                 </td>
                 <td style="font-size: 10px; vertical-align: top; padding: 5px;">

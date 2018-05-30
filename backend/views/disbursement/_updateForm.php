@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\Transaction;
 use backend\models\Nca;
 use backend\models\FundCluster;
+use backend\models\Ors;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
@@ -96,26 +97,30 @@ use backend\models\FundCluster;
                         <th>Amount</th>
                         <th><button class="btn btn-success" type="button" onClick="addInput('dynamicInput')" ><i class="glyphicon glyphicon-plus"></i></button></th>
                     </tr>
-                    <?php foreach ($ors_model as $value) : ?>
-                      <?php $i=0; ?>
+                    <?php 
+                          $i = 0;
+                          $ors = explode(',', $model->ors);
+                          for($x=0; $x<sizeof($ors); $x++) : 
+                    ?>
+                    <?php $ors_details = Ors::find()->where(['id' => $ors[$i]])->one(); ?>
                         <tr>
                             <td>
-                              <input type="hidden" name="ors_id[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->id; ?>" >
-                                <input type="text" name="ors_no[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->ors_class.'-'.$value->funding_source.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>" >
+                              <input type="hidden" name="ors_id[<?= $i ?>]" class="form-control" required="true" value= "<?= $ors_details->id; ?>" >
+                                <input type="text" name="ors_no[<?= $i ?>]" class="form-control" required="true" value= "<?= $ors_details->ors_class.'-'.$ors_details->funding_source.'-'.$ors_details->ors_year.'-'.$ors_details->ors_month.'-'.$ors_details->ors_serial ?>" >
                             </td>
                             <td>
-                                <input type="text" name="mfo_pap[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->mfo_pap ?>" >
+                                <input type="text" name="mfo_pap[<?= $i ?>]" class="form-control" required="true" value= "<?= $ors_details->mfo_pap ?>" >
                             </td>
                             <td>
-                                <input type="text" name="responsibility_center[<?= $i ?>]" class="form-control" required="true" value= "<?= $value->responsibility_center ?>" >
+                                <input type="text" name="responsibility_center[<?= $i ?>]" class="form-control" required="true" value= "<?= $ors_details->responsibility_center ?>" >
                             </td>
                             <td style="width: 100px;">
-                                <input type="number" name="amount[<?= $i ?>]" class="form-control num" required="true" value= "<?= $value->amount ?>" >
+                                <input type="number" name="amount[<?= $i ?>]" class="form-control num" required="true" value= "<?= $ors_details->amount ?>" >
                             </td>
                             <td></td>
                         </tr>
                       <?php $i++; ?>
-                    <?php endforeach ?>
+                    <?php endfor ?>
                 </table>
                 <?= $form->field($model, 'period')->hiddenInput(['id' => 'fperiod'])->label(false) ?>
            </td>
@@ -153,7 +158,7 @@ use backend\models\FundCluster;
 
 <script>
 
-var counter = <?= sizeof($ors_model) ?>;
+var counter = <?= sizeof($ors) ?>;
 var limit = 6;
 function addInput(dynamicInput)
 {

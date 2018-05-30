@@ -9,6 +9,10 @@ use Yii;
  *
  * @property int $id
  * @property string $date
+ * @property int $ors_id
+ * @property string $dv_no
+ * @property string $disbursement_date
+ * @property string $fund_cluster
  * @property string $ors_class
  * @property string $funding_source
  * @property string $ors_year
@@ -19,6 +23,8 @@ use Yii;
  * @property string $gross_amount
  * @property string $less_amount
  * @property string $net_amount
+ *
+ * @property Ors $ors
  */
 class OrsRegistry extends \yii\db\ActiveRecord
 {
@@ -34,13 +40,14 @@ class OrsRegistry extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $ors_no, $lddap_check_no, $date_paid;
-
     public function rules()
     {
         return [
-            [['mfo_pap', 'responsibility_center', 'gross_amount', 'less_amount', 'net_amount'], 'required'],
-            [['id','gross_amount', 'less_amount', 'net_amount'], 'number'],
-            [['date', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'dv_no', 'ors_no', 'date_paid', 'lddap_check_no', 'fund_cluster', 'disbursement_date'], 'string', 'max' => 100],
+            [['date', 'ors_id', 'dv_no', 'disbursement_date', 'fund_cluster', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'obligation', 'payable', 'payment'], 'required'],
+            [['ors_id'], 'integer'],
+            [['obligation', 'payable', 'payment'], 'number'],
+            [['date', 'dv_no', 'disbursement_date', 'fund_cluster', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'date_paid',  'particular', 'lddap_check_no', 'fund_cluster', 'disbursement_date', 'ors_no'], 'string', 'max' => 100],
+            [['ors_id'], 'exist', 'skipOnError' => true, 'targetClass' => Ors::className(), 'targetAttribute' => ['ors_id' => 'id']],
         ];
     }
 
@@ -52,19 +59,33 @@ class OrsRegistry extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'date' => 'Date',
-            'ors_class' => 'ORS Class',
-            'ors_no' => 'ORS No.',
-            'lddap_check_no' => 'LDDAP-ADA/CHECK NO.',
-            'date_paid' => 'Date Paid',
+            'ors_id' => 'Ors ID',
+            'dv_no' => 'Dv No',
+            'disbursement_date' => 'Disbursement Date',
+            'fund_cluster' => 'Fund Cluster',
+            'ors_class' => 'Ors Class',
             'funding_source' => 'Funding Source',
-            'ors_year' => 'ORS Year',
-            'ors_month' => 'ORS Month',
-            'ors_serial' => 'ORS Serial',
-            'mfo_pap' => 'MFO/PAP',
+            'ors_year' => 'Ors Year',
+            'ors_month' => 'Ors Month',
+            'ors_serial' => 'Ors Serial',
+            'mfo_pap' => 'Mfo Pap',
             'responsibility_center' => 'Responsibility Center',
-            'gross_amount' => 'Gross Amount',
-            'less_amount' => 'Less Amount',
-            'net_amount' => 'Net Amount',
+            'obligation' => 'Obligation',
+            'payable' => 'payable',
+            'payment' => 'Payment',
         ];
+    }
+
+    // public function getOrsdetailes()
+    // {
+    //     $ors_details = Ors::find()->where(['id' => ])
+    // }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrs()
+    {
+        return $this->hasOne(Ors::className(), ['id' => 'ors_id']);
     }
 }

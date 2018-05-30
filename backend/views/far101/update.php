@@ -13,12 +13,12 @@ $this->title = 'Update FAR 1';
 <div class="far101-update">
 
    <!--  <h1><?= Html::encode($this->title) ?></h1> -->
-
-    <?= $this->render('updateForm', [
-        'model' => $model,
-        'far' => $far,
-        'fund_cluster' => $fund_cluster,
-        'fiscal_year' => $fiscal_year,
-    ]) ?>
-
+   <div class="view-index">
+	    <?= $this->render('updateForm', [
+	        'model' => $model,
+	        'far' => $far,
+	        'fund_cluster' => $fund_cluster,
+	        'fiscal_year' => $fiscal_year,
+	    ]) ?>
+	</div>
 </div>

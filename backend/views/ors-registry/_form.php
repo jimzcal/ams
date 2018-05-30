@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
+use backend\models\Ors;
+use backend\models\OrsRegistry;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\OrsRegistry */
@@ -13,38 +15,65 @@ use kartik\date\DatePicker;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?php foreach ($ors_ids as $key => $value) : ?>
+
+    <div class="view-index">
+        <div class="mini-header">
+            <i class="fa fa-line-chart"></i> Obligation Status <?= '(' .($key+1).')' ?>
+        </div>
+
     <table class="table table-condensed table-striped table-bordered">
         <tr>
             <th>ORS No.</th>
+            <th>Particulars</th>
             <th>MFO/PAP</th>
-            <th>Responsibility Center</th>
-            <th>Gross Amount</th>
-            <th>Less Amount</th>
-            <th>Net Amount</th>
+            <th>Res. Center</th>
+            <th>Obligation</th>
+            <th>Payable</th>
+            <th>Payment</th>
         </tr>
-        <?php foreach ($model_registry as $value) : ?>
+            <?php $ors = Ors::find()->where(['id' => $value])->one(); ?>
+                <?php $ors_reg = OrsRegistry::find()->where(['ors_id' => $ors->id])->all(); ?>
+                <?php foreach ($ors_reg as $val) : ?>
+                    <tr>
+                        <td>
+                            <?= $val->ors_class.'-'.$val->funding_source.'-'.$val->ors_year.'-'.$val->ors_month.'-'.$val->ors_serial ?>
+                        </td>
+                        <td><?= $ors->particular ?></td>
+                        <td><?=  $val->mfo_pap ?></td>
+                        <td><?=  $val->responsibility_center ?></td>
+                        <td><?=  $val->obligation ?></td>
+                        <td><?=  $val->payable ?></td>
+                        <td><?=  $val->payment ?></td>
+                    </tr>
+                <?php endforeach ?>
         <tr>
-            <td>
-                <?= $form->field($model, 'ors_no[]')->textInput(['maxlength' => true, 'value' => $value->ors_class.'-'.$value->funding_source.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial])->label(false) ?>
+            <td style="width: 190px;">
+                <?= $form->field($model, 'ors_no[]')->textInput(['maxlength' => true, 'value' => $ors->ors_class.'-'.$ors->funding_source.'-'.$ors->ors_year.'-'.$ors->ors_month.'-'.$ors->ors_serial, 'class' => 'textfield'])->label(false) ?>
+                <?= $form->field($model, 'ors_id[]')->hiddenInput(['maxlength' => true, 'value' => $value])->label(false) ?>
+            </td>
+            <td style="width: 300px;">
+                <?= $form->field($model, 'particular[]')->textArea(['maxlength' => true, 'rows' => 3, 'value' => $dv->particulars, 'class' => 'textfield'])->label(false) ?>
             </td>
             <td>
-                <?= $form->field($model, 'mfo_pap[]')->textInput(['maxlength' => true, 'value' => $value->mfo_pap])->label(false) ?>
+                <?= $form->field($model, 'mfo_pap[]')->textInput(['maxlength' => true, 'value' => $ors->mfo_pap, 'class' => 'textfield'])->label(false) ?>
             </td>
             <td>
-                <?= $form->field($model, 'responsibility_center[]')->textInput(['maxlength' => true, 'value' => $value->responsibility_center])->label(false) ?>
+                <?= $form->field($model, 'responsibility_center[]')->textInput(['maxlength' => true, 'value' => $ors->responsibility_center, 'class' => 'textfield'])->label(false) ?>
             </td>
-            <td>
-                <?= $form->field($model, 'gross_amount[]')->textInput(['maxlength' => true, 'value' => $value->amount])->label(false) ?>
+            <td style="width: 100px;">
+                <?= $form->field($model, 'obligation[]')->textInput(['maxlength' => true, 'value' => $ors->amount, 'class' => 'textfield'])->label(false) ?>
             </td>
-            <td>
-                <?= $form->field($model, 'less_amount[]')->textInput(['maxlength' => true, 'value' => $less = $dv->less_amount != 0 ? $dv->less_amount/sizeof($model_registry) : 0.00 ])->label(false) ?>
+            <td style="width: 100px;">
+                <?= $form->field($model, 'payable[]')->textInput(['maxlength' => true, 'class' => 'textfield'])->label(false) ?>
             </td>
-            <td>
-                <?= $form->field($model, 'net_amount[]')->textInput(['maxlength' => true, 'value' => ($value->amount - $less)])->label(false) ?>
+            <td style="width: 100px;">
+                <?= $form->field($model, 'payment[]')->textInput(['maxlength' => true, 'class' => 'textfield'])->label(false) ?>
             </td>
         </tr>
-        <?php endforeach ?>
     </table>
+    </div>
+    <?php endforeach ?>
 
     <div class="form-group">
         <div class="btn btn-success" data-toggle="modal" data-target="#myModal">Save</div>
@@ -83,6 +112,12 @@ use kartik\date\DatePicker;
     </div>
     <?php ActiveForm::end(); ?>
 </div>
+
+<?php
+$this->registerJs("
+     $('tbody th').css('text-align', 'center');
+ ");
+?>
 
 <!-- <script>
     window.addEventListener("DOMContentLoaded", function() {

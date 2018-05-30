@@ -101,7 +101,7 @@ class DisbursementController extends Controller
         $model = $this->findModel($id);
         $model2 = new AccountingEntry();
 
-        $ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
+        //$ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
 
         $dv_no = Disbursement::find(['dv_no'])->where(['id'=>$id])->one();
         $transaction = TransactionStatus::find()->where(['dv_no'=>$dv_no->dv_no])->one();
@@ -162,7 +162,7 @@ class DisbursementController extends Controller
                 'model' => $this->findModel($id),
                 'entries' => $entries,
                 'model2' => $model2,
-                'ors_model' => $ors_model,
+                //'ors_model' => $ors_model,
             ]);
             
         }
@@ -171,7 +171,7 @@ class DisbursementController extends Controller
             'model' => $model,
             'entries' => $entries,
             'model2' => $model2,
-            'ors_model' => $ors_model,
+            //'ors_model' => $ors_model,
         ]);
 
     }
@@ -189,16 +189,14 @@ class DisbursementController extends Controller
             {
                 $particulars = $model->particulars;
                 $ors_no = $_POST['ors_no'];
-                //$ors_no = explode(' ', $ors_no[0]);
                 $mfo_pap = $_POST['mfo_pap'];
                 $responsibility_center = $_POST['responsibility_center'];
                 $amount = $_POST['amount'];
 
-                //var_dump(sizeof($particulars));
-
                 $model->gross_amount = str_replace(',', '', $model->gross_amount);
                 $model->dv_no = $dv_no;
-                $model->save(false);
+                $ids = [];
+                
 
                 for($i=0; $i<sizeof($ors_no); $i++)
                 {
@@ -207,7 +205,7 @@ class DisbursementController extends Controller
                     {
 
                         $ors_model = new Ors();
-                        $ors_model->dv_no = $dv_no;
+                        //$ors_model->dv_no = $dv_no;
                         $ors_model->particular = $model->particulars;
                         $ors_model->responsibility_center = $responsibility_center[$i];
                         $ors_model->mfo_pap = $mfo_pap[$i];
@@ -220,10 +218,28 @@ class DisbursementController extends Controller
                             $ors_model->ors_month = $ors[3];
                             $ors_model->ors_serial = $ors[4];
 
-                        $ors_model->save(false);
+                        $check_ors = Ors::find()->where(['ors_class' => $ors[0]])
+                                                ->andWhere(['funding_source' => $ors[1]])
+                                                ->andWhere(['ors_year' => $ors[2]])
+                                                ->andWhere(['ors_month' => $ors[3]])
+                                                ->andWhere(['ors_serial' => $ors[4]])
+                                                ->one();
+                        if($check_ors == null)
+                        {
+                            $ors_model->save(false);
+                            $ids[$i] = $ors_model->id;
+                        }
+
+                        if($check_ors != null)
+                        {
+                            $ids[$i] = $check_ors->id;
+                        }
                     }
-                    
                 }
+
+                $id = implode(',', $ids);
+                $model->ors = $id;
+                $model->save(false);
 
                 $model3 = new TransactionStatus();
                 $model3->dv_no = $model->dv_no;
@@ -277,7 +293,6 @@ class DisbursementController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $ors_model = Ors::find()->where(['dv_no'=>$model->dv_no])->all();
 
         if(\Yii::$app->user->can('updateDisbursementVoucher'))
         {
@@ -301,7 +316,7 @@ class DisbursementController extends Controller
                 }
 
                 $model->gross_amount = str_replace(',', '', $model->gross_amount);
-                $model->save(false);
+                //$model->save(false);
 
                 $ids = $_POST['ors_id'];
                 $particulars = $model->particulars;
@@ -311,7 +326,7 @@ class DisbursementController extends Controller
                 $responsibility_center = $_POST['responsibility_center'];
                 $amount = $_POST['amount'];
 
-                $ors_id = Ors::find()->where(['dv_no' => $model->dv_no])->all();
+                // $ors_id = Ors::find()->where(['dv_no' => $model->dv_no])->all();
 
                 for($i=0; $i<sizeof($ors_no); $i++)
                 {
@@ -337,7 +352,6 @@ class DisbursementController extends Controller
                     else
                     { 
                         $ors_model = new Ors();
-                        $ors_model->dv_no = $model->dv_no;
                         $ors_model->particular = $model->particulars;
                         $ors_model->responsibility_center = $responsibility_center[$i];
                         $ors_model->mfo_pap = $mfo_pap[$i];
@@ -350,9 +364,29 @@ class DisbursementController extends Controller
                             $ors_model->ors_month = $ors[3];
                             $ors_model->ors_serial = $ors[4];
 
-                        $ors_model->save(false);        
-                    } 
+                         $check_ors = Ors::find()->where(['ors_class' => $ors[0]])
+                                                ->andWhere(['funding_source' => $ors[1]])
+                                                ->andWhere(['ors_year' => $ors[2]])
+                                                ->andWhere(['ors_month' => $ors[3]])
+                                                ->andWhere(['ors_serial' => $ors[4]])
+                                                ->one();
+
+                        if($check_ors == null)
+                        {
+                            $ors_model->save(false);
+                            $ids[$i] = $ors_model->id;
+                        }
+
+                        if($check_ors != null)
+                        {
+                            $ids[$i] = $check_ors->id;
+                        }      
+                    }
                 }
+
+                $id = implode(',', $ids);
+                $model->ors = $id;
+                $model->save(false);
 
                 if(($model->period != null) && ($model->period != 0))
                 {
@@ -382,7 +416,6 @@ class DisbursementController extends Controller
 
             return $this->render('update', [
                 'model' => $model,
-                'ors_model' => $ors_model,
             ]);
             
         }
@@ -450,7 +483,7 @@ class DisbursementController extends Controller
         $disbursements = Disbursement::find()->where(['nca'=>$model->nca])->andWhere(['obligated' => 'yes'])->all();
         $checker = Disbursement::find()->where(['id'=>$id])->andWhere(['obligated' => 'yes'])->one();
         $model3 = Nca::find()->where(['nca_no'=>$model->nca])->andWhere(['funding_source' => $model->funding_source])->one();
-        $ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
+        // $ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
         $entries = AccountingEntry::find()->where(['dv_no' => $model->dv_no])->all();
 
         if ($model->load(Yii::$app->request->post()))
@@ -461,7 +494,7 @@ class DisbursementController extends Controller
                 return $this->render('cash-status/_form', [
                     'model' => $model,
                     'model3' => $model3,
-                    'ors_model' => $ors_model,
+                    // 'ors_model' => $ors_model,
                     'entries' => $entries,
                     ]);
            }
@@ -508,7 +541,7 @@ class DisbursementController extends Controller
                 return $this->render('cash-status/_form', [
                 'model' => $model,
                 'model3' => $model3,
-                'ors_model' => $ors_model,
+                // 'ors_model' => $ors_model,
                 'entries' => $entries,
                 //'disbursements' => $disbursements,
                 ]);
@@ -522,7 +555,7 @@ class DisbursementController extends Controller
         return $this->render('cash-status/_form', [
         'model' => $model,
         'model3' => $model3,
-        'ors_model' => $ors_model,
+        // 'ors_model' => $ors_model,
         'entries' => $entries,
         ]);
 

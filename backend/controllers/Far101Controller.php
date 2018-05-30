@@ -77,6 +77,21 @@ class Far101Controller extends Controller
             'model' => $model,
             'far' => $far,
         ]);
+
+            //  $pdf = new Pdf([
+            //     'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+            //     'format' => Pdf::FORMAT_FOLIO,
+            //     'orientation' => Pdf::ORIENT_LANDSCAPE,
+            //     'destination' => Pdf::DEST_BROWSER,
+            //     'content' => $this->renderPartial('\view', ['model' => $model, 'far' => $far]),
+            //     'options' => [
+            //         'title' => 'Far-101',
+            //         'filename' => 'Far-101 ',
+            //         'marginTop' => .25
+            //     ]
+            // ]);
+
+            // return $pdf->render();
     }
 
     /**
@@ -137,19 +152,23 @@ class Far101Controller extends Controller
             ->all();        
 
          $pdf = new Pdf([
-                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'mode' => Pdf::MODE_UTF8, // leaner size using standard fonts
                 'format' => Pdf::FORMAT_FOLIO,
                 'orientation' => Pdf::ORIENT_LANDSCAPE,
                 'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('pdf', ['model' => $model, 'far' => $far]),
+                'content' => $this->renderPartial('/far101/pdf', ['model' => $model, 'far' => $far]),
                 'options' => [
                     'title' => 'Far-101',
-                    'filename' => 'Far-101 ',
+                    'filename' => 'Far-101',
                     'marginTop' => .25
                 ]
             ]);
 
-            return $pdf->render();
+         return $pdf->render();
+        //  return $this->render('view', [
+        //     'model' => $model,
+        //     'far' => $far,
+        // ]);
     }
 
     /**

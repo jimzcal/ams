@@ -84,12 +84,14 @@ class OrsRegistryController extends Controller
         // exit();
         $model = new OrsRegistry();
 
-        $model_registry = Ors::find()->where(['dv_no' => $dv_no])->all();
+        // $model_registry = Ors::find()->where(['dv_no' => $dv_no])->all();
         $dv = Disbursement::find()->where(['dv_no' => $dv_no])->one();
+
+        $ors_ids = explode(',', $dv->ors);
 
         if ($model->load(Yii::$app->request->post()))
         {
-            for($i=0; $i<sizeof($model->ors_no); $i++)
+            for($i=0; $i<sizeof($model->ors_id); $i++)
             {
                 $ors_no = explode('-', $model->ors_no[$i]);
 
@@ -98,6 +100,7 @@ class OrsRegistryController extends Controller
                 $new_model_entry->date = date('M. d, Y'); 
                 $new_model_entry->dv_no = $dv_no;
                 $new_model_entry->disbursement_date = $dv->date;
+                $new_model_entry->particular = $model->particular[$i];
                 $new_model_entry->fund_cluster = $dv->fund_cluster;
                 $new_model_entry->ors_class = $ors_no[0];
                 $new_model_entry->funding_source = $ors_no[1];
@@ -105,11 +108,11 @@ class OrsRegistryController extends Controller
                 $new_model_entry->ors_month = $ors_no[3];
                 $new_model_entry->ors_serial = $ors_no[4];
                 $new_model_entry->mfo_pap = $model->mfo_pap[$i];
+                $new_model_entry->ors_id = $model->ors_id[$i];
                 $new_model_entry->responsibility_center = $model->responsibility_center[$i];
-                $new_model_entry->gross_amount = $model->gross_amount[$i];
-                $new_model_entry->less_amount = number_format($model->less_amount[$i], 2);
-
-                $new_model_entry->net_amount = $model->net_amount[$i];
+                $new_model_entry->obligation = $model->obligation[$i];
+                $new_model_entry->payable = $model->payable[$i];
+                $new_model_entry->payment = $model->payment[$i];
 
                 $new_model_entry->save(false);
             }
@@ -129,12 +132,12 @@ class OrsRegistryController extends Controller
 
             //==================================================================
 
-            return $this->redirect(['index']);
+            return $this->redirect(['/ors/views', 'dv_no' => $dv_no]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'model_registry' => $model_registry,
+            'ors_ids' => $ors_ids,
             'dv' => $dv,
         ]);
     }
@@ -150,8 +153,10 @@ class OrsRegistryController extends Controller
     {
         // $model = $this->findModel($id);
         $model = new OrsRegistry();
-        $model_registry = OrsRegistry::find()->where(['dv_no' => $dv_no])->all();
+        // $model_registry = OrsRegistry::find()->where(['dv_no' => $dv_no])->all();
         $dv = Disbursement::find()->where(['dv_no' => $dv_no])->one();
+
+        $model_registry = explode(',', $dv->ors);
 
         if ($model->load(Yii::$app->request->post()))
         {
@@ -167,6 +172,7 @@ class OrsRegistryController extends Controller
                 $new_model_entry->date = date('M. d, Y');
                 $new_model_entry->dv_no = $dv_no;
                 $new_model_entry->disbursement_date = $dv->date;
+                $new_model_entry->particular = $model->particular;
                 $new_model_entry->fund_cluster = $dv->fund_cluster;
                 $new_model_entry->ors_class = $ors_no[0];
                 $new_model_entry->funding_source = $ors_no[1];
@@ -174,10 +180,11 @@ class OrsRegistryController extends Controller
                 $new_model_entry->ors_month = $ors_no[3];
                 $new_model_entry->ors_serial = $ors_no[4];
                 $new_model_entry->mfo_pap = $model->mfo_pap[$i];
+                $new_model_entry->ors_id = $model->ors_id[$i];
                 $new_model_entry->responsibility_center = $model->responsibility_center[$i];
-                $new_model_entry->gross_amount = $model->gross_amount[$i];
-                $new_model_entry->less_amount = number_format($model->less_amount[$i], 2);
-                $new_model_entry->net_amount = $model->net_amount[$i];
+                $new_model_entry->obligation = $model->obligation[$i];
+                $new_model_entry->payable = $model->payable[$i];
+                $new_model_entry->payment = $model->payment[$i];
 
                 $new_model_entry->save(false);
             }

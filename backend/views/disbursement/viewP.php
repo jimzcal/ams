@@ -8,6 +8,7 @@ use backend\models\Disbursement;
 use backend\models\accountingEntry;
 use backend\models\FundCluster;
 use backend\models\Nca;
+use backend\models\Ors;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
@@ -111,30 +112,34 @@ $this->title = 'DISBURSEMENT VOUCHER';
                                             <th style="text-align: center">Responsibility Center</th>
                                             <th style="text-align: center">Amount</th>
                                         </tr>
-                                        <?php foreach ($ors_model as $value): ?>
-                                            <?php $i=0; ?>
+                                        <?php 
+                                              $i = 0;
+                                              $ors = explode(',', $model->ors);
+                                              for($x=0; $x<sizeof($ors); $x++) : 
+                                        ?>
+                                        <?php $ors_details = Ors::find()->where(['id' => $ors[$x]])->one(); ?>
                                             <tr>
-                                                <td style="width: 250px;">
-                                                    <?= $form->field($model, 'particular[]')->textInput(['value' => $value->particular, 'class' => 'myfield'])->label(false) ?>
-                                                    <?= $form->field($model, 'ors_id[]')->hiddenInput(['value' => $value->id])->label(false) ?>
+                                                <td>
+                                                  <?= $form->field($model, 'particular[$i]')->textInput(['value' => $ors_details->particular, 'class' => 'myfield'])->label(false) ?>
+                                                    <?= $form->field($model, 'ors_id[$i]')->hiddenInput(['value' => $ors_details->id])->label(false) ?>
                                                 </td>
-                                                <td style="width: 130px;">
-                                                    <?= $form->field($model, 'ors_no[]')->textInput([
-                                                        'value' => $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial, 'class' => 'myfield'])->label(false) 
+                                                <td>
+                                                    <?= $form->field($model, 'ors_no[$i]')->textInput([
+                                                        'value' => $ors_details->ors_class.'-'.$ors_details->ors_year.'-'.$ors_details->ors_month.'-'.$ors_details->ors_serial, 'class' => 'myfield'])->label(false) 
                                                     ?>
                                                 </td>
                                                 <td>
-                                                    <?= $form->field($model, 'mfo_pap[]')->textInput(['value' => $value->mfo_pap, 'class' => 'myfield'])->label(false) ?>
-                                                </td>
-                                                <td>
-                                                    <?= $form->field($model, 'responsibility_center[]')->textInput(['value' => $value->responsibility_center, 'class' => 'myfield'])->label(false) ?>
+                                                    <?= $form->field($model, 'mfo_pap[$i]')->textInput(['value' => $ors_details->mfo_pap, 'class' => 'myfield'])->label(false) ?>
                                                 </td>
                                                 <td style="width: 100px;">
-                                                    <?= $form->field($model, 'amount[]')->textInput(['value' => $value->amount, 'class' => 'myfield'])->label(false) ?>
+                                                    <?= $form->field($model, 'responsibility_center[$i]')->textInput(['value' => $ors_details->responsibility_center, 'class' => 'myfield'])->label(false) ?>
+                                                </td>
+                                                <td>
+                                                    <?= $form->field($model, 'amount[$i]')->textInput(['value' => $ors_details->amount, 'class' => 'myfield'])->label(false) ?>
                                                 </td>
                                             </tr>
-                                            <?php $i++ ?>
-                                        <?php endforeach ?>
+                                          <?php $i++; ?>
+                                        <?php endfor ?>
                                     </table>
                             </td>
                         </tr>

@@ -18,7 +18,7 @@ $this->title = 'New Obligation Entry';
 
 	<div class="view-index">
     	<div class="mini-header">
-    		Disbursement Details
+    		<i class="fa fa-id-card"></i> Disbursement Details
     	</div>
     	<table class="table table-condensed table-striped table-bordered">
     		<tr>
@@ -38,15 +38,10 @@ $this->title = 'New Obligation Entry';
     	</table>
     </div>
 
-    <div class="view-index">
-    	<div class="mini-header">
-    		ORS Details
-    	</div>
-	    <?= $this->render('_form', [
-	    	'model_registry' => $model_registry,
-	        'model' => $model,
-	        'dv' => $dv,
-	    ]) ?>
-	</div>
+    <?= $this->render('_form', [
+    	'ors_ids' => $ors_ids,
+        'model' => $model,
+        'dv' => $dv,
+    ]) ?>
 
 </div>

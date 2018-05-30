@@ -88,21 +88,23 @@ $this->title = 'LDDAP-ADA FORM';
                                 echo $form->field($model2, 'current_account[]')->hiddenInput(['value' => 'LBP'])
                                 ->label(false);
                             }
-
-
                         ?>
                     </td>
                     <td width="240">
                         <?php
                             foreach ($dvs as $value)
                             {
-                              $dv = Ors::find()
-                              ->where(['dv_no' => $value])
-                              ->all();
-                              foreach ($dv as $ors_value) 
-                              {
-                                 echo $ors_value->ors_class.'-'.$ors_value->ors_year.'-'.$ors_value->ors_month.'-'.$ors_value->ors_serial.'<br>';
-                              }
+                                $dv = Disbursement::find()
+                                  ->where(['dv_no' => $value])
+                                  ->one();
+
+                                $ors = Ors::find()
+                                ->where(['id' => $dv->id])
+                                  ->all();
+                                  foreach ($ors as $ors_value) 
+                                  {
+                                     echo $ors_value->ors_class.'-'.$ors_value->ors_year.'-'.$ors_value->ors_month.'-'.$ors_value->ors_serial.'<br>';
+                                  }
                             }
                         ?>
                     </td>

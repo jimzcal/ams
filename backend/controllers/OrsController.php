@@ -3,18 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\LddapAda;
-use backend\models\LddapAdaSearch;
+use backend\models\Ors;
+use backend\models\OrsSearch;
 use yii\web\Controller;
-use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use kartik\mpdf\Pdf;
+use backend\models\Disbursement;
 
 /**
- * LddapAdaController implements the CRUD actions for LddapAda model.
+ * OrsController implements the CRUD actions for Ors model.
  */
-class LddapAdaController extends Controller
+class OrsController extends Controller
 {
     /**
      * @inheritdoc
@@ -22,17 +21,6 @@ class LddapAdaController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
-                'rules' => [
-                  [
-                    'allow' => true,
-                    'roles' => ['@']
-                  ]
-                            
-              ],
-          ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -43,12 +31,12 @@ class LddapAdaController extends Controller
     }
 
     /**
-     * Lists all LddapAda models.
+     * Lists all Ors models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new LddapAdaSearch();
+        $searchModel = new OrsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -58,51 +46,40 @@ class LddapAdaController extends Controller
     }
 
     /**
-     * Displays a single LddapAda model.
+     * Displays a single Ors model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($lddap_no)
+    public function actionView($id)
     {
-        //$model => $this->findModel($id),
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
-        $dvs = LddapAda::find()
-                    ->where(['lddap_no' => $lddap_no])
-                    ->joinWith('dv')
-                    ->all();
+    public function actionViews($dv_no)
+    {
+        $dv = Disbursement::find()->where(['dv_no' => $dv_no])->one();
 
+        $ors_ids = explode(',', $dv->ors);
 
-            $pdf = new Pdf([
-                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
-                'format' => Pdf::FORMAT_FOLIO,
-                'destination' => Pdf::DEST_BROWSER,
-                'content' => $this->renderPartial('/lddap-ada/view', ['dvs' => $dvs]),
-                'options' => [
-                    'title' => 'LDDAP-ADA - '.$lddap_no,
-                    'filename' => 'LDDAP-ADA - '.$lddap_no,
-                    'marginTop' => .25
-                ]
-            ]);
-            
-            return $pdf->render();
-
-        // return $this->render('view', [
-        //     'model' => $this->findModel($id),
-        // ]);
+        return $this->render('views', [
+            'ors_ids' => $ors_ids,
+            'dv' => $dv,
+        ]);
     }
 
     /**
-     * Creates a new LddapAda model.
+     * Creates a new Ors model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new LddapAda();
+        $model = new Ors();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) 
-        {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -112,7 +89,7 @@ class LddapAdaController extends Controller
     }
 
     /**
-     * Updates an existing LddapAda model.
+     * Updates an existing Ors model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -132,7 +109,7 @@ class LddapAdaController extends Controller
     }
 
     /**
-     * Deletes an existing LddapAda model.
+     * Deletes an existing Ors model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -146,15 +123,15 @@ class LddapAdaController extends Controller
     }
 
     /**
-     * Finds the LddapAda model based on its primary key value.
+     * Finds the Ors model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return LddapAda the loaded model
+     * @return Ors the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = LddapAda::findOne($id)) !== null) {
+        if (($model = Ors::findOne($id)) !== null) {
             return $model;
         }
 

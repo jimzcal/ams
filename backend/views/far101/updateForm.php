@@ -51,7 +51,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                     <td style="width: 160px; vertical-align: text-top;">Fiscal Year</td>
                     <td style="width: 30px; vertical-align: text-top;">:</td>
                     <td style="font-weight: bold;">
-                        <?= $form->field($model, 'fiscal_year')->dropDownList(['2017'=>'2017', '2018' => '2018', '2019' => '2019', '2020' => '2020'],['class' => 'myfield'])->label(false) ?></td>
+                        <?= $form->field($model, 'fiscal_year')->dropDownList(['2017'=>'2017', '2018' => '2018', '2019' => '2019', '2020' => '2020'],['class' => 'textfield'])->label(false) ?></td>
                     </td>
                     <td></td>
                 </tr>
@@ -59,7 +59,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                     <td style="width: 160px; vertical-align: text-top;">Fund Cluster</td>
                     <td style="width: 30px; vertical-align: text-top;">:</td>
                     <td style="font-weight: bold;">
-                        <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'), ['class' => 'myfield'])->label(false) ;
+                        <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'), ['class' => 'textfield'])->label(false) ;
                         ?>
                     </td>
                     <td></td>
@@ -88,75 +88,75 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                 <?php foreach ($far as $value) : ?>
                 <tr>
                     <td>
-                       <input type="hidden" name="id[]" class="myfield" value="<?= $value->id ?>" >
-                       <input type="text" name="particulars[]" class="myfield" value="<?= $value->particulars ?>" > 
+                       <input type="hidden" name="id[]" class="textfield" value="<?= $value->id ?>" >
+                       <input type="text" name="particulars[]" class="textfield" value="<?= $value->particulars ?>" > 
                     </td>
                     <td>
-                        <input type="text" name="uacs_code[]" class="myfield" value="<?= $value->uacs_code ?>" >   
+                        <input type="text" name="uacs_code[]" class="textfield" value="<?= $value->uacs_code ?>" >   
                     </td>
                     <!-- <td>
-                        <input type="text" name="obligation_q_1[]" class="myfield" value="<?= $value->obligation_q_1 ?>" >
+                        <input type="text" name="obligation_q_1[]" class="textfield" value="<?= $value->obligation_q_1 ?>" >
                     </td>
                     <td>
-                        <input type="text" name="obligation_q_2[]" class="myfield" value="<?= $value->obligation_q_2 ?>" >
+                        <input type="text" name="obligation_q_2[]" class="textfield" value="<?= $value->obligation_q_2 ?>" >
                     </td>
                     <td>
-                        <input type="text" name="obligation_q_3[]" class="myfield" value="<?= $value->obligation_q_3 ?>" >
+                        <input type="text" name="obligation_q_3[]" class="textfield" value="<?= $value->obligation_q_3 ?>" >
                     </td>
                     <td>
-                        <input type="text" name="obligation_q_4[]" class="myfield" value="<?= $value->obligation_q_4 ?>" >
+                        <input type="text" name="obligation_q_4[]" class="textfield" value="<?= $value->obligation_q_4 ?>" >
                     </td>
                     <td>
-                        <input type="text" name="total_obligation[]" class="myfield" value="<?= $value->total_obligation ?>" >
+                        <input type="text" name="total_obligation[]" class="textfield" value="<?= $value->total_obligation ?>" >
                     </td> -->
                     <td>
-                        <?php $a = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                        <?php $a = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03']])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                         ?>
-                        <input type="text" name="disbursement_q_1[]" class="myfield" value="<?= $a; ?>" >
+                        <input type="text" name="disbursement_q_1[]" class="textfield" value="<?= $a; ?>" >
                     </td>
                     <td>
-                        <?php $a1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                        <?php $a1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06']])
-                                        ->all(), 'net_amount')); 
+                                        ->all(), 'payment')); 
                         ?>
-                        <input type="text" name="disbursement_q_2[]" class="myfield" value="<?= $a1; ?>" >
+                        <input type="text" name="disbursement_q_2[]" class="textfield" value="<?= $a1; ?>" >
                     </td>
                     <td>
-                        <?php $a2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                        <?php $a2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09']])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                         ?>
-                        <input type="text" name="disbursement_q_3[]" class="myfield" value="<?= $a2; ?>" >
+                        <input type="text" name="disbursement_q_3[]" class="textfield" value="<?= $a2; ?>" >
                     </td>
                     <td>
-                        <?php $a3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                        <?php $a3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12']])
-                                        ->all(), 'net_amount')); 
+                                        ->all(), 'payment')); 
                         ?>
-                        <input type="text" name="disbursement_q_4[]" class="myfield" value="<?= $a3; ?>" >
+                        <input type="text" name="disbursement_q_4[]" class="textfield" value="<?= $a3; ?>" >
                     </td>
                     <td>
-                        <?php $a_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                        <?php $a_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                         ?>
-                        <input type="text" name="total_disbursement[]" class="myfield" value="<?= $a_sum; ?>" >
+                        <input type="text" name="total_disbursement[]" class="textfield" value="<?= $a_sum; ?>" >
                     </td>
                 </tr>
                     <?php $sub_far = Far101::find()->where(['parent_id' => $value->id])->all(); ?>
@@ -165,401 +165,401 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                         <?php if($val->uacs_code == '01') : ?>
                         <tr>
                             <td style="text-indent: 10px;">
-                                <input type="hidden" name="idb[]" class="myfield" value="<?= $val->id ?>" >
-                                <input type="text" name="particularsb[]" class="myfield" value="<?= $val->particulars ?>" > 
+                                <input type="hidden" name="idb[]" class="textfield" value="<?= $val->id ?>" >
+                                <input type="text" name="particularsb[]" class="textfield" value="<?= $val->particulars ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="uacs_codeb[]" class="myfield" value="<?= $val->uacs_code ?>" > 
+                                <input type="text" name="uacs_codeb[]" class="textfield" value="<?= $val->uacs_code ?>" > 
                             </td>
                             <!-- <td>
-                                <input type="text" name="obligation_q_1b[]" class="myfield" value="<?= $val->obligation_q_1 ?>" > 
+                                <input type="text" name="obligation_q_1b[]" class="textfield" value="<?= $val->obligation_q_1 ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_2b[]" class="myfield" value="<?= $val->obligation_q_2 ?>" >
+                                <input type="text" name="obligation_q_2b[]" class="textfield" value="<?= $val->obligation_q_2 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_3b[]" class="myfield" value="<?= $val->obligation_q_3 ?>" >
+                                <input type="text" name="obligation_q_3b[]" class="textfield" value="<?= $val->obligation_q_3 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_4b[]" class="myfield" value="<?= $val->obligation_q_4 ?>" >
+                                <input type="text" name="obligation_q_4b[]" class="textfield" value="<?= $val->obligation_q_4 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="total_obligationb[]" class="myfield" value="<?= $val->total_obligation ?>" >
+                                <input type="text" name="total_obligationb[]" class="textfield" value="<?= $val->total_obligation ?>" >
                             </td> -->
                             <td>
                                 <?php 
-                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$value->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '01'])
                                     ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                    ->all(), 'net_amount'));
+                                    ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_1b[]" class="myfield" value="<?= $b; ?>">
+                                <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
                             </td>
                             <td>
                                 <?php 
-                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$value->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '01'])
                                     ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                    ->all(), 'net_amount')); 
+                                    ->all(), 'payment')); 
                                 ?>
-                                <input type="text" name="disbursement_q_2b[]" class="myfield" value="<?= $b1; ?>" >
+                                <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
                             </td>
                             <td>
-                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '01'])
                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_3b[]" class="myfield" value="<?= $b2; ?>" >
+                                <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
                             </td>
                             <td>
-                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '01'])
                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_4b[]" class="myfield" value="<?= $b3; ?>" >
+                                <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
                             </td>
                             <td>
-                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['ors_class' => '01'])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="total_disbursementb[]" class="myfield" value="<?= $b_sum; ?>" >
+                                <input type="text" name="total_disbursementb[]" class="textfield" value="<?= $b_sum; ?>" >
                             </td>
                         </tr>
                         <?php elseif($val->uacs_code == '02') : ?>
                         <tr>
                             <td style="text-indent: 10px;">
-                                <input type="hidden" name="idb[]" class="myfield" value="<?= $val->id ?>" >
-                                <input type="text" name="particularsb[]" class="myfield" value="<?= $val->particulars ?>" > 
+                                <input type="hidden" name="idb[]" class="textfield" value="<?= $val->id ?>" >
+                                <input type="text" name="particularsb[]" class="textfield" value="<?= $val->particulars ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="uacs_codeb[]" class="myfield" value="<?= $val->uacs_code ?>" > 
+                                <input type="text" name="uacs_codeb[]" class="textfield" value="<?= $val->uacs_code ?>" > 
                             </td>
                             <!-- <td>
-                                <input type="text" name="obligation_q_1b[]" class="myfield" value="<?= $val->obligation_q_1 ?>" > 
+                                <input type="text" name="obligation_q_1b[]" class="textfield" value="<?= $val->obligation_q_1 ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_2b[]" class="myfield" value="<?= $val->obligation_q_2 ?>" >
+                                <input type="text" name="obligation_q_2b[]" class="textfield" value="<?= $val->obligation_q_2 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_3b[]" class="myfield" value="<?= $val->obligation_q_3 ?>" >
+                                <input type="text" name="obligation_q_3b[]" class="textfield" value="<?= $val->obligation_q_3 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_4b[]" class="myfield" value="<?= $val->obligation_q_4 ?>" >
+                                <input type="text" name="obligation_q_4b[]" class="textfield" value="<?= $val->obligation_q_4 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="total_obligationb[]" class="myfield" value="<?= $val->total_obligation ?>" >
+                                <input type="text" name="total_obligationb[]" class="textfield" value="<?= $val->total_obligation ?>" >
                             </td> -->
                             <td>
                                 <?php 
-                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$value->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '02'])
                                     ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                    ->all(), 'net_amount'));
+                                    ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_1b[]" class="myfield" value="<?= $b; ?>">
+                                <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
                             </td>
                             <td>
                                 <?php 
-                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$value->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '02'])
                                     ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                    ->all(), 'net_amount')); 
+                                    ->all(), 'payment')); 
                                 ?>
-                                <input type="text" name="disbursement_q_2b[]" class="myfield" value="<?= $b1; ?>" >
+                                <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
                             </td>
                             <td>
-                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '02'])
                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_3b[]" class="myfield" value="<?= $b2; ?>" >
+                                <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
                             </td>
                             <td>
-                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '02'])
                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_4b[]" class="myfield" value="<?= $b3; ?>" >
+                                <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
                             </td>
                             <td>
-                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['ors_class' => '02'])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="total_disbursementb[]" class="myfield" value="<?= $b_sum; ?>" >
+                                <input type="text" name="total_disbursementb[]" class="textfield" value="<?= $b_sum; ?>" >
                             </td>
                         </tr>
                         <?php elseif($val->uacs_code == '03') : ?>
                         <tr>
                             <td style="text-indent: 10px;">
-                                <input type="hidden" name="idb[]" class="myfield" value="<?= $val->id ?>" >
-                                <input type="text" name="particularsb[]" class="myfield" value="<?= $val->particulars ?>" > 
+                                <input type="hidden" name="idb[]" class="textfield" value="<?= $val->id ?>" >
+                                <input type="text" name="particularsb[]" class="textfield" value="<?= $val->particulars ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="uacs_codeb[]" class="myfield" value="<?= $val->uacs_code ?>" > 
+                                <input type="text" name="uacs_codeb[]" class="textfield" value="<?= $val->uacs_code ?>" > 
                             </td>
                             <!-- <td>
-                                <input type="text" name="obligation_q_1b[]" class="myfield" value="<?= $val->obligation_q_1 ?>" > 
+                                <input type="text" name="obligation_q_1b[]" class="textfield" value="<?= $val->obligation_q_1 ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_2b[]" class="myfield" value="<?= $val->obligation_q_2 ?>" >
+                                <input type="text" name="obligation_q_2b[]" class="textfield" value="<?= $val->obligation_q_2 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_3b[]" class="myfield" value="<?= $val->obligation_q_3 ?>" >
+                                <input type="text" name="obligation_q_3b[]" class="textfield" value="<?= $val->obligation_q_3 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_4b[]" class="myfield" value="<?= $val->obligation_q_4 ?>" >
+                                <input type="text" name="obligation_q_4b[]" class="textfield" value="<?= $val->obligation_q_4 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="total_obligationb[]" class="myfield" value="<?= $val->total_obligation ?>" >
+                                <input type="text" name="total_obligationb[]" class="textfield" value="<?= $val->total_obligation ?>" >
                             </td> -->
                             <td>
                                 <?php 
-                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$value->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '03'])
                                     ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                    ->all(), 'net_amount'));
+                                    ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_1b[]" class="myfield" value="<?= $b; ?>">
+                                <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
                             </td>
                             <td>
                                 <?php 
-                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$value->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '03'])
                                     ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                    ->all(), 'net_amount')); 
+                                    ->all(), 'payment')); 
                                 ?>
-                                <input type="text" name="disbursement_q_2b[]" class="myfield" value="<?= $b1; ?>" >
+                                <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
                             </td>
                             <td>
-                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '03'])
                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_3b[]" class="myfield" value="<?= $b2; ?>" >
+                                <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
                             </td>
                             <td>
-                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '03'])
                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_4b[]" class="myfield" value="<?= $b3; ?>" >
+                                <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
                             </td>
                             <td>
-                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['ors_class' => '03'])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="total_disbursementb[]" class="myfield" value="<?= $b_sum; ?>" >
+                                <input type="text" name="total_disbursementb[]" class="textfield" value="<?= $b_sum; ?>" >
                             </td>
                         </tr>
                         <?php elseif($val->uacs_code == '04') : ?>
                         <tr>
                             <td style="text-indent: 10px;">
-                                <input type="hidden" name="idb[]" class="myfield" value="<?= $val->id ?>" >
-                                <input type="text" name="particularsb[]" class="myfield" value="<?= $val->particulars ?>" > 
+                                <input type="hidden" name="idb[]" class="textfield" value="<?= $val->id ?>" >
+                                <input type="text" name="particularsb[]" class="textfield" value="<?= $val->particulars ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="uacs_codeb[]" class="myfield" value="<?= $val->uacs_code ?>" > 
+                                <input type="text" name="uacs_codeb[]" class="textfield" value="<?= $val->uacs_code ?>" > 
                             </td>
                             <!-- <td>
-                                <input type="text" name="obligation_q_1b[]" class="myfield" value="<?= $val->obligation_q_1 ?>" > 
+                                <input type="text" name="obligation_q_1b[]" class="textfield" value="<?= $val->obligation_q_1 ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_2b[]" class="myfield" value="<?= $val->obligation_q_2 ?>" >
+                                <input type="text" name="obligation_q_2b[]" class="textfield" value="<?= $val->obligation_q_2 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_3b[]" class="myfield" value="<?= $val->obligation_q_3 ?>" >
+                                <input type="text" name="obligation_q_3b[]" class="textfield" value="<?= $val->obligation_q_3 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_4b[]" class="myfield" value="<?= $val->obligation_q_4 ?>" >
+                                <input type="text" name="obligation_q_4b[]" class="textfield" value="<?= $val->obligation_q_4 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="total_obligationb[]" class="myfield" value="<?= $val->total_obligation ?>" >
+                                <input type="text" name="total_obligationb[]" class="textfield" value="<?= $val->total_obligation ?>" >
                             </td> -->
                             <td>
                                 <?php 
-                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$value->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '04'])
                                     ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                    ->all(), 'net_amount'));
+                                    ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_1b[]" class="myfield" value="<?= $b; ?>">
+                                <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
                             </td>
                             <td>
                                 <?php 
-                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$value->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '04'])
                                     ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                    ->all(), 'net_amount')); 
+                                    ->all(), 'payment')); 
                                 ?>
-                                <input type="text" name="disbursement_q_2b[]" class="myfield" value="<?= $b1; ?>" >
+                                <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
                             </td>
                             <td>
-                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '04'])
                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_3b[]" class="myfield" value="<?= $b2; ?>" >
+                                <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
                             </td>
                             <td>
-                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '04'])
                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_4b[]" class="myfield" value="<?= $b3; ?>" >
+                                <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
                             </td>
                             <td>
-                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['ors_class' => '04'])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="total_disbursementb[]" class="myfield" value="<?= $b_sum; ?>" >
+                                <input type="text" name="total_disbursementb[]" class="textfield" value="<?= $b_sum; ?>" >
                             </td>
                         </tr>
                         <?php else : ?>
                         <tr>
                             <td style="text-indent: 10px;">
-                                <input type="hidden" name="idb[]" class="myfield" value="<?= $val->id ?>" >
-                                <input type="text" name="particularsb[]" class="myfield" value="<?= $val->particulars ?>" > 
+                                <input type="hidden" name="idb[]" class="textfield" value="<?= $val->id ?>" >
+                                <input type="text" name="particularsb[]" class="textfield" value="<?= $val->particulars ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="uacs_codeb[]" class="myfield" value="<?= $val->uacs_code ?>" > 
+                                <input type="text" name="uacs_codeb[]" class="textfield" value="<?= $val->uacs_code ?>" > 
                             </td>
                             <!-- <td>
-                                <input type="text" name="obligation_q_1b[]" class="myfield" value="<?= $val->obligation_q_1 ?>" > 
+                                <input type="text" name="obligation_q_1b[]" class="textfield" value="<?= $val->obligation_q_1 ?>" > 
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_2b[]" class="myfield" value="<?= $val->obligation_q_2 ?>" >
+                                <input type="text" name="obligation_q_2b[]" class="textfield" value="<?= $val->obligation_q_2 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_3b[]" class="myfield" value="<?= $val->obligation_q_3 ?>" >
+                                <input type="text" name="obligation_q_3b[]" class="textfield" value="<?= $val->obligation_q_3 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="obligation_q_4b[]" class="myfield" value="<?= $val->obligation_q_4 ?>" >
+                                <input type="text" name="obligation_q_4b[]" class="textfield" value="<?= $val->obligation_q_4 ?>" >
                             </td>
                             <td>
-                                <input type="text" name="total_obligationb[]" class="myfield" value="<?= $val->total_obligation ?>" >
+                                <input type="text" name="total_obligationb[]" class="textfield" value="<?= $val->total_obligation ?>" >
                             </td> -->
                             <td>
                                 <?php 
-                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$val->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                    ->all(), 'net_amount'));
+                                    ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_1b[]" class="myfield" value="<?= $b; ?>">
+                                <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
                             </td>
                             <td>
                                 <?php 
-                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                    $b1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                     ->where(['mfo_pap'=>$val->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                    ->all(), 'net_amount')); 
+                                    ->all(), 'payment')); 
                                 ?>
-                                <input type="text" name="disbursement_q_2b[]" class="myfield" value="<?= $b1; ?>" >
+                                <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
                             </td>
                             <td>
-                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$val->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_3b[]" class="myfield" value="<?= $b2; ?>" >
+                                <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
                             </td>
                             <td>
-                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$val->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="disbursement_q_4b[]" class="myfield" value="<?= $b3; ?>" >
+                                <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
                             </td>
                             <td>
-                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                <?php $b_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                         ->where(['mfo_pap'=>$val->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->all(), 'net_amount'));
+                                        ->all(), 'payment'));
                                 ?>
-                                <input type="text" name="total_disbursementb[]" class="myfield" value="<?= $b_sum; ?>" >
+                                <input type="text" name="total_disbursementb[]" class="textfield" value="<?= $b_sum; ?>" >
                             </td>
                         </tr>
                         <?php endif ?>
@@ -568,396 +568,396 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                 <?php if($data->uacs_code == '01') : ?>
                                 <tr>
                                     <td style="text-indent: 20px;">
-                                        <input type="hidden" name="idc[]" class="myfield" value="<?= $data->id ?>" >
-                                        <input type="text" name="particularsc[]" class="myfield" value="<?= $data->particulars ?>" >
+                                        <input type="hidden" name="idc[]" class="textfield" value="<?= $data->id ?>" >
+                                        <input type="text" name="particularsc[]" class="textfield" value="<?= $data->particulars ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="uacs_codec[]" class="myfield" value="<?= $data->uacs_code ?>" >
+                                        <input type="text" name="uacs_codec[]" class="textfield" value="<?= $data->uacs_code ?>" >
                                     </td>
                                     <!-- <td>
-                                        <input type="text" name="obligation_q_1c[]" class="myfield" value="<?= $data->obligation_q_1 ?>" >
+                                        <input type="text" name="obligation_q_1c[]" class="textfield" value="<?= $data->obligation_q_1 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_2c[]" class="myfield" value="<?= $data->obligation_q_2 ?>" >
+                                        <input type="text" name="obligation_q_2c[]" class="textfield" value="<?= $data->obligation_q_2 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_3c[]" class="myfield" value="<?= $data->obligation_q_3 ?>" >
+                                        <input type="text" name="obligation_q_3c[]" class="textfield" value="<?= $data->obligation_q_3 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_4c[]" class="myfield" value="<?= $data->obligation_q_4 ?>" >
+                                        <input type="text" name="obligation_q_4c[]" class="textfield" value="<?= $data->obligation_q_4 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="total_obligationc[]" class="myfield" value="<?= $data->total_obligation ?>" >
+                                        <input type="text" name="total_obligationc[]" class="textfield" value="<?= $data->total_obligation ?>" >
                                     </td> -->
                                     <td>
                                         <?php 
-                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '01'])
                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_1c[]" class="myfield" value="<?= $c; ?>" >
+                                        <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '01'])
                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_2c[]" class="myfield" value="<?= $c1; ?>" >
+                                        <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '01'])
                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_3c[]" class="myfield" value="<?= $c2; ?>" >
+                                        <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '01'])
                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_4c[]" class="myfield" value="<?= $c3; ?>" >
+                                        <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['ors_class' => '01'])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="total_disbursementc[]" class="myfield" value="<?= $c_sum; ?>" >
+                                        <input type="text" name="total_disbursementc[]" class="textfield" value="<?= $c_sum; ?>" >
                                     </td>
                                 </tr>
                                 <?php elseif($data->uacs_code == '02') : ?>
                                 <tr>
                                     <td style="text-indent: 20px;">
-                                        <input type="hidden" name="idc[]" class="myfield" value="<?= $data->id ?>" >
-                                        <input type="text" name="particularsc[]" class="myfield" value="<?= $data->particulars ?>" >
+                                        <input type="hidden" name="idc[]" class="textfield" value="<?= $data->id ?>" >
+                                        <input type="text" name="particularsc[]" class="textfield" value="<?= $data->particulars ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="uacs_codec[]" class="myfield" value="<?= $data->uacs_code ?>" >
+                                        <input type="text" name="uacs_codec[]" class="textfield" value="<?= $data->uacs_code ?>" >
                                     </td>
                                     <!-- <td>
-                                        <input type="text" name="obligation_q_1c[]" class="myfield" value="<?= $data->obligation_q_1 ?>" >
+                                        <input type="text" name="obligation_q_1c[]" class="textfield" value="<?= $data->obligation_q_1 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_2c[]" class="myfield" value="<?= $data->obligation_q_2 ?>" >
+                                        <input type="text" name="obligation_q_2c[]" class="textfield" value="<?= $data->obligation_q_2 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_3c[]" class="myfield" value="<?= $data->obligation_q_3 ?>" >
+                                        <input type="text" name="obligation_q_3c[]" class="textfield" value="<?= $data->obligation_q_3 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_4c[]" class="myfield" value="<?= $data->obligation_q_4 ?>" >
+                                        <input type="text" name="obligation_q_4c[]" class="textfield" value="<?= $data->obligation_q_4 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="total_obligationc[]" class="myfield" value="<?= $data->total_obligation ?>" >
+                                        <input type="text" name="total_obligationc[]" class="textfield" value="<?= $data->total_obligation ?>" >
                                     </td> -->
                                     <td>
                                         <?php 
-                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '02'])
                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_1c[]" class="myfield" value="<?= $c; ?>" >
+                                        <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '02'])
                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_2c[]" class="myfield" value="<?= $c1; ?>" >
+                                        <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '02'])
                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_3c[]" class="myfield" value="<?= $c2; ?>" >
+                                        <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '02'])
                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_4c[]" class="myfield" value="<?= $c3; ?>" >
+                                        <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['ors_class' => '02'])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="total_disbursementc[]" class="myfield" value="<?= $c_sum; ?>" >
+                                        <input type="text" name="total_disbursementc[]" class="textfield" value="<?= $c_sum; ?>" >
                                     </td>
                                 </tr>
                                 <?php elseif($data->uacs_code == '03') : ?>
                                 <tr>
                                     <td style="text-indent: 20px;">
-                                        <input type="hidden" name="idc[]" class="myfield" value="<?= $data->id ?>" >
-                                        <input type="text" name="particularsc[]" class="myfield" value="<?= $data->particulars ?>" >
+                                        <input type="hidden" name="idc[]" class="textfield" value="<?= $data->id ?>" >
+                                        <input type="text" name="particularsc[]" class="textfield" value="<?= $data->particulars ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="uacs_codec[]" class="myfield" value="<?= $data->uacs_code ?>" >
+                                        <input type="text" name="uacs_codec[]" class="textfield" value="<?= $data->uacs_code ?>" >
                                     </td>
                                     <!-- <td>
-                                        <input type="text" name="obligation_q_1c[]" class="myfield" value="<?= $data->obligation_q_1 ?>" >
+                                        <input type="text" name="obligation_q_1c[]" class="textfield" value="<?= $data->obligation_q_1 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_2c[]" class="myfield" value="<?= $data->obligation_q_2 ?>" >
+                                        <input type="text" name="obligation_q_2c[]" class="textfield" value="<?= $data->obligation_q_2 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_3c[]" class="myfield" value="<?= $data->obligation_q_3 ?>" >
+                                        <input type="text" name="obligation_q_3c[]" class="textfield" value="<?= $data->obligation_q_3 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_4c[]" class="myfield" value="<?= $data->obligation_q_4 ?>" >
+                                        <input type="text" name="obligation_q_4c[]" class="textfield" value="<?= $data->obligation_q_4 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="total_obligationc[]" class="myfield" value="<?= $data->total_obligation ?>" >
+                                        <input type="text" name="total_obligationc[]" class="textfield" value="<?= $data->total_obligation ?>" >
                                     </td> -->
                                     <td>
                                         <?php 
-                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '03'])
                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_1c[]" class="myfield" value="<?= $c; ?>" >
+                                        <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '03'])
                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_2c[]" class="myfield" value="<?= $c1; ?>" >
+                                        <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '03'])
                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_3c[]" class="myfield" value="<?= $c2; ?>" >
+                                        <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '03'])
                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_4c[]" class="myfield" value="<?= $c3; ?>" >
+                                        <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['ors_class' => '03'])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="total_disbursementc[]" class="myfield" value="<?= $c_sum; ?>" >
+                                        <input type="text" name="total_disbursementc[]" class="textfield" value="<?= $c_sum; ?>" >
                                     </td>
                                 </tr>
                                 <?php elseif($data->uacs_code == '04') : ?>
                                 <tr>
                                     <td style="text-indent: 20px;">
-                                        <input type="hidden" name="idc[]" class="myfield" value="<?= $data->id ?>" >
-                                        <input type="text" name="particularsc[]" class="myfield" value="<?= $data->particulars ?>" >
+                                        <input type="hidden" name="idc[]" class="textfield" value="<?= $data->id ?>" >
+                                        <input type="text" name="particularsc[]" class="textfield" value="<?= $data->particulars ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="uacs_codec[]" class="myfield" value="<?= $data->uacs_code ?>" >
+                                        <input type="text" name="uacs_codec[]" class="textfield" value="<?= $data->uacs_code ?>" >
                                     </td>
                                     <!-- <td>
-                                        <input type="text" name="obligation_q_1c[]" class="myfield" value="<?= $data->obligation_q_1 ?>" >
+                                        <input type="text" name="obligation_q_1c[]" class="textfield" value="<?= $data->obligation_q_1 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_2c[]" class="myfield" value="<?= $data->obligation_q_2 ?>" >
+                                        <input type="text" name="obligation_q_2c[]" class="textfield" value="<?= $data->obligation_q_2 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_3c[]" class="myfield" value="<?= $data->obligation_q_3 ?>" >
+                                        <input type="text" name="obligation_q_3c[]" class="textfield" value="<?= $data->obligation_q_3 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_4c[]" class="myfield" value="<?= $data->obligation_q_4 ?>" >
+                                        <input type="text" name="obligation_q_4c[]" class="textfield" value="<?= $data->obligation_q_4 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="total_obligationc[]" class="myfield" value="<?= $data->total_obligation ?>" >
+                                        <input type="text" name="total_obligationc[]" class="textfield" value="<?= $data->total_obligation ?>" >
                                     </td> -->
                                     <td>
                                         <?php 
-                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '04'])
                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_1c[]" class="myfield" value="<?= $c; ?>" >
+                                        <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '04'])
                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_2c[]" class="myfield" value="<?= $c1; ?>" >
+                                        <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '04'])
                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_3c[]" class="myfield" value="<?= $c2; ?>" >
+                                        <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '04'])
                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_4c[]" class="myfield" value="<?= $c3; ?>" >
+                                        <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$val->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['ors_class' => '04'])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="total_disbursementc[]" class="myfield" value="<?= $c_sum; ?>" >
+                                        <input type="text" name="total_disbursementc[]" class="textfield" value="<?= $c_sum; ?>" >
                                     </td>
                                 </tr>
                                 <?php else : ?>
                                 <tr>
                                     <td style="text-indent: 20px;">
-                                        <input type="hidden" name="idc[]" class="myfield" value="<?= $data->id ?>" >
-                                        <input type="text" name="particularsc[]" class="myfield" value="<?= $data->particulars ?>" >
+                                        <input type="hidden" name="idc[]" class="textfield" value="<?= $data->id ?>" >
+                                        <input type="text" name="particularsc[]" class="textfield" value="<?= $data->particulars ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="uacs_codec[]" class="myfield" value="<?= $data->uacs_code ?>" >
+                                        <input type="text" name="uacs_codec[]" class="textfield" value="<?= $data->uacs_code ?>" >
                                     </td>
                                     <!-- <td>
-                                        <input type="text" name="obligation_q_1c[]" class="myfield" value="<?= $data->obligation_q_1 ?>" >
+                                        <input type="text" name="obligation_q_1c[]" class="textfield" value="<?= $data->obligation_q_1 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_2c[]" class="myfield" value="<?= $data->obligation_q_2 ?>" >
+                                        <input type="text" name="obligation_q_2c[]" class="textfield" value="<?= $data->obligation_q_2 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_3c[]" class="myfield" value="<?= $data->obligation_q_3 ?>" >
+                                        <input type="text" name="obligation_q_3c[]" class="textfield" value="<?= $data->obligation_q_3 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="obligation_q_4c[]" class="myfield" value="<?= $data->obligation_q_4 ?>" >
+                                        <input type="text" name="obligation_q_4c[]" class="textfield" value="<?= $data->obligation_q_4 ?>" >
                                     </td>
                                     <td>
-                                        <input type="text" name="total_obligationc[]" class="myfield" value="<?= $data->total_obligation ?>" >
+                                        <input type="text" name="total_obligationc[]" class="textfield" value="<?= $data->total_obligation ?>" >
                                     </td> -->
                                     <td>
                                         <?php 
-                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                $c = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_1c[]" class="myfield" value="<?= $c; ?>" >
+                                        <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_2c[]" class="myfield" value="<?= $c1; ?>" >
+                                        <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_3c[]" class="myfield" value="<?= $c2; ?>" >
+                                        <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="disbursement_q_4c[]" class="myfield" value="<?= $c3; ?>" >
+                                        <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
                                     </td>
                                     <td>
-                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                        <?php $c_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->all(), 'net_amount'));
+                                                ->all(), 'payment'));
                                         ?>
-                                        <input type="text" name="total_disbursementc[]" class="myfield" value="<?= $c_sum; ?>" >
+                                        <input type="text" name="total_disbursementc[]" class="textfield" value="<?= $c_sum; ?>" >
                                     </td>
                                 </tr>
 
@@ -967,396 +967,396 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         <?php if($data4->uacs_code == '01') : ?>
                                         <tr>
                                             <td style="text-indent: 30px;">
-                                                <input type="hidden" name="idd[]" class="myfield" value="<?= $data4->id ?>" >
-                                                <input type="text" name="particularsd[]" class="myfield" value="<?= $data4->particulars ?>" >
+                                                <input type="hidden" name="idd[]" class="textfield" value="<?= $data4->id ?>" >
+                                                <input type="text" name="particularsd[]" class="textfield" value="<?= $data4->particulars ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="uacs_coded[]" class="myfield" value="<?= $data4->uacs_code ?>" >
+                                                <input type="text" name="uacs_coded[]" class="textfield" value="<?= $data4->uacs_code ?>" >
                                             </td>
                                             <!-- <td>
-                                                <input type="text" name="obligation_q_1d[]" class="myfield" value="<?= $data4->obligation_q_1 ?>" >
+                                                <input type="text" name="obligation_q_1d[]" class="textfield" value="<?= $data4->obligation_q_1 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_2d[]" class="myfield" value="<?= $data4->obligation_q_2 ?>" >
+                                                <input type="text" name="obligation_q_2d[]" class="textfield" value="<?= $data4->obligation_q_2 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_3d[]" class="myfield" value="<?= $data4->obligation_q_3 ?>" >
+                                                <input type="text" name="obligation_q_3d[]" class="textfield" value="<?= $data4->obligation_q_3 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_4d[]" class="myfield" value="<?= $data4->obligation_q_4 ?>" >
+                                                <input type="text" name="obligation_q_4d[]" class="textfield" value="<?= $data4->obligation_q_4 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="total_obligationd[]" class="myfield" value="<?= $data4->total_obligation ?>" >
+                                                <input type="text" name="total_obligationd[]" class="textfield" value="<?= $data4->total_obligation ?>" >
                                             </td> -->
                                             <td>
                                                 <?php 
-                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '01'])
                                                         ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_1d[]" class="myfield" value="<?= $d; ?>" >
+                                                <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '01'])
                                                         ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_2d[]" class="myfield" value="<?= $d1; ?>" >
+                                                <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '01'])
                                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_3d[]" class="myfield" value="<?= $d2; ?>" >
+                                                <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '01'])
                                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_4d[]" class="myfield" value="<?= $d3; ?>" >
+                                                <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['ors_class' => '01'])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="total_disbursementd[]" class="myfield" value="<?= $d_sum; ?>" >
+                                                <input type="text" name="total_disbursementd[]" class="textfield" value="<?= $d_sum; ?>" >
                                             </td>
                                         </tr>
                                         <?php elseif($data4->uacs_code == '02') : ?>
                                         <tr>
                                             <td style="text-indent: 30px;">
-                                                <input type="hidden" name="idd[]" class="myfield" value="<?= $data4->id ?>" >
-                                                <input type="text" name="particularsd[]" class="myfield" value="<?= $data4->particulars ?>" >
+                                                <input type="hidden" name="idd[]" class="textfield" value="<?= $data4->id ?>" >
+                                                <input type="text" name="particularsd[]" class="textfield" value="<?= $data4->particulars ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="uacs_coded[]" class="myfield" value="<?= $data4->uacs_code ?>" >
+                                                <input type="text" name="uacs_coded[]" class="textfield" value="<?= $data4->uacs_code ?>" >
                                             </td>
                                             <!-- <td>
-                                                <input type="text" name="obligation_q_1d[]" class="myfield" value="<?= $data4->obligation_q_1 ?>" >
+                                                <input type="text" name="obligation_q_1d[]" class="textfield" value="<?= $data4->obligation_q_1 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_2d[]" class="myfield" value="<?= $data4->obligation_q_2 ?>" >
+                                                <input type="text" name="obligation_q_2d[]" class="textfield" value="<?= $data4->obligation_q_2 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_3d[]" class="myfield" value="<?= $data4->obligation_q_3 ?>" >
+                                                <input type="text" name="obligation_q_3d[]" class="textfield" value="<?= $data4->obligation_q_3 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_4d[]" class="myfield" value="<?= $data4->obligation_q_4 ?>" >
+                                                <input type="text" name="obligation_q_4d[]" class="textfield" value="<?= $data4->obligation_q_4 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="total_obligationd[]" class="myfield" value="<?= $data4->total_obligation ?>" >
+                                                <input type="text" name="total_obligationd[]" class="textfield" value="<?= $data4->total_obligation ?>" >
                                             </td> -->
                                             <td>
                                                 <?php 
-                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '02'])
                                                         ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_1d[]" class="myfield" value="<?= $d; ?>" >
+                                                <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '02'])
                                                         ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_2d[]" class="myfield" value="<?= $d1; ?>" >
+                                                <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '02'])
                                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_3d[]" class="myfield" value="<?= $d2; ?>" >
+                                                <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '02'])
                                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_4d[]" class="myfield" value="<?= $d3; ?>" >
+                                                <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['ors_class' => '02'])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="total_disbursementd[]" class="myfield" value="<?= $d_sum; ?>" >
+                                                <input type="text" name="total_disbursementd[]" class="textfield" value="<?= $d_sum; ?>" >
                                             </td>
                                         </tr>
                                         <?php elseif($data4->uacs_code == '03') : ?>
                                         <tr>
                                             <td style="text-indent: 30px;">
-                                                <input type="hidden" name="idd[]" class="myfield" value="<?= $data4->id ?>" >
-                                                <input type="text" name="particularsd[]" class="myfield" value="<?= $data4->particulars ?>" >
+                                                <input type="hidden" name="idd[]" class="textfield" value="<?= $data4->id ?>" >
+                                                <input type="text" name="particularsd[]" class="textfield" value="<?= $data4->particulars ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="uacs_coded[]" class="myfield" value="<?= $data4->uacs_code ?>" >
+                                                <input type="text" name="uacs_coded[]" class="textfield" value="<?= $data4->uacs_code ?>" >
                                             </td>
                                             <!-- <td>
-                                                <input type="text" name="obligation_q_1d[]" class="myfield" value="<?= $data4->obligation_q_1 ?>" >
+                                                <input type="text" name="obligation_q_1d[]" class="textfield" value="<?= $data4->obligation_q_1 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_2d[]" class="myfield" value="<?= $data4->obligation_q_2 ?>" >
+                                                <input type="text" name="obligation_q_2d[]" class="textfield" value="<?= $data4->obligation_q_2 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_3d[]" class="myfield" value="<?= $data4->obligation_q_3 ?>" >
+                                                <input type="text" name="obligation_q_3d[]" class="textfield" value="<?= $data4->obligation_q_3 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_4d[]" class="myfield" value="<?= $data4->obligation_q_4 ?>" >
+                                                <input type="text" name="obligation_q_4d[]" class="textfield" value="<?= $data4->obligation_q_4 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="total_obligationd[]" class="myfield" value="<?= $data4->total_obligation ?>" >
+                                                <input type="text" name="total_obligationd[]" class="textfield" value="<?= $data4->total_obligation ?>" >
                                             </td> -->
                                             <td>
                                                 <?php 
-                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '03'])
                                                         ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_1d[]" class="myfield" value="<?= $d; ?>" >
+                                                <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '03'])
                                                         ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_2d[]" class="myfield" value="<?= $d1; ?>" >
+                                                <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '03'])
                                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_3d[]" class="myfield" value="<?= $d2; ?>" >
+                                                <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '03'])
                                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_4d[]" class="myfield" value="<?= $d3; ?>" >
+                                                <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['ors_class' => '03'])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="total_disbursementd[]" class="myfield" value="<?= $d_sum; ?>" >
+                                                <input type="text" name="total_disbursementd[]" class="textfield" value="<?= $d_sum; ?>" >
                                             </td>
                                         </tr>
                                         <?php elseif($data4->uacs_code == '04') : ?>
                                         <tr>
                                             <td style="text-indent: 30px;">
-                                                <input type="hidden" name="idd[]" class="myfield" value="<?= $data4->id ?>" >
-                                                <input type="text" name="particularsd[]" class="myfield" value="<?= $data4->particulars ?>" >
+                                                <input type="hidden" name="idd[]" class="textfield" value="<?= $data4->id ?>" >
+                                                <input type="text" name="particularsd[]" class="textfield" value="<?= $data4->particulars ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="uacs_coded[]" class="myfield" value="<?= $data4->uacs_code ?>" >
+                                                <input type="text" name="uacs_coded[]" class="textfield" value="<?= $data4->uacs_code ?>" >
                                             </td>
                                             <!-- <td>
-                                                <input type="text" name="obligation_q_1d[]" class="myfield" value="<?= $data4->obligation_q_1 ?>" >
+                                                <input type="text" name="obligation_q_1d[]" class="textfield" value="<?= $data4->obligation_q_1 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_2d[]" class="myfield" value="<?= $data4->obligation_q_2 ?>" >
+                                                <input type="text" name="obligation_q_2d[]" class="textfield" value="<?= $data4->obligation_q_2 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_3d[]" class="myfield" value="<?= $data4->obligation_q_3 ?>" >
+                                                <input type="text" name="obligation_q_3d[]" class="textfield" value="<?= $data4->obligation_q_3 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_4d[]" class="myfield" value="<?= $data4->obligation_q_4 ?>" >
+                                                <input type="text" name="obligation_q_4d[]" class="textfield" value="<?= $data4->obligation_q_4 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="total_obligationd[]" class="myfield" value="<?= $data4->total_obligation ?>" >
+                                                <input type="text" name="total_obligationd[]" class="textfield" value="<?= $data4->total_obligation ?>" >
                                             </td> -->
                                             <td>
                                                 <?php 
-                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '04'])
                                                         ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_1d[]" class="myfield" value="<?= $d; ?>" >
+                                                <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '04'])
                                                         ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_2d[]" class="myfield" value="<?= $d1; ?>" >
+                                                <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '04'])
                                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_3d[]" class="myfield" value="<?= $d2; ?>" >
+                                                <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '04'])
                                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_4d[]" class="myfield" value="<?= $d3; ?>" >
+                                                <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['ors_class' => '04'])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="total_disbursementd[]" class="myfield" value="<?= $d_sum; ?>" >
+                                                <input type="text" name="total_disbursementd[]" class="textfield" value="<?= $d_sum; ?>" >
                                             </td>
                                         </tr>
                                         <?php else : ?>
                                         <tr>
                                             <td style="text-indent: 30px;">
-                                                <input type="hidden" name="idd[]" class="myfield" value="<?= $data4->id ?>" >
-                                                <input type="text" name="particularsd[]" class="myfield" value="<?= $data4->particulars ?>" >
+                                                <input type="hidden" name="idd[]" class="textfield" value="<?= $data4->id ?>" >
+                                                <input type="text" name="particularsd[]" class="textfield" value="<?= $data4->particulars ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="uacs_coded[]" class="myfield" value="<?= $data4->uacs_code ?>" >
+                                                <input type="text" name="uacs_coded[]" class="textfield" value="<?= $data4->uacs_code ?>" >
                                             </td>
                                             <!-- <td>
-                                                <input type="text" name="obligation_q_1d[]" class="myfield" value="<?= $data4->obligation_q_1 ?>" >
+                                                <input type="text" name="obligation_q_1d[]" class="textfield" value="<?= $data4->obligation_q_1 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_2d[]" class="myfield" value="<?= $data4->obligation_q_2 ?>" >
+                                                <input type="text" name="obligation_q_2d[]" class="textfield" value="<?= $data4->obligation_q_2 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_3d[]" class="myfield" value="<?= $data4->obligation_q_3 ?>" >
+                                                <input type="text" name="obligation_q_3d[]" class="textfield" value="<?= $data4->obligation_q_3 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="obligation_q_4d[]" class="myfield" value="<?= $data4->obligation_q_4 ?>" >
+                                                <input type="text" name="obligation_q_4d[]" class="textfield" value="<?= $data4->obligation_q_4 ?>" >
                                             </td>
                                             <td>
-                                                <input type="text" name="total_obligationd[]" class="myfield" value="<?= $data4->total_obligation ?>" >
+                                                <input type="text" name="total_obligationd[]" class="textfield" value="<?= $data4->total_obligation ?>" >
                                             </td> -->
                                             <td>
                                                 <?php 
-                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        $d = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_1d[]" class="myfield" value="<?= $d; ?>" >
+                                                <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_2d[]" class="myfield" value="<?= $d1; ?>" >
+                                                <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_3d[]" class="myfield" value="<?= $d2; ?>" >
+                                                <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="disbursement_q_4d[]" class="myfield" value="<?= $d3; ?>" >
+                                                <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
                                             </td>
                                             <td>
-                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                <?php $d_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->all(), 'net_amount'));
+                                                        ->all(), 'payment'));
                                                 ?>
-                                                <input type="text" name="total_disbursementd[]" class="myfield" value="<?= $d_sum; ?>" >
+                                                <input type="text" name="total_disbursementd[]" class="textfield" value="<?= $d_sum; ?>" >
                                             </td>
                                         </tr>
                                     <?php endif ?>
@@ -1365,391 +1365,391 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 <?php if($data5->uacs_code == '01') : ?>
                                                 <tr>
                                                     <td style="text-indent: 40px;">
-                                                        <input type="hidden" name="ide[]" class="myfield" value="<?= $data5->id ?>" >
-                                                        <input type="text" name="particularse[]" class="myfield" value="<?= $data5->particulars ?>" >
+                                                        <input type="hidden" name="ide[]" class="textfield" value="<?= $data5->id ?>" >
+                                                        <input type="text" name="particularse[]" class="textfield" value="<?= $data5->particulars ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="uacs_codee[]" class="myfield" value="<?= $data5->uacs_code ?>" >
+                                                        <input type="text" name="uacs_codee[]" class="textfield" value="<?= $data5->uacs_code ?>" >
                                                     </td>
                                                     <!-- <td>
-                                                        <input type="text" name="obligation_q_1e[]" class="myfield" value="<?= $data5->obligation_q_1 ?>" >
+                                                        <input type="text" name="obligation_q_1e[]" class="textfield" value="<?= $data5->obligation_q_1 ?>" >
                                                     </td>
                                                     <td>
-                                                         <input type="text" name="obligation_q_2e[]" class="myfield" value="<?= $data5->obligation_q_2 ?>" >
+                                                         <input type="text" name="obligation_q_2e[]" class="textfield" value="<?= $data5->obligation_q_2 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_3e[]" class="myfield" value="<?= $data5->obligation_q_3 ?>" >
+                                                        <input type="text" name="obligation_q_3e[]" class="textfield" value="<?= $data5->obligation_q_3 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_4e[]" class="myfield" value="<?= $data5->obligation_q_4 ?>" >
+                                                        <input type="text" name="obligation_q_4e[]" class="textfield" value="<?= $data5->obligation_q_4 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="total_obligatione[]" class="myfield" value="<?= $data5->total_obligation ?>" >
+                                                        <input type="text" name="total_obligatione[]" class="textfield" value="<?= $data5->total_obligation ?>" >
                                                     </td> -->
                                                     <td>
-                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
                                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_1e[]" class="myfield" value="<?= $e; ?>" >
+                                                        <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
                                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_2e[]" class="myfield" value="<?= $e1; ?>" >
+                                                        <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
                                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_3e[]" class="myfield" value="<?= $e2; ?>" >
+                                                        <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
                                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_4e[]" class="myfield" value="<?= $e3; ?>" >
+                                                        <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="total_disbursemente[]" class="myfield" value="<?= $e_sum; ?>" 
+                                                        <input type="text" name="total_disbursemente[]" class="textfield" value="<?= $e_sum; ?>" 
                                                     </td>
                                                 </tr>
                                                 <?php elseif($data5->uacs_code == '02') : ?>
                                                 <tr>
                                                     <td style="text-indent: 40px;">
-                                                        <input type="hidden" name="ide[]" class="myfield" value="<?= $data5->id ?>" >
-                                                        <input type="text" name="particularse[]" class="myfield" value="<?= $data5->particulars ?>" >
+                                                        <input type="hidden" name="ide[]" class="textfield" value="<?= $data5->id ?>" >
+                                                        <input type="text" name="particularse[]" class="textfield" value="<?= $data5->particulars ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="uacs_codee[]" class="myfield" value="<?= $data5->uacs_code ?>" >
+                                                        <input type="text" name="uacs_codee[]" class="textfield" value="<?= $data5->uacs_code ?>" >
                                                     </td>
                                                     <!-- <td>
-                                                        <input type="text" name="obligation_q_1e[]" class="myfield" value="<?= $data5->obligation_q_1 ?>" >
+                                                        <input type="text" name="obligation_q_1e[]" class="textfield" value="<?= $data5->obligation_q_1 ?>" >
                                                     </td>
                                                     <td>
-                                                         <input type="text" name="obligation_q_2e[]" class="myfield" value="<?= $data5->obligation_q_2 ?>" >
+                                                         <input type="text" name="obligation_q_2e[]" class="textfield" value="<?= $data5->obligation_q_2 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_3e[]" class="myfield" value="<?= $data5->obligation_q_3 ?>" >
+                                                        <input type="text" name="obligation_q_3e[]" class="textfield" value="<?= $data5->obligation_q_3 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_4e[]" class="myfield" value="<?= $data5->obligation_q_4 ?>" >
+                                                        <input type="text" name="obligation_q_4e[]" class="textfield" value="<?= $data5->obligation_q_4 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="total_obligatione[]" class="myfield" value="<?= $data5->total_obligation ?>" >
+                                                        <input type="text" name="total_obligatione[]" class="textfield" value="<?= $data5->total_obligation ?>" >
                                                     </td> -->
                                                     <td>
-                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
                                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_1e[]" class="myfield" value="<?= $e; ?>" >
+                                                        <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
                                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_2e[]" class="myfield" value="<?= $e1; ?>" >
+                                                        <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
                                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_3e[]" class="myfield" value="<?= $e2; ?>" >
+                                                        <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
                                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_4e[]" class="myfield" value="<?= $e3; ?>" >
+                                                        <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="total_disbursemente[]" class="myfield" value="<?= $e_sum; ?>" 
+                                                        <input type="text" name="total_disbursemente[]" class="textfield" value="<?= $e_sum; ?>" 
                                                     </td>
                                                 </tr>
                                                 <?php elseif($data5->uacs_code == '03') : ?>
                                                 <tr>
                                                     <td style="text-indent: 40px;">
-                                                        <input type="hidden" name="ide[]" class="myfield" value="<?= $data5->id ?>" >
-                                                        <input type="text" name="particularse[]" class="myfield" value="<?= $data5->particulars ?>" >
+                                                        <input type="hidden" name="ide[]" class="textfield" value="<?= $data5->id ?>" >
+                                                        <input type="text" name="particularse[]" class="textfield" value="<?= $data5->particulars ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="uacs_codee[]" class="myfield" value="<?= $data5->uacs_code ?>" >
+                                                        <input type="text" name="uacs_codee[]" class="textfield" value="<?= $data5->uacs_code ?>" >
                                                     </td>
                                                     <!-- <td>
-                                                        <input type="text" name="obligation_q_1e[]" class="myfield" value="<?= $data5->obligation_q_1 ?>" >
+                                                        <input type="text" name="obligation_q_1e[]" class="textfield" value="<?= $data5->obligation_q_1 ?>" >
                                                     </td>
                                                     <td>
-                                                         <input type="text" name="obligation_q_2e[]" class="myfield" value="<?= $data5->obligation_q_2 ?>" >
+                                                         <input type="text" name="obligation_q_2e[]" class="textfield" value="<?= $data5->obligation_q_2 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_3e[]" class="myfield" value="<?= $data5->obligation_q_3 ?>" >
+                                                        <input type="text" name="obligation_q_3e[]" class="textfield" value="<?= $data5->obligation_q_3 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_4e[]" class="myfield" value="<?= $data5->obligation_q_4 ?>" >
+                                                        <input type="text" name="obligation_q_4e[]" class="textfield" value="<?= $data5->obligation_q_4 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="total_obligatione[]" class="myfield" value="<?= $data5->total_obligation ?>" >
+                                                        <input type="text" name="total_obligatione[]" class="textfield" value="<?= $data5->total_obligation ?>" >
                                                     </td> -->
                                                     <td>
-                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
                                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_1e[]" class="myfield" value="<?= $e; ?>" >
+                                                        <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
                                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_2e[]" class="myfield" value="<?= $e1; ?>" >
+                                                        <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
                                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_3e[]" class="myfield" value="<?= $e2; ?>" >
+                                                        <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
                                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_4e[]" class="myfield" value="<?= $e3; ?>" >
+                                                        <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="total_disbursemente[]" class="myfield" value="<?= $e_sum; ?>" 
+                                                        <input type="text" name="total_disbursemente[]" class="textfield" value="<?= $e_sum; ?>" 
                                                     </td>
                                                 </tr>
                                                 <?php elseif($data5->uacs_code == '04') : ?>
                                                 <tr>
                                                     <td style="text-indent: 40px;">
-                                                        <input type="hidden" name="ide[]" class="myfield" value="<?= $data5->id ?>" >
-                                                        <input type="text" name="particularse[]" class="myfield" value="<?= $data5->particulars ?>" >
+                                                        <input type="hidden" name="ide[]" class="textfield" value="<?= $data5->id ?>" >
+                                                        <input type="text" name="particularse[]" class="textfield" value="<?= $data5->particulars ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="uacs_codee[]" class="myfield" value="<?= $data5->uacs_code ?>" >
+                                                        <input type="text" name="uacs_codee[]" class="textfield" value="<?= $data5->uacs_code ?>" >
                                                     </td>
                                                     <!-- <td>
-                                                        <input type="text" name="obligation_q_1e[]" class="myfield" value="<?= $data5->obligation_q_1 ?>" >
+                                                        <input type="text" name="obligation_q_1e[]" class="textfield" value="<?= $data5->obligation_q_1 ?>" >
                                                     </td>
                                                     <td>
-                                                         <input type="text" name="obligation_q_2e[]" class="myfield" value="<?= $data5->obligation_q_2 ?>" >
+                                                         <input type="text" name="obligation_q_2e[]" class="textfield" value="<?= $data5->obligation_q_2 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_3e[]" class="myfield" value="<?= $data5->obligation_q_3 ?>" >
+                                                        <input type="text" name="obligation_q_3e[]" class="textfield" value="<?= $data5->obligation_q_3 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_4e[]" class="myfield" value="<?= $data5->obligation_q_4 ?>" >
+                                                        <input type="text" name="obligation_q_4e[]" class="textfield" value="<?= $data5->obligation_q_4 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="total_obligatione[]" class="myfield" value="<?= $data5->total_obligation ?>" >
+                                                        <input type="text" name="total_obligatione[]" class="textfield" value="<?= $data5->total_obligation ?>" >
                                                     </td> -->
                                                     <td>
-                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
                                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_1e[]" class="myfield" value="<?= $e; ?>" >
+                                                        <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
                                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_2e[]" class="myfield" value="<?= $e1; ?>" >
+                                                        <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
                                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_3e[]" class="myfield" value="<?= $e2; ?>" >
+                                                        <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
                                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_4e[]" class="myfield" value="<?= $e3; ?>" >
+                                                        <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data4->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="total_disbursemente[]" class="myfield" value="<?= $e_sum; ?>" 
+                                                        <input type="text" name="total_disbursemente[]" class="textfield" value="<?= $e_sum; ?>" 
                                                     </td>
                                                 </tr>
                                                 <?php else : ?>
                                                 <tr>
                                                     <td style="text-indent: 40px;">
-                                                        <input type="hidden" name="ide[]" class="myfield" value="<?= $data5->id ?>" >
-                                                        <input type="text" name="particularse[]" class="myfield" value="<?= $data5->particulars ?>" >
+                                                        <input type="hidden" name="ide[]" class="textfield" value="<?= $data5->id ?>" >
+                                                        <input type="text" name="particularse[]" class="textfield" value="<?= $data5->particulars ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="uacs_codee[]" class="myfield" value="<?= $data5->uacs_code ?>" >
+                                                        <input type="text" name="uacs_codee[]" class="textfield" value="<?= $data5->uacs_code ?>" >
                                                     </td>
                                                     <!-- <td>
-                                                        <input type="text" name="obligation_q_1e[]" class="myfield" value="<?= $data5->obligation_q_1 ?>" >
+                                                        <input type="text" name="obligation_q_1e[]" class="textfield" value="<?= $data5->obligation_q_1 ?>" >
                                                     </td>
                                                     <td>
-                                                         <input type="text" name="obligation_q_2e[]" class="myfield" value="<?= $data5->obligation_q_2 ?>" >
+                                                         <input type="text" name="obligation_q_2e[]" class="textfield" value="<?= $data5->obligation_q_2 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_3e[]" class="myfield" value="<?= $data5->obligation_q_3 ?>" >
+                                                        <input type="text" name="obligation_q_3e[]" class="textfield" value="<?= $data5->obligation_q_3 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="obligation_q_4e[]" class="myfield" value="<?= $data5->obligation_q_4 ?>" >
+                                                        <input type="text" name="obligation_q_4e[]" class="textfield" value="<?= $data5->obligation_q_4 ?>" >
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="total_obligatione[]" class="myfield" value="<?= $data5->total_obligation ?>" >
+                                                        <input type="text" name="total_obligatione[]" class="textfield" value="<?= $data5->total_obligation ?>" >
                                                     </td> -->
                                                     <td>
-                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_1e[]" class="myfield" value="<?= $e; ?>" >
+                                                        <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e1 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_2e[]" class="myfield" value="<?= $e1; ?>" >
+                                                        <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e2 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_3e[]" class="myfield" value="<?= $e2; ?>" >
+                                                        <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e3 = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="disbursement_q_4e[]" class="myfield" value="<?= $e3; ?>" >
+                                                        <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
                                                     </td>
                                                     <td>
-                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
+                                                        <?php $e_sum = array_sum(ArrayHelper::getColumn(OrsRegistry::find(['payment'])
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                                ->all(), 'net_amount'));
+                                                                ->all(), 'payment'));
                                                         ?>
-                                                        <input type="text" name="total_disbursemente[]" class="myfield" value="<?= $e_sum; ?>" 
+                                                        <input type="text" name="total_disbursemente[]" class="textfield" value="<?= $e_sum; ?>" 
                                                     </td>
                                                 </tr>
                                                 <?php endif ?>

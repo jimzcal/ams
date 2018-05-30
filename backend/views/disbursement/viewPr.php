@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\Transaction;
 use backend\models\Disbursement;
 use backend\models\accountingEntry;
+use backend\models\Ors;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
@@ -70,25 +71,30 @@ $this->title = 'Disbursement Voucher';
                                             <th>Responsibility Center</th>
                                             <th>Amount</th>
                                         </tr>
-                                        <?php foreach ($ors_model as $value): ?>
+                                        <?php 
+                                              $ors = explode(',', $model->ors);
+                                              for($x=0; $x<sizeof($ors); $x++) : 
+                                        ?>
+                                        <?php $ors_details = Ors::find()->where(['id' => $ors[$x]])->one(); ?>
                                             <tr>
-                                                <td style="width: 250px;">
-                                                    <?= $value->particular ?>
-                                                </td>
-                                                <td style="width: 130px;">
-                                                    <?= $value->ors_class.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>
+                                                <td>
+                                                  <?= $ors_details->particular ?>
                                                 </td>
                                                 <td>
-                                                    <?= $value->mfo_pap ?>
+                                                    <?= $ors_details->funding_source.'-'.$ors_details->ors_year.'-'.$ors_details->ors_month.'-'.$ors_details->ors_serial;
+                                                    ?>
                                                 </td>
                                                 <td>
-                                                    <?= $value->responsibility_center ?>
+                                                    <?= $ors_details->mfo_pap; ?>
                                                 </td>
                                                 <td style="width: 100px;">
-                                                    <?= $value->amount ?>
+                                                    <?= $ors_details->responsibility_center ?>
+                                                </td>
+                                                <td>
+                                                    <?= $ors_details->amount ?>
                                                 </td>
                                             </tr>
-                                        <?php endforeach ?>
+                                        <?php endfor ?>
                                     </table>
                                 </td>
                             </tr>

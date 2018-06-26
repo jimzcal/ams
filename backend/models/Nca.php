@@ -2,6 +2,8 @@
 
 namespace backend\models;
 
+use yii\helpers\ArrayHelper;
+
 use Yii;
 
 /**
@@ -105,6 +107,22 @@ class Nca extends \yii\db\ActiveRecord
     public function getDisbursements()
     {
         return $this->hasMany(Disbursement::className(), ['nca' => 'nca_no']);
+    }
+
+    public function getEarmarked()
+    {
+        $total_earmarked = array_sum(ArrayHelper::getColumn(NcaEarmarked::find()
+            ->where(['nca_no' => $this->nca_no])
+            ->all(), 'amount'));
+
+        return $total_earmarked;
+    }
+
+    public function getLastdate()
+    {
+        $date = NcaEarmarked::find()->where(['nca_no' => $this->nca_no])->orderBy(['id' => SORT_DESC])->one();
+
+        return isset($date->date) ? $date->date : '-';
     }
 
     /**

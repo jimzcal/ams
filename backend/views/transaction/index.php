@@ -13,8 +13,8 @@ $this->title = 'TRANSACTIONS';
 <div class="transaction-index">
 
     <div class="title">
-        <?= Html::a('Requirement', ['/requirements/create'], ['class' => 'btn btn-success btn-right']) ?>
-        <?= Html::a('New Transaction', ['create'], ['class' => 'btn btn-success btn-right']) ?>
+        <?= Html::a('Requirement', ['/requirements/create'], ['class' => 'btn btn-default btn-right']) ?>
+        <?= Html::a('New Transaction', ['create'], ['class' => 'btn btn-default btn-right']) ?>
     </div>
 
     <div class="new-title">

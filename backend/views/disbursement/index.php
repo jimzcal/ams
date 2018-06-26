@@ -12,8 +12,9 @@ $this->title = 'DISBURSEMENT VOUCHERS';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="disbursement-index">
-    <div class="title">
-        <?= Html::a('New', ['create'], ['class' => 'btn btn-success btn-right']) ?>
+
+    <div class="btn-group btn-group-vertical" style="float: left; right: 0; z-index: 300; position: fixed;" id="noprint">
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i><br> New', ['create'], ['class' => 'btn btn-default']) ?>
     </div>
 
     <div class="new-title">
@@ -81,7 +82,7 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                     [
                         'attribute' => 'particulars',
                         'format' =>'html',
-                        'contentOptions' => ['style' => 'width: 300px; white-space: normal;'], 
+                        'contentOptions' => ['style' => 'width: 300px; white-space: normal; font-size: 11px;'], 
                         'value' => function($data){
 
                             return Html::tag('p', $data->particulars);
@@ -110,7 +111,12 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                         }
                      ],
 
-                     'status',
+                     [
+                        'attribute' => 'status',
+                        'format' =>'html',
+                        'contentOptions' => ['style' => 'white-space: normal; font-size: 11px;'],
+                        'value' => 'status'
+                     ],
 
                     ['class' => 'yii\grid\ActionColumn'],
                 ],

@@ -6,158 +6,155 @@ use yii\helpers\ArrayHelper;
 use backend\models\Transaction;
 use backend\models\Disbursement;
 use backend\models\accountingEntry;
+use backend\models\FundCluster;
+use backend\models\Nca;
 use backend\models\Ors;
+use backend\models\OrsRegistry;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
 /* @var $form yii\widgets\ActiveForm */
-$this->title = 'Disbursement Voucher';
+$this->title = 'DISBURSEMENT VOUCHER';
 ?>
 
 <div class="disbursement-form">
     <?= Yii::$app->session->getFlash('error'); ?>
-    <div class="form-wrapper">
-        <div class="form-title">
-            <?= Html::encode($this->title) ?>
-            <?= Html::a('&times;', ['/site/index'], ['class' => 'close-button']) ?>
-        </div>
-        <?php $form = ActiveForm::begin(); ?>
+
+<div class="btn-group btn-group-vertical" style="float: left; left: 0; z-index: 300; position: fixed;" id="noprint">
+    <?= Html::a('<i class="glyphicon glyphicon-pencil" style= "font-size: 16px;"></i>', ['processor', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+    <?= Html::a('<i class="fa fa-pie-chart" style= "font-size: 16px;"></i>', ["/ors/index"], ['class' => 'btn btn-default']) ?>
+    <?= Html::a('<i class="fa fa-id-card" style= "font-size: 16px;"></i>', ["index"], ['class' => 'btn btn-default']) ?>
+</div>
+
+    <div class="new-title">
+        <i class="fa fa-id-card" aria-hidden="true"></i> Disbursement Vouchers (DV)
+    </div>
+
+    <div class="view-index">
         <div class="form-wrapper-content">
             <div class="row">
                 <div class="col-md-9">
-                    <table class="table">
-                        <tr>
-                            <td>
-                                DV NO.<br>
-                                <strong style="font-size: 14px;"><?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
-                            </td>
-                            <td colspan="1">
-                                
-                            </td>
-                            <td width="160">
-                                Transaction:<br>
-                                <strong style="font-size: 14px;"><?= $model->cash_advance ==='yes' ? 'Cash Advance' : 'For Disbursement' ?></strong>
-                            </td>
-                            <td>
-                                Mode of Payment:<br>
-                                <strong style="font-size: 14px;"><?= $model->mode_of_payment ?></strong>
-                            </td>
-                            <td width="120">
-                                Date:<br>
-                                <strong style="font-size: 14px;"><?= $model->date ?></strong>
+                    <table class="mytable">
+                        <tr style="border-bottom-style: dashed; border-color: #f5f5f0;">
+                            <td style="font-weight: bold; font-size: 18px;" colspan="3">DV No.
+                                <?= $model->dv_no ?></td>
+                            <td style="font-size: 18px; text-align: right; font-weight: bold;" colspan="3">
+                                <?= $model->date ?>
                             </td>
                         </tr>
+                        <tr style="height: 10px;">
+                            
+                        </tr>
                         <tr>
-                            <td colspan="3">
-                                Payee:<br>
-                                <strong style="font-size: 14px;"><?= $model->payee ?></strong>
-                            </td>
-                            <td>
-                                Fund Cluster:<br>
-                                <strong style="font-size: 14px;"><?= $model->fund_cluster ?></strong>
-                            </td>
-                            <td>
-                                NCA No.:<br>
-                                <strong style="font-size: 14px;"><?= $model->nca ?></strong>
+                            <td colspan="6">
+                                <table class="table table-striped table-condensed">
+                                    <tr>
+                                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">Payee</td>
+                                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                                        <td style="vertical-align: middle;"> 
+                                            <?= $model->payee ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 140px; color: #666666; font-size: 13px;">Fund Cluster</td>
+                                        <td style="color: green; font-weight: bold; vertical-align: middle; width: 5px;">:</td>
+                                        <td style="vertical-align: middle;">
+                                            <?= $model->fund_cluster ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; font-style: italic; width: 140px; vertical-align: middle; color: #666666; height: 40px; font-size: 13px;">Transaction Type</td>
+                                        <td style="color: green; font-weight: bold; vertical-align: middle; width: 5px;">:</td>
+                                        <td style="vertical-align: middle;">
+                                            <?= $model->transaction->name ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; font-style: italic; width: 140px; vertical-align: middle; color: #666666; height: 40px; font-size: 13px;">Gross Amount</td>
+                                        <td style="color: green; font-weight: bold; vertical-align: middle; width: 5px;">:</td>
+                                        <td style="vertical-align: middle;">
+                                            <?= number_format($model->gross_amount, 2) ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; font-style: italic; width: 140px; vertical-align: middle; color: #666666; height: 40px; font-size: 13px;">Less Amount</td>
+                                        <td style="color: green; font-weight: bold; vertical-align: middle; width: 5px;">:</td>
+                                        <td style="vertical-align: middle;">
+                                            <?= number_format($model->less_amount, 2) ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; font-style: italic; width: 140px; vertical-align: middle; color: #666666; height: 40px; font-size: 13px;">Net Amount</td>
+                                        <td style="color: green; font-weight: bold; vertical-align: middle; width: 5px;">:</td>
+                                        <td style="vertical-align: middle;">
+                                            <?= number_format($model->net_amount, 2) ?>
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
-                            <tr>
-                                <td colspan="5">
-                                    <table class="table table-condensed table-strped">
+                        
+                        <tr style="border-top-style: dashed; border-color: #f5f5f0;">
+                            <td colspan="6" style="font-weight: bold; font-style: italic;">Obligation Request and Status (ORS) :</td>
+                        <tr>
+                        <tr>
+                            <td colspan="6" style="height: 10px;"></td>
+                        </tr>
+                            <td colspan="6">
+                                <table class="table table-condensed table-bordered" style="font-size: 12px;">
                                         <tr>
-                                            <th>Particulars</th>
-                                            <th>ORS No</th>
-                                            <th>MFO/PAP</th>
-                                            <th>Responsibility Center</th>
-                                            <th>Amount</th>
+                                            <th style="text-align: center">Particulars</th>
+                                            <th style="text-align: center">ORS No</th>
+                                            <th style="text-align: center">Obligation</th>
+                                            <th style="text-align: center; width: 40px;">Balance</th>
+                                            <th style="text-align: center; width: 70px;">Payable</th>
+                                            <th style="text-align: center; width: 70px;">Payment</th>
                                         </tr>
                                         <?php 
                                               $ors = explode(',', $model->ors);
                                               for($x=0; $x<sizeof($ors); $x++) : 
                                         ?>
-                                        <?php $ors_details = Ors::find()->where(['id' => $ors[$x]])->one(); ?>
+                                        <?php $ors_details = OrsRegistry::find()->where(['ors_id' => $ors[$x]])->one(); ?>
                                             <tr>
-                                                <td>
+                                                <td style="width: 200px;">
                                                   <?= $ors_details->particular ?>
                                                 </td>
                                                 <td>
-                                                    <?= $ors_details->funding_source.'-'.$ors_details->ors_year.'-'.$ors_details->ors_month.'-'.$ors_details->ors_serial;
-                                                    ?>
+                                                    <?= $ors_details->ors_class.'-'.$ors_details->funding_source.'-'.$ors_details->ors_year.'-'.$ors_details->ors_month.'-'.$ors_details->ors_serial ?>
                                                 </td>
-                                                <td>
-                                                    <?= $ors_details->mfo_pap; ?>
+                                                <td style="width: 90px; text-align: right; font-weight: bold;">
+                                                    <?= $ors_details->obligation ?>
                                                 </td>
-                                                <td style="width: 100px;">
-                                                    <?= $ors_details->responsibility_center ?>
+                                                <td style="width: 90px; text-align: right; font-weight: bold;">
+                                                    <?= number_format($ors_details->obligation - $ors_details->getBalance($ors[$x]), 2) ?>
                                                 </td>
-                                                <td>
-                                                    <?= $ors_details->amount ?>
+                                                <td style="width: 90px; text-align: right; font-weight: bold;">
+                                                    <?= number_format($ors_details->payable, 2) ?>
+                                                </td>
+                                                <td style="width: 90px; text-align: right; font-weight: bold;">
+                                                    <?= number_format($ors_details->payment, 2) ?>
                                                 </td>
                                             </tr>
                                         <?php endfor ?>
                                     </table>
-                                </td>
-                            </tr>
-                        <tr>
-                            <td colspan="3">
-                                Gross Amount: <br>
-                                <strong style="font-size: 16px;"><?= number_format($model->gross_amount, 2) ?></strong>
                             </td>
-                            <td width="120">
-                                Less Amount: <br>
-                                <strong style="font-size: 16px;"><?= number_format($model->less_amount, 2) ?>
-                            </td>
-                            <td>
-                                Net Amount: <br>
-                                <strong style="font-size: 16px;"><?= number_format($model->net_amount, 2) ?>
+                        </tr>
+                
+                        <tr style="border-top-style: dashed; border-color: #f5f5f0;">
+                            <td colspan="6" style="font-weight: bold; font-style: italic;"> Remarks :
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
-                                <label>Accounting Entry</label>
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <td align="center">ACCOUNT TITLE</td><td align="center">UACS CODE</td>
-                                        <td align="center">DEBIT</td>
-                                        <td align="center">CREDIT AMOUNT</td>
-                                        <td align="center">CREDIT TO</td>
-                                    </tr>
-                                    <?php foreach ($entries as $entry) : ?>
-                                    <tr>
-                                        <td><?= $entry->account_title ?></td>
-                                        <td><?= $entry->uacs_code ?></td>
-                                        <td width="75"><?= number_format($entry->debit, 2) ?></td>
-                                        <td width="100"><?= number_format($entry->credit_amount, 2) ?></td>
-                                        <td width="80"><?= $entry->credit_to ?></td>
-                                    </tr>
+                            <td colspan="6">
+                                <?php foreach ($model->remarkss as $key => $value) : ?>
+                                    <h6>
+                                        <strong style="font-style: italic;">
+                                            - <?= $value->user->fullname ?>
+                                            <i class="text-muted">(<?= $value->date ?>)</i>
+                                        </strong>
+                                        <p style="text-indent: 5px;"><?= $value->remarks ?></p>
+                                    </h6>
                                 <?php endforeach ?>
-                                    <tr>
-                                        <td colspan="2" style="font-size: 18px;"><strong>TOTAL</strong></td>
-                                        <td>
-                                            <strong>
-                                                <?php $totalDebit = AccountingEntry::find(['debit'])->where(['dv_no'=>$model->dv_no])->all();
-
-                                                   echo number_format(array_sum(ArrayHelper::getColumn($totalDebit, 'debit')), 2);
-                                                ?>
-                                            </strong>
-                                        </td>
-                                        <td>
-                                            <strong>
-                                                <?php $total = AccountingEntry::find(['credit_amount'])->where(['dv_no'=>$model->dv_no])->all();
-
-                                                   echo number_format(array_sum(ArrayHelper::getColumn($total, 'credit_amount')), 2);
-                                                ?>
-                                            </strong>
-                                         </td>
-                                        <td width="80"></td>
-                                    </tr>
-                                </table>            
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5">
-                                <label>Remarks:</label><br>
-                                <?= $model->remarks ?>
                             </td>
                         </tr>
                     </table>
@@ -165,7 +162,7 @@ $this->title = 'Disbursement Voucher';
                 <div class="col-md-3" style="padding-top: 10px;">
                     <div class="title">
                         <span class="glyphicon glyphicon-paperclip"></span>
-                        <?= Html::encode('Attachments') ?>
+                        <?= Html::encode('ATTACHMENTS') ?>
                     </div>
                     <table class="table">
                         <tr>
@@ -196,9 +193,8 @@ $this->title = 'Disbursement Voucher';
                 </div>
             </div>
         </div>
-        <div class="form-group" style="padding-left: 15px;">
-            <?= Html::a('Update', ['/disbursement/processor', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        </div>
-    <?php ActiveForm::end(); ?>
     </div>
 </div>
+
+
+

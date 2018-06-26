@@ -20,7 +20,6 @@ use yii\helpers\ArrayHelper;
         <label>Select Requirements</label>
       </div>
 
-    
         <?php foreach ($requirements as $value) : ?>
           <div class="cbox">
             <?= $form->field($model, 'requirements[]')->checkbox(['label'=>$value->requirement, 'value'=>$value->requirement])->label(false); ?>

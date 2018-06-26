@@ -11,17 +11,16 @@ $this->title = 'NEW DISBURSEMENT VOUCHER';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="disbursement-create">
-    <div class="form-wrapper" id="form-wrapper">
-    	<div class="form-title">
-    		<?= Html::encode($this->title) ?>
-    		<?= Html::a('&times;', ['/disbursement/index'], ['class' => 'close-button']) ?>
-    	</div>
+ 
+    	<div class="new-title">
+	        <i class="fa fa-id-card" aria-hidden="true"></i> New Disbursement Voucher
+	    </div>
 
 	    <?= $this->render('_form', [
 	        'model' => $model,
 	        'dv_no' => $dv_no,
 	    ]) ?>
-	</div>
+
 </div>
 
 <script type="text/javascript">

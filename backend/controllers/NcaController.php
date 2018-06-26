@@ -4,12 +4,15 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Nca;
+use backend\models\NcaEarmarked;
 use backend\models\NcaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\FundingSource;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+
 
 /**
  * NcaController implements the CRUD actions for Nca model.
@@ -54,6 +57,28 @@ class NcaController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionList()
+    {
+        $searchModel = new NcaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionCashStatus($nca_no)
+    {
+        $nca_model = Nca::find()->where(['nca_no' => $nca_no])->one();
+        $dataProvider = NcaEarmarked::find()->where(['nca_no' => $nca_no])->all();
+
+        return $this->render('cash-status', [
+            'dataProvider' => $dataProvider,
+            'nca_model' => $nca_model
         ]);
     }
 
@@ -317,6 +342,8 @@ class NcaController extends Controller
 
         if($countSources >0)
         {
+            echo "<option value=''>Select Funding Source</option>";
+
             foreach($sources as $source)
             {
                  echo "<option value='".$source->funding_source."'>".$source->funding_source."</option>";
@@ -326,5 +353,19 @@ class NcaController extends Controller
             {
                 echo "<option> - </option>";
             }
+
+        // ArrayHelper::map(Nca::find()->where(['nca_no' => $nca_no])->all(),'funding_source', 'funding_source');
+    }
+
+    public function actionAllocations($funding_source)
+    {
+       $allocation = array_sum(ArrayHelper::getColumn(Nca::find()
+                            ->where(['funding_source' => $funding_source])
+                            ->andWhere(['fiscal_year' => date('Y')])
+                            ->andWhere(['like', 'validity', date('F')])
+                            ->all(), 'total_amount'));
+    
+       echo number_format($allocation, 2);
+       
     }
 }

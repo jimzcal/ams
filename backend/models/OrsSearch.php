@@ -20,7 +20,7 @@ class OrsSearch extends Ors
         return [
             [['id'], 'integer'],
             [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'safe'],
-            [['amount'], 'number'],
+            [['obligation'], 'number'],
         ];
     }
 
@@ -61,7 +61,7 @@ class OrsSearch extends Ors
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'amount' => $this->amount,
+            'obligation' => $this->obligation,
         ]);
 
         $query->andFilterWhere(['like', 'particular', $this->particular])

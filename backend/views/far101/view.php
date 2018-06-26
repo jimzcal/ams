@@ -14,20 +14,20 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="far101-view">
+
+    <div class="btn-group btn-group-vertical" style="float: left; left: 0; z-index: 300; position: fixed;" id="noprint">
+        <?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i>', ["/far101/index"], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('<i class="glyphicon glyphicon-print" style= "font-size: 14px;"></i>', ['print', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('<i class="glyphicon glyphicon-pencil" style= "font-size: 14px;"></i>', ['update', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('<i class="glyphicon glyphicon-trash" style= "font-size: 14px;"></i>', ['delete', 'id' => $model->id], ['class' => 'btn btn-default',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?> 
+    </div>
+
     <div style="margin-left: auto; margin-right: auto; width: auto;">
-        <div id="noprint" style="width: 95%; height: 55px; margin-right: auto; margin-left: auto;">
-            <?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i>', ["/far101/index"], ['class' => 'btn btn-default']) ?>
-            <div class="btn-group btn-group-lg" style="float: right;">
-                <?= Html::a('<i class="glyphicon glyphicon-print" style= "font-size: 14px;"></i>', ['print', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
-                <?= Html::a('<i class="glyphicon glyphicon-pencil" style= "font-size: 14px;"></i>', ['update', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
-                <?= Html::a('<i class="glyphicon glyphicon-trash" style= "font-size: 14px;"></i>', ['delete', 'id' => $model->id], ['class' => 'btn btn-default',
-                    'data' => [
-                        'confirm' => 'Are you sure you want to delete this item?',
-                        'method' => 'post',
-                    ],
-                ]) ?> 
-            </div>
-        </div>
         <div class="view-form">
             <table style="width: 100%;">
                     <tr style="height: 60px;">
@@ -106,11 +106,11 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                     <td><?= $value->obligation_q_3 ?></td>
                     <td><?= $value->obligation_q_4 ?></td>
                     <td><?= $value->total_obligation ?></td> -->
-                    <td><?= number_format($value->disbursement_q_1, 2) ?></td>
-                    <td><?= number_format($value->disbursement_q_2, 2) ?></td>
-                    <td><?= number_format($value->disbursement_q_3, 2) ?></td>
-                    <td><?= number_format($value->disbursement_q_4, 2) ?></td>
-                    <td><?= number_format($value->total_disbursement, 2) ?></td>
+                    <td><?= str_replace('0.00', '-', number_format($value->disbursement_q_1, 2)) ?></td>
+                    <td><?= str_replace('0.00', '-', number_format($value->disbursement_q_2, 2)) ?></td>
+                    <td><?= str_replace('0.00', '-', number_format($value->disbursement_q_3, 2)) ?></td>
+                    <td><?= str_replace('0.00', '-', number_format($value->disbursement_q_4, 2)) ?></td>
+                    <td><?= str_replace('0.00', '-', number_format($value->total_disbursement, 2)) ?></td>
                 </tr>
                     <?php $sub_far = Far101::find()->where(['parent_id' => $value->id])->all(); ?>
                     <?php foreach ($sub_far as $val) : ?>
@@ -122,11 +122,11 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                             <td><?= $val->obligation_q_3 ?></td>
                             <td><?= $val->obligation_q_4 ?></td>
                             <td><?= $val->total_obligation ?></td> -->
-                            <td><?= number_format($val->disbursement_q_1, 2) ?></td>
-                            <td><?= number_format($val->disbursement_q_2, 2) ?></td>
-                            <td><?= number_format($val->disbursement_q_3, 2) ?></td>
-                            <td><?= number_format($val->disbursement_q_4, 2) ?></td>
-                            <td><?= number_format($val->total_disbursement, 2) ?></td>
+                            <td><?= str_replace('0.00', '-', number_format($val->disbursement_q_1, 2)) ?></td>
+                            <td><?= str_replace('0.00', '-', number_format($val->disbursement_q_2, 2)) ?></td>
+                            <td><?= str_replace('0.00', '-', number_format($val->disbursement_q_3, 2)) ?></td>
+                            <td><?= str_replace('0.00', '-', number_format($val->disbursement_q_4, 2)) ?></td>
+                            <td><?= str_replace('0.00', '-', number_format($val->total_disbursement, 2)) ?></td>
                         </tr>
                             <?php $sub_far2 = Far101::find()->where(['parent_id' => $val->id])->all(); ?>
                             <?php foreach ($sub_far2 as $data) : ?>
@@ -138,11 +138,11 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     <td><?= $data->obligation_q_3 ?></td>
                                     <td><?= $data->obligation_q_4 ?></td>
                                     <td><?= $data->total_obligation ?></td> -->
-                                    <td><?= number_format($data->disbursement_q_1, 2) ?></td>
-                                    <td><?= number_format($data->disbursement_q_2, 2) ?></td>
-                                    <td><?= number_format($data->disbursement_q_3, 2) ?></td>
-                                    <td><?= number_format($data->disbursement_q_4, 2) ?></td>
-                                    <td><?= number_format($data->total_disbursement, 2) ?></td>
+                                    <td><?= str_replace('0.00', '-', number_format($data->disbursement_q_1, 2)) ?></td>
+                                    <td><?= str_replace('0.00', '-', number_format($data->disbursement_q_2, 2)) ?></td>
+                                    <td><?= str_replace('0.00', '-', number_format($data->disbursement_q_3, 2)) ?></td>
+                                    <td><?= str_replace('0.00', '-', number_format($data->disbursement_q_4, 2)) ?></td>
+                                    <td><?= str_replace('0.00', '-', number_format($data->total_disbursement, 2)) ?></td>
                                 </tr>
                                     <?php $sub_far3 = Far101::find()->where(['parent_id' => $data->id])->all(); ?>
                                     <?php foreach ($sub_far3 as $data4) : ?>
@@ -154,11 +154,11 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                             <td><?= $data4->obligation_q_3 ?></td>
                                             <td><?= $data4->obligation_q_4 ?></td>
                                             <td><?= $data4->total_obligation ?></td> -->
-                                            <td><?= number_format($data4->disbursement_q_1, 2) ?></td>
-                                            <td><?= number_format($data4->disbursement_q_2, 2) ?></td>
-                                            <td><?= number_format($data4->disbursement_q_3, 2) ?></td>
-                                            <td><?= number_format($data4->disbursement_q_4, 2) ?></td>
-                                            <td><?= number_format($data4->total_disbursement, 2) ?></td>
+                                            <td><?= str_replace('0.00', '-', number_format($data4->disbursement_q_1, 2)) ?></td>
+                                            <td><?= str_replace('0.00', '-', number_format($data4->disbursement_q_2, 2)) ?></td>
+                                            <td><?= str_replace('0.00', '-', number_format($data4->disbursement_q_3, 2)) ?></td>
+                                            <td><?= str_replace('0.00', '-', number_format($data4->disbursement_q_4, 2)) ?></td>
+                                            <td><?= str_replace('0.00', '-', number_format($data4->total_disbursement, 2)) ?></td>
                                         </tr>
                                             <?php $sub_far4 = Far101::find()->where(['parent_id' => $data4->id])->all(); ?>
                                             <?php foreach ($sub_far4 as $data5) : ?>
@@ -170,11 +170,11 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                     <td><?= $data5->obligation_q_3 ?></td>
                                                     <td><?= $data5->obligation_q_4 ?></td>
                                                     <td><?= $data5->total_obligation ?></td> -->
-                                                    <td><?= number_format($data5->disbursement_q_1, 2) ?></td>
-                                                    <td><?= number_format($data5->disbursement_q_2, 2) ?></td>
-                                                    <td><?= number_format($data5->disbursement_q_3, 2) ?></td>
-                                                    <td><?= number_format($data5->disbursement_q_4, 2) ?></td>
-                                                    <td><?= number_format($data5->total_disbursement, 2) ?></td>
+                                                    <td><?= str_replace('0.00', '-', number_format($data5->disbursement_q_1, 2)) ?></td>
+                                                    <td><?= str_replace('0.00', '-', number_format($data5->disbursement_q_2, 2)) ?></td>
+                                                    <td><?= str_replace('0.00', '-', number_format($data5->disbursement_q_3, 2)) ?></td>
+                                                    <td><?= str_replace('0.00', '-', number_format($data5->disbursement_q_4, 2)) ?></td>
+                                                    <td><?= str_replace('0.00', '-', number_format($data5->total_disbursement, 2)) ?></td>
                                                 </tr>
                                             <?php endforeach ?>
                                     <?php endforeach ?>

@@ -11,15 +11,13 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="nca-create">
-	<div class="form-wrapper">
-	    <div class="form-title">
-	    	<?= Html::encode($this->title) ?>
-	    	<?= Html::a('&times;', ['/nca/index'], ['class' => 'close-button']) ?>
-	    </div>
+	<div class="new-title">
+        <i class="fa fa-sticky-note" aria-hidden="true"></i> New Notice of Cash Allocation (NCA)
+    </div>
 
-	    <?= $this->render('_form', [
-	        'model' => $model,
-	        'data' => $data,
-	    ]) ?>
-	</div>
+    <?= $this->render('_form', [
+        'model' => $model,
+        'data' => $data,
+    ]) ?>
+
 </div>

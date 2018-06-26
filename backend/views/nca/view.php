@@ -16,15 +16,16 @@ $this->title = 'NCA: '.$model->nca_no;
 
 <!--     <h1><?= Html::encode($this->title) ?></h1> -->
 
-    <div class="title">
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger btn-right',
+
+    <div class="btn-group btn-group-vertical" style="float: left; left: 0; z-index: 300; position: fixed;" id="noprint">
+        <?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i>', ["/nca/index"], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('<i class="glyphicon glyphicon-pencil" style= "font-size: 14px;"></i>', ['update', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('<i class="glyphicon glyphicon-trash" style= "font-size: 14px;"></i>', ['delete', 'id' => $model->id], ['class' => 'btn btn-default',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-right']) ?>
+        ]) ?> 
     </div>
 
     <div class="new-title">
@@ -36,35 +37,57 @@ $this->title = 'NCA: '.$model->nca_no;
         <div class="mini-header">
             <i class="glyphicon glyphicon-list-alt"></i> NCA Details
         </div>
-        <table class="table table-bordered table-striped table-condensed" style="width: 98%; margin-right: auto; margin-left: auto;">
-            <tr>
-                <th>FUND CLUSTER</th>
-                <th>NCA NO.</th>
-                <th>FISCAL YEAR</th>
-                <th>NCA-TYPE</th>
-                <th>TOTAL AMOUNT</th>
-            </tr>
-            <tr>
-                <td><?= $model->fund_cluster.'-'.$model->fundCluster->description ?></td>
-                <td><?= $model->nca_no ?></td>
-                <td><?= $model->fiscal_year ?></td>
-                <td><?= $model->nca_type ?></td>
-                <td>
-                    <?php 
-                        // $total_nca_amount = array_sum(ArrayHelper::getColumn(Nca::find()
-                        //         ->where(['nca_no'=>$model->nca_no])
-                        //         ->all(), 'total_amount'));
-                        echo number_format($model->total_amount, 2) 
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <label>PURPOSE:</label><br>
-                    <p style="text-align: justify;"><?= $model->purpose ?></p>
-                </td>
-            </tr>
-        </table>
+        <table class="table table-striped">
+                    <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
+                            NCA No.
+                        </td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                        <td><?= $model->nca_no ?></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
+                            Fund Cluster
+                        </td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                        <td><?= $model->fund_cluster ?></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
+                            Fiscal Year
+                        </td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                        <td><?= $model->fiscal_year ?></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
+                            NCA Type
+                        </td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                        <td><?= $model->nca_type ?></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
+                            Validity
+                        </td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                        <td><?= $model->validity ?></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
+                            Allocation
+                        </td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                        <td><?= number_format($model->total_amount, 2) ?></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
+                            Purpose
+                        </td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                        <td><?= $model->purpose ?></td>
+                    </tr>
+                </table>
     </div> 
 
     <div class="view-index">

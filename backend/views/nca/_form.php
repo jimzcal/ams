@@ -13,7 +13,7 @@ use backend\models\FundingSource;
 ?>
 
 <div class="nca-form">
-
+    <div class="view-index">
     <?php $form = ActiveForm::begin(); ?>
         <table class="table table-bordered">
             <tr>
@@ -51,7 +51,7 @@ use backend\models\FundingSource;
             </tr>
             <tr>
                 <td colspan="4" id="dynamicInput">
-                    <table class="table table-bordered" style="width: 97%; margin-right: auto; margin-left: auto; padding: 10px;">
+                    <table class="table table-bordered" style="width: 99%; margin-right: auto; margin-left: auto; padding: 10px;">
                         <tr>
                             <td colspan="2">
                                 <label>Funding Source Code</label>
@@ -86,7 +86,7 @@ use backend\models\FundingSource;
                         </tr>
                         <tr>
                             <td width="60">
-                                <input type="checkbox" name="validity_0[]" class="first" value="january">
+                                <input type="checkbox" name="validity_0[]" class="first" value="January">
                             </td>
                             <td style="text-align: right" width="150">
                                 <label>January</label>
@@ -95,7 +95,7 @@ use backend\models\FundingSource;
                                 <input type="number" name="january[0]" class="form-control firstInput v" value = "<?= $model->january=== null ? 0 : $model->january ?>" required>
                             </td>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="third" value="july">
+                                <input type="checkbox" name="validity_0[]" class="third" value="July">
                             </td>
                             <td style="text-align: right" width="150">
                                 <label>July</label>
@@ -106,7 +106,7 @@ use backend\models\FundingSource;
                         </tr>
                         <tr>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="first" value="february">
+                                <input type="checkbox" name="validity_0[]" class="first" value="February">
                             </td>
                             <td style="text-align: right">
                                 <label>February</label>
@@ -115,7 +115,7 @@ use backend\models\FundingSource;
                                 <input type="number" name="february[0]" class="form-control firstInput v" value = "<?= $model->february=== null ? 0 : $model->february ?>" required>
                             </td>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="third" value="august">
+                                <input type="checkbox" name="validity_0[]" class="third" value="August">
                             </td>
                             <td style="text-align: right">
                                 <label>August</label>
@@ -126,7 +126,7 @@ use backend\models\FundingSource;
                         </tr>
                         <tr>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="first" value="march">
+                                <input type="checkbox" name="validity_0[]" class="first" value="March">
                             </td>
                             <td style="text-align: right">
                                 <label>March</label>
@@ -135,7 +135,7 @@ use backend\models\FundingSource;
                                 <input type="number" name="march[0]" class="form-control firstInput v" value = "<?= $model->march=== null ? 0 : $model->march ?>" required>
                             </td>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="third" value="september">
+                                <input type="checkbox" name="validity_0[]" class="third" value="September">
                             </td>
                             <td style="text-align: right">
                                 <label>September</label>
@@ -148,7 +148,7 @@ use backend\models\FundingSource;
                             <td style="font-style: italic;" colspan="2">
                                 <input type="checkbox" id="selectallfirst" />
                                 <label for="selectallfirst" id="selectControl">Select</label>
-                                <label>First Quarter (Sub-total)</label>
+                                <label>1st Quarter (Sub-total)</label>
                             </td>
                             <td>
                                 <input type="number" name="first_quarter[0]" class="form-control" id="totalFirst" value = "<?= $model->first_quarter=== null ? 0 : $model->first_quarter ?>" required>
@@ -156,7 +156,7 @@ use backend\models\FundingSource;
                             <td style="font-style: italic;" colspan="2">
                                 <input type="checkbox" id="selectallthird" />
                                 <label for="selectallthird" id="selectControl3">Select</label>
-                                <label>Third Quarter (Sub-total)</label>
+                                <label>3rd Quarter (Sub-total)</label>
                             </td>
                             <td>
                                 <input type="number" name="third_quarter[0]" class="form-control" id="totalThird" value = "<?= $model->third_quarter=== null ? 0 : $model->third_quarter ?>" required>
@@ -164,7 +164,7 @@ use backend\models\FundingSource;
                         </tr>
                         <tr>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="second" value="april">
+                                <input type="checkbox" name="validity_0[]" class="second" value="April">
                             </td>
                             <td style="text-align: right">
                                 <label>April</label>
@@ -173,7 +173,7 @@ use backend\models\FundingSource;
                                 <input type="number" name="april[0]" class="form-control secondInput v" value = "<?= $model->april=== null ? 0 : $model->april ?>" required>
                             </td>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="forth" value="october">
+                                <input type="checkbox" name="validity_0[]" class="forth" value="October">
                             </td>
                             <td style="text-align: right">
                                 <label>October</label>
@@ -184,7 +184,7 @@ use backend\models\FundingSource;
                         </tr>
                         <tr>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="second" value="may">
+                                <input type="checkbox" name="validity_0[]" class="second" value="May">
                             </td>
                             <td style="text-align: right">
                                 <label>May</label>
@@ -193,7 +193,7 @@ use backend\models\FundingSource;
                                 <input type="number" name="may[0]" class="form-control secondInput v" value = "<?= $model->may=== null ? 0 : $model->may ?>" required>
                             </td>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="forth" value="november">
+                                <input type="checkbox" name="validity_0[]" class="forth" value="November">
                             </td>
                             <td style="text-align: right">
                                 <label>November</label>
@@ -204,7 +204,7 @@ use backend\models\FundingSource;
                         </tr>
                         <tr>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="second" value="june">
+                                <input type="checkbox" name="validity_0[]" class="second" value="June">
                             </td>
                             <td style="text-align: right">
                                 <label>June</label>
@@ -213,7 +213,7 @@ use backend\models\FundingSource;
                                 <input type="number" name="june[0]" class="form-control secondInput v" value = "<?= $model->june === null ? 0 : $model->june ?>" required>
                             </td>
                             <td>
-                                <input type="checkbox" name="validity_0[]" class="forth" value="december">
+                                <input type="checkbox" name="validity_0[]" class="forth" value="December">
                             </td>
                             <td style="text-align: right">
                                 <label>December</label>
@@ -226,7 +226,7 @@ use backend\models\FundingSource;
                             <td style="font-style: italic;" colspan="2">
                                 <input type="checkbox" id="selectallsecond" />
                                 <label for="selectallsecond" id="selectControl2">Select</label>
-                                <label> Second Quarter(Sub-total)</label>
+                                <label> 2nd Quarter(Sub-total)</label>
                             </td>
                             <td>
                                 <input type="number" name="second_quarter[0]" class="form-control" id="totalSecond" value = "<?= $model->second_quarter=== null ? 0 : $model->second_quarter ?>" required>
@@ -234,7 +234,7 @@ use backend\models\FundingSource;
                             <td style="font-style: italic;" colspan="2">
                                 <input type="checkbox" id="selectallforth" />
                                 <label for="selectallforth" id="selectControl4">Select</label>
-                                <label>Forth Quarter(Sub-total)</label>
+                                <label>4th Quarter(Sub-total)</label>
                             </td>
                             <td>
                                 <input type="number" name="forth_quarter[0]" class="form-control" id="totalForth" value = "<?= $model->forth_quarter=== null ? 0 : $model->forth_quarter ?>" required>
@@ -247,8 +247,8 @@ use backend\models\FundingSource;
     <div class="form-group" style="padding-left: 15px;">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
-
     <?php ActiveForm::end(); ?>
+    </div>
 </div>
 
 <script lang="JavaScript">
@@ -262,7 +262,7 @@ function addInput(dynamicInput)
      }
      else {
           var newdiv = document.createElement('table');
-          newdiv.innerHTML = '<table><tr><td colspan="2"><label>Funding Source Code</label><input type="text" name="funding_source['+counter+']" class="form-control" required></td><td><label>MDS Sub-account No.</label><input type="text" name="mds_sub_acc_no['+counter+']" class="form-control" required></td><td colspan="3"><label>GSB Branch</label><input type="text" name="gsb_branch['+counter+']" class="form-control" required></td></tr><tr><td width="60"><input type="checkbox" name="validity_'+counter+'[]" value="january"></td><td style="text-align: right" width="150"><label>January</label></td><td><input type="number" name="january['+counter+']" class="form-control" value = "<?= $model->january=== null ? 0 : $model->january ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="july"></td><td style="text-align: right" width="150"><label>July</label></td><td><input type="number" name="july['+counter+']" class="form-control" value = "<?= $model->july === null ? 0 : $model->july ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="february"></td><td style="text-align: right"><label>February</label></td><td><input type="number" name="february['+counter+']" class="form-control" value = "<?= $model->february=== null ? 0 : $model->february ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="august"></td><td style="text-align: right"><label>August</label></td><td><input type="number" name="august['+counter+']" class="form-control" value = "<?= $model->august=== null ? 0 : $model->august ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="march"></td><td style="text-align: right"><label>March</label></td><td><input type="number" name="march['+counter+']" class="form-control" value = "<?= $model->march=== null ? 0 : $model->march ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="september"></td><td style="text-align: right"><label>September</label></td><td><input type="number" name="september['+counter+']" class="form-control" value = "<?= $model->september=== null ? 0 : $model->september ?>" required></td></tr><tr><td style="font-style: italic;" colspan="2"><label>Sub-total (First Quarter)</label></td><td><input type="number" name="first_quarter['+counter+']" class="form-control" value = "<?= $model->first_quarter=== null ? 0 : $model->first_quarter ?>" required></td><td style="font-style: italic;" colspan="2"><label>Sub-total (Third Quarter)</label></td><td><input type="number" name="third_quarter['+counter+']" class="form-control" value = "<?= $model->third_quarter=== null ? 0 : $model->third_quarter ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="april"></td><td style="text-align: right"><label>April</label></td><td><input type="number" name="april['+counter+']" class="form-control" value = "<?= $model->april=== null ? 0 : $model->april ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="october"></td><td style="text-align: right"><label>October</label></td><td><input type="number" name="october['+counter+']" class="form-control" value = "<?= $model->october=== null ? 0 : $model->october ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="may"></td><td style="text-align: right"><label>May</label></td><td><input type="number" name="may['+counter+']" class="form-control" value = "<?= $model->may=== null ? 0 : $model->may ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="november"></td><td style="text-align: right"><label>November</label></td><td><input type="number" name="november['+counter+']" class="form-control" value = "<?= $model->november=== null ? 0 : $model->november ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="june"></td><td style="text-align: right"><label>June</label></td><td><input type="number" name="june['+counter+']" class="form-control" value = "<?= $model->june === null ? 0 : $model->june ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="december"></td><td style="text-align: right"><label>December</label></td><td><input type="number" name="december['+counter+']" class="form-control" value = "<?= $model->december=== null ? 0 : $model->december ?>" required></td></tr><tr><td style="font-style: italic;" colspan="2"><label>Sub-total (Second Quarter)</label></td><td><input type="number" name="second_quarter['+counter+']" class="form-control" value = "<?= $model->second_quarter=== null ? 0 : $model->second_quarter ?>" required></td><td style="font-style: italic;" colspan="2"><label>Sub-total (Forth Quarter)</label></td><td><input type="number" name="forth_quarter['+counter+']" class="form-control" value = "<?= $model->forth_quarter=== null ? 0 : $model->forth_quarter ?>" required></td></tr></table>';
+          newdiv.innerHTML = '<table><tr><td colspan="2"><label>Funding Source Code</label><input type="text" name="funding_source['+counter+']" class="form-control" required></td><td><label>MDS Sub-account No.</label><input type="text" name="mds_sub_acc_no['+counter+']" class="form-control" required></td><td colspan="3"><label>GSB Branch</label><input type="text" name="gsb_branch['+counter+']" class="form-control" required></td></tr><tr><td width="60"><input type="checkbox" name="validity_'+counter+'[]" value="january"></td><td style="text-align: right" width="150"><label>January</label></td><td><input type="number" name="january['+counter+']" class="form-control" value = "<?= $model->january=== null ? 0 : $model->january ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="july"></td><td style="text-align: right" width="150"><label>July</label></td><td><input type="number" name="july['+counter+']" class="form-control" value = "<?= $model->july === null ? 0 : $model->july ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="february"></td><td style="text-align: right"><label>February</label></td><td><input type="number" name="february['+counter+']" class="form-control" value = "<?= $model->february=== null ? 0 : $model->february ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="august"></td><td style="text-align: right"><label>August</label></td><td><input type="number" name="august['+counter+']" class="form-control" value = "<?= $model->august=== null ? 0 : $model->august ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="march"></td><td style="text-align: right"><label>March</label></td><td><input type="number" name="march['+counter+']" class="form-control" value = "<?= $model->march=== null ? 0 : $model->march ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="september"></td><td style="text-align: right"><label>September</label></td><td><input type="number" name="september['+counter+']" class="form-control" value = "<?= $model->september=== null ? 0 : $model->september ?>" required></td></tr><tr><td style="font-style: italic;" colspan="2"><label>Sub-total (1st Quarter)</label></td><td><input type="number" name="first_quarter['+counter+']" class="form-control" value = "<?= $model->first_quarter=== null ? 0 : $model->first_quarter ?>" required></td><td style="font-style: italic;" colspan="2"><label>Sub-total (3rd Quarter)</label></td><td><input type="number" name="third_quarter['+counter+']" class="form-control" value = "<?= $model->third_quarter=== null ? 0 : $model->third_quarter ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="april"></td><td style="text-align: right"><label>April</label></td><td><input type="number" name="april['+counter+']" class="form-control" value = "<?= $model->april=== null ? 0 : $model->april ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="october"></td><td style="text-align: right"><label>October</label></td><td><input type="number" name="october['+counter+']" class="form-control" value = "<?= $model->october=== null ? 0 : $model->october ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="may"></td><td style="text-align: right"><label>May</label></td><td><input type="number" name="may['+counter+']" class="form-control" value = "<?= $model->may=== null ? 0 : $model->may ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="november"></td><td style="text-align: right"><label>November</label></td><td><input type="number" name="november['+counter+']" class="form-control" value = "<?= $model->november=== null ? 0 : $model->november ?>" required></td></tr><tr><td><input type="checkbox" name="validity_'+counter+'[]" value="june"></td><td style="text-align: right"><label>June</label></td><td><input type="number" name="june['+counter+']" class="form-control" value = "<?= $model->june === null ? 0 : $model->june ?>" required></td><td><input type="checkbox" name="validity_'+counter+'[]" value="december"></td><td style="text-align: right"><label>December</label></td><td><input type="number" name="december['+counter+']" class="form-control" value = "<?= $model->december=== null ? 0 : $model->december ?>" required></td></tr><tr><td style="font-style: italic;" colspan="2"><label>Sub-total (2nd Quarter)</label></td><td><input type="number" name="second_quarter['+counter+']" class="form-control" value = "<?= $model->second_quarter=== null ? 0 : $model->second_quarter ?>" required></td><td style="font-style: italic;" colspan="2"><label>Sub-total (4th Quarter)</label></td><td><input type="number" name="forth_quarter['+counter+']" class="form-control" value = "<?= $model->forth_quarter=== null ? 0 : $model->forth_quarter ?>" required></td></tr></table>';
 
           document.getElementById("dynamicInput").appendChild(newdiv).className = "table table-bordered my-table";
           counter++;

@@ -14,7 +14,7 @@ $this->title = 'Responsibility Centers';
 <div class="responsibility-center-index">
 
     <div class="title">
-        <div class="btn btn-success btn-right" data-toggle="modal" data-target="#newModal">New Responsibility Center</div>
+        <div class="btn btn-default btn-right" data-toggle="modal" data-target="#newModal">New Responsibility Center</div>
     </div>
 
     <div class="new-title">

@@ -19,6 +19,10 @@ use kartik\mpdf\Pdf;
 use backend\models\LddapAda;
 use backend\models\Ors;
 use backend\models\ActivityLog;
+use backend\models\DvLog;
+use backend\models\DvRemarks;
+use backend\models\OrsRegistry;
+use backend\models\NcaEarmarked;
 
 /**
  * DisbursementController implements the CRUD actions for Disbursement model.
@@ -75,6 +79,9 @@ class DisbursementController extends Controller
     {
         $dv_no = Disbursement::find()->where(['id'=>$id])->one();
         $transaction = TransactionStatus::find()->where(['dv_no' => $dv_no->dv_no])->one();
+        $dv_log = DvLog::find()->where(['dv_no' => $dv_no->dv_no])->all();
+
+        $dvlog_model = new DvLog();
         // var_dump($dv_no);
         // exit();
         $transaction1 = explode(',', $transaction->receiving);
@@ -84,6 +91,16 @@ class DisbursementController extends Controller
         $transaction5 = explode(',', $transaction->lddap_ada);
         $transaction6 = explode(',', $transaction->releasing);
         $transaction7 = explode(',', $transaction->indexing);
+        $transaction8 = explode(',', $transaction->approval);
+
+        if ($dvlog_model->load(Yii::$app->request->post()))
+        {
+            $dvlog_model->transaction = "Out from Accounting and Received by: ";
+            $dvlog_model->save(false);
+
+            return $this->render('_loader', ['id' => $id]);
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id), 
             'transaction1'=>$transaction1, 
@@ -92,24 +109,36 @@ class DisbursementController extends Controller
             'transaction4'=>$transaction4,
             'transaction5'=>$transaction5, 
             'transaction6'=>$transaction6,
-            'transaction7'=>$transaction7
+            'transaction7'=>$transaction7,
+            'transaction8'=>$transaction8,
+            'dv_log' => $dv_log,
+            'dvlog_model' => $dvlog_model,
         ]);
     }
 
     public function actionProcessor($id)
     {
         $model = $this->findModel($id);
-        $model2 = new AccountingEntry();
+        $model2 = new OrsRegistry();
 
         //$ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
 
         $dv_no = Disbursement::find(['dv_no'])->where(['id'=>$id])->one();
         $transaction = TransactionStatus::find()->where(['dv_no'=>$dv_no->dv_no])->one();
 
-        $entries = AccountingEntry::find()->where(['dv_no'=>$dv_no])->all();
+        //$ors_checker = OrsRegistry::find()->where(['dv_no'=>$dv_no])->all();
         
         if ($model->load(Yii::$app->request->post()))
         {
+
+            if (\Yii::$app->user->can('Verifier') && (($model->action == null) || ($model->action == '')))
+            {
+                Yii::$app->getSession()->setFlash('warning', 'Please select action');
+
+                return $this->render('viewP', [
+                    'model' => $model]);
+            }
+
             if(isset($_POST['requirements']))
             {
                 $model->attachments = implode(',', $_POST['requirements']);
@@ -122,11 +151,6 @@ class DisbursementController extends Controller
 
             $model->net_amount = $model->gross_amount - $model->less_amount;
 
-            // var_dump($model->ors_no);
-            // exit();
-
-            $model->save(false);
-
             //Start of Ativity Log --------------------------------
 
             $log = new ActivityLog();
@@ -137,41 +161,121 @@ class DisbursementController extends Controller
 
             //End of Ativity Log --------------------------------
 
-            for($i=0; $i<sizeof($model->particular); $i++)
+            for($i=0; $i<sizeof($model->ors_id); $i++)
             {
                 $ors = explode('-', $model->ors_no[$i]);
 
-                // var_dump($model->ors_id[0]);
-                // exit();
+                if(sizeof($ors) != 5)
+                {
+                    Yii::$app->getSession()->setFlash('warning', 'Wrong ORS FormaT. Please check the ORS Number');
 
-                Yii::$app->db->createCommand()->update('ors', [
-                    'particular' => $model->particular[$i],
-                    'ors_class' => $ors[0],
-                    'ors_year' => $ors[1],
-                    'ors_month' => $ors[2],
-                    'ors_serial' => $ors[3],
-                    'mfo_pap' => $model->mfo_pap[$i],
-                    'responsibility_center' => $model->responsibility_center[$i],
-                    'amount' => $model->amount[$i],
-                    ],
-                    ['id' => $model->ors_id[$i]])->execute();
+                    return $this->render('viewP', [
+                        'model' => $model,
+                        //'ors_model' => $ors_model,
+                    ]);
+                }
+
+                $ors_registry_model = OrsRegistry::find()->where(['dv_no' => $model->dv_no])->andWhere(['ors_id' => $model->ors_id[$i]])->all();
+
+                if($ors_registry_model == null)
+                {
+
+                    $new_ors_registry_model = new OrsRegistry();
+
+                    $new_ors_registry_model->date = date('Y-m-d');
+                    $new_ors_registry_model->ors_id = $model->ors_id[$i];
+                    $new_ors_registry_model->particular = $model->particular[$i];
+                    $new_ors_registry_model->dv_no = $model->dv_no;
+                    $new_ors_registry_model->disbursement_date = $model->date;
+                    $new_ors_registry_model->fund_cluster = $model->fund_cluster;
+                    $new_ors_registry_model->ors_class = $ors[0];
+                    $new_ors_registry_model->funding_source = $ors[1];
+                    $new_ors_registry_model->ors_year = $ors[2];
+                    $new_ors_registry_model->ors_month = $ors[3];
+                    $new_ors_registry_model->ors_serial = $ors[4];
+                    $new_ors_registry_model->mfo_pap = $model->mfo_pap[$i];
+                    $new_ors_registry_model->responsibility_center = $model->responsibility_center[$i];
+                    $new_ors_registry_model->obligation = str_replace(',', '', $model->obligation[$i]);
+                    $new_ors_registry_model->payable = str_replace(',', '', $model->payable[$i]);
+                    $new_ors_registry_model->payment = str_replace(',', '', $model->payment[$i]);
+
+                     $new_ors_registry_model->save(false);
+                }
+
+                if($ors_registry_model != null)
+                {
+
+                    $new_ors_registry_model = OrsRegistry::find()->where(['dv_no' => $model->dv_no])->andWhere(['ors_id' => $model->ors_id[$i]])->one();
+
+                    $new_ors_registry_model->date = date('Y-m-d');
+                    $new_ors_registry_model->ors_id = $model->ors_id[$i];
+                    $new_ors_registry_model->particular = $model->particular[$i];
+                    $new_ors_registry_model->dv_no = $model->dv_no;
+                    $new_ors_registry_model->disbursement_date = $model->date;
+                    $new_ors_registry_model->fund_cluster = $model->fund_cluster;
+                    $new_ors_registry_model->ors_class = $ors[0];
+                    $new_ors_registry_model->funding_source = $ors[1];
+                    $new_ors_registry_model->ors_year = $ors[2];
+                    $new_ors_registry_model->ors_month = $ors[3];
+                    $new_ors_registry_model->ors_serial = $ors[4];
+                    $new_ors_registry_model->mfo_pap = $model->mfo_pap[$i];
+                    $new_ors_registry_model->responsibility_center = $model->responsibility_center[$i];
+                    $new_ors_registry_model->obligation = str_replace(',', '', $model->obligation[$i]);
+                    $new_ors_registry_model->payable = str_replace(',', '', $model->payable[$i]);
+                    $new_ors_registry_model->payment = str_replace(',', '', $model->payment[$i]);
+
+                     $new_ors_registry_model->save(false);
+                }
             }
+
+            $model->status = \Yii::$app->user->can('processor') ? "Processed" : $model->action;
+            $model->save(false);
+
+            //New Remarks ------------------------------------------
+                $model_remarks = DvRemarks::find()
+                        ->where(['dv_no' => $model->dv_no])
+                        ->andWhere(['user_id' => Yii::$app->user->identity->id])
+                        ->one();
+
+                if($model_remarks == null)
+                {
+                    if(!empty($model->remarks))
+                    {
+                        $model_remarks = new DvRemarks();
+                        $model_remarks->dv_no = $model->dv_no;
+                        $model_remarks->remarks = $model->remarks;
+                        $model_remarks->user_id = Yii::$app->user->identity->id;
+                        $model_remarks->date = date('Y-m-d g:i a');
+
+                        $model_remarks->save(false);
+                    }
+                }
+
+                else
+                {
+                    if(!empty($model->remarks))
+                    {
+                        $model_remarks->remarks = $model->remarks;
+                        $model_remarks->date = date('Y-m-d g:i a');
+
+                        $model_remarks->save(false);
+                    }
+                    else
+                    {
+                        $model_remarks->delete();
+                    }
+                }
+            //End Remarks ------------------------------------------
 
             Yii::$app->getSession()->setFlash('success', 'Successfully Saved');
             return $this->render('viewPr', [
                 'model' => $this->findModel($id),
-                'entries' => $entries,
-                'model2' => $model2,
-                //'ors_model' => $ors_model,
             ]);
             
         }
 
         return $this->render('viewP', [
             'model' => $model,
-            'entries' => $entries,
-            'model2' => $model2,
-            //'ors_model' => $ors_model,
         ]);
 
     }
@@ -187,65 +291,24 @@ class DisbursementController extends Controller
 
             if ($model->load(Yii::$app->request->post()))
             {
-                $particulars = $model->particulars;
-                $ors_no = $_POST['ors_no'];
-                $mfo_pap = $_POST['mfo_pap'];
-                $responsibility_center = $_POST['responsibility_center'];
-                $amount = $_POST['amount'];
-
                 $model->gross_amount = str_replace(',', '', $model->gross_amount);
                 $model->dv_no = $dv_no;
-                $ids = [];
-                
+                $model->status = 'Received & Encoded';
+                $model->ors = implode(',', $model->ors);
 
-                for($i=0; $i<sizeof($ors_no); $i++)
-                {
-                    if(!empty($ors_no[$i]) && !empty($mfo_pap[$i]) && 
-                        !empty($responsibility_center[$i]) && !empty($amount[$i]))
-                    {
-
-                        $ors_model = new Ors();
-                        //$ors_model->dv_no = $dv_no;
-                        $ors_model->particular = $model->particulars;
-                        $ors_model->responsibility_center = $responsibility_center[$i];
-                        $ors_model->mfo_pap = $mfo_pap[$i];
-                        $ors_model->amount = str_replace(',', '', $amount[$i]);
-                        $ors = explode('-', $ors_no[$i]);
-
-                            $ors_model->ors_class = $ors[0];
-                            $ors_model->funding_source = $ors[1];
-                            $ors_model->ors_year = $ors[2];
-                            $ors_model->ors_month = $ors[3];
-                            $ors_model->ors_serial = $ors[4];
-
-                        $check_ors = Ors::find()->where(['ors_class' => $ors[0]])
-                                                ->andWhere(['funding_source' => $ors[1]])
-                                                ->andWhere(['ors_year' => $ors[2]])
-                                                ->andWhere(['ors_month' => $ors[3]])
-                                                ->andWhere(['ors_serial' => $ors[4]])
-                                                ->one();
-                        if($check_ors == null)
-                        {
-                            $ors_model->save(false);
-                            $ids[$i] = $ors_model->id;
-                        }
-
-                        if($check_ors != null)
-                        {
-                            $ids[$i] = $check_ors->id;
-                        }
-                    }
-                }
-
-                $id = implode(',', $ids);
-                $model->ors = $id;
                 $model->save(false);
+      
+                
+                //Start recording transactions ------------------------------------------
 
                 $model3 = new TransactionStatus();
                 $model3->dv_no = $model->dv_no;
                 $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                 $model3->receiving = $detail;
                 $model3->save(false);
+
+                //End Recordinf transactions ------------------------------------------
+
 
                 //Start of Ativity Log --------------------------------
 
@@ -262,7 +325,7 @@ class DisbursementController extends Controller
                     $advance_model = new CashAdvance();
 
                     $advance_model->dv_no = $model->dv_no;
-                    $advance_model->date = date('Y-m-d');
+                    $advance_model->date = date('Y-m-d ');
                     $date = $advance_model->date;
                     $advance_model->status = 'Unliquidated';
                     $advance_model->due_date = date('Y-m-d', strtotime($date. '+'. $model->period. 'days'));
@@ -270,9 +333,20 @@ class DisbursementController extends Controller
                     $advance_model->save(false);
                 }
 
+                if($model->employee_id != null)
+                {
+                    $dvlog_model = new DvLog();
+                    $dvlog_model->date = date('Y-m-d g:i a');
+                    $dvlog_model->dv_no = $model->dv_no;
+                    $dvlog_model->transaction = 'Forward DV to accounting by: ';
+                    $dvlog_model->employee_id = $model->employee_id;
+
+                    $dvlog_model->save(false);
+                }
+
                 // print_r('Successfully Saved');
                 // exit();
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
 
             } 
             else
@@ -314,78 +388,24 @@ class DisbursementController extends Controller
                     ->delete('cash_advance', ['dv_no' => $model->dv_no])
                     ->execute();
                 }
-
-                $model->gross_amount = str_replace(',', '', $model->gross_amount);
-                //$model->save(false);
-
-                $ids = $_POST['ors_id'];
-                $particulars = $model->particulars;
-                $ors_no = $_POST['ors_no'];
-                //$ors_no = explode(' ', $ors_no[0]);
-                $mfo_pap = $_POST['mfo_pap'];
-                $responsibility_center = $_POST['responsibility_center'];
-                $amount = $_POST['amount'];
-
-                // $ors_id = Ors::find()->where(['dv_no' => $model->dv_no])->all();
-
-                for($i=0; $i<sizeof($ors_no); $i++)
+                
+                if (\Yii::$app->user->can('processor'))
                 {
-                    if(isset($ids[$i]))
-                    {
-                        $id = $ids[$i];
-                        $ors = explode('-', $ors_no[$i]);
-
-                        Yii::$app->db->createCommand()->update('ors', [
-                            'particular' => $model->particulars,
-                            'responsibility_center' => $responsibility_center[$i],
-                            'mfo_pap' => $mfo_pap[$i],
-                            'amount' => str_replace(',', '', $amount[$i]),
-                            'ors_class' => $ors[0],
-                            'funding_source' => $ors[1],
-                            'ors_year' => $ors[2],
-                            'ors_month' => $ors[3],
-                            'ors_serial' => $ors[4]
-                        ], 
-                            ['id' => $id])->execute();
-                    }
-
-                    else
-                    { 
-                        $ors_model = new Ors();
-                        $ors_model->particular = $model->particulars;
-                        $ors_model->responsibility_center = $responsibility_center[$i];
-                        $ors_model->mfo_pap = $mfo_pap[$i];
-                        $ors_model->amount = str_replace(',', '', $amount[$i]);
-                        $ors = explode('-', $ors_no[$i]);
-
-                            $ors_model->ors_class = $ors[0];
-                            $ors_model->funding_source = $ors[1];
-                            $ors_model->ors_year = $ors[2];
-                            $ors_model->ors_month = $ors[3];
-                            $ors_model->ors_serial = $ors[4];
-
-                         $check_ors = Ors::find()->where(['ors_class' => $ors[0]])
-                                                ->andWhere(['funding_source' => $ors[1]])
-                                                ->andWhere(['ors_year' => $ors[2]])
-                                                ->andWhere(['ors_month' => $ors[3]])
-                                                ->andWhere(['ors_serial' => $ors[4]])
-                                                ->one();
-
-                        if($check_ors == null)
-                        {
-                            $ors_model->save(false);
-                            $ids[$i] = $ors_model->id;
-                        }
-
-                        if($check_ors != null)
-                        {
-                            $ids[$i] = $check_ors->id;
-                        }      
-                    }
+                    $model->status = 'Processed';
                 }
 
-                $id = implode(',', $ids);
-                $model->ors = $id;
+                if (\Yii::$app->user->can('Verifier'))
+                {
+                    $model->status = 'Verified';
+                }
+
+                $model->gross_amount = str_replace(',', '', $model->gross_amount);
+                $ors = implode(',', $model->ors);
+                $model->ors = $ors;
+
+                // var_dump($model->ors);
+                // exit();
+
                 $model->save(false);
 
                 if(($model->period != null) && ($model->period != 0))
@@ -411,7 +431,18 @@ class DisbursementController extends Controller
 
                 //End of Ativity Log --------------------------------
 
-                return $this->redirect(['view', 'id' => $model->id]);
+                if($model->employee_id != null)
+                {
+                    $dvlog_model = new DvLog();
+                    $dvlog_model->date = date('Y-m-d g:i a');
+                    $dvlog_model->dv_no = $model->dv_no;
+                    $dvlog_model->transaction = 'Forward DV to accounting by: ';
+                    $dvlog_model->employee_id = $model->employee_id;
+
+                    $dvlog_model->save(false);
+                }
+
+                return $this->redirect(['index']);
             }
 
             return $this->render('update', [
@@ -455,12 +486,197 @@ class DisbursementController extends Controller
 
     }
 
+    public function actionMain($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            if(($model->action == null) || ($model->action == ''))
+            {
+                Yii::$app->getSession()->setFlash('warning', 'Please select action');
+
+                return $this->render('mainForm', ['model' => $model]);
+            }
+
+            if(isset($_POST['requirements']))
+            {
+                $model->attachments = implode(',', $_POST['requirements']);
+            }
+
+            if(isset($_POST['requirements']) === null )
+            {
+                $model->attachments = '';
+            }
+
+            $model->net_amount = str_replace(',', '', $model->gross_amount) - str_replace(',', '', $model->less_amount);
+
+            //Start of Ativity Log --------------------------------
+
+            $log = new ActivityLog();
+            $log->particular = "Open DV No. ".$model->dv_no." and ".$model->action. " Short details are: Gross Amount - ".$model->gross_amount.", Net Amount - ".$model->net_amount;
+            $log->date_time = date('m/d/Y h:i');
+            $log->user = Yii::$app->user->identity->fullname;
+            $log->save(false);
+
+            //End of Ativity Log --------------------------------
+
+            for($i=0; $i<sizeof($model->ors_id); $i++)
+            {
+                $ors = explode('-', $model->ors_no[$i]);
+
+                if(sizeof($ors) != 5)
+                {
+                    Yii::$app->getSession()->setFlash('warning', 'Wrong ORS FormaT. Please check the ORS Number');
+
+                    return $this->render('mainForm', [
+                        'model' => $model,
+                        //'ors_model' => $ors_model,
+                    ]);
+                }
+
+                $ors_registry_model = OrsRegistry::find()->where(['dv_no' => $model->dv_no])->andWhere(['ors_id' => $model->ors_id[$i]])->all();
+
+                if($ors_registry_model == null)
+                {
+
+                    $new_ors_registry_model = new OrsRegistry();
+
+                    $new_ors_registry_model->date = date('Y-m-d');
+                    $new_ors_registry_model->ors_id = $model->ors_id[$i];
+                    $new_ors_registry_model->particular = $model->particular[$i];
+                    $new_ors_registry_model->dv_no = $model->dv_no;
+                    $new_ors_registry_model->disbursement_date = $model->date;
+                    $new_ors_registry_model->fund_cluster = $model->fund_cluster;
+                    $new_ors_registry_model->ors_class = $ors[0];
+                    $new_ors_registry_model->funding_source = $ors[1];
+                    $new_ors_registry_model->ors_year = $ors[2];
+                    $new_ors_registry_model->ors_month = $ors[3];
+                    $new_ors_registry_model->ors_serial = $ors[4];
+                    $new_ors_registry_model->mfo_pap = $model->mfo_pap[$i];
+                    $new_ors_registry_model->responsibility_center = $model->responsibility_center[$i];
+                    $new_ors_registry_model->obligation = str_replace(',', '', $model->obligation[$i]);
+                    $new_ors_registry_model->payable = str_replace(',', '', $model->payable[$i]);
+                    $new_ors_registry_model->payment = str_replace(',', '', $model->payment[$i]);
+
+                     $new_ors_registry_model->save(false);
+                }
+
+                if($ors_registry_model != null)
+                {
+
+                    $new_ors_registry_model = OrsRegistry::find()->where(['dv_no' => $model->dv_no])->andWhere(['ors_id' => $model->ors_id[$i]])->one();
+
+                    $new_ors_registry_model->date = date('Y-m-d');
+                    $new_ors_registry_model->ors_id = $model->ors_id[$i];
+                    $new_ors_registry_model->particular = $model->particular[$i];
+                    $new_ors_registry_model->dv_no = $model->dv_no;
+                    $new_ors_registry_model->disbursement_date = $model->date;
+                    $new_ors_registry_model->fund_cluster = $model->fund_cluster;
+                    $new_ors_registry_model->ors_class = $ors[0];
+                    $new_ors_registry_model->funding_source = $ors[1];
+                    $new_ors_registry_model->ors_year = $ors[2];
+                    $new_ors_registry_model->ors_month = $ors[3];
+                    $new_ors_registry_model->ors_serial = $ors[4];
+                    $new_ors_registry_model->mfo_pap = $model->mfo_pap[$i];
+                    $new_ors_registry_model->responsibility_center = $model->responsibility_center[$i];
+                    $new_ors_registry_model->obligation = str_replace(',', '', $model->obligation[$i]);
+                    $new_ors_registry_model->payable = str_replace(',', '', $model->payable[$i]);
+                    $new_ors_registry_model->payment = str_replace(',', '', $model->payment[$i]);
+
+                     $new_ors_registry_model->save(false);
+                }
+            }
+
+            //New Remarks ------------------------------------------
+                $model_remarks = DvRemarks::find()
+                        ->where(['dv_no' => $model->dv_no])
+                        ->andWhere(['user_id' => Yii::$app->user->identity->id])
+                        ->one();
+
+                if($model_remarks == null)
+                {
+                    if(!empty($model->remarks))
+                    {
+                        $model_remarks = new DvRemarks();
+                        $model_remarks->dv_no = $model->dv_no;
+                        $model_remarks->remarks = $model->remarks;
+                        $model_remarks->user_id = Yii::$app->user->identity->id;
+                        $model_remarks->date = date('Y-m-d g:i a');
+
+                        $model_remarks->save(false);
+                    }
+                }
+
+                else
+                {
+                    if(!empty($model->remarks))
+                    {
+                        $model_remarks->remarks = $model->remarks;
+                        $model_remarks->date = date('Y-m-d g:i a');
+
+                        $model_remarks->save(false);
+                    }
+                    else
+                    {
+                        $model_remarks->delete();
+                    }
+                }
+            //End Remarks ------------------------------------------
+
+             $model->status = $model->action;
+             $model->save(false);
+
+             return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('mainForm', ['model' => $model]);
+    }
+
     public function actionCash()
     {
         $results = Disbursement::find()->where(['cash_advance'=>'yes'])->all();
         return $this->render('advanceView', [
                 'results' => $results,
             ]);
+    }
+
+    public function actionPrint($id)
+    {
+        $dv_no = Disbursement::find()->where(['id'=>$id])->one();
+        $transaction = TransactionStatus::find()->where(['dv_no' => $dv_no->dv_no])->one();
+        // var_dump($dv_no);
+        // exit();
+        $transaction1 = explode(',', $transaction->receiving);
+        $transaction2 = explode(',', $transaction->processing);
+        $transaction3 = explode(',', $transaction->verification);
+        $transaction4 = explode(',', $transaction->nca_control);
+        $transaction5 = explode(',', $transaction->lddap_ada);
+        $transaction6 = explode(',', $transaction->releasing);
+        $transaction7 = explode(',', $transaction->indexing);
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'format' => Pdf::FORMAT_FOLIO,
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $this->renderPartial('view', [
+                    'model' => $this->findModel($id), 
+                    'transaction1'=>$transaction1, 
+                    'transaction2'=>$transaction2,
+                    'transaction3'=>$transaction3, 
+                    'transaction4'=>$transaction4,
+                    'transaction5'=>$transaction5, 
+                    'transaction6'=>$transaction6,
+                    'transaction7'=>$transaction7
+                ]),
+                'options' => [
+                    'title' => 'View',
+                    'filename' => $id,
+                    'marginTop' => .25
+                ]
+            ]);
+
+            return $pdf->render();   
     }
 
     public function actionReports()
@@ -480,84 +696,153 @@ class DisbursementController extends Controller
     public function actionCashstatus($id)
     {
         $model = $this->findModel($id);
-        $disbursements = Disbursement::find()->where(['nca'=>$model->nca])->andWhere(['obligated' => 'yes'])->all();
-        $checker = Disbursement::find()->where(['id'=>$id])->andWhere(['obligated' => 'yes'])->one();
-        $model3 = Nca::find()->where(['nca_no'=>$model->nca])->andWhere(['funding_source' => $model->funding_source])->one();
-        // $ors_model = Ors::find()->where(['dv_no' => $model->dv_no])->all();
-        $entries = AccountingEntry::find()->where(['dv_no' => $model->dv_no])->all();
+        $nca_model = Nca::find()->where(['fiscal_year' => date('Y')])->all();
+        $nca_earmarked = NcaEarmarked::find(['nca_no'])->where(['dv_no' => $model->dv_no])->all();
 
-        if ($model->load(Yii::$app->request->post()))
+        if($model->load(Yii::$app->request->post())) 
         {
-           if($model->status === 'Cancelled')
-           {
-                Yii::$app->getSession()->setFlash('warning', 'Oops!, This DV No. '.$model2->dv_no.' has been cancelled. Therefore, it cannot be saved.');
-                return $this->render('cash-status/_form', [
-                    'model' => $model,
-                    'model3' => $model3,
-                    // 'ors_model' => $ors_model,
-                    'entries' => $entries,
-                    ]);
-           }
-           else
-           {
-                $model->obligated = 'yes';
-                $model->status = 'earmarked';
-                $model->save(false);
+            if(isset($_POST['nca_id']))
+            {
+                $nca_id = $_POST['nca_id'];
+                $x =0;
+                $sum = 0;
 
-                $checker2 = DisbursedDv::find()->where(['dv_no' => $model->dv_no])->one();
-
-                if($checker2 === null)
+                foreach ($nca_id as $value) 
                 {
-                    $model2 = new DisbursedDv();
+                    if(($model->payment[$value] !== 0.00) && (!empty($model->payment[$value]) && ($model->payment[$value] != '0.00')) && ($model->payment[$value] != null))
+                    {
+                        $x++;
 
-                    $model2->dv_no = $model->dv_no;
-                    $model2->date_paid = $model->date_paid;
-                    $model2->lddap_check_no = $model->lddap_check_no;
-                    $model2->save(false);
-
-                    //Start of Ativity Log --------------------------------
-
-                    $log = new ActivityLog();
-                    $log->particular = "Made changes on DV No. ".$model2->dv_no.' with the following short details: Gross Amount - '.$model->gross_amount.', Net Amount - '.$model->net_amount.', Status: earmarked';
-                    $log->date_time = date('m/d/Y h:i');
-                    $log->user = Yii::$app->user->identity->fullname;
-                    $log->save(false);
-
-                    //End of Ativity Log --------------------------------
+                        $payment = str_replace(',', '', $model->payment[$value]);
+                        $sum += (float)$payment;
+                    }
                 }
 
+                if(($sum>((float)$model->net_amount)) == true)
+                {
+                    Yii::$app->getSession()->setFlash('warning', 'Total Earmarked amount cannot be exceeded to the DV Payable Amount');
+
+                    return $this->render('cash-status/_form', [
+                    'model' => $model,
+                    'nca_model' => $nca_model,
+                    ]);
+                }
+
+                if(($sum<((float)$model->net_amount)) == true)
+                {
+                    Yii::$app->getSession()->setFlash('warning', 'Total Earmarked amount cannot be less that the DV Payable Amount');
+
+                    return $this->render('cash-status/_form', [
+                    'model' => $model,
+                    'nca_model' => $nca_model,
+                    ]);
+                }
+
+                if($x == sizeof($nca_id))
+                {
+                    foreach ($nca_id as $index) 
+                    {
+                        $model_earmarked = NcaEarmarked::find()
+                                ->where(['dv_no' => $model->dv_no])
+                                ->andWhere(['nca_no' => $model->nca_no[$index]])
+                                ->one();
+
+                        if($model_earmarked == null)
+                        {
+                            $model_earmarked = new NcaEarmarked();
+
+                            $model_earmarked->date = date('Y-m-d');
+                            $model_earmarked->dv_no = $model->dv_no;
+                            $model_earmarked->nca_no = $model->nca_no[$index];
+                            $model_earmarked->funding_source = $model->funding_source[$index];
+                            $model_earmarked->amount = str_replace(',', '', $model->payment[$index]);
+
+                            $model_earmarked->save(false);
+                        }
+                        else
+                        {
+                            $model_earmarked->date = date('Y-m-d');
+                            $model_earmarked->dv_no = $model->dv_no;
+                            $model_earmarked->nca_no = $model->nca_no[$index];
+                            $model_earmarked->funding_source = $model->funding_source[$index];
+                            $model_earmarked->amount = str_replace(',', '', $model->payment[$index]);
+
+                            $model_earmarked->save(false);
+                        }
+                    }
+                    $model->obligated = 'Yes';
+                    $model->status = 'Earmarked';
+                    $model->save(false);
+
+                    //New Remarks ------------------------------------------
+                        $model_remarks = DvRemarks::find()
+                                ->where(['dv_no' => $model->dv_no])
+                                ->andWhere(['user_id' => Yii::$app->user->identity->id])
+                                ->one();
+
+                        if($model_remarks == null)
+                        {
+                            if(!empty($model->remarks))
+                            {
+                                $model_remarks = new DvRemarks();
+                                $model_remarks->dv_no = $model->dv_no;
+                                $model_remarks->remarks = $model->remarks;
+                                $model_remarks->user_id = Yii::$app->user->identity->id;
+                                $model_remarks->date = date('Y-m-d g:i a');
+
+                                $model_remarks->save(false);
+                            }
+                        }
+
+                        else
+                        {
+                            if(!empty($model->remarks))
+                            {
+                                $model_remarks->remarks = $model->remarks;
+                                $model_remarks->date = date('Y-m-d g:i a');
+
+                                $model_remarks->save(false);
+                            }
+                            else
+                            {
+                                $model_remarks->delete();
+                            }
+                        }
+                    //End Remarks ------------------------------------------
+                }
                 else
                 {
-                    $model2 = DisbursedDv::find()->where(['dv_no' => $model->dv_no])->one();
-                    $model2->dv_no = $model->dv_no;
-                    $model2->date_paid = $model->date_paid;
-                    $model2->lddap_check_no = $model->lddap_check_no;
-                    $model2->save(false);
-                }
+                    Yii::$app->getSession()->setFlash('warning', 'Selected NCA cannot be Zero');
 
+                    return $this->render('cash-status/_form', [
+                    'model' => $model,
+                    'nca_model' => $nca_model,
+                    ]);
+                }   
+            }
 
-                Yii::$app->getSession()->setFlash('success', 'Successfully Saved');
-                // Yii::$app->db->createCommand()->update('disbursement', ['remarks' => $model->remarks, 'status' => $model->status, 'obligated' => 'yes'], ['dv_no' => $model->dv_no])->execute();
+            else
+            {
+                Yii::$app->getSession()->setFlash('warning', 'Please Select NCA');
+
                 return $this->render('cash-status/_form', [
                 'model' => $model,
-                'model3' => $model3,
-                // 'ors_model' => $ors_model,
-                'entries' => $entries,
-                //'disbursements' => $disbursements,
+                'nca_model' => $nca_model,
                 ]);
-           }
+            }
+
+            return $this->render('cash-status/view', [
+                'model' => $model,
+                'nca_model' => $nca_model,
+                'nca_earmarked' => $nca_earmarked,
+                ]); 
+            
         }
 
-        if($checker !== null)
-        {
-            Yii::$app->getSession()->setFlash('info', 'Reminder, this Disbursement Voucher has already been earmarked');
-        }
         return $this->render('cash-status/_form', [
-        'model' => $model,
-        'model3' => $model3,
-        // 'ors_model' => $ors_model,
-        'entries' => $entries,
-        ]);
+            'model' => $model,
+            'nca_model' => $nca_model,
+            ]);
 
     }
 
@@ -727,3 +1012,4 @@ class DisbursementController extends Controller
             }
     }
 }
+?>

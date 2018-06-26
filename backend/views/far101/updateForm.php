@@ -59,7 +59,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                     <td style="width: 160px; vertical-align: text-top;">Fund Cluster</td>
                     <td style="width: 30px; vertical-align: text-top;">:</td>
                     <td style="font-weight: bold;">
-                        <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'), ['class' => 'textfield'])->label(false) ;
+                        <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster', 'fund_cluster'), ['class' => 'textfield'])->label(false);
                         ?>
                     </td>
                     <td></td>
@@ -114,7 +114,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03']])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                         ->all(), 'payment'));
                         ?>
                         <input type="text" name="disbursement_q_1[]" class="textfield" value="<?= $a; ?>" >
@@ -124,7 +127,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06']])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                         ->all(), 'payment')); 
                         ?>
                         <input type="text" name="disbursement_q_2[]" class="textfield" value="<?= $a1; ?>" >
@@ -134,7 +140,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09']])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                         ->all(), 'payment'));
                         ?>
                         <input type="text" name="disbursement_q_3[]" class="textfield" value="<?= $a2; ?>" >
@@ -144,7 +153,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->where(['mfo_pap'=>$value->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12']])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                         ->all(), 'payment')); 
                         ?>
                         <input type="text" name="disbursement_q_4[]" class="textfield" value="<?= $a3; ?>" >
@@ -193,7 +205,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '01'])
-                                    ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                     ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
@@ -205,7 +220,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '01'])
-                                    ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                     ->all(), 'payment')); 
                                 ?>
                                 <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
@@ -216,7 +234,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '01'])
-                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
@@ -227,7 +248,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '01'])
-                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
@@ -274,7 +298,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '02'])
-                                    ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                     ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
@@ -286,7 +313,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '02'])
-                                    ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                     ->all(), 'payment')); 
                                 ?>
                                 <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
@@ -297,7 +327,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '02'])
-                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
@@ -308,7 +341,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '02'])
-                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
@@ -355,7 +391,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '03'])
-                                    ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                     ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
@@ -367,7 +406,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '03'])
-                                    ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                     ->all(), 'payment')); 
                                 ?>
                                 <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
@@ -378,7 +420,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '03'])
-                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
@@ -389,7 +434,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '03'])
-                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
@@ -436,7 +484,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '04'])
-                                    ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                     ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
@@ -448,7 +499,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
                                     ->andWhere(['ors_class' => '04'])
-                                    ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                     ->all(), 'payment')); 
                                 ?>
                                 <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
@@ -459,7 +513,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '04'])
-                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
@@ -470,7 +527,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                         ->andWhere(['ors_class' => '04'])
-                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
@@ -516,7 +576,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->where(['mfo_pap'=>$val->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                    ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                     ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_1b[]" class="textfield" value="<?= $b; ?>">
@@ -527,7 +590,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     ->where(['mfo_pap'=>$val->uacs_code])
                                     ->andWhere(['ors_year'=>$model->fiscal_year])
                                     ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                    ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                    ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                     ->all(), 'payment')); 
                                 ?>
                                 <input type="text" name="disbursement_q_2b[]" class="textfield" value="<?= $b1; ?>" >
@@ -537,7 +603,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->where(['mfo_pap'=>$val->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_3b[]" class="textfield" value="<?= $b2; ?>" >
@@ -547,7 +616,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         ->where(['mfo_pap'=>$val->uacs_code])
                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                         ->all(), 'payment'));
                                 ?>
                                 <input type="text" name="disbursement_q_4b[]" class="textfield" value="<?= $b3; ?>" >
@@ -596,7 +668,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '01'])
-                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
@@ -607,7 +682,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '01'])
-                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
@@ -618,7 +696,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '01'])
-                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
@@ -629,7 +710,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '01'])
-                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
@@ -676,7 +760,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '02'])
-                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
@@ -687,7 +774,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '02'])
-                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
@@ -698,7 +788,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '02'])
-                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
@@ -709,7 +802,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '02'])
-                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
@@ -756,7 +852,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '03'])
-                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
@@ -767,7 +866,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '03'])
-                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
@@ -778,7 +880,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '03'])
-                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
@@ -789,7 +894,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '03'])
-                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
@@ -836,7 +944,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '04'])
-                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
@@ -847,7 +958,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '04'])
-                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
@@ -858,7 +972,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '04'])
-                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
@@ -869,7 +986,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                 ->andWhere(['ors_class' => '04'])
-                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
@@ -915,7 +1035,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                    ['like', 'disbursement_date', 'February'],
+                                                    ['like', 'disbursement_date', 'March']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_1c[]" class="textfield" value="<?= $c; ?>" >
@@ -925,7 +1048,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                    ['like', 'disbursement_date', 'May'],
+                                                    ['like', 'disbursement_date', 'June']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_2c[]" class="textfield" value="<?= $c1; ?>" >
@@ -935,7 +1061,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                    ['like', 'disbursement_date', 'August'],
+                                                    ['like', 'disbursement_date', 'September']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_3c[]" class="textfield" value="<?= $c2; ?>" >
@@ -945,7 +1074,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 ->where(['mfo_pap'=>$data->uacs_code])
                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                    ['like', 'disbursement_date', 'November'],
+                                                    ['like', 'disbursement_date', 'December']
+                                                ])
                                                 ->all(), 'payment'));
                                         ?>
                                         <input type="text" name="disbursement_q_4c[]" class="textfield" value="<?= $c3; ?>" >
@@ -995,7 +1127,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '01'])
-                                                        ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                    ['like', 'disbursement_date', 'February'],
+                                                                    ['like', 'disbursement_date', 'March']
+                                                                ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
@@ -1006,7 +1141,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '01'])
-                                                        ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                            ['like', 'disbursement_date', 'May'],
+                                                            ['like', 'disbursement_date', 'June']
+                                                        ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
@@ -1017,7 +1155,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '01'])
-                                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                ['like', 'disbursement_date', 'August'],
+                                                                ['like', 'disbursement_date', 'September']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
@@ -1028,7 +1169,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '01'])
-                                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                ['like', 'disbursement_date', 'November'],
+                                                                ['like', 'disbursement_date', 'December']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
@@ -1075,7 +1219,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '02'])
-                                                        ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                ['like', 'disbursement_date', 'February'],
+                                                                ['like', 'disbursement_date', 'March']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
@@ -1086,7 +1233,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '02'])
-                                                        ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                            ['like', 'disbursement_date', 'May'],
+                                                            ['like', 'disbursement_date', 'June']
+                                                        ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
@@ -1097,7 +1247,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '02'])
-                                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                ['like', 'disbursement_date', 'August'],
+                                                                ['like', 'disbursement_date', 'September']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
@@ -1108,7 +1261,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '02'])
-                                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                            ['like', 'disbursement_date', 'November'],
+                                                            ['like', 'disbursement_date', 'December']
+                                                        ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
@@ -1155,7 +1311,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '03'])
-                                                        ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                ['like', 'disbursement_date', 'February'],
+                                                                ['like', 'disbursement_date', 'March']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
@@ -1166,7 +1325,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '03'])
-                                                        ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                            ['like', 'disbursement_date', 'May'],
+                                                            ['like', 'disbursement_date', 'June']
+                                                        ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
@@ -1177,7 +1339,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '03'])
-                                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                ['like', 'disbursement_date', 'August'],
+                                                                ['like', 'disbursement_date', 'September']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
@@ -1188,7 +1353,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '03'])
-                                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                ['like', 'disbursement_date', 'November'],
+                                                                ['like', 'disbursement_date', 'December']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
@@ -1235,7 +1403,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '04'])
-                                                        ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                ['like', 'disbursement_date', 'February'],
+                                                                ['like', 'disbursement_date', 'March']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
@@ -1246,7 +1417,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '04'])
-                                                        ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                                ['like', 'disbursement_date', 'May'],
+                                                                ['like', 'disbursement_date', 'June']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
@@ -1257,7 +1431,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '04'])
-                                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                ['like', 'disbursement_date', 'August'],
+                                                                ['like', 'disbursement_date', 'September']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
@@ -1268,7 +1445,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                         ->andWhere(['ors_class' => '04'])
-                                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                ['like', 'disbursement_date', 'November'],
+                                                                ['like', 'disbursement_date', 'December']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
@@ -1314,7 +1494,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                ['like', 'disbursement_date', 'February'],
+                                                                ['like', 'disbursement_date', 'March']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_1d[]" class="textfield" value="<?= $d; ?>" >
@@ -1324,7 +1507,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                            ['like', 'disbursement_date', 'May'],
+                                                            ['like', 'disbursement_date', 'June']
+                                                        ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_2d[]" class="textfield" value="<?= $d1; ?>" >
@@ -1334,7 +1520,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                ['like', 'disbursement_date', 'August'],
+                                                                ['like', 'disbursement_date', 'September']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_3d[]" class="textfield" value="<?= $d2; ?>" >
@@ -1344,7 +1533,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         ->where(['mfo_pap'=>$data4->uacs_code])
                                                         ->andWhere(['ors_year'=>$model->fiscal_year])
                                                         ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                        ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                        ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                ['like', 'disbursement_date', 'November'],
+                                                                ['like', 'disbursement_date', 'December']
+                                                            ])
                                                         ->all(), 'payment'));
                                                 ?>
                                                 <input type="text" name="disbursement_q_4d[]" class="textfield" value="<?= $d3; ?>" >
@@ -1392,7 +1584,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
-                                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                        ['like', 'disbursement_date', 'February'],
+                                                                        ['like', 'disbursement_date', 'March']
+                                                                    ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
@@ -1403,7 +1598,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
-                                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                                    ['like', 'disbursement_date', 'May'],
+                                                                    ['like', 'disbursement_date', 'June']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
@@ -1414,7 +1612,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
-                                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                        ['like', 'disbursement_date', 'August'],
+                                                                        ['like', 'disbursement_date', 'September']
+                                                                    ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
@@ -1425,7 +1626,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '01'])
-                                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                    ['like', 'disbursement_date', 'November'],
+                                                                    ['like', 'disbursement_date', 'December']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
@@ -1471,7 +1675,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
-                                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                        ['like', 'disbursement_date', 'February'],
+                                                                        ['like', 'disbursement_date', 'March']
+                                                                    ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
@@ -1482,7 +1689,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
-                                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                                    ['like', 'disbursement_date', 'May'],
+                                                                    ['like', 'disbursement_date', 'June']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
@@ -1493,7 +1703,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
-                                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                        ['like', 'disbursement_date', 'August'],
+                                                                        ['like', 'disbursement_date', 'September']
+                                                                    ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
@@ -1504,7 +1717,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '02'])
-                                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                    ['like', 'disbursement_date', 'November'],
+                                                                    ['like', 'disbursement_date', 'December']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
@@ -1550,7 +1766,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
-                                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                            ['like', 'disbursement_date', 'February'],
+                                                                            ['like', 'disbursement_date', 'March']
+                                                                        ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
@@ -1561,7 +1780,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
-                                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                                    ['like', 'disbursement_date', 'May'],
+                                                                    ['like', 'disbursement_date', 'June']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
@@ -1572,7 +1794,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
-                                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                        ['like', 'disbursement_date', 'August'],
+                                                                        ['like', 'disbursement_date', 'September']
+                                                                    ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
@@ -1583,7 +1808,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '03'])
-                                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                    ['like', 'disbursement_date', 'November'],
+                                                                    ['like', 'disbursement_date', 'December']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
@@ -1629,7 +1857,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
-                                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                    ['like', 'disbursement_date', 'February'],
+                                                                    ['like', 'disbursement_date', 'March']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
@@ -1640,7 +1871,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
-                                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                                    ['like', 'disbursement_date', 'May'],
+                                                                    ['like', 'disbursement_date', 'June']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
@@ -1651,7 +1885,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
-                                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                        ['like', 'disbursement_date', 'August'],
+                                                                        ['like', 'disbursement_date', 'September']
+                                                                    ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
@@ -1662,7 +1899,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
                                                                 ->andWhere(['ors_class' => '04'])
-                                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                    ['like', 'disbursement_date', 'November'],
+                                                                    ['like', 'disbursement_date', 'December']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >
@@ -1707,7 +1947,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                                ->andWhere(['or', ['ors_month' => '01'], ['ors_month' => '02'], ['ors_month' => '03'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'January'],
+                                                                    ['like', 'disbursement_date', 'February'],
+                                                                    ['like', 'disbursement_date', 'March']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_1e[]" class="textfield" value="<?= $e; ?>" >
@@ -1717,7 +1960,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                                ->andWhere(['or', ['ors_month' => '04'], ['ors_month' => '05'], ['ors_month' => '06'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'April'],
+                                                                    ['like', 'disbursement_date', 'May'],
+                                                                    ['like', 'disbursement_date', 'June']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_2e[]" class="textfield" value="<?= $e1; ?>" >
@@ -1727,7 +1973,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                                ->andWhere(['or', ['ors_month' => '07'], ['ors_month' => '08'], ['ors_month' => '09'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'July'],
+                                                                        ['like', 'disbursement_date', 'August'],
+                                                                        ['like', 'disbursement_date', 'September']
+                                                                    ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_3e[]" class="textfield" value="<?= $e2; ?>" >
@@ -1737,7 +1986,10 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                                 ->where(['mfo_pap'=>$data5->uacs_code])
                                                                 ->andWhere(['ors_year'=>$model->fiscal_year])
                                                                 ->andWhere(['fund_cluster' => $model->fund_cluster])
-                                                                ->andWhere(['or', ['ors_month' => '10'], ['ors_month' => '11'], ['ors_month' => '12'],])
+                                                                ->andFilterWhere(['or', ['like', 'disbursement_date', 'October'],
+                                                                    ['like', 'disbursement_date', 'November'],
+                                                                    ['like', 'disbursement_date', 'December']
+                                                                ])
                                                                 ->all(), 'payment'));
                                                         ?>
                                                         <input type="text" name="disbursement_q_4e[]" class="textfield" value="<?= $e3; ?>" >

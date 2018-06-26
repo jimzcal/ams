@@ -14,7 +14,7 @@ $this->title = 'MFO/PAPS';
 <div class="mfo-pap-index">
 
     <div class="title">
-        <div class="btn btn-success btn-right" data-toggle="modal" data-target="#newModal">New MFO/PAP</div>
+        <div class="btn btn-default btn-right" data-toggle="modal" data-target="#newModal">New MFO/PAP</div>
     </div>
 
     <div class="new-title">

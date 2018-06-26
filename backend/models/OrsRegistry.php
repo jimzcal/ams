@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "ors_registry".
@@ -87,5 +88,12 @@ class OrsRegistry extends \yii\db\ActiveRecord
     public function getOrs()
     {
         return $this->hasOne(Ors::className(), ['id' => 'ors_id']);
+    }
+
+    public function getBalance($ors_id)
+    {
+        $balance = array_sum(ArrayHelper::getColumn(OrsRegistry::find()->where(['ors_id' => $ors_id])->all(), 'payment'));
+
+        return isset($balance) ? $balance : '';
     }
 }

@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+use backend\models\OrsRegistry;
 
 /**
  * This is the model class for table "ors".
@@ -34,10 +36,13 @@ class Ors extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'amount'], 'required'],
-            [['amount'], 'number'],
+            [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'obligation'], 'required'],
+            [['obligation'], 'number'],
             [['particular'], 'string', 'max' => 200],
-            [['ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'string', 'max' => 100],
+            [['ors_class', 'ors_month'], 'string', 'max' => 2],
+            [['funding_source'], 'string', 'max' => 8],
+            [['ors_year'], 'string', 'max' => 4],
+            [['date', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'string', 'max' => 100],
         ];
     }
 
@@ -57,6 +62,32 @@ class Ors extends \yii\db\ActiveRecord
         //return $this->hasOne(Disbursement::className(), ['like', ['ors', $this->id]]);
     }
 
+    public function getDisbursement($ors_id)
+    {
+        $disbursement = array_sum(ArrayHelper::getColumn(OrsRegistry::find()
+            ->where(['ors_id' => $ors_id])
+            ->all(), 'payment'));
+
+        return $disbursement;
+    }
+
+    public function getDate($ors_id)
+    {
+        $as_of = OrsRegistry::find()
+            ->where(['ors_id' => $ors_id])
+            ->orderBy(['id' => SORT_DESC])
+            ->one();
+
+        return isset($as_of->date) == true ? $as_of->date : '-';
+    }
+
+    public function getBalance($ors_id)
+    {
+        $balance = array_sum(ArrayHelper::getColumn(OrsRegistry::find()->where(['ors_id' => $ors_id])->all(), 'payment'));
+
+        return isset($balance) ? $balance : '';
+    }
+
     /**
      * @inheritdoc
      */
@@ -72,7 +103,7 @@ class Ors extends \yii\db\ActiveRecord
             'ors_serial' => 'Ors Serial',
             'mfo_pap' => 'MFO-PAP',
             'responsibility_center' => 'Responsibility Center',
-            'amount' => 'Amount',
+            'obligation' => 'Obligation',
         ];
     }
 }

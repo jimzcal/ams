@@ -13,14 +13,14 @@ use yii\helpers\ArrayHelper;
 
 <div class="far101-form">
 
-    <div class="title">
-        <div class="btn btn-success btn-right" data-toggle="modal" data-target="#myModal">Add Particular</div>
-    </div>
-
     <?php $form = ActiveForm::begin(); ?>
 
-    <table style="width: 100%;">
-            <tr style="height: 60px;">
+    <div class="view-form">
+        <div class="btn btn-default btn-right" data-toggle="modal" data-target="#myModal">
+            <i class="glyphicon glyphicon-plus"></i> Add Particular
+        </div>
+        <table style="width: 100%;">
+            <tr style="height: 50px;">
                 <th colspan="4" style="text-align: center; font-size: 18px;">
                     STATEMENT OF OBLIGATIONS AND DISBURSEMENTS
                 </th>
@@ -66,7 +66,8 @@ use yii\helpers\ArrayHelper;
                 <td></td>
             </tr>
         </table>
-        <br>
+
+            <br>
         <table class="table table-bordered">
             <tr>
                 <th rowspan="2" style="width: 330px; text-align: center;">PARTICULARS</th>
@@ -171,7 +172,7 @@ use yii\helpers\ArrayHelper;
                 <?php endforeach ?>
         <?php endforeach ?>
         </table>
-
+    </div>
     <div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -201,7 +202,7 @@ use yii\helpers\ArrayHelper;
                 </tr>
                 <tr>
                     <td>
-                        <?= $form->field($model, 'uacs_code')->dropDownList(['0' => '0', ArrayHelper::map(MfoPap::find()->all(),'uacs', 'uacs')], ['style' => 'width: 95%']) ?>
+                        <?= $form->field($model, 'uacs_code')->textInput() ?>
                     </td>
                 </tr>
                 <tr>

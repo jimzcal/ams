@@ -12,7 +12,7 @@ use backend\models\Nca;
 ?>
 
 <div class="nca-form">
-
+    <div class="view-index">
     <?php $form = ActiveForm::begin(); ?>
         <table class="table table-bordered">
             <tr>
@@ -69,7 +69,7 @@ use backend\models\Nca;
                             </tr>
                             <tr>
                                 <td width="60">
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="first" value="january" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'january'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="first" value="January" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'january'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right" width="150">
                                     <label>January</label>
@@ -78,7 +78,7 @@ use backend\models\Nca;
                                     <input type="number" name="january[<?= $key ?>]" class="form-control" value="<?= $value->january != null ? $value->january : '0.00' ?>" required>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="third" value="july" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'july'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="third" value="July" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'july'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right" width="150">
                                     <label>July</label>
@@ -89,7 +89,7 @@ use backend\models\Nca;
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="first" value="february" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'february'])->one() != null ? "checked" : " " ?>>
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="first" value="February" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'february'])->one() != null ? "checked" : " " ?>>
                                 </td>
                                 <td style="text-align: right">
                                     <label>February</label>
@@ -98,7 +98,7 @@ use backend\models\Nca;
                                     <input type="number" name="february[<?= $key ?>]" class="form-control" value="<?= $value->february != null ? $value->february : '0.00' ?>" required>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="third" value="august" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'august'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="third" value="August" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'august'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>August</label>
@@ -109,7 +109,7 @@ use backend\models\Nca;
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="first" value="march" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'march'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="first" value="March" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'march'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>March</label>
@@ -118,7 +118,7 @@ use backend\models\Nca;
                                     <input type="number" name="march[<?= $key ?>]" class="form-control" value="<?= $value->march != null ? $value->march : '0.00' ?>" required>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="third" value="september" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'september'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="third" value="September" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'september'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>September</label>
@@ -131,7 +131,7 @@ use backend\models\Nca;
                                 <td style="font-style: italic;" colspan="2">
                                     <!-- <input type="checkbox" id="selectallfirst" />
                                     <label for="selectallfirst" id="selectControl">Select</label> -->
-                                    <label>First Quarter (Sub-total)</label>
+                                    <label>1st Quarter (Sub-total)</label>
                                 </td>
                                 <td>
                                     <input type="number" name="first_quarter[<?= $key ?>]" class="form-control" value="<?= $value->first_quarter != null ? $value->first_quarter : '0.00' ?>" required>
@@ -139,7 +139,7 @@ use backend\models\Nca;
                                 <td style="font-style: italic;" colspan="2">
                                     <!-- <input type="checkbox" id="selectallthird" />
                                     <label for="selectallthird" id="selectControl3">Select</label> -->
-                                    <label>Third Quarter (Sub-total)</label>
+                                    <label>3rd Quarter (Sub-total)</label>
                                 </td>
                                 <td>
                                     <input type="number" name="third_quarter[<?= $key ?>]" class="form-control" value = "<?= $value->third_quarter != null ? $value->third_quarter : '0.00' ?>" required>
@@ -147,7 +147,7 @@ use backend\models\Nca;
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="second" value="april" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'april'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="second" value="April" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'april'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>April</label>
@@ -156,7 +156,7 @@ use backend\models\Nca;
                                     <input type="number" name="april[<?= $key ?>]" class="form-control" value="<?= $value->april != null ? $value->april : '0.00' ?>" required>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="forth" value="october" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'october'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="forth" value="October" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'october'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>October</label>
@@ -167,7 +167,7 @@ use backend\models\Nca;
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="second" value="may" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'may'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="second" value="May" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'may'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>May</label>
@@ -176,7 +176,7 @@ use backend\models\Nca;
                                     <input type="number" name="may[<?= $key ?>]" class="form-control" value="<?= $value->may != null ? $value->may : '0.00' ?>" required>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="forth" value="november" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'november'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="forth" value="November" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'november'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>November</label>
@@ -187,7 +187,7 @@ use backend\models\Nca;
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="second" value="june" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'june'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="second" value="June" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'june'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>June</label>
@@ -196,7 +196,7 @@ use backend\models\Nca;
                                     <input type="number" name="june[<?= $key ?>]" class="form-control" value="<?= $value->june != null ? $value->june : '0.00' ?>" required>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="forth" value="december" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'december'])->one() != null ? "checked" : " " ?> >
+                                    <input type="checkbox" name="validity_<?= $key ?>[]" class="forth" value="December" <?= Nca::find()->where(['funding_source' => $value->funding_source])->andWhere(['like', 'validity', 'december'])->one() != null ? "checked" : " " ?> >
                                 </td>
                                 <td style="text-align: right">
                                     <label>December</label>
@@ -209,7 +209,7 @@ use backend\models\Nca;
                                 <td style="font-style: italic;" colspan="2">
                                     <!-- <input type="checkbox" id="selectallsecond" />
                                     <label for="selectallsecond" id="selectControl2">Select</label> -->
-                                    <label> Second Quarter(Sub-total)</label>
+                                    <label> 2nd Quarter(Sub-total)</label>
                                 </td>
                                 <td>
                                     <input type="number" name="second_quarter[<?= $key ?>]" class="form-control" value = "<?= $value->second_quarter != null ? $value->second_quarter : '0.00' ?>" required>
@@ -217,7 +217,7 @@ use backend\models\Nca;
                                 <td style="font-style: italic;" colspan="2">
                                     <!-- <input type="checkbox" id="selectallforth" />
                                     <label for="selectallforth" id="selectControl4">Select</label> -->
-                                    <label>Forth Quarter(Sub-total)</label>
+                                    <label>4th Quarter(Sub-total)</label>
                                 </td>
                                 <td>
                                     <input type="number" name="forth_quarter[<?= $key ?>]" class="form-control" value = "<?= $value->forth_quarter != null ? $value->forth_quarter : '0.00' ?>" required>
@@ -230,9 +230,10 @@ use backend\models\Nca;
         </table>
     <div class="form-group" style="padding-left: 15px;">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Cancel', ["/nca/view", 'id' => $model->id], ['class' => 'btn btn-default']) ?>
     </div>
-
     <?php ActiveForm::end(); ?>
+    </div>
 </div>
 
 <script lang="JavaScript">

@@ -6,6 +6,7 @@ use Yii;
 use frontend\models\Disbursement;
 use frontend\models\DisbursementSearch;
 use frontend\models\TransactionStatus;
+use backend\models\DvLog;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -77,6 +78,7 @@ class DisbursementController extends Controller
     {
         $dv_no = Disbursement::find()->where(['id'=>$id])->one();
         $transaction = TransactionStatus::find()->where(['dv_no' => $dv_no->dv_no])->one();
+        $dv_log = DvLog::find()->where(['dv_no' => $dv_no->dv_no])->all();
         // var_dump($dv_no);
         // exit();
         $transaction1 = explode(',', $transaction->receiving);
@@ -85,6 +87,8 @@ class DisbursementController extends Controller
         $transaction4 = explode(',', $transaction->nca_control);
         $transaction5 = explode(',', $transaction->lddap_ada);
         $transaction6 = explode(',', $transaction->releasing);
+        $transaction7 = explode(',', $transaction->indexing);
+        $transaction8 = explode(',', $transaction->approval);
         return $this->render('view', [
             'model' => $this->findModel($id), 
             'transaction1'=>$transaction1, 
@@ -93,6 +97,9 @@ class DisbursementController extends Controller
             'transaction4'=>$transaction4,
             'transaction5'=>$transaction5, 
             'transaction6'=>$transaction6,
+            'transaction7'=>$transaction7,
+            'transaction8'=>$transaction8,
+            'dv_log' => $dv_log
         ]);
     }
 

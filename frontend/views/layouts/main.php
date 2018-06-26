@@ -27,7 +27,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 <div class="wrap">
     <!--top-banner -->
-        <div class= "top-banner" >
+        <div class= "top-banner" id="noprint">
             <div class="row">
             <?= Html::img('@web/images/new-banner.png', ['alt'=>'FMIS Banner', 'class' => 'top-ban-image']);?>
               <div class="row" style="padding-right: 25px;">

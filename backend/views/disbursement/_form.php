@@ -8,18 +8,34 @@ use backend\models\Nca;
 use backend\models\FundCluster;
 use backend\models\MfoPap;
 use backend\models\ResponsibilityCenter;
+use timurmelnikov\widgets\WebcamShoot ; 
+use kartik\select2\Select2;
+Use backend\models\Ors;
+use kartik\date\DatePicker;
+use backend\models\Employees;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<style type="text/css">
+  
+#field2{
+  display: none;
+  }
+
+#field3{
+  display: none;
+  }
+</style>
+
 <div class="disbursement-form">
-  <div class="form-wrapper-content">
+  <div class="view-index" id="form-wrapper">
       <?php $form = ActiveForm::begin(); ?> 
 
-      <table class="table">
-         <tr>
+      <table class="mytable">
+         <tr style="border-bottom-style: dashed; border-color: #f5f5f0;">
              <td colspan="5" style="font-style: italic;">Note: All fields of this form are required. Please, provide appropriate details.</td>
              <td style="font-size: 18px; width: 220px;">
                   DV No. <strong> <?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
@@ -27,112 +43,95 @@ use backend\models\ResponsibilityCenter;
          </tr>
          <tr>
              <td style="width: 380px;" colspan="2">
-                 <?= $form->field($model, 'payee')->textInput(['maxlength' => true]) ?>
+                 <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'style' => 'text-transform: uppercase']) ?>
              </td>
-             <td>
+             <td colspan="2">
                  <?= $form->field($model, 'tin')->textInput(['maxlength' => true]) ?>
              </td>
              <td style="width: 200px;">
-                 <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name')) ?>
-             </td>
-             <td style="width: 200px;">
-              <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes'], ['id' => 'advance']) ?>
-             </td>
-             <td>
-              <?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('F d, Y') : $model->date]) ?>
-             </td>
-         </tr>
-         <tr>
-             <td rowspan="2" colspan="3">
-                 <?= $form->field($model, 'particulars')->textarea(['rows' => 6]) ?>
-             </td>
-             <td>
               <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                       [
                           'prompt'=>'Select Fund Cluster',
-                          'onchange'=>'
-                               $.post("'.Yii::$app->urlManager->createUrl('nca/clusters?fund_cluster=') . '"+$(this).val(),function(data){
-                                  $("select#disbursement-nca").html(data);
-                              });'
                       ]); 
                   ?>
              </td>
-             <td>
-                 <?= $form->field($model, 'nca')->dropDownList(ArrayHelper::map(Nca::find()->all(),'nca_no', 'nca_no'),
-                      [
-                        'prompt'=>'Select NCA No.',
-                        'onchange'=>'
-                               $.post("index.php?r=nca/sources&nca_no='.'"+$(this).val(),function(data){
-                                  $("select#disbursement-funding_source").html(data);
-                              });'
-                      ]);
-                 ?>
+             <td style="width: 200px;">
+              <?= $form->field($model, 'date')->textInput(['value' => $model->date===null ? date('Y-F-d') : $model->date]) ?>
+              <?php /* $form->field($model, 'date')->widget(DatePicker::classname(), [
+                  'options' => ['value' => date('M. d, Y'), 'style' => 'width: 196px; right: 0px;'],
+                  'pluginOptions' => [
+                    'todayHighlight' => true,
+                    'format' => 'M. d, yyyy'
+                      ]
+                  ])->label(false); */
+                ?>
+             </td>
+         </tr>
+         <tr>
+             <td rowspan="2" colspan="4">
+                 <?= $form->field($model, 'particulars')->textarea(['rows' => 6]) ?>
              </td>
              <td>
-                <?= $form->field($model, 'funding_source')->dropDownList(ArrayHelper::map(Nca::find()->all(),'funding_source', 'funding_source'),
-                    [
-                      'prompt'=>'Select Funding Source',
-                    ]);
-                 ?>
+              <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
+             </td>
+             <td style="width: 200px;">
+               <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name')) ?>
              </td>
          </tr>
          <tr>
            <td>
-             <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
-           </td>
-           <td>
-             <?= $form->field($model, 'status')->dropDownList(['Received'=>'Received', 'Earmarked'=>'Earmarked', 'Approved'=>'Approved', 'Paid'=>'Paid', 'Cancelled'=>'Cancelled']) ?>
+             <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes'], ['id' => 'advance']) ?>
            </td>
            <td>
              <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount']) ?>
              <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
            </td>
          </tr>
+         <tr style="border-top-style: dashed; border-color: #f5f5f0;">
+           <td colspan="2" style="font-style: italic;">
+               Obligation Request and Status (ORS) :
+           </td>
+           <td style="width: 100px;"></td>
+           <td style="font-style: italic;">
+               Client Details : 
+           </td>
+           <td colspan="2" style="text-align: right">
+             <input type="radio" name="client" id="selected" value="id" checked="checked"> <label>ID No.</label>
+             <input type="radio" name="client" id="selected" value="qr"> <label>QR Code</label>
+             <input type="radio" name="client" id="selected" value="bio"> <label>Biometrics</label>
+           </td>
+         </tr>
          <tr>
-             <td colspan="6">
-                  <table class="table table-condensed table-bordered" id="dynamicInput">
-                      <tr>
-                          <th>ORS No.</th>
-                          <th>MFO/PAP</th>
-                          <th>Responsibility Center</th>
-                          <th>Amount</th>
-                          <th></th>
-                      </tr>
-      
-                      <tr>
-<!--                           <td style="width: 350px;">
-                              <input type="text" name="particular[0]" class="form-control" required="true">
-                          </td> -->
-                          <td>
-                              <input type="text" name="ors_no[0]" class="form-control" required="true">
-                          </td>
-                          <td>
-                              <!-- <input type="text" name="mfo_pap[0]" class="form-control" required="true"> -->
-                              <?php $mfo = Mfopap::find()->all(); ?>
-                              <select name="mfo_pap[0]" class="form-control" required="true">
-                                <?php foreach ($mfo as $value) : ?>
-                                        <option value=<?= $value->uacs ?> > <?= $value->uacs ?></option>
-                                <?php endforeach ?>
-                            </select>
-                          </td>
-                          <td>
-                              <!-- <input type="text" name="responsibility_center[0]" class="form-control" required="true"> -->
-                              <?php $responsibility_center = ResponsibilityCenter::find()->all(); ?>
-                              <select name="responsibility_center[0]" class="form-control" required="true">
-                                <?php foreach ($responsibility_center as $value) : ?>
-                                        <option value=<?= $value->code ?> > <?= $value->acronym.' - '.$value->code ?></option>
-                                <?php endforeach ?>
-                            </select>
-                          </td>
-                          <td style="width: 100px;">
-                              <input type="text" name="amount[0]" class="form-control num" required="true">
-                          </td>
-                          <td><button class="btn btn-success" type="button" onClick="addInput('dynamicInput')" ><i class="glyphicon glyphicon-plus"></i></button></td>
-                      </tr>
-                  </table>
+           <td colspan="2">
+            <?= $form->field($model, 'ors')->widget(Select2::classname(), [
+                'data' => ArrayHelper::map(Ors::find()->all(),'id', function($model){
+                  return $model->ors_class.'-'.$model->funding_source.'-'.$model->ors_year.'-'.$model->ors_month.'-'.$model->ors_serial;
+                }),
+                //'language' => 'eng',
+                'options' => ['placeholder' => 'Select ORS...', 'multiple' => true],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ])->label(false); ?>
+               <?= $form->field($model, 'period')->hiddenInput(['id' => 'fperiod'])->label(false) ?>
+           </td>
+           <td></td>
+           <td colspan="3" style="padding: 5px;"
+               <?= $form->field($model, 'employee_id')->widget(Select2::classname(), [
+                  'data' => ArrayHelper::map(Employees::find()->all(),'employee_id', function($model){
+                    return $model->employee_id.' - '.$model->name;
+                  }),
+                  //'language' => 'eng',
+                  'options' => ['placeholder' => 'Enter Employee ID', 'multiple' => false],
+                  'pluginOptions' => [
+                      'allowClear' => true
+                  ],
+              ])->label(false); ?>
 
-                  <?= $form->field($model, 'period')->hiddenInput(['id' => 'fperiod'])->label(false) ?>
-             </td>
+               <?PHP // $form->field($model, 'employee_id')->textInput(['id' => 'field2', 'placeholder' => 'Employee QR Code', 'autofocus' => true])->label(false) ?>
+
+               <?PHP // $form->field($model, 'employee_id')->textInput(['id' => 'field3', 'placeholder' => 'Employee Biometric', 'autofocus' => true])->label(false) ?>
+           </td>
          </tr>
       </table>
 
@@ -152,7 +151,7 @@ use backend\models\ResponsibilityCenter;
           <table width="500">       
               <tr>
                 <td>
-                  <?= $form->field($model, 'due')->dropDownList(['30'=>'30 days', '60'=>'60 days', '20' => '20 days'], ['id' => 'period', 'prompt' => 'Select No. of days'])->label("No of days to Liquidate this Cash Advance: ") ?>
+                <?= $form->field($model, 'due')->dropDownList(['30'=>'30 days', '60'=>'60 days', '20' => '20 days'], ['id' => 'period', 'prompt' => 'Select No. of days'])->label("No of days to Liquidate this Cash Advance: ") ?>
                 </td>
               </tr>
           </table>
@@ -197,28 +196,29 @@ function addInput(dynamicInput)
 window.onload = function()
 {
 
-$(".num").each(function() {
+  $("input[id='selected']").click(function () { 
 
-            $(this).change(function(){
-                calculateSum();
-            });
-        });
+        if($(this).val() == 'id') 
+        {
+            $('#field1').show();
+            $('#field2').hide();
+            $('#field3').hide();
+        }
 
-    function calculateSum() {
+        if($(this).val() == 'qr') 
+        {
+            $('#field1').hide();
+            $('#field2').show();
+            $('#field3').hide();
+        }
 
-        var sum = 0;
-        //iterate through each textboxes and add the values
-        $(".num").each(function() {
-
-            //add only if the value is number
-            if(!isNaN(this.value) && this.value.length!=0) {
-                sum += parseFloat(this.value);
-            }
-
-        });
-        //.toFixed() method will roundoff the final sum to 2 decimal places
-        $("#totalAmount").val(sum.toFixed(2));
-    }
+        if($(this).val() == 'bio') 
+        {
+            $('#field1').hide();
+            $('#field2').hide();
+            $('#field3').show();
+        }
+    });
 
   $(document).on("change", "select[id='advance']", function () { 
         // alert($(this).val())
@@ -232,7 +232,7 @@ $(".num").each(function() {
         // alert($(this).val())
         var value = 0;
         $modal = $('#myModal');
-        if($(this).val() != null && $(this).val() > 0) 
+        if($(this).val() != null && $(this).val() != '') 
         {
             value = this.value;
             $("#fperiod").val(value);
@@ -241,6 +241,3 @@ $(".num").each(function() {
 
 }
 </script>
-
-
-

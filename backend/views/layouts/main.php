@@ -72,6 +72,9 @@ AppAsset::register($this);
                                     <?= Html::a('<i class="fa fa-user-o icon-font" aria-hidden="true"></i>', ['/user/admin/update','id'=>Yii::$app->user->identity->id]) ?>
                                 </div>
                             <?php endif ?>
+                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Employees">
+                                <?= Html::a('<i class="fa fa-group icon-font" aria-hidden="true"></i>', ["/employees/index"]) ?>
+                            </div>
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Search DV">
                                 <?= Html::a('<i class="fa fa-search icon-font" aria-hidden="true"></i>', ["/site/index"]) ?>
                             </div>
@@ -88,9 +91,12 @@ AppAsset::register($this);
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Financial Records">
                                 <?= Html::a('<i class="fa fa-book icon-font" aria-hidden="true"></i>', ["/disbursement/reports"]) ?>
                             </div>
-                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Accounting Entries">
-                                <?= Html::a('<i class="fa fa-calculator icon-font" aria-hidden="true"></i>', ["/accounting-entry/index"]) ?>
+                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="ORS">
+                                <?= Html::a('<i class="fa fa-pie-chart icon-font" aria-hidden="true"></i>', ["/ors/index"]) ?>
                             </div>
+                            <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Accounting Entries">
+                                <?= Html::a('<i class="fa fa-calculator icon-font" aria-hidden="true"></i>', ["/accounting-entry/index"]) ?>
+                            </div> -->
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Activity Log">
                                 <?= Html::a('<i class="fa fa-list icon-font" aria-hidden="true"></i>', ["/activity-log/index"]) ?>
                             </div>

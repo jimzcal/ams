@@ -88,12 +88,15 @@ body {
 .textfield{
   width: 100%;
   height: 100%;
-  padding: 5px 5px;
-  top: 0;
-  box-sizing: border-box;
+  font-size: 12px;
+  /*padding-top: 10px;*/
   border: none;
-  outline: none;
+  margin: 0 !important;
   background-color: transparent;
+}
+
+.ors-index td{
+  height: 40px;
 }
 
 .textfield:hover{
@@ -102,7 +105,7 @@ body {
 
 .textfield:focus{
   box-shadow: 1px 1px 2px 2px #f2ffcc;
-  background-color: #f5f5f0;
+  background-color: transparent;
 }
 
 .transaction-active{
@@ -213,6 +216,15 @@ body {
   font-size: 10px;
 }
 
+.button{
+  color: #308b00;
+}
+
+.button:hover{
+  color: #999999;
+  text-decoration: none;
+}
+
 .top-nav{
   widows: 100%;
   height: auto;
@@ -233,6 +245,27 @@ body {
   font-size: 22px;
   color: #000000;
   margin: 30px 80px;
+}
+
+.login-button{
+  background-color: #2a2b43; 
+  color: #FFFFFF; 
+  width: 100px;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+
+.login-button:hover{
+  cursor: pointer;
+  color: #FFFFFF;
+  background-color: #3b3c5e;
+}
+
+.login-form{
+  width: 330px; 
+  margin-right: auto; 
+  margin-left: auto;
 }
 
 .left-icon{
@@ -265,11 +298,33 @@ body {
   height: auto;
   padding-right: 10px;
   padding-left: 10px;
-  padding-top: 100px;
+  padding-top: 90px;
   margin-top: 3px;
   z-index: 1000;
   /*background-color: #f5f5f0;*/
   /*background-color: #f9ffe6;*/
+}
+
+.mini-panel{
+  background-color: #FFFFFF; 
+  border-radius: 5px; 
+  padding: 15px; 
+  width: 100%;
+  box-shadow: 2px 2px 2px grey;
+}
+
+.view-logs{
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px grey;
+  font-size: 10px;
+  text-align: center;
+  text-shadow: 1px 1px 2px green;
+  height: 100%;
+}
+
+.view-logs:hover{
+  background-color: #f5f5f0;
+  cursor: pointer;
 }
 
 .title{
@@ -291,8 +346,12 @@ body {
   z-index: 800;
 }
 
+.view-index input{
+  margin: 0 !important;
+}
+
 .view-form{
-  width: 95%;
+  width: 90%;
   background-color: #FFFFFF;
   margin-left: auto;
   margin-right: auto;
@@ -300,6 +359,7 @@ body {
   display: block;
   padding-bottom: 5px;
   border-radius: 5px;
+  font-size: 11px;
   padding: 10px;
   z-index: 800;
 }
@@ -354,8 +414,16 @@ body {
 }
 
 .form-wrapper-content{
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.hide{
+  display: none;
+}
+
+.display{
+  display: block;
 }
 
 .close-button{
@@ -437,19 +505,18 @@ body {
   margin: 10px;
 }
 .tracking-form{
- width: 1000px;
- height: 100%;
- display: block;
+ width: 930px;
+ /*height: 100%;*/
  margin-left: auto;
  margin-right: auto;
- padding: 15px;
+ padding: 10px;
  background-color: #FFFFFF;
- margin-top: 20px;
+ margin-top: 5px;
 
 }
 
 .tracking-form td{
-  font-size: 12px;
+  font-size: 10px;
   padding: 0;
 }
 .tracking{
@@ -466,9 +533,9 @@ body {
 
 .cbox{
   display: inline-block;
-  margin: 5px;
+  margin: 3px;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 9px;
 }
 
 .cboxx{
@@ -477,6 +544,14 @@ body {
   margin-right: 3px;
   font-weight: bold;
   font-size: 10px;
+}
+
+.cboxxx{
+  display: inline-block;
+  width: 200px;
+  margin-right: 1px;
+  font-weight: bold;
+  font-size: 9px;
 }
 
 .checkbox-wrapper{
@@ -502,14 +577,22 @@ body {
   position: fixed;
 }
 
+#view-form{
+  display: none;
+}
+
 @media print
 {
   .breadcrumb, #noprint {display:none;}
   .tracking-form {
    margin: 0px;
-   width: 816px;
+   width: 980px;
    height: 1248px;
-   font-size: 12pt;
+   font-size: 10pt;
+  }
+
+  #view-form{
+    display: inline-table;
   }
 
   /*.content-wrapper{
@@ -600,7 +683,7 @@ body {
 
  .btn-right{
   float: right;
-  margin-left: 5px;
+  margin-right: 10px;
   margin-left: 5px;
   margin-bottom: 5px;
  }
@@ -609,6 +692,19 @@ body {
   border: solid 1px grey;
   border-radius: 5px;
   width: auto;
+ }
+
+ .mytable{
+  width: 100%;
+  padding: 10px;
+ }
+
+ .mytable td{
+  height: 40px;
+ }
+
+ .mytable .td{
+  width: 150px;
  }
 
  .amount-box{
@@ -672,6 +768,12 @@ body {
   .new-title{
     font-size: 14px;
     margin: 5px 20px;
+  }
+
+  .login-form{
+    width: 275px; 
+    margin-right: auto; 
+    margin-left: auto;
   }
 }
 /*.............. Gallery ..........................*/

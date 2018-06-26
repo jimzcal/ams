@@ -2,6 +2,8 @@
 
 namespace frontend\models;
 
+use backend\models\DvRemarks;
+
 use Yii;
 
 /**
@@ -110,6 +112,21 @@ class Disbursement extends \yii\db\ActiveRecord
     public function getCashStatuses()
     {
         return $this->hasMany(CashStatus::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getRemarkss()
+    {
+        return $this->hasMany(DvRemarks::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getRemark()
+    {
+        $remark = DvRemarks::find()
+            ->where(['dv_no' => $this->dv_no])
+            ->andWhere(['user_id' => Yii::$app->user->identity->id])
+            ->one();
+
+        return isset($remark->remarks) ? $remark->remarks : '' ;
     }
 
     /**

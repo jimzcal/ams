@@ -11,7 +11,7 @@ $this->title = 'UPDATE DV NO.: ' . $model->dv_no;
 // $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="disbursement-update">
-	<div class="form-wrapper">
+	<!-- <div class="form-wrapper">
     	<div class="form-title">
     		<?= Html::encode($this->title) ?>
     		<?= Html::a('&times;', ['/disbursement/index'], ['class' => 'close-button']) ?>
@@ -20,5 +20,14 @@ $this->title = 'UPDATE DV NO.: ' . $model->dv_no;
 	    <?= $this->render('_updateForm', [
 	        'model' => $model,
 	    ]) ?>
-	</div>
+	</div> -->
+
+		<div class="new-title">
+	        <i class="fa fa-id-card" aria-hidden="true"></i> New Disbursement Voucher
+	    </div>
+
+	    <?= $this->render('_updateForm', [
+	        'model' => $model,
+	        //'dv_no' => $dv_no,
+	    ]) ?>
 </div>

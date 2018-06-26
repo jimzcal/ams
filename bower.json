@@ -1,10 +1,10 @@
 {
   "name": "ppei",
-  "homepage": "https://github.com/ram-29/ppei",
+  "homepage": "https://github.com/jimzcal/ams",
   "authors": [
     "ram-29 <ram.delatina.29@gmail.com>"
   ],
-  "description": "PPEI Web Application on Yii2 Framework",
+  "description": "AMS Web Application on Yii2 Framework",
   "main": "",
   "license": "MIT",
   "private": true,

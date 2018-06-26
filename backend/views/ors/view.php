@@ -39,7 +39,7 @@ $this->title = $model->id;
             'ors_serial',
             'mfo_pap',
             'responsibility_center',
-            'amount',
+            'obligation',
         ],
     ]) ?> -->
 
@@ -54,13 +54,13 @@ $this->title = $model->id;
                 <th>Balance</th>
             </tr>
             <tr>
-                <td><?= $model->datedv->date ?></td>
+                <td><?= $model->date ?></td>
                 <td style="width: 200px;">
                     <?= $model->ors_class.'-'.$model->funding_source.'-'.$model->ors_year.'-'.$model->ors_month.'-'.$model->ors_serial ?>
                 </td>
                 <td style="width: 300px;"><?= $model->particular ?></td>
                 <td><?= $model->responsibility_center ?></td>
-                <td><?= $model->amount ?></td>
+                <td><?= $model->obligation ?></td>
                 <td></td>
             </tr>
         </table>
@@ -83,7 +83,7 @@ $this->title = $model->id;
             </tr>
             <?php foreach ($model->obligationstatus as $value) : ?>
                 <tr>
-                    <td></td>
+                    <td><?= $value->date ?></td>
                     <td><?= $value->ors_class.'-'.$value->funding_source.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial  ?></td>
                     <td style="width: 300px;"><?= $value->particular ?></td>
                     <td><?= $value->responsibility_center  ?></td>

@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+use backend\models\NcaEarmarked;
 
 /**
  * This is the model class for table "disbursement".
@@ -45,18 +47,24 @@ class Disbursement extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public $date_paid, $check_no, $lddap_check_no, $page_checker, $particular, $amount, $ors_id, $lddap_no;
-    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $ors_no, $due, $period;
+    public $date_paid, $check_no, $lddap_check_no, $page_checker, $particular, $amount, $lddap_no, $ors_no, $ors_id;
+    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $due, $period, $employee_id, $payable, $obligation, $payment, $nca_id, $nca_no, $funding_source, $date_registry, $action, $remarks;
+
     public function rules()
     {
         return [
-            [['dv_no', 'fund_cluster', 'cash_advance', 'funding_source', 'particulars', 'date', 'payee', 'nca', 'gross_amount', 'tin', 'transaction_id', 'status'], 'required'],
-            [['attachments', 'funding_source', 'remarks', 'particulars', 'lddap_no', 'ors', 'ors_no', 'mfo_pap', 'responsibility_center'], 'string'],
-            [['gross_amount', 'amount', 'less_amount', 'net_amount', 'period'], 'number'],
+            [['dv_no', 'fund_cluster', 'particulars', 'date', 'payee', 'gross_amount', 'transaction_id', 'ors_no'], 'required'],
+            [['dv_no'], 'unique', 'targetAttribute' => ['dv_no']],
+            [['attachments', 'funding_source', 'remarks', 'particulars', 'particular', 'lddap_no', 'mfo_pap', 'responsibility_center', 'nca_no', 'action'], 'string'],
+            [['gross_amount', 'amount', 'less_amount', 'net_amount', 'period', 'obligation', 'payable'], 'number'],
+            [['payment'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
             // [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
-            [['transaction_id', 'ors_id'], 'integer'],
+            [['transaction_id', 'ors_id', 'ors', 'nca_id'], 'integer'],
+            [['date_registry'], 'date'],
+            [['payee', 'particulars'], 'unique', 'targetAttribute' => ['disbursement', 'particulars']],
+            //[['ors'], 'safe'],
             [['dv_no', 'payee', 'nca'], 'string', 'max' => 200],
-            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated', 'funding_source'], 'string', 'max' => 100],
+            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated', 'funding_source', 'employee_id'], 'string', 'max' => 100],
             [['dv_no'], 'unique'],
         ];
     }
@@ -84,6 +92,7 @@ class Disbursement extends \yii\db\ActiveRecord
             'fund_cluster' => 'Fund Cluster',
             'funding_source' => 'Funding Source',
             'ors_no' => 'ORS No',
+            'ors' => 'ORS No.',
             'transaction_id' => 'Transaction Type',
             'attachments' => 'Attachments',
             'remarks' => 'Remarks',
@@ -100,9 +109,14 @@ class Disbursement extends \yii\db\ActiveRecord
         return $this->hasMany(AccountingEntry::className(), ['dv_no' => 'dv_no']);
     }
 
-    public function getFundCluster()
+    public function getCluster()
     {
-        return $this->hasMany(FundCluster::className(), ['fund_cluster' => 'fund_cluster']);
+        return $this->hasOne(FundCluster::className(), ['fund_cluster' => 'fund_cluster']);
+    }
+
+    public function getTransaction()
+    {
+        return $this->hasOne(Transaction::className(), ['id' => 'transaction_id']);
     }
 
     /**
@@ -111,6 +125,26 @@ class Disbursement extends \yii\db\ActiveRecord
     public function getCashAdvances()
     {
         return $this->hasMany(CashAdvance::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getCheck($nca_no, $funding_source)
+    {
+        $yes = NcaEarmarked::find()->where(['dv_no' => $this->dv_no])
+                ->andWhere(['nca_no' => $nca_no])
+                ->andWhere(['funding_source' => $funding_source])
+                ->one();
+
+        return isset($yes) ? "checked" : "unchecked";
+    }
+
+    public function getEarmarkedamount($nca_no, $funding_source)
+    {
+        $amount = NcaEarmarked::find()->where(['dv_no' => $this->dv_no])
+                ->andWhere(['nca_no' => $nca_no])
+                ->andWhere(['funding_source' => $funding_source])
+                ->one();
+
+        return isset($amount) ? $amount->amount : '';
     }
 
     public function getAccountingEntry()
@@ -123,6 +157,11 @@ class Disbursement extends \yii\db\ActiveRecord
         return $this->hasOne(Ors::className(), ['dv_no' => 'dv_no']);
     }
 
+    public function getLog()
+    {
+        return $this->hasOne(DvLog::className(), ['dv_no' => 'dv_no']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -131,8 +170,42 @@ class Disbursement extends \yii\db\ActiveRecord
         return $this->hasMany(TransactionStatus::className(), ['dv_no' => 'dv_no']);
     }
 
+    public function getRemarkss()
+    {
+        return $this->hasMany(DvRemarks::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getRemark()
+    {
+        $remark = DvRemarks::find()
+            ->where(['dv_no' => $this->dv_no])
+            ->andWhere(['user_id' => Yii::$app->user->identity->id])
+            ->one();
+
+        return isset($remark->remarks) ? $remark->remarks : '' ;
+    }
+
     public function getAda()
     {
         return $this->hasOne(LddapAda::className(), ['dv_no' => 'dv_no']);
+    }
+
+    public function getObligationbalance($ors_id)
+    {
+        $balance = array_sum(ArrayHelper::getColumn(OrsRegistry::find()
+            ->where(['ors_id' => $ors_id])
+            ->all(), 'payment'));
+
+        return $balance;
+    }
+
+    public function getEarmarked($nca_no, $funding_source)
+    {
+        $earmarked_amount = array_sum(ArrayHelper::getColumn(NcaEarmarked::find()
+                    ->where(['nca_no' => $nca_no])
+                    ->andWhere(['funding_source' => $funding_source])
+                    ->all(), 'amount'));
+
+        return $earmarked_amount;
     }
 }

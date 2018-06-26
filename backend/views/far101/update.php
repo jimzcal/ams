@@ -13,7 +13,7 @@ $this->title = 'Update FAR 1';
 <div class="far101-update">
 
    <!--  <h1><?= Html::encode($this->title) ?></h1> -->
-   <div class="view-index">
+   <div class="view-form">
 	    <?= $this->render('updateForm', [
 	        'model' => $model,
 	        'far' => $far,

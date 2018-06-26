@@ -13,6 +13,10 @@ $this->title = 'ORS Entry';
 ?>
 <div class="ors-index">
 
+    <div class="btn-group btn-group-vertical" style="float: left; right: 0; z-index: 300; position: fixed;" id="noprint">
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i><br> New', ['create'], ['class' => 'btn btn-default']) ?>
+    </div>
+
     <div class="new-title">
         <i class="fa fa-calculator" aria-hidden="true"></i> Registry of Obligations
     </div>
@@ -23,48 +27,148 @@ $this->title = 'ORS Entry';
     </div>
 
     <div class="view-index">
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            //'filterModel' => $searchModel,
-            'rowOptions'   => function ($model, $key, $index, $grid) {
-                                    return ['data-id' => $model->id];
-                                },
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
 
-                //'id',
-                [
-                    'label' => 'ORS No',
-                    'format' => 'Html',
-                    'contentOptions' => ['style' => 'width: 250px;'], 
-                    'value' => function($data){
+        <table class="table table-striped" style="border: solid 1px #d9d9d9;">
+        <?php foreach ($dataProvider->getModels() as $key => $value)  : ?>
 
-                        $ors_no = $data->ors_class.'-'.$data->funding_source.'-'.$data->ors_year.'-'.$data->ors_month.'-'.$data->ors_serial;
-                        return $ors_no;
-                    }
-                ],
-                [
-                    'attribute' => 'particular',
-                    'format' => 'Html',
-                    'contentOptions' => ['style' => 'width: 300px; white-space: normal;'],
-                    'value' => 'particular'
-                ],
-                //'particular',
-                //'ors_class',
-                //'funding_source',
-                //'ors_year',
-                //'ors_month',
-                //'ors_serial',
-                'mfo_pap',
-                'responsibility_center',
-                //'amount',
+                <tr data-id = <?= $value->id ?> style="border-bottom-width: 2px; border-bottom-style: dotted;">
+                    <td>
+                        <table class="ors-index" style="width: 100%;">
+                            <tr data-id = <?= $value->id ?>>
+                                <td style="width: 150px; text-align: right; font-style: italic; color: #999999;">ORS NO : </td>
+                                <td style="width: 350px; border-right-width: 2px; border-right-style: dotted; border-color: #d9d9d9; border-bottom: 1px dotted;">
+                                    <?= $value->ors_class.'-'.$value->funding_source.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial ?>
+                                </td>
+                                <td style="border-right-width: 2px; border-right-style: dotted;  border-color: #d9d9d9;" rowspan="5">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td colspan="4" style="text-align: center;">Obligation Status</td>
+                                        </tr>
+                                        <tr style="font-size: 12px; font-weight: bold; text-align: center;">
+                                            <td>Starting Obligation</td>
+                                            <td>Disbursement</td>
+                                            <td>Balance</td>
+                                            <td>As of</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; font-weight: bold; color: #336699;">
+                                                <?= number_format($value->obligation, 2) ?>
+                                            </td>
+                                            <td style="text-align: right; font-weight: bold; color: #336699;">
+                                                <?= number_format($value->getDisbursement($value->id), 2); ?>
+                                            </td>
+                                            <td style="text-align: right; font-weight: bold; color: #336699;">
+                                                <?= number_format(($value->obligation - $value->getDisbursement($value->id)), 2) ?>
+                                            </td>
+                                            <td style="text-align: right; font-weight: bold;">
+                                                <?= $value->getDate($value->id) ?>
+                                            </td>
+                                        </tr>
+                                    </table>
 
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]); ?>
-        <?php Pjax::end(); ?>
+                                    <table style="margin-right: auto; margin-left: auto;">
+                                        <tr>
+                                            <td colspan="3"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 80px;">
+                                                <?= Html::a('<i class="glyphicon glyphicon-eye-open"></i> View ', ["ors/view", 'id' => $value->id], ['class' => 'button']) ?>
+                                            </td>
+                                            <td style="width: 80px;">
+                                                <?= Html::a('<i class="glyphicon glyphicon-pencil" ></i> Update', ["ors/update", 'id' => $value->id], ['class' => 'button']) ?>
+                                            </td>
+                                            <td style="width: 80px;">
+                                                <?= Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', ["ors/delete", 'id' => $value->id], ['class' => 'button', 
+                                                    'data' => [
+                                                        'confirm' => 'Are you sure you want to delete this item?',
+                                                        'method' => 'post',
+                                                    ],
+                                                    ]) ?>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 150px; text-align: right; font-style: italic; color: #999999">Particulars : </td>
+                                <td style="width: 350px; border-right-width: 2px; border-right-style: dotted;  border-color: #d9d9d9; border-bottom: 1px dotted;">
+                                    <?= $value->particular ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 150px; text-align: right; font-style: italic; color: #999999">MFO/PAP : </td>
+                                <td style="width: 350px; border-right-width: 2px; border-right-style: dotted;  border-color: #d9d9d9; border-bottom: 1px dotted;">
+                                    <?= $value->mfo_pap ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 150px; text-align: right; font-style: italic; color: #999999">Responsibility Center : </td>
+                                <td style="width: 350px; border-right-width: 2px; border-right-style: dotted;  border-color: #d9d9d9; border-bottom: 1px dotted;">
+                                    <?= $value->responsibility_center ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 150px; text-align: right; font-style: italic; color: #999999">Total Obligation : </td>
+                                <td style="width: 350px; border-right-width: 2px; border-right-style: dotted;  border-color: #d9d9d9; border-bottom: 1px dotted;">
+                                    <?= number_format($value->obligation, 2) ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+        <?php endforeach ?>
+        </table>
+         <?php //  GridView::widget([
+        //     'dataProvider' => $dataProvider,
+        //     //'filterModel' => $searchModel,
+        //     'rowOptions'   => function ($model, $key, $index, $grid) {
+        //                             return ['data-id' => $model->id];
+        //                         },
+        //     'columns' => [
+        //         ['class' => 'yii\grid\SerialColumn'],
+
+        //         //'id',
+        //         [
+        //             'label' => 'ORS No',
+        //             'format' => 'Html',
+        //             'contentOptions' => ['style' => 'width: 250px;'], 
+        //             'value' => function($data){
+
+        //                 $ors_no = $data->ors_class.'-'.$data->funding_source.'-'.$data->ors_year.'-'.$data->ors_month.'-'.$data->ors_serial;
+        //                 return $ors_no;
+        //             }
+        //         ],
+        //         [
+        //             'attribute' => 'particular',
+        //             'format' => 'Html',
+        //             'contentOptions' => ['style' => 'width: 300px; white-space: normal; font-size: 11px;'],
+        //             'value' => 'particular'
+        //         ],
+        //         //'particular',
+        //         //'ors_class',
+        //         //'funding_source',
+        //         //'ors_year',
+        //         //'ors_month',
+        //         //'ors_serial',
+        //         'mfo_pap',
+        //         'responsibility_center',
+        //         [
+        //             'label' => 'Obligation',
+        //             'attribute' => 'obligation',
+        //             'format' => 'Html',
+        //             'contentOptions' => ['style' => 'font-weight: bold; text-align: right; font-style: italic'],
+        //             'value' => function($data){
+        //                 return number_format($data->obligation,2) ;
+        //             }
+        //         ],
+
+        //         ['class' => 'yii\grid\ActionColumn'],
+        //     ],
+        // ]); ?>
+         <?php //Pjax::end(); ?>
     </div>
 </div>
+
 <?php
 $this->registerJs("
      $('tbody td').css('cursor', 'pointer');

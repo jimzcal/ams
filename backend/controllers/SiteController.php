@@ -74,6 +74,28 @@ class SiteController extends Controller
             //$result = Disbursement::find()->where(['dv_no'=>$dv_no])->one();
             if($id != null)
             {
+                if(\Yii::$app->user->identity->isAdmin)
+                {
+                    $status = TransactionStatus::find(['approval'])->where(['dv_no'=>$dv_no])->one();
+                    $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->one();
+                    if(empty($status->approval))
+                    {
+                        $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
+                        Yii::$app->db->createCommand()->update('transaction_status', ['approval' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        return $this->redirect(['/disbursement/main', 'id' => $disbursement->id]);
+                    }
+                    else
+                    {
+                        $stat = explode(',', $status->approval);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                        Yii::$app->db->createCommand()->update('transaction_status', ['approval' => $detail], ['dv_no' => $dv_no])->execute();
+
+                         return $this->redirect(['/disbursement/main', 'id' => $id->id]);
+                    }   
+                }
+                
                 if (\Yii::$app->user->can('receiver'))
                 {
                     $status = TransactionStatus::find()->where(['dv_no'=>$dv_no])->one();

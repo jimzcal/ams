@@ -35,7 +35,7 @@ class CashAdvance extends \yii\db\ActiveRecord
         return [
             [['dv_no', 'date', 'due_date', 'status', 'date_liquidated'], 'required'],
             [['dv_no', 'date', 'due_date', 'status', 'date_liquidated', 'payment_method'], 'string', 'max' => 100],
-            [['amount_paid'], 'number'],
+            [['amount_paid', 'amount'], 'number'],
             [['dv_no'], 'exist', 'skipOnError' => true, 'targetClass' => Disbursement::className(), 'targetAttribute' => ['dv_no' => 'dv_no']],
         ];
     }

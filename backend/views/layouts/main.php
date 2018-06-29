@@ -75,9 +75,9 @@ AppAsset::register($this);
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Employees">
                                 <?= Html::a('<i class="fa fa-group icon-font" aria-hidden="true"></i>', ["/employees/index"]) ?>
                             </div>
-                            <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Search DV">
+                            <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Search DV">
                                 <?= Html::a('<i class="fa fa-search icon-font" aria-hidden="true"></i>', ["/site/index"]) ?>
-                            </div>
+                            </div> -->
                             <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Go to transactions">
                                 <?= Html::a('<i class="fa fa-tasks icon-font" aria-hidden="true"></i>', ["/transaction/index"]) ?>
                             </div> -->

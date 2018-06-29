@@ -161,6 +161,10 @@ $this->title = 'DISBURSEMENT VOUCHER';
                                             </td>
                                             <td style="width: 90px; text-align: right; font-weight: bold; color: blue;">
                                                 <?= $form->field($model, 'obligation[]', ['options' => ['tag' => false]])->textInput(['value' => $ors_new_registry->obligation, 'class' => 'textfield', 'style' => 'text-align: right;'])->label(false) ?>
+                                                <?= $form->field($model, 'mfo_pap[]', ['options' => ['tag' => false]])->hiddenInput(['value' => $ors_new_registry->mfo_pap, 'class' => 'textfield'])->label(false) 
+                                                ?>
+                                                <?= $form->field($model, 'responsibility_center[]', ['options' => ['tag' => false]])->hiddenInput(['value' => $ors_new_registry->responsibility_center, 'class' => 'textfield'])->label(false) 
+                                                ?>
                                             </td>
                                             <td style="width: 90px; text-align: right; font-weight: bold; vertical-align: middle; color: green;">
                                                 <?= number_format(($ors_new_registry->obligation - $model->getObligationbalance($ors_new_registry->ors_id)), 2); ?>

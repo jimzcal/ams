@@ -36,13 +36,13 @@ class Ors extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'obligation'], 'required'],
+            [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'obligation', 'object_code'], 'required'],
             [['obligation'], 'number'],
             [['particular'], 'string', 'max' => 200],
             [['ors_class', 'ors_month'], 'string', 'max' => 2],
             [['funding_source'], 'string', 'max' => 8],
             [['ors_year'], 'string', 'max' => 4],
-            [['date', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'string', 'max' => 100],
+            [['date', 'ors_serial', 'mfo_pap', 'responsibility_center', 'object_code'], 'string', 'max' => 100],
         ];
     }
 
@@ -101,6 +101,7 @@ class Ors extends \yii\db\ActiveRecord
             'ors_year' => 'Ors Year',
             'ors_month' => 'Ors Month',
             'ors_serial' => 'Ors Serial',
+            'object_code' => 'Object Code',
             'mfo_pap' => 'MFO-PAP',
             'responsibility_center' => 'Responsibility Center',
             'obligation' => 'Obligation',

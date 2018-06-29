@@ -19,7 +19,7 @@ class OrsSearch extends Ors
     {
         return [
             [['id'], 'integer'],
-            [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center'], 'safe'],
+            [['particular', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'object_code'], 'safe'],
             [['obligation'], 'number'],
         ];
     }
@@ -71,7 +71,8 @@ class OrsSearch extends Ors
             ->andFilterWhere(['like', 'ors_month', $this->ors_month])
             ->andFilterWhere(['like', 'ors_serial', $this->ors_serial])
             ->andFilterWhere(['like', 'mfo_pap', $this->mfo_pap])
-            ->andFilterWhere(['like', 'responsibility_center', $this->responsibility_center]);
+            ->andFilterWhere(['like', 'responsibility_center', $this->responsibility_center])
+            ->andFilterWhere(['like', 'object_code', $this->object_code]);
 
         return $dataProvider;
     }

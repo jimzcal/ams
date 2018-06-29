@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "38476e42f18958535a96871802008337",
+    "content-hash": "4ba5144b8baae35d9528bf60ff662457",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -1018,6 +1018,46 @@
                 "image processing"
             ],
             "time": "2017-05-16T10:31:22+00:00"
+        },
+        {
+            "name": "johnson/yii2-webcam",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arojohnson/yii2-webcam.git",
+                "reference": "eb3a468c8cbe054b867c72c51a2bb252daa9161d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arojohnson/yii2-webcam/zipball/eb3a468c8cbe054b867c72c51a2bb252daa9161d",
+                "reference": "eb3a468c8cbe054b867c72c51a2bb252daa9161d",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "Johnson\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arockia Johnson SR",
+                    "email": "johnson@arojohnson.tk"
+                }
+            ],
+            "description": "Capture and upload the image through system / Mobile web cam basic html5 native features.",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "time": "2017-07-25T02:27:24+00:00"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",

@@ -48,7 +48,7 @@ class Disbursement extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $date_paid, $check_no, $lddap_check_no, $page_checker, $particular, $amount, $lddap_no, $ors_no, $ors_id;
-    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $due, $period, $employee_id, $payable, $obligation, $payment, $nca_id, $nca_no, $funding_source, $date_registry, $action, $remarks;
+    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $due, $period, $employee_id, $payable, $obligation, $payment, $nca_id, $nca_no, $funding_source, $date_registry, $action, $remarks, $nca;
 
     public function rules()
     {
@@ -56,15 +56,15 @@ class Disbursement extends \yii\db\ActiveRecord
             [['dv_no', 'fund_cluster', 'particulars', 'date', 'payee', 'gross_amount', 'transaction_id', 'ors_no'], 'required'],
             [['dv_no'], 'unique', 'targetAttribute' => ['dv_no']],
             [['attachments', 'funding_source', 'remarks', 'particulars', 'particular', 'lddap_no', 'mfo_pap', 'responsibility_center', 'nca_no', 'action'], 'string'],
-            [['gross_amount', 'amount', 'less_amount', 'net_amount', 'period', 'obligation', 'payable'], 'number'],
+            [['gross_amount', 'amount', 'less_amount', 'net_amount', 'obligation', 'payable'], 'number'],
             [['payment'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
             // [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
             [['transaction_id', 'ors_id', 'ors', 'nca_id'], 'integer'],
             [['date_registry'], 'date'],
-            [['payee', 'particulars'], 'unique', 'targetAttribute' => ['disbursement', 'particulars']],
+            [['payee', 'particulars'], 'exist', 'targetClass' => Disbursement::class, 'targetAttribute' => ['payee' => 'payee', 'particulars' => 'particulars']],
             //[['ors'], 'safe'],
             [['dv_no', 'payee', 'nca'], 'string', 'max' => 200],
-            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated', 'funding_source', 'employee_id'], 'string', 'max' => 100],
+            [['date', 'date_paid', 'check_no', 'lddap_check_no', 'cash_advance', 'fund_cluster', 'mode_of_payment', 'tin', 'obligated', 'funding_source', 'employee_id', 'period'], 'string', 'max' => 100],
             [['dv_no'], 'unique'],
         ];
     }
@@ -197,6 +197,13 @@ class Disbursement extends \yii\db\ActiveRecord
             ->all(), 'payment'));
 
         return $balance;
+    }
+
+    public function getValidating($payee, $particulars, $gross_amount)
+    {
+        $result = Disbursement::findOne(['payee' => $payee, 'particulars' => $particulars, 'gross_amount' => $gross_amount]);
+
+        return $result != null ? $result->dv_no : null;
     }
 
     public function getEarmarked($nca_no, $funding_source)

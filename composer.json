@@ -38,7 +38,8 @@
         "2amigos/yii2-chartjs-widget": "~2.0",
         "miloschuman/yii2-highcharts-widget": "^6.0",
         "kartik-v/yii2-widget-select2": "@dev",
-        "timurmelnikov/yii2-webcam-shoot" : " dev-master"
+        "timurmelnikov/yii2-webcam-shoot" : " dev-master",
+        "johnson/yii2-webcam": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

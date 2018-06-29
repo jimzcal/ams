@@ -40,13 +40,13 @@ class OrsRegistry extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public $ors_no, $lddap_check_no, $date_paid;
+    public $ors_no, $lddap_check_no, $date_paid, $fiscal_year;
     public function rules()
     {
         return [
             [['date', 'ors_id', 'dv_no', 'disbursement_date', 'fund_cluster', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'obligation', 'payable', 'payment'], 'required'],
             [['ors_id'], 'integer'],
-            [['obligation', 'payable', 'payment'], 'number'],
+            [['obligation', 'payable', 'payment', 'fiscal_year'], 'number'],
             [['date', 'dv_no', 'disbursement_date', 'fund_cluster', 'ors_class', 'funding_source', 'ors_year', 'ors_month', 'ors_serial', 'mfo_pap', 'responsibility_center', 'date_paid',  'particular', 'lddap_check_no', 'fund_cluster', 'disbursement_date', 'ors_no'], 'string', 'max' => 100],
             [['ors_id'], 'exist', 'skipOnError' => true, 'targetClass' => Ors::className(), 'targetAttribute' => ['ors_id' => 'id']],
         ];
@@ -88,6 +88,67 @@ class OrsRegistry extends \yii\db\ActiveRecord
     public function getOrs()
     {
         return $this->hasOne(Ors::className(), ['id' => 'ors_id']);
+    }
+
+    public function getRegistry($year, $fund_cluster, $ors_class, $month)
+    {
+        $value = array_sum(ArrayHelper::getColumn(OrsRegistry::find()
+                        ->where(['like', 'disbursement_date', $year])
+                        ->andWhere(['ors_class'=> $ors_class])
+                        ->andWhere(['fund_cluster'=> $fund_cluster])
+                        ->andwhere(['like', 'disbursement_date', $month])
+                        ->all(), 'payment'));
+
+        return $value == 0.00 ? '-' : number_format($value, 2);
+    }
+
+    public function getJantotal($year, $fund_cluster, $month)
+    {
+        $value = array_sum(ArrayHelper::getColumn(OrsRegistry::find()
+                            ->where(['like', 'disbursement_date', $year])
+                            ->andWhere(['fund_cluster'=> $fund_cluster])
+                            ->andwhere(['like', 'disbursement_date', $month])
+                            ->all(), 'payment'));
+
+        return $value == 0.00 ? '-' : number_format($value, 2);
+    }
+
+    public function getJancheck($year, $fund_cluster, $month)
+    {
+        $value = array_sum(ArrayHelper::getColumn(Disbursement::find()
+                            ->where(['like', 'date', $year])
+                            ->andWhere(['like', 'date', $month])
+                            ->andWhere(['fund_cluster'=> $fund_cluster])
+                            ->andWhere(['mode_of_payment' => 'mds_check'])
+                            ->andWhere(['status' => 'Paid'])
+                            ->all(), 'net_amount'));
+
+        return $value == 0.00 ? '-' : number_format($value, 2);
+    }
+
+    public function getJanlddap($year, $fund_cluster, $month)
+    {
+        $value = array_sum(ArrayHelper::getColumn(Disbursement::find()
+                            ->where(['like', 'date', $year])
+                            ->andWhere(['fund_cluster'=> $fund_cluster])
+                            ->andWhere(['like', 'date', $month])
+                            ->andWhere(['mode_of_payment' => 'lddap_ada'])
+                            ->andWhere(['status' => 'Paid'])
+                            ->all(), 'net_amount'));
+
+        return $value == 0.00 ? '-' : number_format($value, 2);
+    }
+
+    public function getJandisbursement($year, $fund_cluster, $month)
+    {
+        $value = array_sum(ArrayHelper::getColumn(Disbursement::find()
+                            ->where(['like', 'date', $year])
+                            ->andWhere(['fund_cluster'=> $fund_cluster])
+                            ->andWhere(['like', 'date', $month])
+                            ->andWhere(['status' => 'Paid'])
+                            ->all(), 'net_amount'));
+
+        return $value == 0.00 ? '-' : number_format($value, 2);
     }
 
     public function getBalance($ors_id)

@@ -7,6 +7,8 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use backend\models\Disbursement;
 use backend\models\OrsRegistry;
+use backend\models\FundCluster;
+use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CashAdvanceSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -14,6 +16,37 @@ use backend\models\OrsRegistry;
 $this->title = 'Monthly Disbursement';
 ?>
 <div class="cash-advance-index">
+	<br><br>
+	<?php $form = ActiveForm::begin(); ?>
+	<div style=" padding: 0; width: 88%; margin-left: auto; margin-right: auto; display: block;">
+		<div class="row">
+			<div class="col-lg-8">
+				<table>
+					<tr>
+						<td valign="top" align="right">
+			                <i class="fa fa-search" style="color: green; font-size: 30px;"></i>
+			            </td>
+						<td>
+							<?= $form->field($model, 'fiscal_year')->textInput(['placeholder' => 'Fiscal Year', 'value' => $year])->label(false) ?>
+						</td>
+						<td>
+							<?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
+			                      [
+			                          'prompt'=>'Select Fund Cluster',
+			                      ])->label(false); 
+			                  ?>
+						</td>
+						<td>
+							<div class="form-group">
+			                    <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+			                </div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+    <?php ActiveForm::end(); ?>
 
 	<div class="view-form">
 		<table style="width: 100%">
@@ -25,10 +58,14 @@ $this->title = 'Monthly Disbursement';
 				</td>
 			</tr>
 			<tr>
-				<td colspan="9" style="text-align: center; font-weight: bold;">For Fiscal Year <?= $year ?></td>
+				<td colspan="9" style="text-align: center; font-weight: bold; font-size: 14px;">
+					For Fiscal Year <?= $year ?>
+				</td>
 			</tr>
 			<tr>
-				<td colspan="9" style="text-align: center; font-weight: bold;">For Fund Cluster: 01</td>
+				<td colspan="9" style="text-align: center; font-weight: bold;">
+					For Fund Cluster: <?= $fund_cluster ?>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="9" style="text-align: center; font-weight: bold;">As of this date</td>
@@ -54,1010 +91,327 @@ $this->title = 'Monthly Disbursement';
 			</tr>
 			<tr>
 				<td style="width: 200px">January</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'January'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'January'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'January'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'January'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'January'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'January'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'January'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'January'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'January'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'January'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'January'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'January'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'January'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lddap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'January'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'January'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'January'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>February</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'February'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'February'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'February'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'February'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'February'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'February'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['ors_month' => '02'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'February'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'February'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'February'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'February'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'February'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'February'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lddap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'February'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'February'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'February'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>March</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'March'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'March'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'March'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'March'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'March'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'March'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andwhere(['like', 'disbursement_date', 'March'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'March'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andwhere(['like', 'disbursement_date', 'March'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'March'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'March'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'March'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'March'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'March'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'date', 'March'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'March'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>April</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'April'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'April'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'April'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'April'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'April'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'April'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'April'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'April'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'April'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'April'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'April'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'April'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'April'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'April'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'April'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'April'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>May</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'May'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'May'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'May'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'May'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'May'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'May'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'May'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'May'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['like', 'disbursement_date', 'May'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'May'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'May'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'May'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'May'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'May'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'May'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'May'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>June</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'June'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'June'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'June'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'June'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'June'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'June'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'June'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'June'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['like', 'disbursement_date', 'June'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'June'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'June'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'June'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'June'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'June'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'June'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'June'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>July</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'July'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'July'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'July'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'July'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'July'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'July'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'July'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'July'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'July'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'July'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'July'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'July'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'July'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'July'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'July'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'July'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>August</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'August'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'August'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'August'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'August'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'August'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'August'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'August'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'August'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'August'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'August'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'August'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'August'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'August'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'August'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'August'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'August'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>September</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'September'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'September'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'September'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'September'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'September'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'September'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'September'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'September'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'September'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'September'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'September'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'September'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'September'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'September'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'September'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'September'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>October</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'October'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'October'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'October'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'October'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'October'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'October'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'October'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'October'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['like', 'disbursement_date', 'October'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'October'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'October'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'October'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'October'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'October'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'October'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'October'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>November</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'November'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'November'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'November'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'November'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'November'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'November'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'November'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'November'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'November'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'November'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'November'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'November'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'November'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'November'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'November'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'November'); ?>
+				</td>
 				</td>
 			</tr>
 			<tr>
 				<td>December</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'01'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'December'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '01', 'December'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'02'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'December'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '02', 'December'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'03'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'December'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '03', 'December'); ?>
 				</td>
-				<td style="width: 85px;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['ors_class'=>'04'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'December'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 85px; text-align: right;">
+					<?= $model->getRegistry($year, $fund_cluster, '04', 'December'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(OrsRegistry::find(['net_amount'])
-                                        ->where(['like', 'disbursement_date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'disbursement_date', 'December'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJantotal($year, $fund_cluster, 'December'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['like', 'date', 'December'])
-                                        ->andWhere(['mode_of_payment' => 'mds_check'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJancheck($year, $fund_cluster, 'December'); ?>
 				</td>
-				<td>
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'December'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['mode_of_payment' => 'lldap_ada'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="text-align: right;">
+					<?= $model->getJanlddap($year, $fund_cluster, 'December'); ?>
 				</td>
-				<td style="width: 120px; font-weight: bold;">
-					<?=
-						number_format(array_sum(ArrayHelper::getColumn(Disbursement::find(['net_amount'])
-                                        ->where(['like', 'date', $year])
-                                        ->andWhere(['like', 'date', 'December'])
-                                        ->andWhere(['fund_cluster'=>'01'])
-                                        ->andWhere(['status' => 'Paid'])
-                                        ->all(), 'net_amount')), 2);
-					 ?>
+				<td style="width: 120px; text-align: right; font-weight: bold;">
+					<?= $model->getJandisbursement($year, $fund_cluster, 'December'); ?>
 				</td>
 			</tr>
 		</table>

@@ -113,6 +113,7 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
                 //'total_amount',
                 [
                     'attribute' => 'total_amount',
+                    'contentOptions' => ['style' => 'text-align: right'], 
                     'value' => function($data){
                         return number_format($data->total_amount, 2);
                     }

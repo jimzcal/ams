@@ -28,6 +28,10 @@ $this->title = 'Earmarked DV';
         <i class="fa fa-bar-chart-o" aria-hidden="true"></i> <?= 'Earmarked DV No. '. $model->dv_no ?>
     </div>
 
+    <div class="btn-group btn-group-vertical" style="float: left; left: 0; z-index: 300; position: fixed;" id="noprint">
+        <?= Html::a('<i class="glyphicon glyphicon-pencil" style= "font-size: 14px;"></i><br> Update', ['/disbursement/cashstatus', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+    </div>
+
     <div class="view-index">
         <div class="form-wrapper-content">
             <table class="mytable" style="width: 97%; margin-right: auto; margin-left: auto;">

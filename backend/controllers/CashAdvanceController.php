@@ -119,9 +119,13 @@ class CashAdvanceController extends Controller
 
         if ($model->load(Yii::$app->request->post())) 
         {
-            if($model->amount_paid == $model->dvNo->net_amount)
+            $amount_paid = str_replace(',', '', $model->amount_paid);
+            $amount= str_replace(',', '', $model->amount);
+
+            if($amount_paid == $amount)
             {
                 $model->payment_method = $_POST['payment_method'];
+                $model->amount_paid = $amount_paid;
                 $model->date_liquidated = date('M. d, Y');
                 $model->save(false);
 
@@ -133,6 +137,7 @@ class CashAdvanceController extends Controller
             else
             {
                 $model->payment_method = $_POST['payment_method'];
+                $model->amount_paid = $amount_paid;
                 $model->status = 'Unliquidated';
                 $model->date_liquidated = date('M. d, Y');
                 $model->save(false);

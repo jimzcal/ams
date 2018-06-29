@@ -30,7 +30,7 @@ $this->title = 'FINANCIAL REPORTS';
             Status of Cash Allocation', ["/nca/list"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-id-card" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-        Monthly Disbursement Report', ["/ors-registry/disbursementyear"], ['class' => 'financial-report-icon']) ?>
+        Monthly Disbursement Report', ["/ors-registry/mdisbursement"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-calculator" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Taxes', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>

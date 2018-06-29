@@ -39,6 +39,7 @@ use backend\models\Employees;
              <td colspan="5" style="font-style: italic;">Note: All fields of this form are required. Please, provide appropriate details.</td>
              <td style="font-size: 18px; width: 220px;">
                   DV No. <strong> <?= isset($dv_no) ? $dv_no : $model->dv_no ?></strong>
+                  <?= $form->field($model, 'dv_no')->hiddenInput(['maxlength' => true, 'value' => isset($dv_no) ? $dv_no : $model->dv_no ])->label(false) ?>
              </td>
          </tr>
          <tr>
@@ -145,13 +146,20 @@ use backend\models\Employees;
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-           <h4 class="modal-title">Due Period</h4>
+           <h4 class="modal-title">Due Date</h4>
         </div>
         <div class="modal-body">
           <table width="500">       
               <tr>
                 <td>
-                <?= $form->field($model, 'due')->dropDownList(['30'=>'30 days', '60'=>'60 days', '20' => '20 days'], ['id' => 'period', 'prompt' => 'Select No. of days'])->label("No of days to Liquidate this Cash Advance: ") ?>
+                  <?= $form->field($model, 'due')->widget(DatePicker::classname(), [
+                  'options' => ['style' => 'width: 400px; right: 0px;'],
+                    'pluginOptions' => [
+                      'todayHighlight' => true,
+                      'format' => 'yyyy-mm-dd',
+                        ]
+                  ])->label('Select Date'); 
+                ?>
                 </td>
               </tr>
           </table>
@@ -167,32 +175,6 @@ use backend\models\Employees;
 </div>
 
 <script>
-
-var counter = 1;
-var limit = 6;
-function addInput(dynamicInput)
-{
-     if (counter == limit)  {
-          alert("You have reached the limit of adding " + counter + " inputs");
-     }
-     else {
-          var newdiv = document.createElement('tr');
-          newdiv.innerHTML = "<tr class='form-group'><td><input type='text' name='ors_no["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='mfo_pap["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td><input type='text' name='responsibility_center["+counter+"]' class='form-control' style='width: 98%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td style='width: 100px;'><input type='text' name='amount["+counter+"]' class='form-control num' style='width: 93%; margin-left: auto; margin-right: auto; margin-bottom: 15px;'></td><td></td></tr>";
-
-          document.getElementById("dynamicInput").appendChild(newdiv);
-
-          // var my_elem = document.getElementById('my_id');
-
-          // var span = document.createElement('span');
-          //     span.innerHTML = '*';
-          //     span.className = 'asterisk';
-
-          // my_elem.parentNode.insertBefore(span, my_elem);
-
-          counter++;
-     }
-}
-
 window.onload = function()
 {
 
@@ -228,11 +210,11 @@ window.onload = function()
         }
     });
 
-  $(document).on("change", "select[id='period']", function () { 
+  $("input[id='disbursement-due']").change(function () { 
         // alert($(this).val())
         var value = 0;
-        $modal = $('#myModal');
-        if($(this).val() != null && $(this).val() != '') 
+        //$modal = $('#myModal');
+        if($(this).val() != null)
         {
             value = this.value;
             $("#fperiod").val(value);

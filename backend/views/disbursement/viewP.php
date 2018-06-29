@@ -74,7 +74,7 @@ $this->title = 'DISBURSEMENT VOUCHER';
                                         <td style="text-align: right; font-style: italic; width: 140px; vertical-align: middle; color: #666666; height: 40px; font-size: 13px;">Gross Amount</td>
                                         <td style="color: green; font-weight: bold; vertical-align: middle; width: 5px;">:</td>
                                         <td>
-                                            <?= $form->field($model, 'gross_amount', ['options' => ['tag' => false]])->textInput(['maxlength' => true, 'id'=>'nine', 'class' => 'textfield'])->label(false) ?>
+                                            <?= $form->field($model, 'gross_amount', ['options' => ['tag' => false]])->textInput(['maxlength' => true, 'class' => 'textfield'])->label(false) ?>
                                         </td>
                                     </tr>
                                     <tr>
@@ -241,5 +241,43 @@ $this->title = 'DISBURSEMENT VOUCHER';
     </div>
 </div>
 
+<script>
+window.onload = function()
+{
+
+    var gross_amount = $("#disbursement-gross_amount").val();
+    var less_amount = $("#disbursement-less_amount").val();
+    var net_amount = (gross_amount - less_amount);
+    $("#disbursement-net_amount").val(net_amount);
+
+  $("input[id='disbursement-less_amount']").change(function () { 
+
+        var gross_amount = $("#disbursement-gross_amount").val();
+        var net_amount = (gross_amount - $(this).val());
+        $("#disbursement-net_amount").val(net_amount);
+
+    });
+
+  // $(document).on("change", "select[id='advance']", function () { 
+  //       // alert($(this).val())
+  //       $modal = $('#myModal');
+  //       if($(this).val() == 'yes'){
+  //           $modal.modal('show');
+  //       }
+  //   });
+
+  // $("input[id='disbursement-due']").change(function () { 
+  //       // alert($(this).val())
+  //       var value = 0;
+  //       //$modal = $('#myModal');
+  //       if($(this).val() != null)
+  //       {
+  //           value = this.value;
+  //           $("#fperiod").val(value);
+  //       }
+  //   });
+
+}
+</script>
 
 

@@ -296,7 +296,20 @@ class DisbursementController extends Controller
                 $model->status = 'Received & Encoded';
                 $model->ors = implode(',', $model->ors);
 
-                $model->save(false);
+                if($model->getValidating($model->payee, $model->particulars, $model->gross_amount) == null)
+                {
+                    $model->save(false);
+                }
+                else
+                {
+                    Yii::$app->getSession()->setFlash('info', '<i class="glyphicon glyphicon-alert" style="color: red;"></i> Similar transaction is detected. Please check <strong> DV No. '.$model->getValidating($model->payee, $model->particulars, $model->gross_amount). '</strong> for verification.');
+
+                    return $this->render('create', [
+                        'model' => $model,
+                        'dv_no' => $dv_no,
+                    ]);
+                }
+                
       
                 
                 //Start recording transactions ------------------------------------------
@@ -326,9 +339,8 @@ class DisbursementController extends Controller
 
                     $advance_model->dv_no = $model->dv_no;
                     $advance_model->date = date('Y-m-d ');
-                    $date = $advance_model->date;
                     $advance_model->status = 'Unliquidated';
-                    $advance_model->due_date = date('Y-m-d', strtotime($date. '+'. $model->period. 'days'));
+                    $advance_model->due_date = $model->period;
 
                     $advance_model->save(false);
                 }
@@ -414,9 +426,8 @@ class DisbursementController extends Controller
 
                     $advance_model->dv_no = $model->dv_no;
                     $advance_model->date = date('Y-m-d');
-                    $date = $advance_model->date;
                     $advance_model->status = 'Unliquidated';
-                    $advance_model->due_date = date('Y-m-d', strtotime($date. '+'. $model->period. 'days'));
+                    $advance_model->due_date = $model->period;
 
                     $advance_model->save(false);
                 }

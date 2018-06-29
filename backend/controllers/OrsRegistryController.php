@@ -301,20 +301,39 @@ class OrsRegistryController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionDisbursementyear()
-    {
-        //$data = Disbursement::find()->all();
+    // public function actionDisbursementyear()
+    // {
+    //     //$data = Disbursement::find()->all();
 
-        return $this->render('disbursement-year');
-    }
+    //     return $this->render('disbursement-year');
+    // }
 
-    public function actionMdisbursement($year)
+    public function actionMdisbursement($year = '2018', $fund_cluster = '01')
     {
-        $data = OrsRegistry::find()->where(['like', 'date', $year])->all();
+        //$data = OrsRegistry::find()->where(['like', 'date', $year])->all();
+
+        $model = OrsRegistry::find()->where(['like', 'date', $year])
+                                    ->andWhere(['fund_cluster' => $fund_cluster])
+                                    ->one();
+
+        $model = $model == null ? new OrsRegistry() : $model;
+
+        if ($model->load(Yii::$app->request->post()))
+        {
+            $fiscal_year = $model->fiscal_year;
+            $fund_cluster = $model->fund_cluster;
+
+            return $this->render('monthly-disbursement-01', [
+                'model' => $model,
+                'year' => $fiscal_year,
+                'fund_cluster' => $fund_cluster
+            ]);
+        }
 
         return $this->render('monthly-disbursement-01', [
-            'data' => $data,
+            'model' => $model,
             'year' => $year,
+            'fund_cluster' => $fund_cluster
         ]);
     }
 

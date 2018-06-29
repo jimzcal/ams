@@ -39,7 +39,7 @@ use backend\models\ResponsibilityCenter;
             <td style="width: 180px; float: right"></td>
         </tr>
         <tr>
-            <td colspan="4" rowspan="2"><?= $form->field($model, 'particular')->textArea(['rows' => 6]) ?></td>
+            <td colspan="4" rowspan="3"><?= $form->field($model, 'particular')->textArea(['rows' => 9]) ?></td>
             <td colspan="3">
                 <?= $form->field($model, 'mfo_pap')->textInput() ?>
             </td>
@@ -47,6 +47,11 @@ use backend\models\ResponsibilityCenter;
         <tr>
             <td colspan="3">
                 <?= $form->field($model, 'responsibility_center')->dropDownList(ArrayHelper::map(ResponsibilityCenter::find()->all(),'code', 'description')) ?>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <?= $form->field($model, 'object_code')->textInput() ?>
             </td>
         </tr>
         <tr>

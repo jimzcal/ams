@@ -707,6 +707,18 @@ body {
   width: 150px;
  }
 
+ .camera{
+  font-size: 20px;
+  color: green;
+  float: right;
+  bottom: 0px;
+ }
+
+  .camera:hover{
+  cursor: pointer;
+  color: #000000;
+  }
+
  .amount-box{
   width: 100%;
   padding: 4px;
@@ -1072,6 +1084,14 @@ a.desc:after {
 
 .grid-view td {
     white-space: nowrap;
+    font-size: 12px;
+    white-space: normal;
+}
+
+.grid-view th {
+    text-align: center;
+    color: #000000;
+    text-decoration: none !important;
 }
 
 .grid-view .filters input,

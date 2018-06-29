@@ -31,7 +31,7 @@ $this->title = 'ORS Entry';
         <table class="table table-striped" style="border: solid 1px #d9d9d9;">
         <?php foreach ($dataProvider->getModels() as $key => $value)  : ?>
 
-                <tr data-id = <?= $value->id ?> style="border-bottom-width: 2px; border-bottom-style: dotted;">
+                <tr data-id = <?= $value->id ?>>
                     <td>
                         <table class="ors-index" style="width: 100%;">
                             <tr data-id = <?= $value->id ?>>
@@ -51,14 +51,14 @@ $this->title = 'ORS Entry';
                                             <td>As of</td>
                                         </tr>
                                         <tr>
-                                            <td style="text-align: right; font-weight: bold; color: #336699;">
+                                            <td style="text-align: right; font-weight: bold; color: #558000;">
                                                 <?= number_format($value->obligation, 2) ?>
                                             </td>
-                                            <td style="text-align: right; font-weight: bold; color: #336699;">
-                                                <?= number_format($value->getDisbursement($value->id), 2); ?>
+                                            <td style="text-align: right; font-weight: bold; color: #558000;">
+                                                <?= number_format($value->getDisbursement($value->id), 2) == 0.00 ? '-' : number_format($value->getDisbursement($value->id), 2); ?>
                                             </td>
-                                            <td style="text-align: right; font-weight: bold; color: #336699;">
-                                                <?= number_format(($value->obligation - $value->getDisbursement($value->id)), 2) ?>
+                                            <td style="text-align: right; font-weight: bold; color: #558000;">
+                                                <?= number_format(($value->obligation - $value->getDisbursement($value->id)), 2) == 0.00 ? '-' : number_format(($value->obligation - $value->getDisbursement($value->id)), 2) ?>
                                             </td>
                                             <td style="text-align: right; font-weight: bold;">
                                                 <?= $value->getDate($value->id) ?>
@@ -71,14 +71,14 @@ $this->title = 'ORS Entry';
                                             <td colspan="3"></td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 80px;">
-                                                <?= Html::a('<i class="glyphicon glyphicon-eye-open"></i> View ', ["ors/view", 'id' => $value->id], ['class' => 'button']) ?>
+                                            <td style="width: 60px;">
+                                                <?= Html::a('<i class="glyphicon glyphicon-eye-open button"></i> View ', ["ors/view", 'id' => $value->id], ['style' => 'color: #000000; font-weight: bold']) ?>
                                             </td>
                                             <td style="width: 80px;">
-                                                <?= Html::a('<i class="glyphicon glyphicon-pencil" ></i> Update', ["ors/update", 'id' => $value->id], ['class' => 'button']) ?>
+                                                <?= Html::a('<i class="glyphicon glyphicon-pencil button" ></i> Update', ["ors/update", 'id' => $value->id], ['style' => 'color: #000000; font-weight: bold']) ?>
                                             </td>
                                             <td style="width: 80px;">
-                                                <?= Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', ["ors/delete", 'id' => $value->id], ['class' => 'button', 
+                                                <?= Html::a('<i class="glyphicon glyphicon-trash button"></i> Delete', ["ors/delete", 'id' => $value->id], ['style' => 'color: #000000; font-weight: bold', 
                                                     'data' => [
                                                         'confirm' => 'Are you sure you want to delete this item?',
                                                         'method' => 'post',

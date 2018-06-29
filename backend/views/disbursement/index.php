@@ -76,28 +76,27 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                     // 'dv_no',
                     [
                         'attribute' => 'dv_no',
-                        'contentOptions' => ['style' => 'width: 130px;'], 
+                        'contentOptions' => ['style' => 'width: 100px;'], 
                         'value' => 'dv_no'
+                    ],
+                    [
+                        'attribute' => 'payee',
+                        'contentOptions' => ['style' => 'width: 170px;'], 
+                        'value' => 'payee'
                     ],
                     [
                         'attribute' => 'particulars',
                         'format' =>'html',
-                        'contentOptions' => ['style' => 'width: 300px; white-space: normal; font-size: 11px;'], 
+                        'contentOptions' => ['style' => 'width: 270px;'], 
                         'value' => function($data){
 
                             return Html::tag('p', $data->particulars);
                         }
                     ],
-                    //'payee',
-                    [
-                        'attribute' => 'payee',
-                        'contentOptions' => ['style' => 'width: 170px;'], 
-                        'value' => 'payee'
-                     ],
 
                      [
                         'attribute' => 'gross_amount',
-                        'contentOptions' => ['style' => 'width: 130px;'], 
+                        'contentOptions' => ['style' => 'width: 110px; text-align: right'], 
                         'value' => function($data){
                             return (number_format($data->gross_amount, 2));
                         }
@@ -105,16 +104,16 @@ $this->title = 'DISBURSEMENT VOUCHERS';
 
                      [
                         'attribute' => 'net_amount',
-                        'contentOptions' => ['style' => 'width: 130px;'], 
+                        'contentOptions' => ['style' => 'width: 110px; text-align: right'], 
                         'value' => function($data){
-                            return (number_format($data->net_amount, 2));
+
+                            return (number_format($data->net_amount, 2) == 0.00 ? '-' : number_format($data->net_amount, 2));
                         }
                      ],
 
                      [
                         'attribute' => 'status',
                         'format' =>'html',
-                        'contentOptions' => ['style' => 'white-space: normal; font-size: 11px;'],
                         'value' => 'status'
                      ],
 

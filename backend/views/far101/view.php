@@ -106,11 +106,19 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                     <td><?= $value->obligation_q_3 ?></td>
                     <td><?= $value->obligation_q_4 ?></td>
                     <td><?= $value->total_obligation ?></td> -->
-                    <td><?= str_replace('0.00', '-', number_format($value->disbursement_q_1, 2)) ?></td>
-                    <td><?= str_replace('0.00', '-', number_format($value->disbursement_q_2, 2)) ?></td>
-                    <td><?= str_replace('0.00', '-', number_format($value->disbursement_q_3, 2)) ?></td>
-                    <td><?= str_replace('0.00', '-', number_format($value->disbursement_q_4, 2)) ?></td>
-                    <td><?= str_replace('0.00', '-', number_format($value->total_disbursement, 2)) ?></td>
+                    <td style="text-align: right;">
+                        <?= number_format($value->disbursement_q_1, 2) == 0.00 ? '-' : number_format($value->disbursement_q_1, 2) ?>
+                    </td>
+                    <td style="text-align: right;">
+                        <?= number_format($value->disbursement_q_2, 2) == 0.00 ? '-' : number_format($value->disbursement_q_2, 2) ?>
+                    </td>
+                    <td style="text-align: right;">
+                        <?= number_format($value->disbursement_q_3, 2) == 0.00 ? '-' : number_format($value->disbursement_q_3, 2) ?>
+                    </td>
+                    <td style="text-align: right;">
+                        <?= number_format($value->disbursement_q_4, 2) == 0.00 ? '-' : number_format($value->disbursement_q_4, 2) ?>
+                    </td>
+                    <td style="text-align: right;"><?= number_format($value->total_disbursement, 2) == 0.00 ? '-' : number_format($value->total_disbursement, 2) ?></td>
                 </tr>
                     <?php $sub_far = Far101::find()->where(['parent_id' => $value->id])->all(); ?>
                     <?php foreach ($sub_far as $val) : ?>
@@ -122,11 +130,21 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                             <td><?= $val->obligation_q_3 ?></td>
                             <td><?= $val->obligation_q_4 ?></td>
                             <td><?= $val->total_obligation ?></td> -->
-                            <td><?= str_replace('0.00', '-', number_format($val->disbursement_q_1, 2)) ?></td>
-                            <td><?= str_replace('0.00', '-', number_format($val->disbursement_q_2, 2)) ?></td>
-                            <td><?= str_replace('0.00', '-', number_format($val->disbursement_q_3, 2)) ?></td>
-                            <td><?= str_replace('0.00', '-', number_format($val->disbursement_q_4, 2)) ?></td>
-                            <td><?= str_replace('0.00', '-', number_format($val->total_disbursement, 2)) ?></td>
+                            <td style="text-align: right;">
+                                <?= number_format($val->disbursement_q_1, 2) == 0.00 ? '-' : number_format($val->disbursement_q_1, 2) ?>
+                            </td>
+                            <td style="text-align: right;">
+                                <?= number_format($val->disbursement_q_2, 2) == 0.00 ? '-' : number_format($val->disbursement_q_2, 2) ?>
+                            </td>
+                            <td style="text-align: right;">
+                                <?= number_format($val->disbursement_q_3, 2) == 0.00 ? '-' : number_format($val->disbursement_q_3, 2) ?>
+                            </td>
+                            <td style="text-align: right;">
+                                <?= number_format($val->disbursement_q_4, 2) == 0.00 ? '-' : number_format($val->disbursement_q_4, 2) ?>
+                            </td>
+                            <td style="text-align: right;">
+                                <?= number_format($val->total_disbursement, 2) == 0.0 ? '-' : number_format($val->total_disbursement, 2) ?>
+                            </td>
                         </tr>
                             <?php $sub_far2 = Far101::find()->where(['parent_id' => $val->id])->all(); ?>
                             <?php foreach ($sub_far2 as $data) : ?>
@@ -138,11 +156,21 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                     <td><?= $data->obligation_q_3 ?></td>
                                     <td><?= $data->obligation_q_4 ?></td>
                                     <td><?= $data->total_obligation ?></td> -->
-                                    <td><?= str_replace('0.00', '-', number_format($data->disbursement_q_1, 2)) ?></td>
-                                    <td><?= str_replace('0.00', '-', number_format($data->disbursement_q_2, 2)) ?></td>
-                                    <td><?= str_replace('0.00', '-', number_format($data->disbursement_q_3, 2)) ?></td>
-                                    <td><?= str_replace('0.00', '-', number_format($data->disbursement_q_4, 2)) ?></td>
-                                    <td><?= str_replace('0.00', '-', number_format($data->total_disbursement, 2)) ?></td>
+                                    <td style="text-align: right;">
+                                        <?= number_format($data->disbursement_q_1, 2) == 0.00 ? '-' : number_format($data->disbursement_q_1, 2) ?>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <?= number_format($data->disbursement_q_2, 2) == 0.00 ? '-' : number_format($data->disbursement_q_2, 2) ?>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <?= number_format($data->disbursement_q_3, 2) == 0.00 ? '-' : number_format($data->disbursement_q_3, 2) ?>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <?= number_format($data->disbursement_q_4, 2) == 0.00 ? '-' : number_format($data->disbursement_q_4, 2) ?>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <?= number_format($data->total_disbursement, 2) == 0.00 ? '-' : number_format($data->total_disbursement, 2) ?>
+                                    </td>
                                 </tr>
                                     <?php $sub_far3 = Far101::find()->where(['parent_id' => $data->id])->all(); ?>
                                     <?php foreach ($sub_far3 as $data4) : ?>
@@ -154,11 +182,21 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                             <td><?= $data4->obligation_q_3 ?></td>
                                             <td><?= $data4->obligation_q_4 ?></td>
                                             <td><?= $data4->total_obligation ?></td> -->
-                                            <td><?= str_replace('0.00', '-', number_format($data4->disbursement_q_1, 2)) ?></td>
-                                            <td><?= str_replace('0.00', '-', number_format($data4->disbursement_q_2, 2)) ?></td>
-                                            <td><?= str_replace('0.00', '-', number_format($data4->disbursement_q_3, 2)) ?></td>
-                                            <td><?= str_replace('0.00', '-', number_format($data4->disbursement_q_4, 2)) ?></td>
-                                            <td><?= str_replace('0.00', '-', number_format($data4->total_disbursement, 2)) ?></td>
+                                            <td style="text-align: right;">
+                                                <?= number_format($data4->disbursement_q_1, 2) == 0.00 ? '-' : number_format($data4->disbursement_q_1, 2) ?>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <?= number_format($data4->disbursement_q_2, 2) == 0.00 ? '-' : number_format($data4->disbursement_q_2, 2) ?>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <?= number_format($data4->disbursement_q_3, 2) == 0.00 ? '-' : number_format($data4->disbursement_q_3, 2) ?>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <?= number_format($data4->disbursement_q_4, 2) == 0.00 ? '-' : number_format($data4->disbursement_q_4, 2) ?>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <?= number_format($data4->total_disbursement, 2) == 0.00 ? '-' : number_format($data4->total_disbursement, 2) ?>
+                                            </td>
                                         </tr>
                                             <?php $sub_far4 = Far101::find()->where(['parent_id' => $data4->id])->all(); ?>
                                             <?php foreach ($sub_far4 as $data5) : ?>
@@ -170,11 +208,21 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                     <td><?= $data5->obligation_q_3 ?></td>
                                                     <td><?= $data5->obligation_q_4 ?></td>
                                                     <td><?= $data5->total_obligation ?></td> -->
-                                                    <td><?= str_replace('0.00', '-', number_format($data5->disbursement_q_1, 2)) ?></td>
-                                                    <td><?= str_replace('0.00', '-', number_format($data5->disbursement_q_2, 2)) ?></td>
-                                                    <td><?= str_replace('0.00', '-', number_format($data5->disbursement_q_3, 2)) ?></td>
-                                                    <td><?= str_replace('0.00', '-', number_format($data5->disbursement_q_4, 2)) ?></td>
-                                                    <td><?= str_replace('0.00', '-', number_format($data5->total_disbursement, 2)) ?></td>
+                                                    <td style="text-align: right;">
+                                                        <?= number_format($data5->disbursement_q_1, 2) == 0.00 ? '-' : number_format($data5->disbursement_q_1, 2) ?>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <?= number_format($data5->disbursement_q_2, 2) == 0.00 ? '-' : number_format($data5->disbursement_q_2, 2) ?>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <?= number_format($data5->disbursement_q_3, 2) == 0.00 ? '-' : number_format($data5->disbursement_q_3, 2) ?>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <?= number_format($data5->disbursement_q_4, 2) == 0.00 ? '-' : number_format($data5->disbursement_q_4, 2) ?>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <?= number_format($data5->total_disbursement, 2) == 0.00 ? '-' : number_format($data5->total_disbursement, 2) ?>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach ?>
                                     <?php endforeach ?>

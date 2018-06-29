@@ -103,8 +103,8 @@ class ImagesController extends Controller
 
         if ($model2->load(Yii::$app->request->post()))
         {
-            var_dump($model2->name);
-            exit();
+            // var_dump($model2->name);
+            // exit();
             $model2->url = 'images/'.$model2->name;
             $model2->save();
             return $this->redirect(['index']);

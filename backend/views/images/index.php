@@ -17,16 +17,22 @@ $count = 1;
   <?php $form = ActiveForm::begin(['action' =>['delete'], 'options'=>['enctype'=>'multipart/form-data']]); ?>
     <div class="title">
         <div class="form-group">
-          <?= Html::submitButton('Delete', [
-            'class' => 'btn btn-danger btn-right',
+          
+        </div>
+
+        
+    </div>
+
+    <div class="right-top-button">
+        <div class="right-button-text" data-toggle="modal" data-target="#newModal">
+          <i class="glyphicon glyphicon-plus"></i> Add Image</div> | 
+          <?= Html::submitButton('<i class="glyphicon glyphicon-trash"></i> Delete', [
+            'class' => 'right-button-text',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
-        </div>
-
-        <div class="btn btn-success btn-right" data-toggle="modal" data-target="#newModal">Add Image</div>
     </div>
 
     <div class="new-title">

@@ -10,7 +10,7 @@ use himiklab\thumbnail\EasyThumbnailImage;
 
 $this->title = 'Images';
 $count = 1;
-$baseUrl = Yii::getAlias('@bkImages');
+$baseUrl = Yii::getAlias('@mBackend/images');
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="images-index">
@@ -24,7 +24,7 @@ $baseUrl = Yii::getAlias('@bkImages');
         <div class="row">
             <?php foreach($model as $image) :?>
                 <div class="album-gallery" style="vertical-align: top;">
-                    <?= Html::img('@bkImages/'.$image->name, ['alt' => 'accounting-image', 'onclick'=>'openModal('.$count++.')' ]);?>
+                    <?= Html::img('@mBackend/images/'.$image->name, ['alt' => 'accounting-image', 'onclick'=>'openModal('.$count++.')' ]);?>
                     <div class="desc">
                         <?= $image->name; ?>
                     </div>
@@ -41,7 +41,7 @@ $baseUrl = Yii::getAlias('@bkImages');
                 <?= $image->name; ?>
                 <span class="close" onclick="closeModal()">&times;</span>
             </div>
-                <?= Html::img('@bkImages/'.$image->name);?>
+                <?= Html::img('@mBackend/images/'.$image->name);?>
         </div>
     <?php endforeach ?>    
 <a class="prev" onclick="plusSlides(-1)">&#10094;</a>

@@ -7,7 +7,6 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 
 $this->title = 'Home';
-$baseUrl = Yii::getAlias('@bkImages');
 ?>
 <div class="row">
     <div class="site-index">
@@ -16,7 +15,7 @@ $baseUrl = Yii::getAlias('@bkImages');
                 'dataProvider' => $dataProvider,
                 'imgAttribute' => function($data){
 
-                        $baseUrl = Yii::getAlias('@bkImages');
+                        $baseUrl = Yii::getAlias('@mBackend/images');
                         return $baseUrl.'/'.$data->name;
                     },
                 'options' => [

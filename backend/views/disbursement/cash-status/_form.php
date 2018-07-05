@@ -101,7 +101,7 @@ $this->title = 'Cash Status';
                 </tr>
                 
                 <tr style="border-top-style: dashed; border-color: #f5f5f0;">
-                    <td colspan="6" style="color:  #666666"><i class="fa fa-pie-chart"></i> Obligation Request and Status (ORS)</td>
+                    <td colspan="6" style="color:  #666666"><i class="fa fa-pie-chart"></i> Notice of Cash Allocation (NCA)</td>
                 <tr>
                 <tr>
                     <td colspan="6" style="height: 10px;"></td>

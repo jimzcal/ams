@@ -25,7 +25,7 @@ AppAsset::register($this);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '@web/ams.png']) ?>
+    <?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '@mBackend/images/ams.png']) ?>
     
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode('AMS - '.$this->title) ?></title>
@@ -54,10 +54,53 @@ AppAsset::register($this);
                         </i>
                     </div>
  -->                    <div class="row" style="padding-right: 25px;">
-                        <?php if (!Yii::$app->user->isGuest) : ?>
+                        <?php if (!Yii::$app->user->isGuest) : ?> 
                             <div class="hum-wrapper">
-                                <i class="fa fa-bars humburger"></i> 
-                            </div>          
+                                <div class="dropdown">
+                                <i class="fa fa-bars humburger dropdown-toggle" data-toggle="dropdown"></i>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-home" aria-hidden="true"></i> Home', ["/site/index"]) ?>
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-id-card" aria-hidden="true"></i> Disbursements', ["/disbursement/index"]) ?>
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-sticky-note" aria-hidden="true"></i> NCA', ["/nca/index"]) ?>
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-list" aria-hidden="true"></i> Activity Logs', ["/activity-log/index"]) ?>
+                                        </li>
+
+                                        <?php if (Yii::$app->user->can('manageUsers')) : ?>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-user-o" aria-hidden="true"></i> User Management', ["/user/admin/index"]) ?>
+                                        </li>
+                                        <?php endif ?>
+
+                                        <?php if (!Yii::$app->user->can('manageUsers')) : ?>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-user-o" aria-hidden="true"></i> Manage Users', ['/user/admin/update','id'=>Yii::$app->user->identity->id]) ?>
+                                        </li>
+                                        <?php endif ?>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-group" aria-hidden="true"></i> Employees', ["/employees/index"]) ?>                                            
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-cogs" aria-hidden="true"></i> Control Panel', ["/site/control"]) ?>
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-money" aria-hidden="true"></i> Cash Advances', ["/cash-advance/index"]) ?>
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-book" aria-hidden="true"></i> Financial Records', ["/disbursement/reports"]) ?>
+                                        </li>
+                                        <li>
+                                            <?= Html::a('<i class="fa fa-pie-chart" aria-hidden="true"></i> ORS', ["/ors/index"]) ?>
+                                        </li>
+                                    </ul> 
+                                </div>   
+                            </div>       
                             <?= Html::beginForm(['/site/logout'], 'post')
                                   .Html::submitButton('<i class="fa fa-sign-out icon-font"></i>', ['class' => 'icon'])
                                 .Html::endForm()

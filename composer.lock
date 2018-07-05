@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ba5144b8baae35d9528bf60ff662457",
+    "content-hash": "7b44956dc7861284ac12afd153fb5f2d",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -550,6 +550,74 @@
                 "MIT"
             ],
             "time": "2017-10-14T08:42:41+00:00"
+        },
+        {
+            "name": "box/spout",
+            "version": "v2.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/box/spout.git",
+                "reference": "3681a3421a868ab9a65da156c554f756541f452b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/box/spout/zipball/3681a3421a868ab9a65da156c554f756541f452b",
+                "reference": "3681a3421a868ab9a65da156c554f756541f452b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xmlreader": "*",
+                "ext-zip": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.0"
+            },
+            "suggest": {
+                "ext-iconv": "To handle non UTF-8 CSV files (if \"php-intl\" is not already installed or is too limited)",
+                "ext-intl": "To handle non UTF-8 CSV files (if \"iconv\" is not already installed)"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Box\\Spout\\": "src/Spout"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Adrien Loison",
+                    "email": "adrien@box.com"
+                }
+            ],
+            "description": "PHP Library to read and write spreadsheet files (CSV, XLSX and ODS), in a fast and scalable way",
+            "homepage": "https://www.github.com/box/spout",
+            "keywords": [
+                "OOXML",
+                "csv",
+                "excel",
+                "memory",
+                "odf",
+                "ods",
+                "office",
+                "open",
+                "php",
+                "read",
+                "scale",
+                "spreadsheet",
+                "stream",
+                "write",
+                "xlsx"
+            ],
+            "time": "2017-09-25T19:44:35+00:00"
         },
         {
             "name": "cebe/markdown",
@@ -1865,6 +1933,52 @@
             "time": "2017-11-25T06:02:18+00:00"
         },
         {
+            "name": "lucasguo/yii2-import",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucasguo/yii2-import.git",
+                "reference": "c65ee503aaaf02b7db38416f162509117e951aa4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucasguo/yii2-import/zipball/c65ee503aaaf02b7db38416f162509117e951aa4",
+                "reference": "c65ee503aaaf02b7db38416f162509117e951aa4",
+                "shasum": ""
+            },
+            "require": {
+                "phpoffice/phpexcel": "*",
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "2.*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "lucasguo\\import\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "lucasguo",
+                    "email": "guoliubin@gmail.com"
+                }
+            ],
+            "description": "Simple import module for yii2 framework",
+            "homepage": "https://github.com/lucasguo/yii2-import/",
+            "keywords": [
+                "excel",
+                "import",
+                "yii2"
+            ],
+            "time": "2016-12-06T07:58:29+00:00"
+        },
+        {
             "name": "miloschuman/yii2-highcharts-widget",
             "version": "v6.0",
             "source": {
@@ -2077,6 +2191,101 @@
             "time": "2016-06-07T15:49:37+00:00"
         },
         {
+            "name": "nox-it/yii2-nox",
+            "version": "1.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nox-it/yii2-nox.git",
+                "reference": "70ed65c83e5955ad25a5c4df4917fc52b25ccd7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nox-it/yii2-nox/zipball/70ed65c83e5955ad25a5c4df4917fc52b25ccd7d",
+                "reference": "70ed65c83e5955ad25a5c4df4917fc52b25ccd7d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "nox\\": "base"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jonatas Sas",
+                    "email": "atendimento@jsas.com.br"
+                }
+            ],
+            "description": "Yii2 NOX Base",
+            "keywords": [
+                "extension",
+                "framework",
+                "php",
+                "yii2"
+            ],
+            "time": "2017-05-27T12:45:41+00:00"
+        },
+        {
+            "name": "nox-it/yii2-nox-spreadsheet-reader",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nox-it/yii2-nox-spreadsheet-reader.git",
+                "reference": "2c2ebbb95eba9713eeb799fb87e9a2c4eb26643d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nox-it/yii2-nox-spreadsheet-reader/zipball/2c2ebbb95eba9713eeb799fb87e9a2c4eb26643d",
+                "reference": "2c2ebbb95eba9713eeb799fb87e9a2c4eb26643d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zip": "*",
+                "nox-it/yii2-nox": "1.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonatas Sas",
+                    "email": "atendimento@jsas.com.br"
+                },
+                {
+                    "name": "Martins Pilsetnieks"
+                }
+            ],
+            "description": "Spreadsheet reader library for Excel, OpenOffice and structured text files. Based on the Martins Pilsetnieks version.",
+            "keywords": [
+                "OpenOffice",
+                "csv",
+                "excel",
+                "extension",
+                "ods",
+                "spreadsheet",
+                "xls",
+                "xlsx",
+                "yii2"
+            ],
+            "time": "2017-05-27T17:02:33+00:00"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v2.0.12",
             "source": {
@@ -2125,17 +2334,75 @@
             "time": "2018-04-04T21:24:14+00:00"
         },
         {
-            "name": "phpoffice/phpspreadsheet",
-            "version": "1.2.1",
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "36acc372875c4d894dc093825ce4f62209db5a76"
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/36acc372875c4d894dc093825ce4f62209db5a76",
-                "reference": "36acc372875c4d894dc093825ce4f62209db5a76",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "abandoned": "phpoffice/phpspreadsheet",
+            "time": "2015-05-01T07:00:55+00:00"
+        },
+        {
+            "name": "phpoffice/phpspreadsheet",
+            "version": "1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+                "reference": "aa5b0d0236c907fd8dba0883f3ceb97cc52e46ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/aa5b0d0236c907fd8dba0883f3ceb97cc52e46ec",
+                "reference": "aa5b0d0236c907fd8dba0883f3ceb97cc52e46ec",
                 "shasum": ""
             },
             "require": {
@@ -2208,7 +2475,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2018-04-10T03:53:16+00:00"
+            "time": "2018-06-12T13:40:21+00:00"
         },
         {
             "name": "picqer/php-barcode-generator",

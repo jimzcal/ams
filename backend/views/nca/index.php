@@ -14,8 +14,8 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
 <div class="nca-index">
 <?= Yii::$app->session->getFlash('error'); ?>
 
-    <div class="btn-group btn-group-vertical" style="float: left; right: 0; z-index: 300; position: fixed;" id="noprint">
-        <?= Html::a('<i class="glyphicon glyphicon-plus"></i><br> New', ['create'], ['class' => 'btn btn-default']) ?>
+    <div class="right-top-button">
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i> New NCA', ['create'], ['class' => 'right-button-text']) ?>
     </div>
 
     <div class="new-title">

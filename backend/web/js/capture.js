@@ -9,7 +9,7 @@ document.getElementById("capture").onload = function() {myFunction()};
     width = 245,
     height = 139;
 
-  navigator.getMedia = (navigator.getUserMedia ||
+    navigator.getMedia = (navigator.getUserMedia ||
     navigator.webkitGetUserMedia ||
     navigator.mozGetUserMedia ||
     navigator.msGetUserMedia);

@@ -658,6 +658,15 @@ body {
   .search-logo{
     width: 200px;
   }
+
+  .mini-header{
+    width: 200px;
+    font-size: 10px;
+  }
+
+  .view-index{
+    font-size: 11px;
+  }
 }
 
 /*.............. Gallery ..........................*/

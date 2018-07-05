@@ -14,9 +14,10 @@ $this->title = 'Requirement';
 ?>
 <div class="requirements-create">
   <?= Yii::$app->session->getFlash('error'); ?>
-	<div class="title">
-    <div class="btn btn-success btn-right" data-toggle="modal" data-target="#myModal">New Requirement</div>
-  </div>
+
+  <div class="right-top-button">
+        <div class="right-button-text" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-plus"></i> New Requirement</div>
+    </div>
 
   <div class="new-title">
     <i class="fa fa-tasks" aria-hidden="true"></i> List of Requirements

@@ -13,9 +13,13 @@ $this->title = 'DISBURSEMENT VOUCHERS';
 ?>
 <div class="disbursement-index">
 
-    <div class="btn-group btn-group-vertical" style="float: left; right: 0; z-index: 300; position: fixed;" id="noprint">
-        <?= Html::a('<i class="glyphicon glyphicon-plus"></i><br> New', ['create'], ['class' => 'btn btn-default']) ?>
+    <div class="right-top-button">
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i> New Disbursement', ['create'], ['class' => 'right-button-text']) ?>
     </div>
+
+    <!-- <div class="btn-group btn-group-vertical" style="float: left; right: 0; z-index: 300; position: fixed;" id="noprint">
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i><br> New', ['create'], ['class' => 'btn btn-default']) ?>
+    </div> -->
 
     <div class="new-title">
         <i class="fa fa-id-card" aria-hidden="true"></i> Disbursement Vouchers (DV)
@@ -30,6 +34,11 @@ $this->title = 'DISBURSEMENT VOUCHERS';
                 <div style="float: right;">
                     <?= ExportMenu::widget([
                         'dataProvider' => $dataProvider,
+                        'fontAwesome' => true,
+                        'target' => ExportMenu::TARGET_SELF,
+                        'showConfirmAlert' => true,
+                        'enableFormatter' => true,
+                        'filename' => 'Disbursement List',
                         'columns' => [
                             'dv_no',
                             'date',

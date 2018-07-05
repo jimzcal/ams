@@ -39,7 +39,7 @@ $this->title = 'FINANCIAL REPORTS';
             Cash Advances', ["/cash-advance/index"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-file-text" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Monthly Disbursement Program', ["/orsRegistry/mDisbursement"], ['class' => 'financial-report-icon']) ?>
+            Monthly Disbursement Program', ["/mdp/index"], ['class' => 'financial-report-icon']) ?>
 
         <!-- <?= Html::a('<span class="fa fa-file-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
             Daily Cash Report', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?> -->

@@ -39,7 +39,11 @@
         "miloschuman/yii2-highcharts-widget": "^6.0",
         "kartik-v/yii2-widget-select2": "@dev",
         "timurmelnikov/yii2-webcam-shoot" : " dev-master",
-        "johnson/yii2-webcam": "*"
+        "johnson/yii2-webcam": "*",
+        "lucasguo/yii2-import": "*",
+        "nox-it/yii2-nox-spreadsheet-reader": "*",
+        "phpoffice/phpspreadsheet": "^1.3",
+        "box/spout": "^2.7"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

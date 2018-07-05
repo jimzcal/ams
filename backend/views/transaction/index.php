@@ -12,9 +12,9 @@ $this->title = 'TRANSACTIONS';
 ?>
 <div class="transaction-index">
 
-    <div class="title">
-        <?= Html::a('Requirement', ['/requirements/create'], ['class' => 'btn btn-default btn-right']) ?>
-        <?= Html::a('New Transaction', ['create'], ['class' => 'btn btn-default btn-right']) ?>
+    <div class="right-top-button">
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Requirement', ['/requirements/create'], ['class' => 'right-button-text']) ?> | 
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i> New Transaction', ['create'], ['class' => 'right-button-text']) ?>
     </div>
 
     <div class="new-title">

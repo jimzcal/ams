@@ -80,7 +80,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                 <br>
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <th rowspan="2" style="width: 330px; text-align: center;">PARTICULARS</th>
+                    <th rowspan="2" style="width: 280px; text-align: center;">PARTICULARS</th>
                     <th rowspan="2" style="width: 160px; text-align: center;">UACS CODE</th>
                     <!-- <th colspan="5" style="text-align: center">CURRENT YEAR OBLIGATIONS</th> -->
                     <th colspan="5" style="text-align: center">CURRENT YEAR DISBURSEMENTS</th>
@@ -120,7 +120,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                     </td>
                     <td style="text-align: right;"><?= number_format($value->total_disbursement, 2) == 0.00 ? '-' : number_format($value->total_disbursement, 2) ?></td>
                 </tr>
-                    <?php $sub_far = Far101::find()->where(['parent_id' => $value->id])->all(); ?>
+                    <?php $sub_far = Far101::find()->where(['parent_uacs' => $value->uacs_code])->all(); ?>
                     <?php foreach ($sub_far as $val) : ?>
                         <tr>
                             <td style="text-indent: 10px;"><?= $val->particulars ?></td>
@@ -146,7 +146,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                 <?= number_format($val->total_disbursement, 2) == 0.0 ? '-' : number_format($val->total_disbursement, 2) ?>
                             </td>
                         </tr>
-                            <?php $sub_far2 = Far101::find()->where(['parent_id' => $val->id])->all(); ?>
+                            <?php $sub_far2 = Far101::find()->where(['parent_uacs' => $val->uacs_code])->all(); ?>
                             <?php foreach ($sub_far2 as $data) : ?>
                                 <tr>
                                     <td style="text-indent: 20px;"><?= $data->particulars ?></td>
@@ -172,7 +172,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                         <?= number_format($data->total_disbursement, 2) == 0.00 ? '-' : number_format($data->total_disbursement, 2) ?>
                                     </td>
                                 </tr>
-                                    <?php $sub_far3 = Far101::find()->where(['parent_id' => $data->id])->all(); ?>
+                                    <?php $sub_far3 = Far101::find()->where(['parent_uacs' => $data->uacs_code])->all(); ?>
                                     <?php foreach ($sub_far3 as $data4) : ?>
                                         <tr>
                                             <td style="text-indent: 30px;"><?= $data4->particulars ?></td>
@@ -198,7 +198,7 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                 <?= number_format($data4->total_disbursement, 2) == 0.00 ? '-' : number_format($data4->total_disbursement, 2) ?>
                                             </td>
                                         </tr>
-                                            <?php $sub_far4 = Far101::find()->where(['parent_id' => $data4->id])->all(); ?>
+                                            <?php $sub_far4 = Far101::find()->where(['parent_uacs' => $data4->uacs_code])->all(); ?>
                                             <?php foreach ($sub_far4 as $data5) : ?>
                                                 <tr>
                                                     <td style="text-indent: 40px;"><?= $data5->particulars ?></td>
@@ -224,6 +224,61 @@ $this->title = 'FAR 1 - '.$model->fund_cluster;
                                                         <?= number_format($data5->total_disbursement, 2) == 0.00 ? '-' : number_format($data5->total_disbursement, 2) ?>
                                                     </td>
                                                 </tr>
+                                                    <?php $sub_far5 = Far101::find()->where(['parent_uacs' => $data5->uacs_code])->all(); ?>
+                                                    <?php foreach ($sub_far5 as $data6) : ?>
+                                                        <tr>
+                                                            <td style="text-indent: 45px;"><?= $data6->particulars ?></td>
+                                                            <td><?= $data6->uacs_code ?></td>
+                                                            <!-- <td><?= $data5->obligation_q_1 ?></td>
+                                                            <td><?= $data5->obligation_q_2 ?></td>
+                                                            <td><?= $data5->obligation_q_3 ?></td>
+                                                            <td><?= $data5->obligation_q_4 ?></td>
+                                                            <td><?= $data5->total_obligation ?></td> -->
+                                                            <td style="text-align: right;">
+                                                                <?= number_format($data6->disbursement_q_1, 2) == 0.00 ? '-' : number_format($data6->disbursement_q_1, 2) ?>
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <?= number_format($data6->disbursement_q_2, 2) == 0.00 ? '-' : number_format($data6->disbursement_q_2, 2) ?>
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <?= number_format($data6->disbursement_q_3, 2) == 0.00 ? '-' : number_format($data6->disbursement_q_3, 2) ?>
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <?= number_format($data6->disbursement_q_4, 2) == 0.00 ? '-' : number_format($data6->disbursement_q_4, 2) ?>
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <?= number_format($data6->total_disbursement, 2) == 0.00 ? '-' : number_format($data6->total_disbursement, 2) ?>
+                                                            </td>
+                                                        </tr>
+                                                             <?php $sub_far6 = Far101::find()->where(['parent_uacs' => $data6->uacs_code])->all(); ?>
+                                                            <?php foreach ($sub_far6 as $data7) : ?>
+                                                                <tr>
+                                                                    <td style="text-indent: 50px;">
+                                                                        <?= $data7->particulars ?></td>
+                                                                    <td><?= $data7->uacs_code ?></td>
+                                                                    <!-- <td><?= $data5->obligation_q_1 ?></td>
+                                                                    <td><?= $data5->obligation_q_2 ?></td>
+                                                                    <td><?= $data5->obligation_q_3 ?></td>
+                                                                    <td><?= $data5->obligation_q_4 ?></td>
+                                                                    <td><?= $data5->total_obligation ?></td> -->
+                                                                    <td style="text-align: right;">
+                                                                        <?= number_format($data7->disbursement_q_1, 2) == 0.00 ? '-' : number_format($data7->disbursement_q_1, 2) ?>
+                                                                    </td>
+                                                                    <td style="text-align: right;">
+                                                                        <?= number_format($data7->disbursement_q_2, 2) == 0.00 ? '-' : number_format($data7->disbursement_q_2, 2) ?>
+                                                                    </td>
+                                                                    <td style="text-align: right;">
+                                                                        <?= number_format($data7->disbursement_q_3, 2) == 0.00 ? '-' : number_format($data7->disbursement_q_3, 2) ?>
+                                                                    </td>
+                                                                    <td style="text-align: right;">
+                                                                        <?= number_format($data7->disbursement_q_4, 2) == 0.00 ? '-' : number_format($data7->disbursement_q_4, 2) ?>
+                                                                    </td>
+                                                                    <td style="text-align: right;">
+                                                                        <?= number_format($data7->total_disbursement, 2) == 0.00 ? '-' : number_format($data7->total_disbursement, 2) ?>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endforeach ?>
+                                                    <?php endforeach ?>
                                             <?php endforeach ?>
                                     <?php endforeach ?>
                             <?php endforeach ?>

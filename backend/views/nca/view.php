@@ -108,10 +108,18 @@ $this->title = 'NCA: '.$model->nca_no;
                     <td><?= $value->gsb_branch ?></td>
                     <td>
                         <?php
-                            $val = explode(' ',$value->validity);
-                            foreach ($val as $month)
+                            $val = explode(',',$value->validity);
+                            if(sizeof($val) == 12)
                             {
-                                echo ucfirst($month);
+                                echo "Whole Year";
+                            }
+
+                            else
+                            {
+                                foreach ($val as $month)
+                                {
+                                    echo ucfirst($month);
+                                }
                             }
                         ?>
                     </td>

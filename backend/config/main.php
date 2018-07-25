@@ -22,6 +22,11 @@ return [
             'enableFlashMessages' => false,
         ],
         'gridview' => ['class' => 'kartik\grid\Module'],
+        'gii' => [
+            'class' => 'yii\gii\Module',
+            'allowedIPs' => ['127.0.0.1', '::1', '172.17.108.180'],
+        ],
+
     ],
     'components' => [
         'request' => [
@@ -69,6 +74,7 @@ return [
         'urlManager' => [
                // 'class' => 'yii\web\UrlManager',
                 'showScriptName' => false,
+                // 'suffix'=>'.html',
                 'enablePrettyUrl' => true,
                 'rules' => [
                         '<controller:\w+>/<action:[\w\-]+>' => '<controller>/<action>',

@@ -21,14 +21,21 @@ $this->title = 'NCA Status';
 
     <div class="row" style="margin-left: auto; margin-right: auto; width: 90%;">
         <div class="col-md-6">
-            <div style="background-color: #FFFFFF; border-radius: 10px; width: 100%; padding: 10px; margin-left: auto; margin-right: auto; height: 300px;">
-                <table class="table table-striped">
+            <div style="background-color: #FFFFFF; border-radius: 10px; width: 100%; padding: 10px; margin-left: auto; margin-right: auto; height: 350px;">
+                <table class="table table-striped" style="border: solid 1px #d9d9d9; border-radius: 15px;">
                     <tr>
                         <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
                             NCA No.
                         </td>
                         <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
                         <td><?= $nca_model->nca_no ?></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
+                            Funding Source
+                        </td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
+                        <td><?= $nca_model->funding_source ?></td>
                     </tr>
                     <tr>
                         <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
@@ -63,7 +70,7 @@ $this->title = 'NCA Status';
                             Allocation
                         </td>
                         <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
-                        <td><?= number_format($nca_model->total_amount, 2) ?></td>
+                        <td><?= number_format($nca_model->sub_total, 2) ?></td>
                     </tr>
                     <tr>
                         <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">
@@ -76,7 +83,7 @@ $this->title = 'NCA Status';
             </div>
         </div>
         <div class="col-md-6">
-            <div style="background-color: #FFFFFF; border-radius: 10px; width: 100%; padding: 10px; margin-left: auto; margin-right: auto; height: 300px;">
+            <div style="background-color: #FFFFFF; border-radius: 10px; width: 100%; padding: 10px; margin-left: auto; margin-right: auto; height: 350px;">
                  <?= Highcharts::widget([
                     'options' => [
                         'chart' => [
@@ -93,7 +100,7 @@ $this->title = 'NCA Status';
                           'title' => ['text' => 'Earmarked']
                        ],
                        'series' => [
-                          ['name' => 'Allotment', 'data' => [(int)$nca_model->total_amount]],
+                          ['name' => 'Allotment', 'data' => [(int)$nca_model->sub_total]],
                           ['name' => 'Earmarked', 'data' => [(int)$nca_model->earmarked]]
                        ]
 
@@ -102,9 +109,38 @@ $this->title = 'NCA Status';
             </div>
         </div>
     </div>
+    <br>
+    <div class="row" style="margin-left: auto; margin-right: auto; width: 90%;">
+        <div class="col-md-12">
+            <div style="background-color: #FFFFFF; border-radius: 10px; width: 100%; padding: 10px; margin-left: auto; margin-right: auto; height: auto;">
+                <table class="table table-striped" style="border: solid 1px #d9d9d9; border-radius: 15px;">
+                    <tr>
+                        <th colspan="4" style="text-align: center;">Monthly Allocation and Status</th>
+                    </tr>
+                    <tr>
+                        <th>Month</th>
+                        <th>Allocation</th>
+                        <th>Total Earmarked</th>
+                        <th>Current Balance</th>
+                    </tr>
+                    <?php foreach (explode(',', $nca_model->validity) as $value) : ?>
+                        <tr>
+                            <td><?= $value ?></td>
+                            <td><?= number_format($nca_model->getallocation($nca_model->nca_no, $nca_model->funding_source, $value), 2) ?></td>
+                            <td><?= number_format($nca_model->getmearmarked($nca_model->nca_no, $nca_model->funding_source, $value), 2) ?></td>
+                            <td><?= number_format(($nca_model->getAllocation($nca_model->nca_no, $nca_model->funding_source, $value) - $nca_model->getmearmarked($nca_model->nca_no, $nca_model->funding_source, $value)), 2) ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                </table>
+            </div>
+        </div>
+    </div>
     <br><br>
     <div class="view-index">
         <table class="table table-bordered table-striped">
+            <tr>
+                <th colspan="7" style="text-align: center;">Disbursements</th>
+            </tr>
             <tr>
                 <th style="text-align: center;">Date</th>
                 <th style="text-align: center;">DV No.</th>
@@ -114,6 +150,11 @@ $this->title = 'NCA Status';
                 <th style="text-align: center;">Less</th>
                 <th style="text-align: center;">Net Payment</th>
             </tr>
+            <?php if($dataProvider == null) : ?>
+                <tr>
+                    <td colspan="7" style="font-style: italic;">No Disbursements...</td>
+                </tr>
+            <?php endif ?>
             <?php foreach ($dataProvider as $key => $value) : ?>
                 <tr>
                     <td><?= $value->date ?></td>

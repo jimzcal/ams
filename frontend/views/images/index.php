@@ -34,6 +34,8 @@ $baseUrl = Yii::getAlias('@mBackend/images');
     </div>
 </div>
 
+<div id="myModal" class="modall">
+</div>
 <div class="modal-content-gallery" id="myContent">
     <?php foreach($model as $image) :?>
         <div class="mySlides">
@@ -46,9 +48,6 @@ $baseUrl = Yii::getAlias('@mBackend/images');
     <?php endforeach ?>    
 <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
 <a class="next" onclick="plusSlides(1)">&#10095;</a>    
-</div>
-
-<div id="myModal" class="modall">
 </div>
 
 <script>

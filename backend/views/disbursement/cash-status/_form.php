@@ -45,7 +45,7 @@ $this->title = 'Cash Status';
                 </tr>
                 <tr>
                     <td colspan="6">
-                        <table class="table table-striped table-condensed">
+                        <table class="table table-striped table-condensed" style="border: solid 1px #d9d9d9; border-radius: 15px; width: 95%; margin-left: auto; margin-right: auto;">
                             <tr>
                                 <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">Payee</td>
                                 <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>

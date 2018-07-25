@@ -1,19 +1,18 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
 use Yii;
-use backend\models\Employees;
-use backend\models\EmployeesSearch;
+use common\models\DraftDv;
+use common\models\DraftDvSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
- * EmployeesController implements the CRUD actions for Employees model.
+ * DraftDvController implements the CRUD actions for DraftDv model.
  */
-class EmployeesController extends Controller
+class DraftDvController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +30,12 @@ class EmployeesController extends Controller
     }
 
     /**
-     * Lists all Employees models.
+     * Lists all DraftDv models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new EmployeesSearch();
+        $searchModel = new DraftDvSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +45,7 @@ class EmployeesController extends Controller
     }
 
     /**
-     * Displays a single Employees model.
+     * Displays a single DraftDv model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,17 +58,16 @@ class EmployeesController extends Controller
     }
 
     /**
-     * Creates a new Employees model.
+     * Creates a new DraftDv model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Employees();
+        $model = new DraftDv();
 
-        if ($model->load(Yii::$app->request->post())) 
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
         {
-            $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -78,23 +76,8 @@ class EmployeesController extends Controller
         ]);
     }
 
-    public function actionFrontendcreate()
-    {
-        $model = new Employees();
-
-        if ($model->load(Yii::$app->request->post())) 
-        {
-            $model->save(false);
-            return $this->redirect(['@mFrontend/search/index']);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
     /**
-     * Updates an existing Employees model.
+     * Updates an existing DraftDv model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -114,7 +97,7 @@ class EmployeesController extends Controller
     }
 
     /**
-     * Deletes an existing Employees model.
+     * Deletes an existing DraftDv model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -128,15 +111,15 @@ class EmployeesController extends Controller
     }
 
     /**
-     * Finds the Employees model based on its primary key value.
+     * Finds the DraftDv model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Employees the loaded model
+     * @return DraftDv the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Employees::findOne($id)) !== null) {
+        if (($model = DraftDv::findOne($id)) !== null) {
             return $model;
         }
 

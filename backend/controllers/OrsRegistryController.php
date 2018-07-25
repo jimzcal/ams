@@ -262,6 +262,14 @@ class OrsRegistryController extends Controller
                         $model_remarks->delete();
                     }
                 }
+
+            $model2 = new DisbursedDv();
+
+            $model2->dv_no = $model->dv_no;
+            $model2->date_paid = $model->date_paid;
+            $model2->lddap_check_no = $model->lddap_check_no;
+            $model2->save(false);
+
             //End Remarks ------------------------------------------
 
             $model->status = 'Paid';

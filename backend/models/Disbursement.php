@@ -48,15 +48,15 @@ class Disbursement extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $date_paid, $check_no, $lddap_check_no, $page_checker, $particular, $amount, $lddap_no, $ors_no, $ors_id;
-    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $due, $period, $employee_id, $payable, $obligation, $payment, $nca_id, $nca_no, $funding_source, $date_registry, $action, $remarks, $nca;
+    public $dvs, $responsibility_center, $ors_class, $ors_year, $ors_month, $ors_serial, $mfo_pap, $due, $period, $employee_id, $payable, $obligation, $payment, $nca_id, $nca_no, $funding_source, $date_registry, $action, $remarks, $nca, $account_title, $uacs_code, $debit, $credit_amount, $credit_to, $vatable;
 
     public function rules()
     {
         return [
             [['dv_no', 'fund_cluster', 'particulars', 'date', 'payee', 'gross_amount', 'transaction_id', 'ors_no'], 'required'],
             [['dv_no'], 'unique', 'targetAttribute' => ['dv_no']],
-            [['attachments', 'funding_source', 'remarks', 'particulars', 'particular', 'lddap_no', 'mfo_pap', 'responsibility_center', 'nca_no', 'action'], 'string'],
-            [['gross_amount', 'amount', 'less_amount', 'net_amount', 'obligation', 'payable'], 'number'],
+            [['attachments', 'funding_source', 'remarks', 'particulars', 'particular', 'lddap_no', 'mfo_pap', 'responsibility_center', 'nca_no', 'action', 'account_title', 'uacs_code', 'credit_to'], 'string'],
+            [['gross_amount', 'amount', 'less_amount', 'vatable', 'net_amount', 'obligation', 'payable', 'credit_amount', 'debit'], 'number'],
             [['payment'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
             // [['gross_amount', 'amount', 'less_amount', 'net_amount'], 'number', 'numberPattern' => '[0-9]*[,]?[0-9]?[0.00]'],
             [['transaction_id', 'ors_id', 'ors', 'nca_id'], 'integer'],

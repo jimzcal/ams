@@ -20,7 +20,9 @@ $this->title = 'LDDAP-ADA FORM';
         <div class="title">
             <!-- <?= Html::encode($this->title) ?> -->
             <?= Yii::$app->session->getFlash('error'); ?>
-            <?= Html::submitButton('Save', ['class' => 'btn btn-primary btn-right', 'target'=>'_blank']) ?>
+            <div class="right-top-button">
+                <?= Html::submitButton('<i class="glyphicon glyphicon-plus"></i> Save', ['class' => 'right-button-text', 'target'=>'_blank']) ?>
+            </div>
         </div>
         <div class="ada_form">
             <table style="border: 0;  margin-right: auto; margin-left: auto; width: 100%;">
@@ -287,7 +289,9 @@ $this->title = 'LDDAP-ADA FORM';
                     <td colspan="3">The LDDAP-ADA is an accountable form.</td>
                     <td></td>
                     <td width="80">LDDAP-ADA No.:</td>
-                    <td colspan="3" width="250" style="text-align: left"><?= $lddap_no ?></td>
+                    <td colspan="3" width="250" style="text-align: left">
+                        <?= $form->field($model2, 'lddap_no', ['options' => ['tag' => false]])->textInput(['class' => 'textfield', 'value' => $lddap_no])->label(false) ?>
+                    </td>
                 </tr>
                 <tr style="font-size: 8px;">
                     <td colspan="3">* Indicate the description/name and UACS code</td>
@@ -295,7 +299,6 @@ $this->title = 'LDDAP-ADA FORM';
                     <td>Date of Issue :</td>
                     <td colspan="3" style="text-align: left"><?= date('F d, Y') ?></td>
                     <?= $form->field($model2, 'date')->hiddenInput(['value' => date('F d, Y')])->label(false) ?>
-                    <?= $form->field($model2, 'lddap_no')->hiddenInput(['value' => $lddap_no])->label(false) ?>
                 </tr>
             </table>
         </div>

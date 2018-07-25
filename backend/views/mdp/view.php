@@ -421,26 +421,27 @@ $this->title = 'MDP';
                                                          <tr style="font-size: 10px;">
                                                             <td style="text-indent: 45px;"><?= $child_value8->particulars ?></td>
                                                             <td><?= $child_value8->uacs_code ?></td>
-                                                            <td><?= $child_value8->total_program ?></td>
-                                                            <td><?= $child_value8->tra ?></td>
-                                                            <td><?= $child_value8->net_program ?></td>
-                                                            <td><?= $child_value8->january ?></td>
-                                                            <td><?= $child_value8->february ?></td>
-                                                            <td><?= $child_value8->march ?></td>
-                                                            <td style="text-align: right; font-weight: bold;"><?= $child_value8->first_total ?></td>
-                                                            <td><?= $child_value8->april ?></td>
-                                                            <td><?= $child_value8->may ?></td>
-                                                            <td><?= $child_value8->june ?></td>
-                                                            <td style="text-align: right; font-weight: bold;"><?= $child_value8->second_total ?></td>
-                                                            <td><?= $child_value8->july ?></td>
-                                                            <td><?= $child_value8->august ?></td>
-                                                            <td><?= $child_value8->september ?></td>
-                                                            <td style="text-align: right; font-weight: bold;"><?= $child_value8->third_total ?></td>
-                                                            <td><?= $child_value8->october ?></td>
-                                                            <td><?= $child_value8->november ?></td>
-                                                            <td><?= $child_value8->december ?></td>
-                                                            <td style="text-align: right; font-weight: bold;"><?= $child_value8->forth_total ?></td>
-                                                            <td style="text-align: right; font-weight: bold;"><?= $child_value8->full_year_total ?></td>
+                                                            <td><?= number_format($child_value8->total_program, 2) ?></td>
+                                                            <td><?= number_format($child_value8->tra,2) ?></td>
+                                                            <td><?= number_format($child_value8->net_program,2) ?></td>
+                                                            <td><?= number_format($child_value8->january,2) ?></td>
+                                                            <td><?= number_format($child_value8->february,2) ?></td>
+                                                            <td><?= number_format($child_value8->march,2) ?></td>
+                                                            <td style="text-align: right; font-weight: bold;">
+                                                                <?= number_format($child_value8->first_total,2) ?></td>
+                                                            <td><?= number_format($child_value8->april,2) ?></td>
+                                                            <td><?= number_format($child_value8->may,2) ?></td>
+                                                            <td><?= number_format($child_value8->june,2) ?></td>
+                                                            <td style="text-align: right; font-weight: bold;"><?= number_format($child_value8->second_total,2) ?></td>
+                                                            <td><?= number_format($child_value8->july,2) ?></td>
+                                                            <td><?= number_format($child_value8->august,2) ?></td>
+                                                            <td><?= number_format($child_value8->september,2) ?></td>
+                                                            <td style="text-align: right; font-weight: bold;"><?= number_format($child_value8->third_total,2) ?></td>
+                                                            <td><?= number_format($child_value8->october,2) ?></td>
+                                                            <td><?= number_format($child_value8->november,2) ?></td>
+                                                            <td><?= number_format($child_value8->december,2) ?></td>
+                                                            <td style="text-align: right; font-weight: bold;"><?= number_format($child_value8->forth_total,2) ?></td>
+                                                            <td style="text-align: right; font-weight: bold;"><?= number_format($child_value8->full_year_total,2) ?></td>
                                                         </tr>
                                                          <?php endforeach ?>
                                                      <?php endforeach ?>

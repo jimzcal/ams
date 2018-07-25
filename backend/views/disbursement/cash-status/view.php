@@ -28,8 +28,8 @@ $this->title = 'Earmarked DV';
         <i class="fa fa-bar-chart-o" aria-hidden="true"></i> <?= 'Earmarked DV No. '. $model->dv_no ?>
     </div>
 
-    <div class="btn-group btn-group-vertical" style="float: left; left: 0; z-index: 300; position: fixed;" id="noprint">
-        <?= Html::a('<i class="glyphicon glyphicon-pencil" style= "font-size: 14px;"></i><br> Update', ['/disbursement/cashstatus', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+    <div class="right-top-button">
+        <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Update', ['/disbursement/cashstatus', 'id' => $model->id], ['class' => 'right-button-text']) ?>
     </div>
 
     <div class="view-index">
@@ -47,7 +47,7 @@ $this->title = 'Earmarked DV';
                 </tr>
                 <tr>
                     <td colspan="6">
-                        <table class="table table-striped table-condensed">
+                        <table class="table table-striped table-condensed" style="border: solid 1px #d9d9d9; border-radius: 15px;">
                             <tr>
                                 <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">Payee</td>
                                 <td style="color: green; font-weight: bold; vertical-align: middle; font-weight: bold; width: 5px;">:</td>

@@ -18,8 +18,9 @@ $this->title = 'LDDAP-ADA';
 <div class="cash-advance-index">
     <?= Yii::$app->session->getFlash('error'); ?>
     <?php $form = ActiveForm::begin(); ?>
-        <div class="title">
-            <?= Html::submitButton('LDDAP-ADA Form', ['class' => 'btn btn-primary btn-right']) ?>
+    
+        <div class="right-top-button">
+            <?= Html::submitButton('<i class="glyphicon glyphicon-file"></i> Generate LDDAP', ['class' => 'right-button-text']) ?>
         </div>
 
         <div class="new-title">

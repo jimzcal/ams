@@ -10,6 +10,7 @@ use backend\models\FundCluster;
 use backend\models\Nca;
 use backend\models\Ors;
 use backend\models\OrsRegistry;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Disbursement */
@@ -217,11 +218,48 @@ $this->title = 'DISBURSEMENT VOUCHER';
                 </table>
             </div>
         </div>
-        <div class="form-group" style="padding-left: 10px;">
+
+        <div class="form-group">
+            <div class="btn btn-success" data-toggle="modal" data-target="#myModal">Save</div>
+        </div>
+
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 <h4 class="modal-title">Update Disbursement Voucher</h4>
+              </div>
+              <div class="modal-body">
+                <table width="500">
+                    <tr>
+                        <td>
+                            <?= $form->field($model, 'date_paid')->widget(DatePicker::classname(), [
+                              'options' => ['style' => 'width: 480px;'],
+                                'pluginOptions' => [
+                                  'todayHighlight' => true,
+                                  'format' => 'yyyy-mm-dd',
+                                    ]
+                              ])->label('Select Date'); 
+                            ?>
+                        </td>
+                    </tr>     
+                    <tr>
+                        <td><?= $form->field($model, 'lddap_check_no')->textInput(['maxlength' => true, 'style' => 'width: 95%']) ?></td>
+                    </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="form-group" style="padding-left: 10px;">
             <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
             <?php // Html::a('Accountig Entry', ['/accounting-entry/create', 'id'=>$model->id, 'net' => $net_amount, 'gross' => $model->gross_amount], ['class' => 'btn btn-primary'])
              ?>
-        </div>
+        </div> -->
     <?php ActiveForm::end(); ?>
     </div>
 </div>

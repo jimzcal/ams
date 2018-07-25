@@ -33,8 +33,8 @@ class AccountingEntry extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dv_no', 'account_title', 'uacs_code', 'credit_amount'], 'required'],
-            [['debit', 'credit_amount'], 'number'],
+            [['dv_no', 'account_title', 'uacs_code'], 'required'],
+            [['debit', 'credit_amount', 'vatable'], 'number'],
             [['vat'], 'number'],
             [['dv_no', 'credit_to'], 'string', 'max' => 100],
             [['account_title', 'uacs_code'], 'string', 'max' => 200],

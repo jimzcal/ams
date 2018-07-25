@@ -24,6 +24,7 @@ $this->title = 'Home';
     </div>
 </div>
 
+
 <script>
 
 window.onload = function()

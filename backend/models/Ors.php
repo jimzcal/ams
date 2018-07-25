@@ -62,6 +62,16 @@ class Ors extends \yii\db\ActiveRecord
         //return $this->hasOne(Disbursement::className(), ['like', ['ors', $this->id]]);
     }
 
+    public function getBalances()
+    {
+        $balance = array_sum(ArrayHelper::getColumn(OrsRegistry::find()
+            ->where(['ors_id' => $this->id])
+            ->all(), 'payment'));
+
+        return $balance;
+        //return $this->hasOne(Disbursement::className(), ['like', ['ors', $this->id]]);
+    }
+
     public function getDisbursement($ors_id)
     {
         $disbursement = array_sum(ArrayHelper::getColumn(OrsRegistry::find()

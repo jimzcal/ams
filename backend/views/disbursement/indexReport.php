@@ -27,7 +27,7 @@ $this->title = 'FINANCIAL REPORTS';
             LDDAP-ADA List', ["/lddap-ada/index"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-bar-chart-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Status of Cash Allocation', ["/nca/list"], ['class' => 'financial-report-icon']) ?>
+            NCA Status', ["/nca/list"], ['class' => 'financial-report-icon']) ?>
 
         <?= Html::a('<span class="fa fa-id-card" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
         Monthly Disbursement Report', ["/ors-registry/mdisbursement"], ['class' => 'financial-report-icon']) ?>

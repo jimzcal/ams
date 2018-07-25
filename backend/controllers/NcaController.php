@@ -71,10 +71,10 @@ class NcaController extends Controller
         ]);
     }
 
-    public function actionCashStatus($nca_no)
+    public function actionCashStatus($nca_no, $funding_source)
     {
-        $nca_model = Nca::find()->where(['nca_no' => $nca_no])->one();
-        $dataProvider = NcaEarmarked::find()->where(['nca_no' => $nca_no])->all();
+        $nca_model = Nca::find()->where(['nca_no' => $nca_no, 'funding_source' => $funding_source])->one();
+        $dataProvider = NcaEarmarked::find()->where(['nca_no' => $nca_no, 'funding_source' => $funding_source])->all();
 
         return $this->render('cash-status', [
             'dataProvider' => $dataProvider,

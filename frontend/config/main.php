@@ -15,11 +15,18 @@ return [
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
+        // 'user' => [
+        //     'as frontend' => 'dektrium\user\filters\FrontendFilter',
+        // ],
         'user' => [
-            'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'identityCookie' => [
+                'name' => '_backendIdentity',
+                'path' => '/admin',
+                'httpOnly' => true,
+            ],
         ],
+
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
@@ -51,5 +58,22 @@ return [
         ],
         
     ],
+
+    'modules' => [
+        // Configuration Yii2-User Frontend //
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'enableFlashMessages' => false,
+            'enableRegistration' => true,
+            'enableUnconfirmedLogin' => false,
+            'confirmWithin' => 21600,
+            'cost' => 12,
+        ],
+
+        // 'rbac' => [
+        //     'class' => 'dektrium\rbac\RbacWebModule',
+        // ],
+    ],  
+
     'params' => $params,
 ];

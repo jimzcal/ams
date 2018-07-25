@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b44956dc7861284ac12afd153fb5f2d",
+    "content-hash": "d2a9d3bad67f7c9a157654f885313ff5",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -223,6 +223,51 @@
                 "web"
             ],
             "time": "2017-03-24T01:21:30+00:00"
+        },
+        {
+            "name": "bower-asset/bx-slider.js",
+            "version": "v4.2.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stevenwanderski/bxslider-4.git",
+                "reference": "a26c6d94bcef4d13d3fa063ed419fe14f1ef2935"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stevenwanderski/bxslider-4/zipball/a26c6d94bcef4d13d3fa063ed419fe14f1ef2935",
+                "reference": "a26c6d94bcef4d13d3fa063ed419fe14f1ef2935",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.8.3"
+            },
+            "require-dev": {
+                "bower-asset/bootstrap": ">=3.3.2",
+                "bower-asset/highlightjs": "~8.4.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/jquery.bxslider.js",
+                    "dist/jquery.bxslider.css",
+                    "dist/images/bx_loader.gif",
+                    "dist/images/controls.png"
+                ],
+                "bower-asset-ignore": [
+                    "docs_src/*",
+                    "docs/*"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "keywords": [
+                "bxslider",
+                "javascript",
+                "jquery",
+                "library"
+            ],
+            "time": "2018-04-30T10:47:05+00:00"
         },
         {
             "name": "bower-asset/chartjs",
@@ -2970,6 +3015,46 @@
                 "yii2"
             ],
             "time": "2016-07-21T15:55:55+00:00"
+        },
+        {
+            "name": "yii2mod/yii2-bx-slider",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2mod/yii2-bx-slider.git",
+                "reference": "c3da16e53f0583bd5d55b2d828ea41fbe287661a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2mod/yii2-bx-slider/zipball/c3da16e53f0583bd5d55b2d828ea41fbe287661a",
+                "reference": "c3da16e53f0583bd5d55b2d828ea41fbe287661a",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bx-slider.js": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii2mod\\bxslider\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Chepurnoy",
+                    "email": "igorzfort@gmail.com"
+                }
+            ],
+            "description": "Bx-slider widget based on bx-slider extension {@link http://bxslider.com)",
+            "keywords": [
+                "module",
+                "yii2"
+            ],
+            "time": "2015-07-24T13:46:06+00:00"
         },
         {
             "name": "yiisoft/yii2",

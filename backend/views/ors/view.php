@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Ors */
 
-$this->title = $model->id;
+$this->title = 'Obligation Status';
 // $this->params['breadcrumbs'][] = ['label' => 'Ors', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -60,8 +60,8 @@ $this->title = $model->id;
                 </td>
                 <td style="width: 300px;"><?= $model->particular ?></td>
                 <td><?= $model->responsibility_center ?></td>
-                <td><?= $model->obligation ?></td>
-                <td></td>
+                <td><?= number_format($model->obligation, 2) ?></td>
+                <td><?= number_format($model->obligation - $model->balances, 2) ?></td>
             </tr>
         </table>
     </div>
@@ -74,22 +74,18 @@ $this->title = $model->id;
         <table class="table table-bordered table-striped">
             <tr>
                 <th>Date</th>
-                <th>ORS NO</th>
                 <th>Particulars</th>
                 <th>Responsibility Center</th>
-                <th>Obligation</th>
                 <th>Payable</th>
                 <th>Payment</th>
             </tr>
             <?php foreach ($model->obligationstatus as $value) : ?>
                 <tr>
                     <td><?= $value->date ?></td>
-                    <td><?= $value->ors_class.'-'.$value->funding_source.'-'.$value->ors_year.'-'.$value->ors_month.'-'.$value->ors_serial  ?></td>
-                    <td style="width: 300px;"><?= $value->particular ?></td>
+                    <td style="width: 500px;"><?= $value->particular ?></td>
                     <td><?= $value->responsibility_center  ?></td>
-                    <td><?= $value->obligation  ?></td>
-                    <td><?= $value->payable  ?></td>
-                    <td><?= $value->payment  ?></td>
+                    <td><?= number_format($value->payable, 2)  ?></td>
+                    <td><?= number_format($value->payment, 2)  ?></td>
                 </tr>
             <?php endforeach ?>
         </table>

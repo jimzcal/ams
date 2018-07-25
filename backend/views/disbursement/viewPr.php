@@ -19,7 +19,6 @@ $this->title = 'DISBURSEMENT VOUCHER';
 
 <div class="disbursement-form">
     <?= Yii::$app->session->getFlash('error'); ?>
-
 <div class="btn-group btn-group-vertical" style="float: left; left: 0; z-index: 300; position: fixed;" id="noprint">
     <?= Html::a('<i class="glyphicon glyphicon-pencil" style= "font-size: 16px;"></i>', ['processor', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
     <?= Html::a('<i class="fa fa-pie-chart" style= "font-size: 16px;"></i>', ["/ors/index"], ['class' => 'btn btn-default']) ?>
@@ -47,7 +46,7 @@ $this->title = 'DISBURSEMENT VOUCHER';
                         </tr>
                         <tr>
                             <td colspan="6">
-                                <table class="table table-striped table-condensed">
+                                <table class="table table-striped table-condensed" style="border: solid 1px #d9d9d9; border-radius: 15px;">
                                     <tr>
                                         <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">Payee</td>
                                         <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
@@ -93,10 +92,57 @@ $this->title = 'DISBURSEMENT VOUCHER';
                                 </table>
                             </td>
                         </tr>
-                        
-                        <tr style="border-top-style: dashed; border-color: #f5f5f0;">
-                            <td colspan="6" style="font-weight: bold; font-style: italic;">Obligation Request and Status (ORS) :</td>
+
+                        <tr style="border-top-style: dashed; border-color: #e0e0d1;">
+                            <td colspan="6" style="color:  #2a2b43; font-size: 16px;">
+                                <i class="fa fa-calculator" style="color: #cc9900" aria-hidden="true"></i> Accounting Entry
+                            </td>
+                        </tr>
                         <tr>
+                            <td colspan="6" style="height: 10px;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <table class="table table-condensed table-bordered my" style="font-size: 12px;" id="dynamicInput">
+                                    <tr>
+                                        <th style="text-align: center">VAT?</th>
+                                        <th style="text-align: center">Account Tilte</th>
+                                        <th style="text-align: center">UACS Code</th>
+                                        <th style="text-align: center">Debit</th>
+                                        <th style="text-align: center">Credit</th>
+                                        <th style="text-align: center">Credit to</th>
+                                    </tr>
+                                    <?php foreach ($acounting_model as $key => $val) : ?>
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: middle;">
+                                                    <?php if($key == 0) : ?>
+                                                    <input type="checkbox" name="vatable" value = "1" <?= $val->vatable == 1 ? 'checked' : '' ?> >
+                                                    <?php endif ?>
+                                                </td>
+                                                <td style="width: 300px">
+                                                    <?= $val->account_title ?>
+                                                </td>
+                                                <td>
+                                                    <?= $val->uacs_code ?>
+                                                </td>
+                                                <td style="width: 100px">
+                                                    <?= $val->debit ?>
+                                                </td>
+                                                <td style="width: 100px">
+                                                    <?= $val->credit_amount ?>
+                                                </td>
+                                                <td>
+                                                    <?= $val->credit_to ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr style="border-top-style: dashed; border-color: #e0e0d1;">
+                            <td colspan="6" style="color:  #2a2b43; font-size: 16px;"><i class="fa fa-pie-chart" style="color: #cc9900"></i> Obligation Request and Status (ORS)</td>
+                        </tr>
                         <tr>
                             <td colspan="6" style="height: 10px;"></td>
                         </tr>
@@ -140,9 +186,8 @@ $this->title = 'DISBURSEMENT VOUCHER';
                             </td>
                         </tr>
                 
-                        <tr style="border-top-style: dashed; border-color: #f5f5f0;">
-                            <td colspan="6" style="font-weight: bold; font-style: italic;"> Remarks :
-                            </td>
+                        <tr style="border-top-style: dashed; border-color: #e0e0d1;">
+                            <td colspan="6" style="color:  #2a2b43; font-size: 16px;"><i class="fa fa-comments" style="color: #cc9900"></i>  Remarks : </td>
                         </tr>
                         <tr>
                             <td colspan="6">

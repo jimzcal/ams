@@ -85,7 +85,6 @@ $this->title = $model->dv_no;
                                     {
                                        echo $data->mfo_pap.' / ';
                                     }
-                                    
                                 }
                             ?>
                     </strong>

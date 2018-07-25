@@ -35,7 +35,7 @@ $this->title = 'DISBURSEMENT VOUCHER';
             <div class="row">
                 <div class="col-md-9">
                     <table class="mytable">
-                        <tr style="border-bottom-style: dashed; border-color: #f5f5f0;">
+                        <tr style="border-bottom-style: dashed; border-color: #e0e0d1;">
                             <td style="font-weight: bold; font-size: 18px;" colspan="3">DV No.
                                 <?= isset($dv_no) ? $dv_no : $model->dv_no ?></td>
                             <td style="font-size: 18px; text-align: right; font-weight: bold;" colspan="3">
@@ -48,7 +48,7 @@ $this->title = 'DISBURSEMENT VOUCHER';
                         </tr>
                         <tr>
                             <td colspan="6">
-                                <table class="table table-striped table-condensed">
+                                <table class="table table-striped table-condensed" style="border: solid 1px #d9d9d9; border-radius: 15px;">
                                     <tr>
                                         <td style="text-align: right; font-style: italic; vertical-align: middle; width: 120px; color: #666666; font-size: 13px;">Payee</td>
                                         <td style="color: green; font-weight: bold; vertical-align: middle; bold; width: 5px;">:</td>
@@ -101,13 +101,96 @@ $this->title = 'DISBURSEMENT VOUCHER';
                                 </table>
                             </td>
                         </tr>
-                        
-                        <tr style="border-top-style: dashed; border-color: #f5f5f0;">
-                            <td colspan="6" style="color:  #666666"><i class="fa fa-pie-chart"></i> Obligation Request and Status (ORS)</td>
-                        <tr>
+
+                        <tr style="border-top-style: dashed; border-color: #e0e0d1;">
+                            <td colspan="6" style="color:  #2a2b43; font-size: 16px;">
+                                <i class="fa fa-calculator" style="color: #cc9900" aria-hidden="true"></i> Accounting Entry
+                                <button style="font-size: 13px; margin: 5px;" class="btn btn-default btn-right" type="button" onClick="addInput('dynamicInput')" >
+                                    <i class="glyphicon glyphicon-plus"></i> Add Field
+                                </button>
+                            </td>
+                        </tr>
                         <tr>
                             <td colspan="6" style="height: 10px;"></td>
                         </tr>
+                        <tr>
+                            <td colspan="6">
+                                <table class="table table-condensed table-bordered my" style="font-size: 12px;" id="dynamicInput">
+                                    <tr>
+                                        <th style="text-align: center">VAT?</th>
+                                        <th style="text-align: center">Account Tilte</th>
+                                        <th style="text-align: center">UACS Code</th>
+                                        <th style="text-align: center">Debit</th>
+                                        <th style="text-align: center">Credit</th>
+                                        <th style="text-align: center">Credit to</th>
+                                    </tr>
+                                    <?php if($acounting_model == null) : ?>
+                                        <tr>
+                                            <td style="width: 40px; vertical-align: middle;">
+                                                <input type="checkbox" name="vatable" value = "1">
+                                            </td>
+                                            <td style="width: 300px">
+                                                <input type="text" name="account_title[0]" class="textfield">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="uacs_code[0]" class="textfield">
+                                            </td>
+                                            <td style="width: 100px">
+                                                <input type="text" name="debit[0]" class="textfield">
+                                            </td>
+                                            <td style="width: 100px">
+                                                <input type="text" name="credit_amount[0]" class="textfield">
+                                            </td>
+                                            <td>
+                                                <select name="credit_to[0]" class="textfield">
+                                                    <option value=" "></option>
+                                                    <option value="payee">Payee</option>
+                                                    <option value="BIR">BIR</option>
+                                                </select> 
+                                            </td>
+                                        </tr>
+                                    <?php elseif($acounting_model != null) : ?>
+                                        <?php foreach ($acounting_model as $key => $value) : ?>
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: middle;">
+                                                    <?php if($key == 0) : ?>
+                                                    <input type="checkbox" name="vatable" value = "1" <?= $value->vatable == 1 ? 'checked' : '' ?> >
+                                                    <?php endif ?>
+                                                </td>
+                                                <td style="width: 300px">
+                                                    <input type="hidden" name="id[<?= $key ?>]" class="textfield" value="<?= $value->id ?>">
+                                                    <input type="text" name="account_title[<?= $key ?>]" class="textfield" value="<?= $value->account_title ?>">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="uacs_code[<?= $key ?>]" class="textfield" value="<?= $value->uacs_code ?>">
+                                                </td>
+                                                <td style="width: 100px">
+                                                    <input type="text" name="debit[<?= $key ?>]" class="textfield" value="<?= $value->debit ?>">
+                                                </td>
+                                                <td style="width: 100px">
+                                                    <input type="text" name="credit_amount[<?= $key ?>]" class="textfield" value="<?= $value->credit_amount ?>">
+                                                </td>
+                                                <td>
+                                                    <select name="credit_to[<?= $key ?>]" class="textfield">
+                                                        <option value="<?= $value->credit_to ?>"><?= $value->credit_to ?></option>
+                                                        <option value="payee">Payee</option>
+                                                        <option value="BIR">BIR</option>
+                                                    </select> 
+                                                </td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                <?php endif ?>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr style="border-top-style: dashed; border-color: #e0e0d1;">
+                            <td colspan="6" style="color:  #2a2b43; font-size: 16px;"><i class="fa fa-pie-chart" style="color: #cc9900"></i> Obligation Request and Status (ORS)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="height: 10px;"></td>
+                        </tr>
+                        <tr>
                             <td colspan="6">
                                 <table class="table table-condensed table-bordered" style="font-size: 12px;">
                                         <tr>
@@ -157,18 +240,20 @@ $this->title = 'DISBURSEMENT VOUCHER';
                             </td>
                         </tr>
                         <?php if(\Yii::$app->user->can('Verifier')) : ?>
-                        <tr style="border-top-style: dashed; border-color: #f5f5f0; ">
-                            <td colspan="6" style="color:  #666666"><i class="fa fa-dot-circle-o"></i> Action :</td>
+                        <tr style="border-top-style: dashed; border-color: #e0e0d1; ">
+                            <td colspan="6" style="color:  #2a2b43; font-size: 16px;"><i class="fa fa-comments" style="color: #cc9900">
+                            </i> Action :</td>
                         </tr>
                         <tr>
                             <td>
-                                <?= $form->field($model, 'action')->radioList(['Approved' => 'Approve ', 'For Approval' => 'For Approval', 'Disapproved' => 'Disapprove ', ' Back to Payee ' => ' Back to payee'])->label(false); ?>
+                                <?= $form->field($model, 'action')->radioList(['Approved' => 'Approve ', 'For Approval' => 'For Approval ', ' Back to Payee ' => ' Back to payee'])->label(false); ?>
                             </td>
                             <td colspan="5"></td>
                         </tr>
                         <?php endif ?>
-                        <tr style="border-top-style: dashed; border-color: #f5f5f0;">
-                            <td colspan="6" style="color:  #666666"><i class="fa fa-comments"></i>  Remarks : </td>
+                        <tr style="border-top-style: dashed; border-color: #e0e0d1;">
+                            <td colspan="6" style="color:  #2a2b43; font-size: 16px;"><i class="fa fa-comments" style="color: #cc9900">
+                            </i>  Remarks : </td>
                         </tr>
                         <tr>
                             <td colspan="6">
@@ -242,6 +327,23 @@ $this->title = 'DISBURSEMENT VOUCHER';
 </div>
 
 <script>
+
+var counter = 1;
+var limit = 5;
+function addInput(dynamicInput)
+{
+     if (counter == limit)  {
+          alert("You have reached the limit of adding " + counter + " inputs");
+     }
+     else {
+          var newdiv = document.createElement('tr');
+          newdiv.innerHTML = '<tr><td></td><td style="width: 300px;"><input type="text" name="account_title['+counter+']" class="textfield"></td><td><input type="text" name="uacs_code['+counter+']" class="textfield"></td><td style="width: 100px"><input type="text" name="debit['+counter+']" class="textfield"></td><td style="width: 100px"><input type="text" name="credit_amount['+counter+']" class="textfield"></td><td><select name="credit_to['+counter+']" class="textfield"><option value=" "></option><option value="payee">Payee</option><option value="BIR">BIR</option></select></td></tr>';
+
+          document.getElementById("dynamicInput").appendChild(newdiv).className = "tr";
+          counter++;
+     }
+}
+
 window.onload = function()
 {
 
@@ -257,25 +359,6 @@ window.onload = function()
         $("#disbursement-net_amount").val(net_amount);
 
     });
-
-  // $(document).on("change", "select[id='advance']", function () { 
-  //       // alert($(this).val())
-  //       $modal = $('#myModal');
-  //       if($(this).val() == 'yes'){
-  //           $modal.modal('show');
-  //       }
-  //   });
-
-  // $("input[id='disbursement-due']").change(function () { 
-  //       // alert($(this).val())
-  //       var value = 0;
-  //       //$modal = $('#myModal');
-  //       if($(this).val() != null)
-  //       {
-  //           value = this.value;
-  //           $("#fperiod").val(value);
-  //       }
-  //   });
 
 }
 </script>

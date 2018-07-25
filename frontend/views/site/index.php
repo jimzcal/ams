@@ -19,13 +19,13 @@ $this->title = 'Home';
                         return $baseUrl.'/'.$data->name;
                     },
                 'options' => [
-                    'speed' => 2000,
+                    'speed' => 3000,
                     'fx' => 'tileBlind',
-                    'tileCount' => 26,
+                    'tileCount' => 24,
                     'tileVertical' => true,
                     'timeout' => 3000,
                 ],
             ]) ?>
         </div>
     </div>
-</div>
+</div> 

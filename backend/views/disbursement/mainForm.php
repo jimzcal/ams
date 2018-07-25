@@ -62,6 +62,13 @@ $this->title = 'DISBURSEMENT VOUCHER';
                         </td>
                     </tr>
                     <tr>
+                        <td style="text-align: right; font-style: italic; vertical-align: middle; width: 140px; color: #666666; font-size: 13px;">Status</td>
+                        <td style="color: green; font-weight: bold; vertical-align: middle; width: 5px;">:</td>
+                        <td>
+                            <?= $form->field($model, 'status', ['options' => ['tag' => false]])->textInput(['maxlength' => true, 'id'=>'four', 'class' => 'textfield'])->label(false) ?>
+                        </td>
+                    </tr>
+                    <tr>
                         <td style="text-align: right; font-style: italic; width: 140px; vertical-align: middle; color: #666666; height: 40px; font-size: 13px;">Transaction Type</td>
                         <td style="color: green; font-weight: bold; vertical-align: middle; width: 5px;">:</td>
                         <td>
@@ -158,7 +165,7 @@ $this->title = 'DISBURSEMENT VOUCHER';
                     </tr>
                     <tr>
                         <td>
-                            <?= $form->field($model, 'action')->radioList(['Approved' => 'Approve ', 'Disapproved' => 'Disapprove ', ' Back to Payee ' => ' Back to payee'])->label(false) ?>
+                            <?= $form->field($model, 'status')->radioList(['Approved' => 'Approve ', ' Back to Payee ' => ' Back to payee'])->label(false) ?>
                         </td>
                         <td colspan="5"></td>
                     </tr>

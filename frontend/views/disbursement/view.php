@@ -17,22 +17,13 @@ $this->title = $model->dv_no;
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="disbursement-view">
-
-    <div style="margin-left: auto; margin-right: auto; width: auto;">
-
-        <div class="btn-group btn-group-vertical" style="float: left; left: 0; z-index: 300; position: fixed;" id="noprint">
-            <a href="javascript:window.print()" class="btn btn-default"><i class="glyphicon glyphicon-print" style= "font-size: 14px;"></i></a>
-            <?php /* Html::a('<i class="glyphicon glyphicon-pencil" style= "font-size: 14px;"></i>', ['update', 'id' => $model->id], ['class' => 'btn btn-default']) */?>
-            <?php /* Html::a('<i class="glyphicon glyphicon-trash" style= "font-size: 14px;"></i>', ['delete', 'id' => $model->id], ['class' => 'btn btn-default',
-                'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
-                    'method' => 'post',
-                ],
-            ]) */?> 
-        </div>
+    <div class="right-top-button" id="noprint">
+        <a href="javascript:window.print()" class="right-button-text">
+            <i class="glyphicon glyphicon-print" style= "font-size: 14px;"></i> Print Tracking Form
+        </a>
     </div>
 
-    <div class="tracking-form">
+    <div class="tracking-form" style="margin-top: 40px;">
         <table class="table table-bordered table-condensed">
             <tr>
                 <td colspan="7" class="tracking" style="font-size: 12px;">
@@ -163,13 +154,16 @@ $this->title = $model->dv_no;
                 <td align="center"><strong>Transaction</strong></td><td align="center"><strong>Received By</strong></td><td align="center"><strong>Date/Time</strong></td>
             </tr>
             <tr>
-                <td width="70">Receiving</td><td width="120"><?= $transaction1[0] ?></td><td width="120"><?= $transaction1[1] ?></td><td colspan="4" align="center"><strong>REMARKS</strong></td>
+                <td width="70">Receiving</td>
+                <td width="120"><?= $transaction1[0] ?></td>
+                <td width="120"><?= $transaction1[1] ?></td>
+                <td colspan="4" align="center"><strong>REMARKS</strong></td>
             </tr>
             <tr>
                 <td width="70">Processing</td>
                 <td width="120"><?= isset($transaction2[0]) ? $transaction2[0] : '' ?></td>
                 <td width="120"><?= isset($transaction2[1]) ? $transaction2[1] : '' ?></td>
-                <td colspan="4" rowspan="6" style="font-size: 14px;">
+                <td colspan="4" rowspan="7" style="font-size: 14px;">
                     <?php foreach ($model->remarkss as $key => $value) : ?>
                         <h6>
                             <strong style="font-style: italic;">
@@ -188,7 +182,7 @@ $this->title = $model->dv_no;
                 <td width="70">NCA Control</td><td width="120"><?= isset($transaction4[0]) ? $transaction4[0] : '' ?></td><td width="120"><?= isset($transaction4[1]) ? $transaction4[1] : '' ?></td>
             </tr>
             <tr>
-                <td width="70">Approval</td><td width="120"><?= isset($transaction8[0]) ? $transaction8[0] : '' ?></td><td width="120"><?= isset($transaction8[1]) ? $transaction8[1] : '' ?></td>
+                <td width="70">Approval(Box C)</td><td width="120"><?= isset($transaction8[0]) ? $transaction8[0] : '' ?></td><td width="120"><?= isset($transaction8[1]) ? $transaction8[1] : '' ?></td>
             </tr>
             <tr>
                 <td width="70">Indexing</td><td width="120"><?= isset($transaction7[0]) ? $transaction7[0] : '' ?></td><td width="120"><?= isset($transaction7[1]) ? $transaction7[1] : '' ?></td>

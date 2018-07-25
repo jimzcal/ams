@@ -1,31 +1,31 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Nca;
+use common\models\DraftDv;
 
 /**
- * NcaSearch represents the model behind the search form of `backend\models\Nca`.
+ * DraftDvSearch represents the model behind the search form of `common\models\DraftDv`.
  */
-class NcaSearch extends Nca
+class DraftDvSearch extends DraftDv
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['id'], 'integer'],
-            [['date_received', 'nca_no', 'fund_cluster', 'mds_sub_acc_no', 'gsb_branch', 'purpose', 'fiscal_year'], 'safe'],
-            [['total_amount'], 'number'],
+            [['reference_no', 'date', 'payee', 'tin', 'fund_cluster', 'transaction_type', 'particulars', 'created_by', 'status'], 'safe'],
+            [['gross_amount'], 'number'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function scenarios()
     {
@@ -42,7 +42,7 @@ class NcaSearch extends Nca
      */
     public function search($params)
     {
-        $query = Nca::find();
+        $query = DraftDv::find();
 
         // add conditions that should always apply here
 
@@ -61,17 +61,18 @@ class NcaSearch extends Nca
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'date' => $this->date,
+            'gross_amount' => $this->gross_amount,
         ]);
 
-        $query->andFilterWhere(['like', 'date_received', $this->date_received])
-            ->andFilterWhere(['like', 'nca_no', $this->nca_no])
+        $query->andFilterWhere(['like', 'reference_no', $this->reference_no])
+            ->andFilterWhere(['like', 'payee', $this->payee])
+            ->andFilterWhere(['like', 'tin', $this->tin])
             ->andFilterWhere(['like', 'fund_cluster', $this->fund_cluster])
-            ->andFilterWhere(['like', 'mds_sub_acc_no', $this->mds_sub_acc_no])
-            ->andFilterWhere(['like', 'gsb_branch', $this->gsb_branch])
-            ->andFilterWhere(['like', 'purpose', $this->purpose])
-            ->andFilterWhere(['like', 'fiscal_year', $this->fiscal_year]);
-
-        // $query->groupBy(['nca_no']); 
+            ->andFilterWhere(['like', 'transaction_type', $this->transaction_type])
+            ->andFilterWhere(['like', 'particulars', $this->particulars])
+            ->andFilterWhere(['like', 'created_by', $this->created_by])
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

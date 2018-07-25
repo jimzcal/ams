@@ -6,7 +6,7 @@ Yii::setAlias('@bkend', dirname(dirname(__DIR__)) . '/backend/controllers');
 Yii::setAlias('@console', dirname(dirname(__DIR__)) . '/console');
 
 # Dev Alias Set-up
-Yii::setAlias('@mFrontend', 'http://ams.local');
-Yii::setAlias('@mBackend', 'http://ams-admin.local');
-// Yii::setAlias('@bkImages', dirname(dirname(__DIR__)) . '/backend/web/images');
+Yii::setAlias('@mFrontend', 'http://ams.front.local');
+Yii::setAlias('@mBackend', 'http://ams.admin.local');
+Yii::setAlias('@bkImages', dirname(dirname(__DIR__)) . '/backend/web/');
 ?>

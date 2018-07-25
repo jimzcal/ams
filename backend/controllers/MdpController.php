@@ -68,9 +68,9 @@ class MdpController extends Controller
 
                            $mdp_model->fiscal_year = $model->fiscal_year;
                            $mdp_model->version = $model->version;
-                           $mdp_model->particulars = $row[0] == null ? 0.00 : $row[0];
-                           $mdp_model->uacs_code = $row[1] == null ? 0.00 : $row[1];
-                           $mdp_model->parent_uacs = $row[2] == null ? 0.00 : $row[2];
+                           $mdp_model->particulars = $row[0] == null ? '' : $row[0];
+                           $mdp_model->uacs_code = $row[1] == null ? '' : $row[1];
+                           $mdp_model->parent_uacs = $row[2] == null ? '' : $row[2];
                            $mdp_model->total_program = $row[3] == null ? 0.00 : $row[3];
                            $mdp_model->tra = $row[4] == null ? 0.00 : $row[4];
                            $mdp_model->net_program = $row[5] == null ? 0.00 : $row[5];

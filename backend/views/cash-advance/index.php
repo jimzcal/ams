@@ -17,7 +17,7 @@ $this->title = 'CASH ADVANCES';
 <div class="cash-advance-index">
 
     <div class="new-title">
-        <i class="fa fa-money" aria-hidden="true"></i> Cash Advances
+        <i class="fa fa-money" aria-hidden="true"></i> Cash Advances 
     </div>
 
     <?php $form = ActiveForm::begin(); ?> 
@@ -71,9 +71,14 @@ $this->title = 'CASH ADVANCES';
                 //'filterModel' => $searchModel,
                 'rowOptions'   => function ($model, $key, $index, $grid) {
 
-                    if(($model->status == 'Unliquidated') && ($model->due_date == date('Y-m-d') || $model->due_date < date('Y-m-d')))
+                    if(($model->status == 'Unliquidated') && (((strtotime($model->due_date) - strtotime(date('Y-m-d')))/86400) == 5 || ((strtotime($model->due_date) - strtotime(date('Y-m-d')))/86400) == 4))
                     {
-                       return ['data-id' => $model->dvNo->id, 'style' => 'background-color: #b3e6b3;']; 
+                       return ['data-id' => $model->dvNo->id, 'style' => 'background-color: #9fdf9f;']; 
+                    }
+
+                    elseif(($model->status == 'Unliquidated') && ($model->due_date == date('Y-m-d') || $model->due_date < date('Y-m-d')))
+                    {
+                       return ['data-id' => $model->dvNo->id, 'style' => 'background-color: #ffcccc;']; 
                     }
 
                     else

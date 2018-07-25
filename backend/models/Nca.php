@@ -58,7 +58,7 @@ class Nca extends \yii\db\ActiveRecord
         return [
             [['date_received', 'nca_no', 'nca_type', 'fund_cluster', 'funding_source', 'purpose', 'fiscal_year', 'mds_sub_acc_no', 'gsb_branch', 'january', 'february', 'march', 'first_quarter', 'april', 'may', 'june', 'second_quarter', 'july', 'august', 'september', 'third_quarter', 'october', 'november', 'december', 'forth_quarter', 'validity', 'total_amount'], 'required'],
             [['january', 'february', 'march', 'first_quarter', 'april', 'may', 'june', 'second_quarter', 'july', 'august', 'september', 'third_quarter', 'october', 'november', 'december', 'forth_quarter', 'total_amount', 'sub_total'], 'number'],
-            [['date_received', 'nca_type', 'funding_source', 'fund_cluster', 'fiscal_year', 'mds_sub_acc_no'], 'string', 'max' => 100],
+            [['date_received', 'nca_type', 'funding_source', 'disbursement_date', 'fund_cluster', 'fiscal_year', 'mds_sub_acc_no'], 'string', 'max' => 100],
             [['nca_no', 'purpose', 'gsb_branch', 'validity'], 'string', 'max' => 200],
             [['fund_cluster'], 'exist', 'skipOnError' => true, 'targetClass' => FundCluster::className(), 'targetAttribute' => ['fund_cluster' => 'fund_cluster']],
         ];
@@ -112,7 +112,18 @@ class Nca extends \yii\db\ActiveRecord
     public function getEarmarked()
     {
         $total_earmarked = array_sum(ArrayHelper::getColumn(NcaEarmarked::find()
-            ->where(['nca_no' => $this->nca_no])
+            ->where(['nca_no' => $this->nca_no, 'funding_source' => $this->funding_source])
+            ->all(), 'amount'));
+
+        return $total_earmarked;
+    }
+
+    public function getMearmarked($nca_no, $funding_source, $month)
+    {
+        $total_earmarked = array_sum(ArrayHelper::getColumn(NcaEarmarked::find()
+            ->where(['nca_no' => $nca_no])
+            ->andWhere(['funding_source' => $funding_source])
+            ->andFilterWhere(['like', 'disbursement_date', $month])
             ->all(), 'amount'));
 
         return $total_earmarked;
@@ -123,6 +134,76 @@ class Nca extends \yii\db\ActiveRecord
         $date = NcaEarmarked::find()->where(['nca_no' => $this->nca_no])->orderBy(['id' => SORT_DESC])->one();
 
         return isset($date->date) ? $date->date : '-';
+    }
+
+    public function getAllocation($nca_no, $funding_source, $month)
+    {
+        $result = Nca::find()->where(['nca_no' => $nca_no])
+                             ->andWhere(['funding_source' => $funding_source])->one();
+
+        if($month == 'January')
+        {
+            return $result->january;
+        }
+
+        elseif($month == 'February')
+        {
+            return $result->february;
+        }
+
+        elseif($month == 'March')
+        {
+            return $result->march;
+        }
+
+        elseif($month == 'April')
+        {
+            return $result->april;
+        }
+
+        elseif($month == 'May')
+        {
+            return $result->may;
+        }
+
+        elseif($month == 'June')
+        {
+            return $result->june;
+        }
+
+        elseif($month == 'July')
+        {
+            return $result->july;
+        }
+
+        elseif($month == 'august')
+        {
+            return $result->august;
+        }
+
+        elseif($month == 'September')
+        {
+            return $result->september;
+        }
+
+        elseif($month == 'October')
+        {
+            return $result->october;
+        }
+
+        elseif($month == 'November')
+        {
+            return $result->november;
+        }
+
+        elseif($month == 'December')
+        {
+            return $result->december;
+        }
+
+        else{
+            return 0.00;
+        }
     }
 
     /**

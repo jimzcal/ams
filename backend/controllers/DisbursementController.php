@@ -125,18 +125,35 @@ class DisbursementController extends Controller
 
         $dv_no = Disbursement::find(['dv_no'])->where(['id'=>$id])->one();
         $transaction = TransactionStatus::find()->where(['dv_no'=>$dv_no->dv_no])->one();
+        $acounting_model = AccountingEntry::find()->where(['dv_no' => $dv_no->dv_no])->all();
 
         //$ors_checker = OrsRegistry::find()->where(['dv_no'=>$dv_no])->all();
         
         if ($model->load(Yii::$app->request->post()))
         {
-
             if (\Yii::$app->user->can('Verifier') && (($model->action == null) || ($model->action == '')))
             {
                 Yii::$app->getSession()->setFlash('warning', 'Please select action');
 
                 return $this->render('viewP', [
-                    'model' => $model]);
+                    'model' => $model,
+                    'acounting_model' => $acounting_model,
+                ]);
+            }
+
+            if (isset($_POST['debit']))
+            {
+                $debit = $_POST['debit'];
+
+                if(($debit[0] ==="") || ($debit[0] == null) || ($debit[0] == "0.0") || ($debit[0] == "0"))
+                {
+                    Yii::$app->getSession()->setFlash('warning', 'Please provide debit amount at the beginning of entry');
+
+                    return $this->render('viewP', [
+                        'model' => $model,
+                        'acounting_model' => $acounting_model,
+                    ]);
+                }
             }
 
             if(isset($_POST['requirements']))
@@ -171,6 +188,7 @@ class DisbursementController extends Controller
 
                     return $this->render('viewP', [
                         'model' => $model,
+                        'acounting_model' => $acounting_model,
                         //'ors_model' => $ors_model,
                     ]);
                 }
@@ -226,6 +244,56 @@ class DisbursementController extends Controller
 
                      $new_ors_registry_model->save(false);
                 }
+
+                if(isset($_POST['account_title']))
+                {
+                    $vatable = isset($_POST['vatable']) == true ? $_POST['vatable'] : '0';
+                    $account_title = $_POST['account_title'];
+                    $uacs_code = $_POST['uacs_code'];
+                    $debit = $_POST['debit'];
+                    $credit_amount = $_POST['credit_amount'];
+                    $credit_to = $_POST['credit_to'];
+                    $id = isset($_POST['id']) == true ? $_POST['id'] : null;
+
+                    for($i=0; $i<sizeof($account_title); $i++) 
+                    {
+                        if(isset($id[$i]))
+                        {
+                            $acoounting_model = AccountingEntry::find()->where(['dv_no' => $model->dv_no])
+                                                ->andWhere(['id' => $id[$i]])
+                                                ->one();
+                        }
+                        if(isset($id[$i]) == false)
+                        {
+                            $acoounting_model = null;
+                        }
+
+                        $accounting_model = $acoounting_model == null ? new AccountingEntry() : $acoounting_model;
+
+                        $accounting_model->account_title = $account_title[$i];
+                        $accounting_model->dv_no = $model->dv_no;
+                        $accounting_model->vatable = $vatable;
+                        $accounting_model->uacs_code = $uacs_code[$i];
+                        $accounting_model->debit = $debit[$i] == "" ? 0.00 : $debit[$i];
+                        $accounting_model->credit_amount = $credit_amount[$i] == "" ? 0.00 : $credit_amount[$i];
+                        $accounting_model->credit_to = $credit_to[$i] == '' ? '' : $credit_to[$i];
+
+
+                        if($accounting_model->credit_amount == 0.00)
+                        {
+                            $accounting_model->vat = 0.00;
+                        }
+
+                        if($accounting_model->credit_amount != 0.00)
+                        {
+                            $accounting_model->vat = $vatable == "1" ? (($credit_amount[$i]/($debit[0]/1.12))*100) : ($credit_amount[$i]/$debit[0]);
+                        }
+
+                        $accounting_model->save(false);
+
+                        AccountingEntry::deleteAll(['account_title' => '', 'uacs_code' => '']);
+                    }
+                }
             }
 
             $model->status = \Yii::$app->user->can('processor') ? "Processed" : $model->action;
@@ -268,14 +336,16 @@ class DisbursementController extends Controller
             //End Remarks ------------------------------------------
 
             Yii::$app->getSession()->setFlash('success', 'Successfully Saved');
+
             return $this->render('viewPr', [
-                'model' => $this->findModel($id),
+                'model' => $model,
+                'acounting_model' => $acounting_model,
             ]);
-            
         }
 
         return $this->render('viewP', [
             'model' => $model,
+            'acounting_model' => $acounting_model,
         ]);
 
     }
@@ -503,7 +573,7 @@ class DisbursementController extends Controller
 
         if ($model->load(Yii::$app->request->post())) 
         {
-            if(($model->action == null) || ($model->action == ''))
+            if(($model->status == null) || ($model->status == ''))
             {
                 Yii::$app->getSession()->setFlash('warning', 'Please select action');
 
@@ -635,10 +705,9 @@ class DisbursementController extends Controller
                 }
             //End Remarks ------------------------------------------
 
-             $model->status = $model->action;
-             $model->save(false);
+            $model->save(false);
 
-             return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('mainForm', ['model' => $model]);
@@ -727,6 +796,11 @@ class DisbursementController extends Controller
                         $payment = str_replace(',', '', $model->payment[$value]);
                         $sum += (float)$payment;
                     }
+
+                    if($model->payment[$value] == 'cancelled')
+                    {
+                        NcaEarmarked::deleteAll(['dv_no' => $model->dv_no, 'nca_no' => $model->nca_no[$value], 'funding_source' => $model->funding_source[$value]]);
+                    }
                 }
 
                 if(($sum>((float)$model->net_amount)) == true)
@@ -756,6 +830,7 @@ class DisbursementController extends Controller
                         $model_earmarked = NcaEarmarked::find()
                                 ->where(['dv_no' => $model->dv_no])
                                 ->andWhere(['nca_no' => $model->nca_no[$index]])
+                                ->andWhere(['nca_no' => $model->funding_source[$index]])
                                 ->one();
 
                         if($model_earmarked == null)
@@ -764,6 +839,7 @@ class DisbursementController extends Controller
 
                             $model_earmarked->date = date('Y-m-d');
                             $model_earmarked->dv_no = $model->dv_no;
+                            $model_earmarked->disbursement_date = $model->date;
                             $model_earmarked->nca_no = $model->nca_no[$index];
                             $model_earmarked->funding_source = $model->funding_source[$index];
                             $model_earmarked->amount = str_replace(',', '', $model->payment[$index]);
@@ -774,6 +850,7 @@ class DisbursementController extends Controller
                         {
                             $model_earmarked->date = date('Y-m-d');
                             $model_earmarked->dv_no = $model->dv_no;
+                            $model_earmarked->disbursement_date = $model->date;
                             $model_earmarked->nca_no = $model->nca_no[$index];
                             $model_earmarked->funding_source = $model->funding_source[$index];
                             $model_earmarked->amount = str_replace(',', '', $model->payment[$index]);
@@ -782,7 +859,7 @@ class DisbursementController extends Controller
                         }
                     }
                     $model->obligated = 'Yes';
-                    $model->status = 'Earmarked';
+                    $model->status = $model->status == "Approved" ? "Approved" : "Earmarked";
                     $model->save(false);
 
                     //New Remarks ------------------------------------------
@@ -883,6 +960,7 @@ class DisbursementController extends Controller
                         ->andWhere(['mode_of_payment' => 'lldap_ada'])
                         ->joinWith('disbursement')
                         ->all();
+
         if ($model->load(Yii::$app->request->post()))
         {
             if(isset($_POST['dvs']) != null)

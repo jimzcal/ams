@@ -31,7 +31,6 @@ $this->title = 'NOTICE OF CASH ALLOCATIONS';
 
     <div class="view-index">
         <?php Pjax::begin(); ?>
-
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             //'filterModel' => $searchModel,
@@ -46,11 +45,12 @@ $this->title = 'NOTICE OF CASH ALLOCATIONS';
                     }
                 ],        
                 'nca_no',
+                'funding_source',
                 'fiscal_year',
                 [
                     'attribute' => 'total_amount',
                     'value' => function($data){
-                        return number_format($data->total_amount, 2);
+                        return number_format($data->sub_total, 2);
                     }
                 ],
                 [
@@ -58,7 +58,7 @@ $this->title = 'NOTICE OF CASH ALLOCATIONS';
                     'format' => 'html',
                     'value' => function($data)
                     {
-                        return  Html::a('<i class="glyphicon glyphicon-eye-open"></i><br>', ['cash-status', 'nca_no' => $data->nca_no], ['style' => 'color: green;']);
+                        return  Html::a('<i class="glyphicon glyphicon-eye-open"></i><br>', ['cash-status', 'nca_no' => $data->nca_no, 'funding_source' => $data->funding_source], ['style' => 'color: green;']);
                     }
                 ],
             ],

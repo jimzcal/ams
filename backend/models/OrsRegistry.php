@@ -132,7 +132,7 @@ class OrsRegistry extends \yii\db\ActiveRecord
                             ->where(['like', 'date', $year])
                             ->andWhere(['fund_cluster'=> $fund_cluster])
                             ->andWhere(['like', 'date', $month])
-                            ->andWhere(['mode_of_payment' => 'lddap_ada'])
+                            ->andWhere(['mode_of_payment' => 'lldap_ada'])
                             ->andWhere(['status' => 'Paid'])
                             ->all(), 'net_amount'));
 
@@ -157,4 +157,5 @@ class OrsRegistry extends \yii\db\ActiveRecord
 
         return isset($balance) ? $balance : '';
     }
+
 }

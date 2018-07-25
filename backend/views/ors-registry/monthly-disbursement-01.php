@@ -113,7 +113,7 @@ $this->title = 'Monthly Disbursement';
 					<?= $model->getJanlddap($year, $fund_cluster, 'January'); ?>
 				</td>
 				<td style="width: 120px; text-align: right; font-weight: bold;">
-					<?= $model->getJandisbursement($year, $fund_cluster, 'January'); ?>
+					<?= $model->getJantotal($year, $fund_cluster, 'January'); ?>
 				</td>
 			</tr>
 			<tr>

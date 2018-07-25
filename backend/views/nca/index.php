@@ -83,7 +83,7 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
                 ['class' => 'yii\grid\SerialColumn'],
 
                 //'id',
-                //'date_received',
+                'date_received',
                // 'fund_cluster',
                 [
                     'attribute' => 'fund_cluster',
@@ -94,6 +94,7 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
                 ],
                 //'fundCluster.description',
                 'nca_no',
+                'funding_source',
                 //'mds_sub_acc_no',
                 //'gsb_branch',
                 //'purpose',
@@ -115,7 +116,7 @@ $this->title = 'NOTICE OF CASH ALLOCATION';
                     'attribute' => 'total_amount',
                     'contentOptions' => ['style' => 'text-align: right'], 
                     'value' => function($data){
-                        return number_format($data->total_amount, 2);
+                        return number_format($data->sub_total, 2);
                     }
                 ],
 

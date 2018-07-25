@@ -9,7 +9,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
 use kartik\mpdf\Pdf;
+use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Common\Type;
 
 /**
  * Far101Controller implements the CRUD actions for Far101 model.
@@ -51,9 +54,94 @@ class Far101Controller extends Controller
         $searchModel = new Far101Search();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $model = new Far101();
+
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            if($model->getValidating($model->fiscal_year, $model->fund_cluster) == null)
+            {
+                $uploadFile = UploadedFile::getInstance($model, 'file');
+                $name_extension = 'Far 1 -'.date('Y-m-d');
+                $uploadFile->saveAs('far/'.$name_extension.'-'.$uploadFile);
+                $no_row = 0;
+
+                $file_name = $name_extension.'-'.$uploadFile;
+                $reader = ReaderFactory::create(Type::XLSX); // for XLSX files
+                //$reader = ReaderFactory::create(Type::CSV); // for CSV files
+                //$reader = ReaderFactory::create(Type::ODS); // for ODS files
+
+                $reader->open('far/'.$file_name);
+
+                foreach ($reader->getSheetIterator() as $sheet) 
+                {
+                    foreach ($sheet->getRowIterator() as $row) 
+                    {
+                        if($no_row > 11)
+                        {
+                           $far_model = new Far101();
+
+                           $far_model->fiscal_year = $model->fiscal_year;
+                           $far_model->date_updated = date('Y-m-d');
+                           $far_model->fund_cluster = $model->fund_cluster;
+                           $far_model->particulars = $row[0] == null ? '' : $row[0];
+                           $far_model->uacs_code = $row[1] == null ? '' : $row[1];
+                           $far_model->parent_uacs = $row[2] == null ? 0.00 : $row[2];
+                           // $far_model->authorized_appropriation = $row[3] == null ? 0.00 : $row[3];
+                           // $far_model->adjustment_appropriation = $row[4] == null ? 0.00 : $row[4];
+                           // $far_model->adjusted_appropriation = $row[5] == null ? 0.00 : $row[5];
+                           // $far_model->allotment_received = $row[6] == null ? 0.00 : $row[6];
+                           // $far_model->allotment_adjustment = $row[7] == null ? 0.00 : $row[7];
+                           // $far_model->transfer_to = $row[8] == null ? 0.00 : $row[8];
+                           // $far_model->transfer_from = $row[9] == null ? 0.00 : $row[9];
+                           // $far_model->obligation_q_1 = $row[10] == null ? 0.00 : $row[10];
+                           // $far_model->obligation_q_2 = $row[11] == null ? 0.00 : $row[11];
+                           // $far_model->obligation_q_3 = $row[12] == null ? 0.00 : $row[12];
+                           // $far_model->obligation_q_4 = $row[13] == null ? 0.00 : $row[13];
+                           // $far_model->total_obligation = $row[14] == null ? 0.00 : $row[14];
+                           // $far_model->disbursement_q_1 = $row[15] == null ? 0.00 : $row[15];
+                           // $far_model->disbursement_q_2 = $row[16] == null ? 0.00 : $row[16];
+                           // $far_model->disbursement_q_3 = $row[17] == null ? 0.00 : $row[17];
+                           // $far_model->disbursement_q_4 = $row[18] == null ? 0.00 : $row[18];
+                           // $far_model->total_disbursement = $row[19] == null ? 0.00 : $row[19];
+                           // $far_model->unreleased_balance = $row[20] == null ? 0.00 : $row[20];
+                           // $far_model->unobligated_balance = $row[21] == null ? 0.00 : $row[21];
+                           // $far_model->due_unpaid = $row[22] == null ? 0.00 : $row[22];
+                           // $far_model->not_yet_due = $row[23] == null ? 0.00 : $row[23];
+
+                           if(!empty($far_model->particulars) && !empty($far_model->uacs_code))
+                           {
+                             $far_model->save(false);
+                           }
+                          
+                        }
+
+                        $no_row++;
+                    }
+                }
+
+                $reader->close();
+
+                //return $this->redirect(['view', 'fiscal_year' => $model->fiscal_year, 'version'=> $model->version]);
+            
+            }
+
+            else
+            {
+                Yii::$app->getSession()->setFlash('warning', 'FAR Template is already existing. To change it, delete first the current FAR and upload the latest FAR file.');
+
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'model' => $model
+                ]);
+            }
+            
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model
         ]);
     }
 
@@ -70,7 +158,7 @@ class Far101Controller extends Controller
 
         $far = Far101::find()->where(['fund_cluster' => $model->fund_cluster])
             ->andWhere(['fiscal_year' => $model->fiscal_year])
-            ->andWhere(['parent_id' => 0])
+            ->andWhere(['parent_uacs' => 0])
             ->all();        
 
         return $this->render('view', [
@@ -105,7 +193,7 @@ class Far101Controller extends Controller
 
         $far = Far101::find()->where(['fund_cluster' => $fund_cluster])
             ->andWhere(['fiscal_year' => $fiscal_year])
-            ->andWhere(['parent_id' => 0])
+            ->andWhere(['parent_uacs' => 0])
             ->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) 
@@ -148,7 +236,7 @@ class Far101Controller extends Controller
 
         $far = Far101::find()->where(['fund_cluster' => $model->fund_cluster])
             ->andWhere(['fiscal_year' => $model->fiscal_year])
-            ->andWhere(['parent_id' => 0])
+            ->andWhere(['parent_uacs' => 0])
             ->all();        
 
          $pdf = new Pdf([
@@ -184,172 +272,35 @@ class Far101Controller extends Controller
 
         $far = Far101::find()->where(['fund_cluster' => $model->fund_cluster])
             ->andWhere(['fiscal_year' => $model->fiscal_year])
-            ->andWhere(['parent_id' => 0])
+            ->andWhere(['parent_uacs' => 0])
             ->all();
 
         // $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()))
-        {
-            if(isset($_POST['id']))
+        if($model->load(Yii::$app->request->post()))
+        {   
+            for($i=0; $i<sizeof($model->id); $i++) 
             {
-                $id = $_POST['id'];
-                $particulars = $_POST['particulars'];
-                $uacs_code = $_POST['uacs_code'];
-                $disbursement_q_1 = $_POST['disbursement_q_1'];
-                $disbursement_q_2 = $_POST['disbursement_q_2'];
-                $disbursement_q_3 = $_POST['disbursement_q_3'];
-                $disbursement_q_4 = $_POST['disbursement_q_4'];
-                $total_disbursement = $_POST['total_disbursement'];
+                // if($model->id[$id] != null)
+                // {
+                    $far_model = Far101::find()->where(['id' => $model->id[$i]])->one();
 
-                for($i=0; $i<sizeof($id); $i++)
-                {
-                    $model1 = Far101::find()->where(['id' => $id[$i]])->one();
+                    $far_model->date_updated = date('Y-m-d');
+                    $far_model->fiscal_year = $model->fiscal_year;
+                    $far_model->fund_cluster = $model->fund_cluster;
+                    $far_model->uacs_code = $model->uacs_code[$i];
+                    $far_model->particulars = $model->particulars[$i];
+                    $far_model->disbursement_q_1 = $model->disbursement_q_1[$i];
+                    $far_model->disbursement_q_2 = $model->disbursement_q_2[$i];
+                    $far_model->disbursement_q_3 = $model->disbursement_q_3[$i];
+                    $far_model->disbursement_q_4 = $model->disbursement_q_4[$i];
+                    $far_model->total_disbursement = $model->total_disbursement[$i];
 
-                    $model1->fiscal_year = $model->fiscal_year;
-                    $model1->date_updated = date('M. d, Y');
-                    $model1->fund_cluster = $model->fund_cluster;
-                    $model1->particulars = $particulars[$i];
-                    $model1->uacs_code = $uacs_code[$i];
-                    $model1->disbursement_q_1 = $disbursement_q_1[$i];
-                    $model1->disbursement_q_2 = $disbursement_q_2[$i];
-                    $model1->disbursement_q_3 = $disbursement_q_3[$i];
-                    $model1->disbursement_q_4 = $disbursement_q_4[$i];
-                    $model1->total_disbursement = $total_disbursement[$i];
-
-                    $model1->save(false);
-                }
+                    $far_model->save(false);
+                //}
             }
 
-            if(isset($_POST['idb']))
-            {
-                $idb = $_POST['idb'];
-                $particularsb = $_POST['particularsb'];
-                $uacs_codeb = $_POST['uacs_codeb'];
-                $disbursement_q_1b = $_POST['disbursement_q_1b'];
-                $disbursement_q_2b = $_POST['disbursement_q_2b'];
-                $disbursement_q_3b = $_POST['disbursement_q_3b'];
-                $disbursement_q_4b = $_POST['disbursement_q_4b'];
-                $total_disbursementb = $_POST['total_disbursementb'];
-
-                for($i=0; $i<sizeof($idb); $i++)
-                {
-                    $model2 = Far101::find()->where(['id' => $idb[$i]])->one();
-
-                    $model2->fiscal_year = $model->fiscal_year;
-                    $model2->date_updated = date('M. d, Y');
-                    $model2->fund_cluster = $model->fund_cluster;
-                    $model2->particulars = $particularsb[$i];
-                    $model2->uacs_code = $uacs_codeb[$i];
-                    $model2->disbursement_q_1 = $disbursement_q_1b[$i];
-                    $model2->disbursement_q_2 = $disbursement_q_2b[$i];
-                    $model2->disbursement_q_3 = $disbursement_q_3b[$i];
-                    $model2->disbursement_q_4 = $disbursement_q_4b[$i];
-                    $model2->total_disbursement = $total_disbursementb[$i];
-
-                    $model2->save(false);
-                }
-            }
-
-            if(isset($_POST['idc']))
-            {
-                $idc = $_POST['idc'];
-                $particularsc = $_POST['particularsc'];
-                $uacs_codec = $_POST['uacs_codec'];
-                $disbursement_q_1c = $_POST['disbursement_q_1c'];
-                $disbursement_q_2c = $_POST['disbursement_q_2c'];
-                $disbursement_q_3c = $_POST['disbursement_q_3c'];
-                $disbursement_q_4c = $_POST['disbursement_q_4c'];
-                $total_disbursementc = $_POST['total_disbursementc'];
-
-                for($i=0; $i<sizeof($idc); $i++)
-                {
-                    $model3 = Far101::find()->where(['id' => $idc[$i]])->one();
-
-                    $model3->fiscal_year = $model->fiscal_year;
-                    $model3->date_updated = date('M. d, Y');
-                    $model3->fund_cluster = $model->fund_cluster;
-                    $model3->particulars = $particularsc[$i];
-                    $model3->uacs_code = $uacs_codec[$i];
-                    $model3->disbursement_q_1 = $disbursement_q_1c[$i];
-                    $model3->disbursement_q_2 = $disbursement_q_2c[$i];
-                    $model3->disbursement_q_3 = $disbursement_q_3c[$i];
-                    $model3->disbursement_q_4 = $disbursement_q_4c[$i];
-                    $model3->total_disbursement = $total_disbursementc[$i];
-
-                    $model3->save(false);
-                }
-            }
-
-            if(isset($_POST['idd']))
-            {
-                $idd = $_POST['idd'];
-                $particularsd = $_POST['particularsd'];
-                $uacs_coded = $_POST['uacs_coded'];
-                $disbursement_q_1d = $_POST['disbursement_q_1d'];
-                $disbursement_q_2d = $_POST['disbursement_q_2d'];
-                $disbursement_q_3d = $_POST['disbursement_q_3d'];
-                $disbursement_q_4d = $_POST['disbursement_q_4d'];
-                $total_disbursementd = $_POST['total_disbursementd'];
-
-                for($i=0; $i<sizeof($idd); $i++)
-                {
-                    $model4 = Far101::find()->where(['id' => $idd[$i]])->one();
-
-                    $model4->fiscal_year = $model->fiscal_year;
-                    $model4->date_updated = date('M. d, Y');
-                    $model4->fund_cluster = $model->fund_cluster;
-                    $model4->particulars = $particularsd[$i];
-                    $model4->uacs_code = $uacs_coded[$i];
-                    $model4->disbursement_q_1 = $disbursement_q_1d[$i];
-                    $model4->disbursement_q_2 = $disbursement_q_2d[$i];
-                    $model4->disbursement_q_3 = $disbursement_q_3d[$i];
-                    $model4->disbursement_q_4 = $disbursement_q_4d[$i];
-                    $model4->total_disbursement = $total_disbursementd[$i];
-
-                    $model4->save(false);
-                }
-            }
-
-            if(isset($_POST['ide']))
-            {
-                $ide = $_POST['ide'];
-                $particularse = $_POST['particularse'];
-                $uacs_codee = $_POST['uacs_codee'];
-                $disbursement_q_1e = $_POST['disbursement_q_1e'];
-                $disbursement_q_2e = $_POST['disbursement_q_2e'];
-                $disbursement_q_3e = $_POST['disbursement_q_3e'];
-                $disbursement_q_4e = $_POST['disbursement_q_4e'];
-                $total_disbursemente = $_POST['total_disbursemente'];
-
-                for($i=0; $i<sizeof($ide); $i++)
-                {
-                    $model5 = Far101::find()->where(['id' => $ide[$i]])->one();
-
-                    $model5->fiscal_year = $model->fiscal_year;
-                    $model5->date_updated = date('M. d, Y');
-                    $model5->fund_cluster = $model->fund_cluster;
-                    $model5->particulars = $particularse[$i];
-                    $model5->uacs_code = $uacs_codee[$i];
-                    $model5->disbursement_q_1 = $disbursement_q_1e[$i];
-                    $model5->disbursement_q_2 = $disbursement_q_2e[$i];
-                    $model5->disbursement_q_3 = $disbursement_q_3e[$i];
-                    $model5->disbursement_q_4 = $disbursement_q_4e[$i];
-                    $model5->total_disbursement = $total_disbursemente[$i];
-
-                    $model5->save(false);
-                }
-            }
-
-            // var_dump($particulars);
-            // var_dump($id);
-            // var_dump($idb);
-            // var_dump($idc);
-            // var_dump($idd);
-            // var_dump($ide);
-            // exit();
-
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id[0]]);
          }
 
         return $this->render('update', [

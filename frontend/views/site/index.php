@@ -20,10 +20,10 @@ $this->title = 'Home';
                     },
                 'options' => [
                     'speed' => 3000,
-                    'fx' => 'tileBlind',
-                    'tileCount' => 24,
+                    'fx' => 'tileSlide',
+                    'tileCount' => 18,
                     'tileVertical' => true,
-                    'timeout' => 3000,
+                    'timeout' => 16000,
                 ],
             ]) ?>
         </div>

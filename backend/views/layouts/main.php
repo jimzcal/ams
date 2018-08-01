@@ -13,6 +13,8 @@ use yii\widgets\Menu;
 use backend\models\CashAdvance;
 use common\widgets\Alert;
 use dektrium\rbac\models\Role;
+use yii\bootstrap\Dropdown;
+use yii\helpers\ArrayHelper;
 
 AppAsset::register($this);
 //rmrevin\yii\fontawesome\AssetBundle::register($this);
@@ -124,6 +126,28 @@ AppAsset::register($this);
                             <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Go to transactions">
                                 <?= Html::a('<i class="fa fa-tasks icon-font" aria-hidden="true"></i>', ["/transaction/index"]) ?>
                             </div> -->
+                            <!-- <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Inbox">
+                                <i class="notification"><?= sizeof($inbox) == '0' ? '' :  sizeof($inbox) ?></i>
+                                <?= Html::a('<i class="fa fa-archive icon-font" aria-hidden="true"></i>', ["/site/control"]) ?>
+                            </div> -->
+                            <div class="dropdown icon-dropdown">
+                                <i class="notification"><?= sizeof($inbox) == '0' ? '' :  sizeof($inbox) ?></i>
+                                <?= Html::a('<i class="fa fa-archive icon-font" aria-hidden="true"></i>', ["#"], ['class' => 'dropdown-toggle', 'data-toggle' => 'dropdown']) ?>
+                                <?php
+                                 $items = [];
+                                    foreach ($inbox as $value) {
+                                        $items[$value->dv_no]['label'] = $value->dv_no;
+                                        $items[$value->dv_no]['url'] = '/site/inbox?dv_no='.$value->dv_no;
+                                        $items[$value->dv_no]['options']['value'] = $value->dv_no;
+                                    };
+
+                                $item = $items != null ? $items : $items[0] = ' <i> Empty...</i>';
+
+                                    echo Dropdown::widget([
+                                       'items' => $items,
+                                    ]);
+                                ?>
+                            </div>
                             <div class="icon" data-toggle="tooltip" data-placement="bottom" title="Control Panel">
                                 <?= Html::a('<i class="fa fa-cogs icon-font" aria-hidden="true"></i>', ["/site/control"]) ?>
                             </div>

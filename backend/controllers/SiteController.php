@@ -13,6 +13,7 @@ use backend\models\TransactionStatus;
 use backend\models\AccountingEntry;
 use backend\models\Ors;
 use backend\models\OrsRegistry;
+use backend\models\Inbox;
 
 /**
  * Site controller
@@ -33,7 +34,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'view', 'control'],
+                        'actions' => ['logout', 'index', 'view', 'control', 'inbox'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -83,6 +84,11 @@ class SiteController extends Controller
                         $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                         Yii::$app->db->createCommand()->update('transaction_status', ['approval' => $detail], ['dv_no' => $dv_no])->execute();
 
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'admin'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
                         return $this->redirect(['/disbursement/main', 'id' => $disbursement->id]);
                     }
                     else
@@ -91,6 +97,11 @@ class SiteController extends Controller
                         $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['approval' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'admin'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
 
                          return $this->redirect(['/disbursement/main', 'id' => $id->id]);
                     }   
@@ -115,6 +126,11 @@ class SiteController extends Controller
                         $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                         Yii::$app->db->createCommand()->update('transaction_status', ['processing' => $detail], ['dv_no' => $dv_no])->execute();
 
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'processor'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
                         return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }
                     else
@@ -123,6 +139,11 @@ class SiteController extends Controller
                         $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['processing' => $detail], ['dv_no' => $dv_no])->execute();
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'processor'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
                          return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }   
                 }
@@ -135,6 +156,11 @@ class SiteController extends Controller
                         $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                         Yii::$app->db->createCommand()->update('transaction_status', ['verification' => $detail], ['dv_no' => $dv_no])->execute();
 
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'verifier'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
                         return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }
                     else
@@ -143,6 +169,11 @@ class SiteController extends Controller
                         $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['verification' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'verifier'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
 
                          return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }   
@@ -157,6 +188,11 @@ class SiteController extends Controller
                         $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                         Yii::$app->db->createCommand()->update('transaction_status', ['nca_control' => $detail], ['dv_no' => $dv_no])->execute();
 
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'nca_controller'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
                         return $this->redirect(['/disbursement/cashstatus', 'id' => $disbursement->id]);
                     }
                     else
@@ -165,6 +201,11 @@ class SiteController extends Controller
                         $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['nca_control' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'nca_controller'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
 
                          return $this->redirect(['/disbursement/cashstatus', 'id' => $id->id]);
                     }   
@@ -204,6 +245,11 @@ class SiteController extends Controller
                         $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                         Yii::$app->db->createCommand()->update('transaction_status', ['lddap_ada' => $detail], ['dv_no' => $dv_no])->execute();
 
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'lddap_ada'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
                         Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
                         return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
                     }
@@ -213,6 +259,11 @@ class SiteController extends Controller
                         $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
 
                         Yii::$app->db->createCommand()->update('transaction_status', ['lddap_ada' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'lddap_ada'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
 
                          return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
                     }
@@ -236,6 +287,275 @@ class SiteController extends Controller
 
                     Yii::$app->db->createCommand()->update('transaction_status', ['releasing' => $detail], ['dv_no' => $dv_no])->execute();
                     Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
+
+                    $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'releaser'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                    return $this->redirect(['/disbursement/view', 'id' => $id->id]);
+                }
+
+                if (\Yii::$app->user->can('bookkeeper'))
+                {
+                    $ors = OrsRegistry::find()->where(['dv_no' => $dv_no])->all();
+
+                    if($ors == null)
+                    {
+                        // var_dump($model_registry);
+                        // exit();
+                        return $this->redirect(['/ors-registry/create', 'dv_no' => $dv_no]);
+                    }
+
+                    if($ors !== null)
+                    {
+                        return $this->redirect(['/ors-registry/update', 'dv_no' => $dv_no]);
+                    }
+                }
+            }
+            else
+            {
+                Yii::$app->getSession()->setFlash('info', 'No Results Found');
+                return $this->render('index');
+            }
+        }
+
+        return $this->render('index');
+    }
+
+    public function actionInbox($dv_no)
+    {
+        if($dv_no != null)
+        {
+            $dv_no = $dv_no;
+            $id = Disbursement::find(['id'])->where(['dv_no'=>$dv_no])->one();
+            //$result = Disbursement::find()->where(['dv_no'=>$dv_no])->one();
+            if($id != null)
+            {
+                if(\Yii::$app->user->identity->isAdmin)
+                {
+                    $status = TransactionStatus::find(['approval'])->where(['dv_no'=>$dv_no])->one();
+                    $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->one();
+                    if(empty($status->approval))
+                    {
+                        $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
+                        Yii::$app->db->createCommand()->update('transaction_status', ['approval' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'admin'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                        return $this->redirect(['/disbursement/main', 'id' => $disbursement->id]);
+                    }
+                    else
+                    {
+                        $stat = explode(',', $status->approval);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                        Yii::$app->db->createCommand()->update('transaction_status', ['approval' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'admin'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                         return $this->redirect(['/disbursement/main', 'id' => $id->id]);
+                    }   
+                }
+                
+                if (\Yii::$app->user->can('receiver'))
+                {
+                    $status = TransactionStatus::find()->where(['dv_no'=>$dv_no])->one();
+                    $stat = explode(',', $status->receiving);
+                    $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                    Yii::$app->db->createCommand()->update('transaction_status', ['receiving' => $detail], ['dv_no' => $dv_no])->execute();
+
+                    $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'processor'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                    return $this->redirect(['/disbursement/view', 'id' => $id->id]);
+                }
+
+                if (\Yii::$app->user->can('processor'))
+                {
+                    $status = TransactionStatus::find(['processing'])->where(['dv_no'=>$dv_no])->one();
+                    if(empty($status->processing))
+                    {
+                        $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
+                        Yii::$app->db->createCommand()->update('transaction_status', ['processing' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'processor'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                        return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
+                    }
+                    else
+                    {
+                        $stat = explode(',', $status->processing);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                        Yii::$app->db->createCommand()->update('transaction_status', ['processing' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'processor'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+                         return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
+                    } 
+
+                }
+
+                if (\Yii::$app->user->can('Verifier'))
+                {
+                    $status = TransactionStatus::find(['verification'])->where(['dv_no'=>$dv_no])->one();
+                    if(empty($status->verification))
+                    {
+                        $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
+                        Yii::$app->db->createCommand()->update('transaction_status', ['verification' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'verifier'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                        return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
+                    }
+                    else
+                    {
+                        $stat = explode(',', $status->verification);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                        Yii::$app->db->createCommand()->update('transaction_status', ['verification' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'verifier'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                         return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
+                    }   
+                }
+
+                if (\Yii::$app->user->can('NCA_Controller'))
+                {
+                    $status = TransactionStatus::find(['nca_control'])->where(['dv_no'=>$dv_no])->one();
+                    $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->one();
+                    if(empty($status->nca_control))
+                    {
+                        $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
+                        Yii::$app->db->createCommand()->update('transaction_status', ['nca_control' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'nca_controller'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                        return $this->redirect(['/disbursement/cashstatus', 'id' => $disbursement->id]);
+                    }
+                    else
+                    {
+                        $stat = explode(',', $status->nca_control);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                        Yii::$app->db->createCommand()->update('transaction_status', ['nca_control' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'nca_controller'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                         return $this->redirect(['/disbursement/cashstatus', 'id' => $id->id]);
+                    }   
+                }
+
+                if (\Yii::$app->user->can('indexer'))
+                {
+                    $status = TransactionStatus::find(['indexing'])->where(['dv_no'=>$dv_no])->one();
+                    $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->all();
+                        
+                    if(empty($status->indexing))
+                    {
+                        $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
+                        Yii::$app->db->createCommand()->update('transaction_status', ['indexing' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
+                        return $this->redirect(['/disbursement/indexpayment', 'dv_no' => $dv_no]);
+                    }
+                    else
+                    {
+                        $stat = explode(',', $status->indexing);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                        Yii::$app->db->createCommand()->update('transaction_status', ['indexing' => $detail], ['dv_no' => $dv_no])->execute();
+
+                         return $this->redirect(['/disbursement/indexpayment', 'dv_no' => $dv_no]);
+                    }
+                }
+
+                if (\Yii::$app->user->can('lddap_ada'))
+                {
+                    $status = TransactionStatus::find(['lddap_ada'])->where(['dv_no'=>$dv_no])->one();
+                    $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->all();
+                        
+                    if(empty($status->lddap_ada))
+                    {
+                        $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
+                        Yii::$app->db->createCommand()->update('transaction_status', ['lddap_ada' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'lddap_ada'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                        Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
+                        return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
+                    }
+                    else
+                    {
+                        $stat = explode(',', $status->lddap_ada);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+
+                        Yii::$app->db->createCommand()->update('transaction_status', ['lddap_ada' => $detail], ['dv_no' => $dv_no])->execute();
+
+                        $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'lddap_ada'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
+                         return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
+                    }
+                }
+
+                if (\Yii::$app->user->can('releaser'))
+                {
+                    $status = TransactionStatus::find()->where(['dv_no'=>$dv_no])->one();
+                    $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->all();
+
+                    if(empty($status->releasing))
+                    {
+                        $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
+                    }
+
+                    if(!empty($status->releasing))
+                    {
+                        $stat = explode(',', $status->releasing);
+                        $detail = $stat[0].','.$stat[(sizeof($stat)-1)].'-'.date('m/d/Y h:i');
+                    }
+
+                    Yii::$app->db->createCommand()->update('transaction_status', ['releasing' => $detail], ['dv_no' => $dv_no])->execute();
+                    Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
+
+                    $inbox = Inbox::find()->where(['dv_no' => $dv_no])
+                                ->andWhere(['user_role' => 'releaser'])->one(); 
+                        $inbox->status = 0;
+                        $inbox->save(false);
+
                     return $this->redirect(['/disbursement/view', 'id' => $id->id]);
                 }
 

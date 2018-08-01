@@ -19,6 +19,7 @@ $this->title = 'NEW DISBURSEMENT VOUCHER';
 	    <?= $this->render('_form', [
 	        'model' => $model,
 	        'dv_no' => $dv_no,
+	        'reference' => $reference,
 	    ]) ?>
 
 </div>

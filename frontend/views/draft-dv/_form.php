@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div style="width: 70%; margin-left: 90px;">
+    <div style="width: 85%; margin-left: 90px;">
 
         <table>
             <tr>
@@ -56,7 +56,7 @@ use yii\helpers\ArrayHelper;
             </tr>
         </table>
 
-        <?= $form->field($model, 'created_by')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->identity->fullname])->label(false) ?>
+        <?= $form->field($model, 'created_by')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->identity->id])->label(false) ?>
 
         <?= $form->field($model, 'status')->hiddenInput(['maxlength' => true, 'value' => 'Drafted'])->label(false) ?>
 

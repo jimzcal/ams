@@ -165,7 +165,8 @@ $this->title = 'DISBURSEMENT VOUCHER';
                     </tr>
                     <tr>
                         <td>
-                            <?= $form->field($model, 'status')->radioList(['Approved' => 'Approve ', ' Back to Payee ' => ' Back to payee'])->label(false) ?>
+                            <?php $model->action = $model->status; ?>
+                            <?= $form->field($model, 'action')->radioList(['Approved' => 'Approve ', 'Back to Payee' => ' Back to Payee'])->label(false) ?>
                         </td>
                         <td colspan="5"></td>
                     </tr>

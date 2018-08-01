@@ -44,15 +44,16 @@ use backend\models\Employees;
          </tr>
          <tr>
              <td style="width: 380px;" colspan="2">
-                 <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'style' => 'text-transform: uppercase']) ?>
+                 <?= $form->field($model, 'payee')->textInput(['maxlength' => true, 'value' => $reference !=null ? $reference->payee : '', 'style' => 'text-transform: uppercase', 'autofocus' => true]) ?>
              </td>
              <td colspan="2">
-                 <?= $form->field($model, 'tin')->textInput(['maxlength' => true]) ?>
+                 <?= $form->field($model, 'tin')->textInput(['maxlength' => true, 'value' => $reference != null ? $reference->tin : '']) ?>
              </td>
              <td style="width: 200px;">
               <?= $form->field($model, 'fund_cluster')->dropDownList(ArrayHelper::map(FundCluster::find()->all(),'fund_cluster','fund_cluster'),
                       [
                           'prompt'=>'Select Fund Cluster',
+                          'value' => $reference == null ? '' : $reference->fund_cluster,
                       ]); 
                   ?>
              </td>
@@ -70,13 +71,17 @@ use backend\models\Employees;
          </tr>
          <tr>
              <td rowspan="2" colspan="4">
-                 <?= $form->field($model, 'particulars')->textarea(['rows' => 6]) ?>
+                 <?= $form->field($model, 'particulars')->textarea(['rows' => 6, 'value' => $reference != null ? $reference->particulars : '']) ?>
              </td>
              <td>
               <?= $form->field($model, 'mode_of_payment')->dropDownList(['mds_check'=>'MDS Check', 'commercial_check'=>'Commercial Check', 'lldap_ada'=>'LLDAP-ADA']) ?>
              </td>
              <td style="width: 200px;">
-               <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name')) ?>
+               <?= $form->field($model, 'transaction_id')->dropDownList(ArrayHelper::map(transaction::find()->all(),'id', 'name'),
+                [
+                  'value' => $reference != null ? $reference->transaction_type : '', 
+                ]
+               )?>
              </td>
          </tr>
          <tr>
@@ -84,7 +89,7 @@ use backend\models\Employees;
              <?= $form->field($model, 'cash_advance')->dropDownList(['no'=>'No', 'yes'=>'Yes'], ['id' => 'advance']) ?>
            </td>
            <td>
-             <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount']) ?>
+             <?= $form->field($model, 'gross_amount')->textInput(['maxlength' => true, 'id' => 'totalAmount', 'value' => $reference != null ? $reference->gross_amount : '']) ?>
              <?= $form->field($model, 'obligated')->hiddenInput(['value' => 'no'])->label(false) ?>
            </td>
          </tr>

@@ -14,7 +14,7 @@ $this->title = 'DISBURSEMENT VOUCHERS';
 <div class="disbursement-index">
 
     <div class="right-top-button">
-        <?= Html::a('<i class="glyphicon glyphicon-plus"></i> New Disbursement', ['create'], ['class' => 'right-button-text']) ?>
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i> New Disbursement', ['redirected'], ['class' => 'right-button-text']) ?>
     </div>
 
     <!-- <div class="btn-group btn-group-vertical" style="float: left; right: 0; z-index: 300; position: fixed;" id="noprint">

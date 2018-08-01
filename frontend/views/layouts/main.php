@@ -21,7 +21,7 @@ AppAsset::register($this);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode('FMIS '.$this->title) ?></title>
+    <title><?= Html::encode('DA-AMS '.$this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -90,8 +90,8 @@ AppAsset::register($this);
             <?= $content ?>
     </div>
 </div>
-<div style="bottom: 0; background-color: #000000; height: 40px; width: 100%; color: #ffffff; font-size: 20px;">
-    <marquee>This is Under Development...              This is Under Development...</marquee>
+<div style="bottom: 0; background-color: #000000; height: 40px; width: 100%; color: #ffffff; font-size: 20px; position: fixed;" id="noprint">
+    <marquee>Work in progress............. Work in progress...</marquee>
 </div>
 
 <?php $this->endBody() ?>

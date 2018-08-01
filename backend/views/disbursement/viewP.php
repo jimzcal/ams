@@ -251,6 +251,20 @@ $this->title = 'DISBURSEMENT VOUCHER';
                             <td colspan="5"></td>
                         </tr>
                         <?php endif ?>
+
+                        <?php if(\Yii::$app->user->can('processor')) : ?>
+                        <tr style="border-top-style: dashed; border-color: #e0e0d1; ">
+                            <td colspan="6" style="color:  #2a2b43; font-size: 16px;"><i class="fa fa-comments" style="color: #cc9900">
+                            </i> Action :</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= $form->field($model, 'action')->radioList(['Forward to Verifier' => 'Forward to Verifier ', 'Back to Payee' => ' Back to payee'])->label(false); ?>
+                            </td>
+                            <td colspan="5"></td>
+                        </tr>
+                        <?php endif ?>
+
                         <tr style="border-top-style: dashed; border-color: #e0e0d1;">
                             <td colspan="6" style="color:  #2a2b43; font-size: 16px;"><i class="fa fa-comments" style="color: #cc9900">
                             </i>  Remarks : </td>

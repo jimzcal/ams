@@ -66,6 +66,8 @@ class DraftDvController extends Controller
     {
         $model = new DraftDv();
 
+        $data = DraftDv::find()->where(['created_by' => Yii::$app->user->identity->id])->all();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -73,6 +75,7 @@ class DraftDvController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'data' => $data,
         ]);
     }
 
@@ -87,12 +90,15 @@ class DraftDvController extends Controller
     {
         $model = $this->findModel($id);
 
+        $data = DraftDv::find()->where(['created_by' => Yii::$app->user->identity->id])->all();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'data' => $data,
         ]);
     }
 

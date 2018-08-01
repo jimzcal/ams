@@ -94,6 +94,10 @@ body {
   height: auto;
 }
 
+.ors-index td{
+  height: 40px;
+}
+
 .textfield{
   width: 100%;
   height: 100%;
@@ -103,10 +107,6 @@ body {
   margin: 0 !important;
   background-color: transparent;
   border-bottom: 1px solid transparent;
-}
-
-.ors-index td{
-  height: 40px;
 }
 
 .textfield:hover{
@@ -168,6 +168,23 @@ body {
 }
 
 .icon{
+  width: 55px;
+  height: 55px;
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-radius: 60px;
+  /*box-shadow: 2px 2px 5px grey;*/
+  background-color: #FFFFFF;
+  padding: 12px;
+  text-align: center;
+  float: right;
+  /*display: none;*/
+  /*margin-top: 5px;*/
+}
+
+.icon-dropdown{
   width: 55px;
   height: 55px;
   margin-left: 4px;
@@ -624,7 +641,7 @@ body {
   .breadcrumb, #noprint {display:none;}
   .tracking-form {
    margin: 0px;
-   width: 980px;
+   width: 100%;
    height: 1248px;
    font-size: 10pt;
   }
@@ -925,31 +942,32 @@ body {
 
 
 /* Modal Content */
+/* Modal Content */
 .modall {
-  display: none;
-  position: absolute;
-  z-index: 1600;
-  padding-top: 60px;
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1500; /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%;
-  min-height: 150%;
-  height: auto;
-  overflow: auto;
-  background-color: #000000;
-  opacity: .5;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 .modal-content-gallery {
   display: none;
-  top: 50px;
+  top: 100px;
   position: absolute;
   background-color: #ffffff;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
   margin-right: auto;
-  margin-left: auto;
   padding: 10px;
-  width: 900px;
-  max-height: 1000px;
+  height: auto;
+  width: 90%;
   z-index: 3000;
   border-radius: 5px;
 }
@@ -968,9 +986,6 @@ body {
 .modal-content-gallery img{
   width: 100%;
   height: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  max-height: 900px;
   position: relative;
 }
 

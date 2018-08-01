@@ -23,6 +23,9 @@ use backend\models\DvLog;
 use backend\models\DvRemarks;
 use backend\models\OrsRegistry;
 use backend\models\NcaEarmarked;
+use common\models\DraftDv;
+use backend\models\Inbox;
+use yii\helpers\ArrayHelper;
 
 /**
  * DisbursementController implements the CRUD actions for Disbursement model.
@@ -131,7 +134,17 @@ class DisbursementController extends Controller
         
         if ($model->load(Yii::$app->request->post()))
         {
-            if (\Yii::$app->user->can('Verifier') && (($model->action == null) || ($model->action == '')))
+            if ((\Yii::$app->user->can('Verifier'))  && (($model->action == null) || ($model->action == '')))
+            {
+                Yii::$app->getSession()->setFlash('warning', 'Please select action');
+
+                return $this->render('viewP', [
+                    'model' => $model,
+                    'acounting_model' => $acounting_model,
+                ]);
+            }
+
+            if ((\Yii::$app->user->can('processor'))  && (($model->action == null) || ($model->action == '')))
             {
                 Yii::$app->getSession()->setFlash('warning', 'Please select action');
 
@@ -299,6 +312,48 @@ class DisbursementController extends Controller
             $model->status = \Yii::$app->user->can('processor') ? "Processed" : $model->action;
             $model->save(false);
 
+            if($model->action == 'Back to Payee')
+            {
+                $inbox_model = new Inbox();
+                $inbox_model->dv_no = $model->dv_no;
+                $inbox_model->date = date('Y-m-d');
+                $inbox_model->user_role = 'releaser';
+                $inbox_model->status = 1;
+                $inbox_model->save(false);
+            }
+
+            if($model->action == 'Forward to Verifier')
+            {
+                $inbox_model = new Inbox();
+                $inbox_model->dv_no = $model->dv_no;
+                $inbox_model->date = date('Y-m-d');
+                $inbox_model->user_role = 'Verifier';
+                $inbox_model->status = 1;
+                $inbox_model->save(false);
+            }
+
+            if($model->action == 'For Approval')
+            {
+                $inbox_model = new Inbox();
+                $inbox_model->dv_no = $model->dv_no;
+                $inbox_model->date = date('Y-m-d');
+                $inbox_model->user_role = 'admin';
+                $inbox_model->status = 1;
+                $inbox_model->save(false);
+            }
+
+            if($model->action == 'Approved')
+            {
+                $inbox_model = new Inbox();
+                $inbox_model->dv_no = $model->dv_no;
+                $inbox_model->date = date('Y-m-d');
+                $inbox_model->user_role = 'nca_controller';
+                $inbox_model->status = 1;
+                $inbox_model->save(false);
+            }
+
+            
+
             //New Remarks ------------------------------------------
                 $model_remarks = DvRemarks::find()
                         ->where(['dv_no' => $model->dv_no])
@@ -350,7 +405,7 @@ class DisbursementController extends Controller
 
     }
 
-    public function actionCreate()
+    public function actionCreate($reference_no)
     {
         if(\Yii::$app->user->can('createDisbursementVoucher'))
         {
@@ -370,6 +425,7 @@ class DisbursementController extends Controller
                 {
                     $model->save(false);
                 }
+
                 else
                 {
                     Yii::$app->getSession()->setFlash('info', '<i class="glyphicon glyphicon-alert" style="color: red;"></i> Similar transaction is detected. Please check <strong> DV No. '.$model->getValidating($model->payee, $model->particulars, $model->gross_amount). '</strong> for verification.');
@@ -389,6 +445,17 @@ class DisbursementController extends Controller
                 $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
                 $model3->receiving = $detail;
                 $model3->save(false);
+
+                //End Recordinf transactions ------------------------------------------
+
+                //Start recording transactions ------------------------------------------
+
+                $model4 = new Inbox();
+                $model4->dv_no = $model->dv_no;
+                $model4->date = date('Y-m-d');
+                $model4->user_role = 'processor';
+                $model4->status = 1;
+                $model4->save(false);
 
                 //End Recordinf transactions ------------------------------------------
 
@@ -433,9 +500,12 @@ class DisbursementController extends Controller
             } 
             else
             {
+                $reference = $reference_no != "null" ? DraftDv::find()->where(['reference_no' =>$reference_no])->one() : null;
+
                 return $this->render('create', [
                     'model' => $model,
                     'dv_no' => $dv_no,
+                    'reference' => $reference,
                 ]);
             }
         }
@@ -445,6 +515,38 @@ class DisbursementController extends Controller
                return $this->redirect(['index']);
         }
     }
+
+    public function actionRedirected()
+    {
+        $data = ArrayHelper::map(DraftDv::find()->all(), 'reference_no', 'reference_no');
+
+        if(isset($_POST['selection']))
+        {
+            if($_POST['selection'] == "1" && $_POST['reference_no'] != '')
+            {
+                $reference_no = $_POST['reference_no'];
+
+                return $this->redirect(['create', 'reference_no' => $reference_no]);
+            }
+
+            elseif($_POST['selection'] == "0")
+            {
+                //$reference_no = $_POST['reference_no'];
+
+                return $this->redirect(['create', 'reference_no' => 'null']);
+            }
+
+            else
+            {
+                Yii::$app->getSession()->setFlash('warning', 'Please enter Reference No.');
+
+                return $this->render('create-redirected', ['data' => $data]);
+            }
+        }
+
+        return $this->render('create-redirected', ['data' => $data]);
+    }
+
 
     public function actionUpdate($id)
     {
@@ -704,8 +806,28 @@ class DisbursementController extends Controller
                     }
                 }
             //End Remarks ------------------------------------------
-
+            $model->status = $model->action;
             $model->save(false);
+
+            if($model->action == 'Back to Payee')
+            {
+                $inbox_model = new Inbox();
+                $inbox_model->dv_no = $model->dv_no;
+                $inbox_model->date = date('Y-m-d');
+                $inbox_model->user_role = 'releaser';
+                $inbox_model->status = 1;
+                $inbox_model->save(false);
+            }
+
+            if($model->action == 'Approved')
+            {
+                $inbox_model = new Inbox();
+                $inbox_model->dv_no = $model->dv_no;
+                $inbox_model->date = date('Y-m-d');
+                $inbox_model->user_role = 'nca_controller';
+                $inbox_model->status = 1;
+                $inbox_model->save(false);
+            }
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -859,8 +981,18 @@ class DisbursementController extends Controller
                         }
                     }
                     $model->obligated = 'Yes';
-                    $model->status = $model->status == "Approved" ? "Approved" : "Earmarked";
+                    $model->status = $model->status == "Approved" ? "Approved/Earmarked" : "Earmarked";
                     $model->save(false);
+
+                    if(($model->mode_of_payment == 'lldap_ada') && ($model->status == 'Approved/Earmarked'))
+                    {
+                        $inbox_model = new Inbox();
+                        $inbox_model->dv_no = $model->dv_no;
+                        $inbox_model->date = date('Y-m-d');
+                        $inbox_model->user_role = 'lddap_ada';
+                        $inbox_model->status = 1;
+                        $inbox_model->save(false);
+                    }
 
                     //New Remarks ------------------------------------------
                         $model_remarks = DvRemarks::find()

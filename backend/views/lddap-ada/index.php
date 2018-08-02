@@ -107,18 +107,41 @@ $this->title = 'LDDAP-ADA';
                         return number_format($data->net_amount, 2);
                     }
                 ],
+                // [
+                //     'label' => 'Action',
+                //     'format' => 'Html',
+                //     'value' => function($data)
+                //     {
+                //         return Html::a('<i class="glyphicon glyphicon-trash"></i>', ["/lddap-ada/delete", 'id' => $data->id], [
+                //                 'data' => [
+                //                     'confirm' => 'Are you sure you want to delete this item?',
+                //                     'method' => 'post',
+                //                 ],
+                //             ]);
+                //     },
+                // ],
+
                 [
-                    'label' => 'Action',
-                    'format' => 'Html',
-                    'value' => function($data)
+                  'class' => 'yii\grid\ActionColumn',
+                  'header' => 'Actions',
+                  'headerOptions' => ['style' => 'color:#337ab7'],
+                  'template' => '{delete}',
+                  'buttons' => [
+                   
+                    'delete' => function ($url, $model) 
                     {
-                        return Html::a('<i class="glyphicon glyphicon-trash"></i>', ["/lddap-ada/delete", 'id' => $data->id], [
-                                'data' => [
-                                    'confirm' => 'Are you sure you want to delete this item?',
-                                    'method' => 'post',
-                                ],
-                            ]);
-                    },
+                        $url = Url::to(['lddap-ada/delete', 'id' => $model->id]);
+                        return Html::a('<span class="fa fa-trash"></span>', $url, [
+                            'title'        => 'delete',
+                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                            'data-method'  => 'post',
+                        ]);
+                        // return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                        //             'title' => Yii::t('app', 'lead-delete'),
+                        // ]);
+                    }
+
+                  ],
                 ],
             ],
         ]); ?>

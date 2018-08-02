@@ -68,29 +68,31 @@ $this->title = 'LDDAP-ADA FORM';
                 </tr>
                 <tr style="font-size: 10px;">
                     <td width="290" style="min-height: 200px; height: auto;">
-                        <?php
-                            foreach ($dvs as $value)
-                            {
-                              $dv = Disbursement::find()
+                        <?php foreach ($dvs as $value) : ?>
+                           
+                         <?php 
+                            $dv = Disbursement::find()
                               ->where(['dv_no' => $value])
                               ->one();
                               echo $dv->payee.'<br>';
 
-                              echo $form->field($model2, 'dv_no[]')->hiddenInput(['value' => $value])
-                              ->label(false);
-                            }
-                        ?>
+                            ?>
+                            <div class="hidden">
+                                <?= $form->field($model2, 'dv_no[]', ['options' => ['tag' => false]])->hiddenInput(['value' => $value])
+                                      ->label(false); ?>
+                            </div>
+                        <?php endforeach ?>
                     </td>
                     <td>
-                        <?php
-                            for($i=0; $i<sizeof($dvs); $i++)
-                            {
-                                echo 'LBP'.'<br>';
+                        <?php for($i=0; $i<sizeof($dvs); $i++) : ?>
+                            <div class="hidden">
+                                <?php echo 'LBP'.'<br>';
 
-                                echo $form->field($model2, 'current_account[]')->hiddenInput(['value' => 'LBP'])
-                                ->label(false);
-                            }
-                        ?>
+                                    echo $form->field($model2, 'current_account[]')->hiddenInput(['value' => 'LBP'])
+                                    ->label(false);
+                                ?>
+                            </div>
+                        <?php endfor ?>
                     </td>
                     <td width="240">
                         <?php
@@ -111,19 +113,19 @@ $this->title = 'LDDAP-ADA FORM';
                         ?>
                     </td>
                     <td>
-                        <?php
-                            foreach ($dvs as $value)
-                            {
+                        <?php foreach ($dvs as $value) : ?>
+                            <?php 
                               $dv = AccountingEntry::find()
                               ->where(['dv_no' => $value])
                               ->andWhere(['credit_to' => 'payee'])
                               ->one();
                               echo $dv->uacs_code.'<br>';
-
-                              echo $form->field($model2, 'uacs_code[]')->hiddenInput(['value' => $dv->uacs_code])
-                              ->label(false);
-                            }
-                        ?>
+                            ?>
+                            <div class="hidden">
+                                <?= $form->field($model2, 'uacs_code[]')->hiddenInput(['value' => $dv->uacs_code])
+                                  ->label(false); ?>
+                            </div>
+                        <?php endforeach ?>
                     </td>
                     <td>
                         <?php
@@ -155,18 +157,19 @@ $this->title = 'LDDAP-ADA FORM';
                     <td>
                         <?php
                             $total_net = 0;
-                            foreach ($dvs as $value)
-                            {
+                            foreach ($dvs as $value) : ?>
+                            <?php
                               $dv = Disbursement::find()
                               ->where(['dv_no' => $value])
                               ->one();
                               echo number_format($dv->net_amount, 2).'<br>';
-
                               $total_net = $total_net + $dv->net_amount;
-                              echo $form->field($model2, 'net_amount[]')->hiddenInput(['value' => $dv->net_amount])
-                              ->label(false);
-                            }
-                        ?>
+                            ?>
+                            <div class="hidden">
+                                <?= $form->field($model2, 'net_amount[]')->hiddenInput(['value' => $dv->net_amount])
+                                  ->label(false); ?>
+                            </div>
+                        <?php endforeach ?>
                     </td>
                     <td></td>
                 </tr>

@@ -24,7 +24,7 @@ $this->title = 'Update Draft Dv: ' . $model->id;
 		</div>
 		<div class="col-md-4">
 			<div style="width: 70%; height: 300px; border: solid 1px #e6e6e6; border-radius: 5px; margin: auto; background-color: #ffffff;">
-				<div style="width: 100%; top: 0; height: 40px; background-color: #e6e6e6; border: 0px 5px 5px 0px;padding-left: 10px; padding-top: 10px; font-weight: bold;">
+				<div style="width: 100%; top: 0; height: 40px; background-color: #e6e6e6; border: 0px 5px 5px 0px;padding-left: 10px; padding-top: 10px; font-weight: bold; font-size: 12px;">
 					<p style="display: inline-block;"><i class="glyphicon glyphicon-folder-close"></i> My Disbursement Vouchers </p>
 					<p style="text-align: right; color: green; display: inline-block;"><?= sizeof($data) ?></p>
 				</div>

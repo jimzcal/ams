@@ -32,7 +32,7 @@ use kartik\date\DatePicker;
     	<tr style="vertical-align: top;">
     		<td>Amount</td>
     		<td>:</td>
-    		<td><?= $form->field($model, 'amount')->textInput(['maxlength' => true, 'value' => number_format($model->dvNo->gross_amount - $model->dvNo->less_amount, 2)])->label(false) ?></td>
+    		<td><?= $form->field($model, 'amount')->textInput(['maxlength' => true, 'value' => $model->dvNo->gross_amount - $model->dvNo->less_amount])->label(false) ?></td>
     	</tr>
     	<tr style="vertical-align: top;">
     		<td>Due Date</td>
@@ -103,7 +103,7 @@ function myFunction()
     var val = document.getElementById("methods").value;
     if(val == 'Full')
     {
-    	document.getElementById("amount").value = <?= number_format(($model->dvNo->gross_amount - $model->dvNo->less_amount), 2) ?>;
+    	document.getElementById("amount").value = <?= ($model->dvNo->gross_amount - $model->dvNo->less_amount) ?>;
     }
     else
     {

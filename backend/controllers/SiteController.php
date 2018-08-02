@@ -86,8 +86,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'admin'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         return $this->redirect(['/disbursement/main', 'id' => $disbursement->id]);
                     }
@@ -100,8 +103,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'admin'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                          return $this->redirect(['/disbursement/main', 'id' => $id->id]);
                     }   
@@ -128,8 +134,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'processor'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }
@@ -141,8 +150,11 @@ class SiteController extends Controller
                         Yii::$app->db->createCommand()->update('transaction_status', ['processing' => $detail], ['dv_no' => $dv_no])->execute();
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'processor'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                          return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }   
@@ -158,8 +170,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'verifier'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }
@@ -172,8 +187,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'verifier'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                          return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }   
@@ -190,8 +208,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'nca_controller'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                       if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         return $this->redirect(['/disbursement/cashstatus', 'id' => $disbursement->id]);
                     }
@@ -204,8 +225,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'nca_controller'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                          return $this->redirect(['/disbursement/cashstatus', 'id' => $id->id]);
                     }   
@@ -247,8 +271,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'lddap_ada'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
                         return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
@@ -262,8 +289,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'lddap_ada'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                          return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
                     }
@@ -290,8 +320,11 @@ class SiteController extends Controller
 
                     $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'releaser'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                     return $this->redirect(['/disbursement/view', 'id' => $id->id]);
                 }
@@ -336,6 +369,7 @@ class SiteController extends Controller
                 {
                     $status = TransactionStatus::find(['approval'])->where(['dv_no'=>$dv_no])->one();
                     $disbursement = Disbursement::find()->where(['dv_no' => $dv_no])->one();
+
                     if(empty($status->approval))
                     {
                         $detail = Yii::$app->user->identity->fullname.','.date('m/d/Y h:i');
@@ -343,8 +377,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'admin'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         return $this->redirect(['/disbursement/main', 'id' => $disbursement->id]);
                     }
@@ -356,9 +393,13 @@ class SiteController extends Controller
                         Yii::$app->db->createCommand()->update('transaction_status', ['approval' => $detail], ['dv_no' => $dv_no])->execute();
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
-                                ->andWhere(['user_role' => 'admin'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                                ->andWhere(['user_role' => 'admin'])->one();
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
+                        
 
                          return $this->redirect(['/disbursement/main', 'id' => $id->id]);
                     }   
@@ -374,8 +415,11 @@ class SiteController extends Controller
 
                     $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'processor'])->one(); 
+                    if($inbox != null)
+                    {
                         $inbox->status = 0;
                         $inbox->save(false);
+                    }
 
                     return $this->redirect(['/disbursement/view', 'id' => $id->id]);
                 }
@@ -390,8 +434,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'processor'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }
@@ -404,8 +451,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'processor'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
                          return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     } 
 
@@ -421,8 +471,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'verifier'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }
@@ -435,8 +488,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'verifier'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                          return $this->redirect(['/disbursement/processor', 'id' => $id->id]);
                     }   
@@ -453,8 +509,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'nca_controller'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         return $this->redirect(['/disbursement/cashstatus', 'id' => $disbursement->id]);
                     }
@@ -467,8 +526,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'nca_controller'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                          return $this->redirect(['/disbursement/cashstatus', 'id' => $id->id]);
                     }   
@@ -510,8 +572,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'lddap_ada'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                         Yii::$app->getSession()->setFlash('success', 'DV No. '.$dv_no.' has been received');
                         return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
@@ -525,8 +590,11 @@ class SiteController extends Controller
 
                         $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'lddap_ada'])->one(); 
-                        $inbox->status = 0;
-                        $inbox->save(false);
+                        if($inbox != null)
+                        {
+                            $inbox->status = 0;
+                            $inbox->save(false);
+                        }
 
                          return $this->redirect(['/disbursement/ada', 'dv_no' => $dv_no]);
                     }
@@ -553,8 +621,11 @@ class SiteController extends Controller
 
                     $inbox = Inbox::find()->where(['dv_no' => $dv_no])
                                 ->andWhere(['user_role' => 'releaser'])->one(); 
+                    if($inbox != null)
+                    {
                         $inbox->status = 0;
                         $inbox->save(false);
+                    }
 
                     return $this->redirect(['/disbursement/view', 'id' => $id->id]);
                 }

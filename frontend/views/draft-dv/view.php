@@ -47,12 +47,12 @@ $this->title = $model->reference_no;
         <table style="margin-right: auto; margin-left: auto; border: solid 2px #000000;" id="view-dv-table">
             <tr>
                 <td style="width: 20%">
-                    <?= Html::img('@web/images/da-ams-logo.png', ['alt'=>'DA-AMS Logo', 'style' => 'width: 140px; display: block; margin: 10px 10px 0px 10px;']); ?>
+                    <?= Html::img('@web/images/DA_logo.png', ['alt'=>'DA-AMS Logo', 'style' => 'width: 110px; display: block; margin: 10px 10px 0px 10px;']); ?>
                 </td>
                 <td colspan="4" style="width: 60%">
                     <p style="text-align: center; margin-top: 5px;">
                         <span style="font-size: 18px; font-weight: bold;">Department of Agriculture</span>
-                        <br style="font-size: 14px;">Elliptical Road, Diliman, Quezon City
+                        <br style="font-size: 14px;">Central Office, Elliptical Road, Diliman, Quezon City
                     </p>
                     <p style="text-align: center; font-size: 20px;">DISBURSEMENT VOUCHER</p>
                 </td>
@@ -68,7 +68,12 @@ $this->title = $model->reference_no;
                 <td style="border-right: solid 1px #000000; font-weight: bold; text-align: right; height: 30px;">
                     Mode of Payment:
                 </td>
-                <td colspan="5"></td>
+                <td colspan="5">
+                    <span class="glyphicon glyphicon-unchecked" style="margin-left: 10px;"></span> MDS Check 
+                    <span class="glyphicon glyphicon-unchecked" style="margin-left: 10px;"></span> Commercial Check 
+                    <span class="glyphicon glyphicon-unchecked" style="margin-left: 10px;"></span> LDDAP-ADA 
+                    <span class="glyphicon glyphicon-unchecked" style="margin-left: 10px;"></span> Others (Pls. specify) ______________ 
+                </td>
             </tr>
             <tr style="border-top: solid 1px #000000; font-size: 12px; height: 30px;">
                 <td style="border-right: solid 1px #000000; font-weight: bold; text-align: right;">
@@ -126,7 +131,7 @@ $this->title = $model->reference_no;
             
             <tr style="border-top: solid 2px #000000; height: 100px;">
                 <td colspan="6" style="border-right: solid 1px #000000; vertical-align: top; font-size: 12px; height: 35px; line-height: 10px; padding: 5px;">
-                    <i>A. Certified Expenses/Cash Advance Necessary, lawful and incured under my direct supervision.</i><br><br><br><br><br>
+                    <i>A. Certified Expenses/Cash Advance Necessary, lawful and incurred under my direct supervision.</i><br><br><br><br><br>
                     <center>
                         <input type="text" name="name" class="textfield" style="text-align: center; font-weight: bold; width: 300px; border-bottom: solid 1px #000000; font-size: 13px; text-transform: uppercase;">
                     </center><br>

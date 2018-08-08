@@ -13,8 +13,13 @@ $this->title = 'Fund Clusters';
 ?>
 <div class="fund-cluster-index">
 
-    <div class="title">
+    <!-- <div class="title">
         <div class="btn btn-success btn-right" data-toggle="modal" data-target="#newModal">New Fund Cluster</div>
+    </div> -->
+
+    <div class="right-top-button">
+        <div class="right-button-text" data-toggle="modal" data-target="#newModal">
+            <i class="glyphicon glyphicon-plus"></i> New Fund Cluster</div>
     </div>
 
     <div class="new-title">

@@ -13,9 +13,11 @@ $this->title = 'Object Codes';
 ?>
 <div class="object-code-index">
 
-    <div class="title">
-        <div class="btn btn-success btn-right" data-toggle="modal" data-target="#newModal">New Object Code</div>
+    <div class="right-top-button">
+        <div class="right-button-text" data-toggle="modal" data-target="#newModal">
+            <i class="glyphicon glyphicon-plus"></i> Object Code</div>
     </div>
+
     <div class="new-title">
         <i class="fa fa-qrcode" aria-hidden="true"></i> 
         <?= Html::encode($this->title) ?>

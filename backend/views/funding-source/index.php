@@ -13,8 +13,9 @@ $this->title = 'Funding Sources';
 ?>
 <div class="funding-source-index">
 
-    <div class="title">
-        <div class="btn btn-success btn-right" data-toggle="modal" data-target="#myModal">New Funding Source</div>
+    <div class="right-top-button">
+        <div class="right-button-text" data-toggle="modal" data-target="#myModal">
+            <i class="glyphicon glyphicon-plus"></i> New Funding Source</div>
     </div>
 
     <div class="new-title">

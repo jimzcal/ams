@@ -12,17 +12,18 @@ $this->title = $model->name;
 ?>
 <div class="transaction-view">
 
-    <div class="title"></div>
-        <p>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger btn-right',
+    <div class="right-top-button">
+        <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Update', ['update', 'id' => $model->id], ['class' => 'right-button-text']) ?> | 
+        <?= Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', ['delete', 'id' => $model->id], [
+            'class' => 'right-button-text',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-right']) ?>
-    </p>
+            ]) ?>
+    </div>
+
+
     <div class="new-title">
         <i class="fa fa-tasks" aria-hidden="true"></i> <?= Html::encode($this->title) ?>
         <p style="text-indent: 28px; font-size: 14px;">Documentary Requirements</p>

@@ -17,35 +17,35 @@ $this->title = 'FINANCIAL REPORTS';
 
     <div class="financial-reports-panel">
 
-        <?= Html::a('<span class="fa fa-line-chart" aria-hidden="true" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Financial Accountability Report', ["/far101/index"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-line-chart fincial-report-icon-text" aria-hidden="true"></span><br>
+            <span class="report-text">FINANCIAL REPORTS</span>', ["/far101/index"], ['class' => 'financial-report-icon']) ?>
 
-        <?= Html::a('<span class="fa fa-paypal" aria-hidden="true" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Index of Payment', ["/disbursement/index"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-paypal fincial-report-icon-text" aria-hidden="true"></span></br>
+            <span class="report-text">INDEX OF PAYMENT</span>', ["/disbursement/index"], ['class' => 'financial-report-icon']) ?>
 
-        <?= Html::a('<span class="fa fa-file-text-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            LDDAP-ADA List', ["/lddap-ada/index"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-file-text-o fincial-report-icon-text"></span></br>
+            <span class="report-text">LDDAP-ADA LIST</span>', ["/lddap-ada/index"], ['class' => 'financial-report-icon']) ?>
 
-        <?= Html::a('<span class="fa fa-bar-chart-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            NCA Status', ["/nca/list"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-bar-chart-o fincial-report-icon-text"></span></br>
+            <span class="report-text">NCA STATUS</span>', ["/nca/list"], ['class' => 'financial-report-icon']) ?>
 
-        <?= Html::a('<span class="fa fa-id-card" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-        Monthly Disbursement Report', ["/ors-registry/mdisbursement"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-id-card fincial-report-icon-text"></span></br>
+            <span class="report-text">MONTHLY DISBURSEMENT</span>', ["/ors-registry/mdisbursement"], ['class' => 'financial-report-icon']) ?>
 
-        <?= Html::a('<span class="fa fa-calculator" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Taxes', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-calculator fincial-report-icon-text"></span></br>
+            <span class="report-text">TAXES</span>', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?>
 
-        <?= Html::a('<span class="fa fa-money" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Cash Advances', ["/cash-advance/index"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-money fincial-report-icon-text"></span></br>
+            <span class="report-text">CASH ADVANCES</span>', ["/cash-advance/index"], ['class' => 'financial-report-icon']) ?>
 
-        <?= Html::a('<span class="fa fa-file-text" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Monthly Disbursement Program', ["/mdp/index"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-file-text fincial-report-icon-text"></span></br>
+            <span class="report-text">MONTHLY DISBURSEMENT PROGRAM</span>', ["/mdp/index"], ['class' => 'financial-report-icon']) ?>
 
-        <!-- <?= Html::a('<span class="fa fa-file-o" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Daily Cash Report', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?> -->
+        <!-- <?= Html::a('<span class="fa fa-file-o fincial-report-icon-text"></span></br>
+            DAILY CASH REPORT</span>', ["/cash-status/index2"], ['class' => 'financial-report-icon']) ?> -->
 
-        <?= Html::a('<span class="fa fa-clipboard" style="font-size: 55px; text-shadow: 2px 2px 5px grey"></span></br>
-            Obligation Registry', ["/ors-registry/index"], ['class' => 'financial-report-icon']) ?>
+        <?= Html::a('<span class="fa fa-clipboard fincial-report-icon-text"></span></br>
+            <span class="report-text">OBLIGATION REGISTRY</span>', ["/ors-registry/index"], ['class' => 'financial-report-icon']) ?>
 
     </div>
 </div>

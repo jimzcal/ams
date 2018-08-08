@@ -119,32 +119,19 @@ class TransactionController extends Controller
 
         if ($model->load(Yii::$app->request->post()))
         {
-            if(isset($_POST['requirements']))
-            {
-                $model->requirements = implode(',', $_POST['requirements']);
-                $model->save();
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-            else
-            {
-                Yii::$app->getSession()->setFlash('warning', 'Please select requirement/s');
-                return $this->render('update', [
-                'model' => $model,
-                'requirements' => $requirements,
-                'all' => $all,
-                'data' => $data,
-                ]);
-            }
+            $Requirements = array_filter($model->requirements, function($value){ return $value != '0'; } );
+            $model->requirements = implode(',', $Requirements);
+            $model->save();
+
+            Yii::$app->getSession()->setFlash('success', 'Success! Transaction has been updated');
+            return $this->redirect(['index']);
+            
         }
-        else
-        {
-            return $this->render('update', [
-                'model' => $model,
-                'requirements' => $requirements,
-                'all' => $all,
-                'data' => $data,
-            ]);
-        }
+   
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+        
     }
 
     /**

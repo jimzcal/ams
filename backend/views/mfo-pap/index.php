@@ -13,8 +13,8 @@ $this->title = 'MFO/PAPS';
 ?>
 <div class="mfo-pap-index">
 
-    <div class="title">
-        <div class="btn btn-default btn-right" data-toggle="modal" data-target="#newModal">New MFO/PAP</div>
+    <div class="right-top-button">
+        <div class="right-button-text" data-toggle="modal" data-target="#newModal"><i class="glyphicon glyphicon-plus"></i> New MFO/PAP</div>
     </div>
 
     <div class="new-title">
@@ -65,7 +65,7 @@ $this->title = 'MFO/PAPS';
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-         <h4 class="modal-title">New Funding Cluster</h4>
+         <h4 class="modal-title">New MFO/PAP</h4>
       </div>
       <div class="modal-body">
           <?= $this->render('_form', [

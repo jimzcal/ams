@@ -14,6 +14,7 @@ use backend\models\AccountingEntry;
 use backend\models\Ors;
 use backend\models\OrsRegistry;
 use backend\models\Inbox;
+use yii\helpers\Html;
 
 /**
  * Site controller
@@ -68,6 +69,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if(\Yii::$app->user->can('client'))
+        {
+            Yii::$app->session->destroy();
+            Yii::$app->getSession()->setFlash('warning', 'ACCESS DENIED - Please contact the Accounting Head to enable your account from accessing the system');
+
+            return $this->redirect(['/user/login']);
+        }
+
         if(isset($_POST['dv_no']))
         {
             $dv_no = $_POST['dv_no'];

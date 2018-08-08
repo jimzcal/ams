@@ -101,6 +101,9 @@ class DisbursementController extends Controller
             $dvlog_model->transaction = "Out from Accounting and Received by: ";
             $dvlog_model->save(false);
 
+            $dv_no->status = $dv_no->status.' & Released';
+            $dv_no->save(false);
+
             return $this->render('_loader', ['id' => $id]);
         }
 

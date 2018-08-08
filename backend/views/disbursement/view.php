@@ -168,7 +168,7 @@ $this->title = $model->dv_no;
             </tr>
             <tr>
                 <td align="center" colspan="3" style="background-color: #46920e; color: #FFFFFF">
-                    <strong>TRANSACTION STATUS</strong>
+                    <strong>PROCESS FLOW STATUS</strong>
                 </td>
             </tr>
             <tr>
@@ -221,7 +221,7 @@ $this->title = $model->dv_no;
                 <td width="120"><?= isset($transaction5[0]) ? $transaction5[0] : '' ?></td>
                 <td width="120"><?= isset($transaction5[1]) ? $transaction5[1] : '' ?></td>
             </tr>
-            <tr>
+            <tr style="background-color: <?= isset($transaction6[1]) ? '#33cc33' : '#ffffff' ?>">
                 <td width="70">Releasing</td>
                 <td width="120"><?= isset($transaction6[0]) ? $transaction6[0] : '' ?></td>
                 <td width="120"><?= isset($transaction6[1]) ? $transaction6[1] : '' ?></td>
@@ -358,7 +358,7 @@ $this->title = $model->dv_no;
             </tr>
             <tr>
                 <td align="center" colspan="3" style="background-color: #46920e; color: #FFFFFF">
-                    <strong>TRANSACTION STATUS</strong>
+                    <strong>PROCESS FLOW STATUS</strong>
                 </td>
             </tr>
             <tr>
@@ -389,14 +389,12 @@ $this->title = $model->dv_no;
             <table class="table table-striped" style="font-size: 12px;">
                 <tr>
                     <th>Date</th>
-                    <th>DV No</th>
                     <th>Particulars</th>
                     <th>Client</th>
                 </tr>
                 <?php foreach ($dv_log as $key => $value) : ?>
                     <tr>
                         <td><?= $value->date ?></td>
-                        <td><?= $value->dv_no ?></td>
                         <td><?= ucwords($value->transaction) ?></td>
                         <td><?= $value->employee ?></td>
                     </tr>

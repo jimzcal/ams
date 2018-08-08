@@ -65,19 +65,26 @@ $this->title = 'LDDAP-ADA';
                 //'date',
                 [
                     'attribute' => 'date',
-                    'value' => function($data,$row){
+                    'value' => function($data,$row,$index){
 
                         if($row != 1)
                         {
-                           $prev_data = LddapAda::find()->where(['id' => $row-1])->one(); 
-                           if($data->date = $prev_data->date)
-                           {
+                            $prev_data = LddapAda::find()->where(['id' => $row-1])->one(); 
+                            if(($prev_data != null) && ($data->date == $prev_data->date))
+                            {
                                 return '';
-                           }
+                            }
+                            
+                            else
+                            {
+                                return $data->date;  
+                            }
+                               
                         }
                            
-                       else
+                       else{
                        return $data->date;                 
+                            }
                     }
                 ],
                 //'lddap_no',
@@ -87,11 +94,17 @@ $this->title = 'LDDAP-ADA';
 
                         if($row != 1)
                         {
-                           $prev_data = LddapAda::find()->where(['id' => $row-1])->one(); 
-                           if($data->lddap_no = $prev_data->lddap_no)
-                           {
+                            $prev_data = LddapAda::find()->where(['id' => $row-1])->one(); 
+                            if(($prev_data != null) && ($data->lddap_no == $prev_data->lddap_no))
+                            {
                                 return '';
-                           }
+                            }
+    
+                            else
+                            {
+                                return $data->lddap_no;  
+                            }
+                           
                         }
                            
                        else
@@ -131,7 +144,7 @@ $this->title = 'LDDAP-ADA';
                     'delete' => function ($url, $model) 
                     {
                         $url = Url::to(['lddap-ada/delete', 'id' => $model->id]);
-                        return Html::a('<span class="fa fa-trash"></span>', $url, [
+                        return Html::a('<span class="fa fa-trash"></span> Delete', $url, [
                             'title'        => 'delete',
                             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                             'data-method'  => 'post',

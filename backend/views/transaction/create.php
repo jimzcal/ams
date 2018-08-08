@@ -12,14 +12,13 @@ $this->title = 'Add New Transaction';
 ?>
 <div class="transaction-create">
 	<?= Yii::$app->session->getFlash('error'); ?>
-	<div class="form-wrapper">
-	    <div class="form-title">
-	    	<?= Html::encode($this->title) ?>
-	    	<?= Html::a('&times;', ['/transaction/index'], ['class' => 'close-button']) ?>
+
+	    <div class="new-title">
+	        <i class="fa fa-id-card" aria-hidden="true"></i> New Transaction
 	    </div>
+
 	    <?= $this->render('_form', [
 	        'model' => $model,
-	        'requirements' => $requirements,
 	    ]) ?>
-	</div>
+
 </div>

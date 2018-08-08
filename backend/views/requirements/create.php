@@ -51,7 +51,8 @@ $this->title = 'Requirement';
   </div>
 </div>
 
-<script>
+<!-- <script>
+  
 (function()
 {
   if( window.localStorage )
@@ -65,4 +66,4 @@ $this->title = 'Requirement';
       localStorage.removeItem('firstLoad');
   }
 })();
-</script>
+</script> -->

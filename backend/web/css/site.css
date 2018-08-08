@@ -19,6 +19,34 @@ body {
   background-color: #2a2b43;
 }
 
+.right-top-button{
+  width: auto;
+  background-color: #2a2b43;
+  top: 11.5%;
+  right: 0px;
+  position: fixed;
+  z-index: 1000;
+  padding: 8px;
+  font-size: 12px;
+  border-bottom-left-radius: 10px;
+  border-top: solid 1px #cccccc;
+  border-top-style: groove;
+}
+
+.right-button-text{
+  color: #FFFFFF;
+  text-decoration: none;
+  display: inline-block;
+  background-color: #2a2b43;
+  border: 0px;
+}
+
+.right-button-text:hover{
+  cursor: pointer;
+  text-decoration: none;
+  color: #bfbfbf;
+}
+
 .notification{
   /*width: 15px;
   height: 15px;*/
@@ -321,34 +349,6 @@ body {
   opacity: .6;
 }
 
-.right-top-button{
-  width: auto;
-  background-color: #2a2b43;
-  top: 80px;
-  right: 0px;
-  position: fixed;
-  z-index: 1000;
-  padding: 8px;
-  font-size: 12px;
-  border-bottom-left-radius: 10px;
-  border-top: solid 1px #cccccc;
-  border-top-style: groove;
-}
-
-.right-button-text{
-  color: #FFFFFF;
-  text-decoration: none;
-  display: inline-block;
-  background-color: #2a2b43;
-  border: 0px;
-}
-
-.right-button-text:hover{
-  cursor: pointer;
-  text-decoration: none;
-  color: #bfbfbf;
-}
-
 .content-wrapper{
   width: 100%;
   min-height: 100%;
@@ -369,11 +369,11 @@ body {
 }
 
 .view-logs{
-  border-radius: 5px;
+  border-radius: 2px;
   box-shadow: 1px 1px 1px 1px grey;
   font-size: 10px;
+  font-weight: bold;
   text-align: center;
-  text-shadow: 1px 1px 2px green;
   height: 100%;
 }
 
@@ -529,24 +529,34 @@ body {
 
 .financial-reports-panel{
   margin-top: 20px;
-  width: 800px;
-  height: 400px;
-  padding: 10px; 
+  width: 70%;
+  height: auto;
+  padding: 15px; 
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
 .financial-report-icon{
-  width: 230px;
-  height: 100px;
+  width: 28%;
   display: inline-block;
-  background-color: #eddfa3;
+  /*background-color: #eddfa3;*/
+  background-color: #ffffff;
   margin: 5px 5px 5px 5px;
-  color: #006901;
+  font-size: 83%;
+  color: #33331a;
   text-align: center;
   padding: 10px;
+  border: solid 1px #cccccc;
   line-height: 30px;
+}
+
+.fincial-report-icon-text{
+  font-size: 350%; 
+  color: #006901;
+  /*padding-top: 15px; */
+  text-shadow: 2px 2px 5px grey;
+  text-decoration: none;
 }
 
 .financial-report-icon:hover{
@@ -554,7 +564,6 @@ body {
   cursor: pointer;
   box-shadow: 2px 2px 5px grey;
 }
-
 .radio-style{
   display: inline-block;
   margin: 10px;
@@ -844,6 +853,15 @@ body {
     margin-right: auto; 
     margin-left: auto;
   }
+
+  .report-text{
+    display: none;
+  }
+
+/*  .report-line{
+    display: none;
+  }*/
+
   .search{
     width: 280px;
   }

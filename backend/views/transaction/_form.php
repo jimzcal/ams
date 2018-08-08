@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
+use backend\models\Requirements;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Transaction */
@@ -10,26 +12,30 @@ use yii\helpers\ArrayHelper;
 ?>
 
 <div class="transaction-form">
-  <div class="form-wrapper-content">
+ 
     <br>
       <?php $form = ActiveForm::begin(); ?>
 
-      <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+      <div style="width: 75%; margin-left: 7%;">
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'style' => 'width: 40%;']) ?>
 
-      <div style="background-color: #f5f5f0; font-weight: bold; padding: 10px;">
-        <label>Select Requirements</label>
-      </div>
+        <?= $form->field($model, 'requirements')->widget(Select2::classname(), [
+                  'data' => ArrayHelper::map(Requirements::find()->all(), 'requirement', 'requirement'),
+                  //'language' => 'eng',
+                  'options' => ['placeholder' => 'Select Requirements...', 'multiple' => true, 'value' => explode(',', $model->requirements)],
+                  'pluginOptions' => [
+                      'allowClear' => true
+                  ],
+              ])->label('Requirements'); ?>
 
-        <?php foreach ($requirements as $value) : ?>
-          <div class="cbox">
-            <?= $form->field($model, 'requirements[]')->checkbox(['label'=>$value->requirement, 'value'=>$value->requirement])->label(false); ?>
-          </div>
-        <?php endforeach ?>
+       
 
-      <div class="form-group">
-          <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+
       </div>
 
       <?php ActiveForm::end(); ?>
-  </div>
+
 </div>

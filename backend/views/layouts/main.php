@@ -130,16 +130,19 @@ AppAsset::register($this);
                                 <i class="notification"><?= sizeof($inbox) == '0' ? '' :  sizeof($inbox) ?></i>
                                 <?= Html::a('<i class="fa fa-archive icon-font" aria-hidden="true"></i>', ["/site/control"]) ?>
                             </div> -->
-                            <div class="dropdown icon-dropdown">
+                            <div class="dropdown icon-dropdown icon">
                                 <i class="notification"><?= sizeof($inbox) == '0' ? '' :  sizeof($inbox) ?></i>
                                 <?= Html::a('<i class="fa fa-archive icon-font" aria-hidden="true"></i>', ["#"], ['class' => 'dropdown-toggle', 'data-toggle' => 'dropdown']) ?>
                                 <?php
                                  $items = [];
-                                    foreach ($inbox as $value) {
+                                    if(isset($inbox))
+                                    {
+                                        foreach ($inbox as $value) {
                                         $items[$value->dv_no]['label'] = $value->dv_no;
                                         $items[$value->dv_no]['url'] = '/site/inbox?dv_no='.$value->dv_no;
                                         $items[$value->dv_no]['options']['value'] = $value->dv_no;
-                                    };
+                                        };
+                                    }
 
                                 $item = $items != null ? $items : $items[0] = ' <i> Empty...</i>';
 
@@ -184,6 +187,11 @@ AppAsset::register($this);
     </div>
 <!--body-->
     <div class="content-wrapper">
+        <?php
+            $exec = exec("hostname"); //the "hostname" is a valid command in both windows and linux
+            $hostname = trim($exec); //remove any spaces before and after
+            $ip = gethostbyname($hostname);
+        ?>
             <?php 
                 if (!Yii::$app->user->isGuest) {
                     echo Breadcrumbs::widget([
@@ -191,7 +199,10 @@ AppAsset::register($this);
                                 ]);
                         }
             ?>
-            <?= Alert::widget() ?>
+            <div style="width: 60%; margin-right: auto; margin-left: auto;">
+                <?= Alert::widget() ?>
+            </div>
+            
             <?php // date("Y-M-d") ?>
             <?php //$diff = date_diff(date_create(date("Y-M-d", $notifications->due_date)), date_create(date("Y-M-d"))); ?>
             <?php //$diff->format('%d') ?>

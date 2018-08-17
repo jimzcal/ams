@@ -41,8 +41,8 @@ $this->title = $model->dv_no;
         <?php endif ?>
     </div>
 
-    <div class="tracking-form">
-        <table class="table table-bordered table-condensed">
+    <div class="tracking-form" style="margin-top: 40px;">
+        <table class="table table-bordered table-condensed table-tracking-form">
             <tr>
                 <td colspan="7" class="tracking" style="font-size: 12px;">
                     Department of Agriculture <br>
@@ -227,12 +227,9 @@ $this->title = $model->dv_no;
                 <td width="120"><?= isset($transaction6[1]) ? $transaction6[1] : '' ?></td>
             </tr>
         </table>
-
-
         <br>
 <!-- ==================================================================== -->
-        <br>
-        <table class="table table-bordered table-condensed" id="view-form">
+        <table class="table table-bordered table-condensed table-tracking-form">
             <tr>
                 <td colspan="7" class="tracking" style="font-size: 12px;">
                     Department of Agriculture <br>
@@ -275,7 +272,6 @@ $this->title = $model->dv_no;
                                     {
                                        echo $data->mfo_pap.' / ';
                                     }
-                                    
                                 }
                             ?>
                     </strong>
@@ -295,7 +291,7 @@ $this->title = $model->dv_no;
                 <td colspan="2" width="25">
                     <strong><?= $model->status; ?></strong>
                 </td>
-                <td colspan="4" width="160" rowspan="8">
+                <td colspan="4" width="160" rowspan="7">
                     <?php
                         $attachments = Disbursement::find(['attachments'])->where(['id'=>$model->id])->one();
                         $attachments = explode(',', $attachments->attachments);
@@ -308,7 +304,7 @@ $this->title = $model->dv_no;
                         <?php if($attached != '') : ?>
                             <div class="cboxxx">
                                 <input type="checkbox" checked="true" name="requirements[<?= $attached ?>]" value="<?= $attached ?>">
-                                <label><?= $attached ?></label>
+                                <label><?= mb_strimwidth($attached, 0, 40, ' ...') ?></label>
                             </div>
                         <?php endif ?>
                     <?php endforeach ?>
@@ -316,7 +312,7 @@ $this->title = $model->dv_no;
                     <?php foreach ($lacking as $lack) : ?>
                         <div class="cboxxx" ?>
                             <input type="checkbox" name="requirements[<?= $lack ?>]" value="<?= $lack ?>">
-                            <label><?= $lack ?></label>
+                            <label><?= mb_strimwidth($lack, 0, 40, ' ...') ?></label>
                         </div>
                     <?php endforeach ?>
                 </td>
@@ -341,7 +337,9 @@ $this->title = $model->dv_no;
             </tr>
             <tr>
                 <td align="right">Less Amount:</td>
-                <td colspan="2" width="35"><strong><?= number_format($model->less_amount, 2); ?></strong></td>
+                <td colspan="2" width="35"
+                    <strong><?= number_format($model->less_amount, 2); ?></strong>
+                </td>
             </tr>
             <tr>
                 <td align="right">Net Amount:</td>
@@ -350,10 +348,9 @@ $this->title = $model->dv_no;
                 </td>
             </tr>
             <tr>
-                <td align="right">Transact By:</td>
+                <td align="right">DV Logs:</td>
                 <td colspan="2" width="35">
-                    <?php // $name = Employees::find()->where(['employee_id' => $model->log->employee_id])->one(); ?>
-                    <strong><?php // $name->name.' ('.$model->log->date.')'; ?></strong>
+                <div class="view-logs" data-toggle="modal" data-target="#myModal">View DV Logs</div>
                 </td>
             </tr>
             <tr>
@@ -362,17 +359,59 @@ $this->title = $model->dv_no;
                 </td>
             </tr>
             <tr>
-                <td align="center"><strong>Transaction</strong></td><td align="center">
-                    <strong>Received By</strong>
-                </td>
-                <td align="center">
-                    <strong>Date/Time</strong>
-                </td>
+                <td align="center"><strong>Transaction</strong></td><td align="center"><strong>Received By</strong></td><td align="center"><strong>Date/Time</strong></td>
             </tr>
             <tr>
                 <td width="70">Receiving</td>
                 <td width="120"><?= $transaction1[0] ?></td>
                 <td width="120"><?= $transaction1[1] ?></td>
+                <td colspan="4" align="center"><strong>REMARKS</strong></td>
+            </tr>
+            <tr>
+                <td width="70">Processing</td>
+                <td width="120"><?= isset($transaction2[0]) ? $transaction2[0] : '' ?></td>
+                <td width="120"><?= isset($transaction2[1]) ? $transaction2[1] : '' ?></td>
+                <td colspan="4" rowspan="7" style="font-size: 14px;">
+                    <?php foreach ($model->remarkss as $key => $value) : ?>
+                        <h6>
+                            <strong style="font-style: italic;">
+                                - <?= $value->user->fullname ?>
+                                <i class="text-muted">(<?= $value->date ?>)</i>
+                            </strong>
+                            <p style="text-indent: 5px;"><?= $value->remarks ?></p>
+                        </h6>
+                    <?php endforeach ?>
+                </td>
+            </tr>
+            <tr>
+                <td width="70">Verification</td>
+                <td width="120"><?= isset($transaction3[0]) ? $transaction3[0] : '' ?></td>
+                <td width="120"><?= isset($transaction3[1]) ? $transaction3[1] : '' ?></td>
+            </tr>
+            <tr>
+                <td width="70">NCA Control</td>
+                <td width="120"><?= isset($transaction4[0]) ? $transaction4[0] : '' ?></td>
+                <td width="120"><?= isset($transaction4[1]) ? $transaction4[1] : '' ?></td>
+            </tr>
+            <tr>
+                <td width="70">Approval</td>
+                <td width="120"><?= isset($transaction8[0]) ? $transaction8[0] : '' ?></td>
+                <td width="120"><?= isset($transaction8[1]) ? $transaction8[1] : '' ?></td>
+            </tr>
+            <tr>
+                <td width="70">Indexing</td>
+                <td width="120"><?= isset($transaction7[0]) ? $transaction7[0] : '' ?></td>
+                <td width="120"><?= isset($transaction7[1]) ? $transaction7[1] : '' ?></td>
+            </tr>
+            <tr>
+                <td width="70">LDDAP/ADA</td>
+                <td width="120"><?= isset($transaction5[0]) ? $transaction5[0] : '' ?></td>
+                <td width="120"><?= isset($transaction5[1]) ? $transaction5[1] : '' ?></td>
+            </tr>
+            <tr style="background-color: <?= isset($transaction6[1]) ? '#33cc33' : '#ffffff' ?>">
+                <td width="70">Releasing</td>
+                <td width="120"><?= isset($transaction6[0]) ? $transaction6[0] : '' ?></td>
+                <td width="120"><?= isset($transaction6[1]) ? $transaction6[1] : '' ?></td>
             </tr>
         </table>
     </div>

@@ -114,7 +114,8 @@ $this->title = $model->dv_no;
                 </td>
             </tr>
             <tr>
-                <td align="right">ORS No.:</td><td colspan="2" width="35">
+                <td align="right">ORS No.:</td>
+                <td colspan="2" width="35">
                     <strong>
                         <?php
                             $ors = explode(',', $model->ors);

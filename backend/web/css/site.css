@@ -645,24 +645,39 @@ body {
   display: none;
 }
 
+.table-tracking{
+  display: none;
+}
+
 @media print
 {
   .breadcrumb, #noprint {display:none;}
   .tracking-form {
    margin: 0px;
-   width: 100%;
+   width: 830px;
    height: 1248px;
-   font-size: 10pt;
+   font-size: 12pt;
+  }
+
+  .table-tracking-form{
+    width: 850px;
+    margin: .5px;
+  }
+
+  .table-tracking{
+    display: block;
+  }
+
+  html{
+    width: 8.5in;
+    height: 12in;
+    padding: 0;
+    margin: .5px;
   }
 
   #view-form{
-    display: inline-table;
+    display: block;
   }
-
-  .right-top-button{
-  top: 50px;
-  font-size: 8px;
-}
 
   /*.content-wrapper{
    margin: 0px;
@@ -673,6 +688,29 @@ body {
 
   .title{
     display: none;
+  }
+
+  .right-top-button{
+    display: none;
+  }
+
+  .view-dv{
+    width: 100%;
+    margin: 0px;
+    height: 1500px;
+    padding: 0px;
+  }
+
+  .view-dv-ref{
+    width: 100%;
+    margin: 0px;
+    height: auto;
+    padding: 0px;
+  }
+
+  #view-dv-table{
+    margin: .15px;
+    width: 100%;
   }
 
   .ada-form{

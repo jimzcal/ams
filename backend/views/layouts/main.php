@@ -191,6 +191,9 @@ AppAsset::register($this);
             $exec = exec("hostname"); //the "hostname" is a valid command in both windows and linux
             $hostname = trim($exec); //remove any spaces before and after
             $ip = gethostbyname($hostname);
+
+            //echo gethostbyaddr($_SERVER['REMOTE_ADDR']);
+            //echo php_uname('n');
         ?>
             <?php 
                 if (!Yii::$app->user->isGuest) {
